@@ -7,7 +7,7 @@ function LabelInput({ containerStyle, label, props }) {
       <Text style={styles.label}>{label}</Text>
       <TextInput {...props} style={styles.input}/>
     </View>
-  )
+  );
 }
 
 export default LabelInput;

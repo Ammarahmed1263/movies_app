@@ -1,7 +1,7 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
 import GlobalStyles from '../../utils/GlobalStyles';
 
-function Button({children , flat , textStyle}) {
+function Button({flat , textStyle, children}) {
   return (
     <View style={[styles.buttonContainer, flat && {backgroundColor: '', elevation: 0}]}>
       <Pressable 

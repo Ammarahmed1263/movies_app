@@ -8,26 +8,29 @@ import FavoriteScreen from './src/screens/FavoriteScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
-import { useWindowDimensions } from 'react-native';
+import GlobalStyles from './src/utils/GlobalStyles';
+import {StatusBar, useWindowDimensions} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 function AppStack() {
-  const { width } = useWindowDimensions();
+  const {width} = useWindowDimensions();
 
   return (
-    <Tab.Navigator screenOptions={{
-      headerShown: false,
-      tabBarStyle: { borderRadius: width / 2 ,
-      marginHorizontal: 20,
-      position: 'absolute', 
-      bottom: 10,
-      overflow: 'hidden',
-      height: 57,
-      },
-      tabBarLabelStyle: {marginVertical: 8}
-    }}
-    >
+    <Tab.Navigator
+      sceneContainerStyle={{backgroundColor: GlobalStyles.primary500}}
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          borderRadius: width / 2,
+          marginHorizontal: 20,
+          position: 'absolute',
+          bottom: 10,
+          overflow: 'hidden',
+          height: 57,
+        },
+        tabBarLabelStyle: {marginVertical: 8},
+      }}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Favorite" component={FavoriteScreen} />
@@ -40,7 +43,13 @@ const Stack = createNativeStackNavigator();
 
 function AuthStack() {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: GlobalStyles.primary500,
+        },
+      }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
     </Stack.Navigator>
@@ -48,11 +57,14 @@ function AuthStack() {
 }
 
 export default function App() {
-  const authorized = false;
+  const authorized = true;
 
   return (
-    <NavigationContainer>
-      {authorized ? <AppStack /> : <AuthStack />}
-    </NavigationContainer>
+    <>
+      <StatusBar backgroundColor={GlobalStyles.primary500} />
+      <NavigationContainer>
+        {authorized ? <AppStack /> : <AuthStack />}
+      </NavigationContainer>
+    </>
   );
 }

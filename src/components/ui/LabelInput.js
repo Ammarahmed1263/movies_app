@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontFamily: GlobalStyles.fontBold,
-    color: 'white'
+    color: GlobalStyles.paleWhite
   },
   input: {
     borderRadius: 15,

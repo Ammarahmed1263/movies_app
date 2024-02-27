@@ -1,7 +1,7 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
 import GlobalStyles from '../../utils/GlobalStyles';
 
-function Button({flat , textStyle, children}) {
+function Button({ flat, textStyle, children }) {
   return (
     <View style={[styles.buttonContainer, flat && {backgroundColor: '', elevation: 0}]}>
       <Pressable 
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontFamily: GlobalStyles.fontBold,
-    color: 'white',
+    color: GlobalStyles.paleWhite,
     textTransform: 'capitalize'
   },
   flatText: {

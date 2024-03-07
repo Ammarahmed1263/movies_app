@@ -18,7 +18,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: GlobalStyles.secondary600,
+    backgroundColor: GlobalStyles.secondary500,
     borderRadius: 25,
     elevation: 6,
     overflow: 'hidden',
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize'
   },
   flatText: {
-    color: GlobalStyles.secondary600
+    color: GlobalStyles.secondary500
   }
 });

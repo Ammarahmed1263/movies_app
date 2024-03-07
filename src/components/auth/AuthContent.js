@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, StatusBar } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import GlobalStyles from '../../utils/GlobalStyles';
 import AuthForm from './AuthForm';
 import Button from '../ui/Button';

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Button from "../ui/Button";
 import LabelInput from "../ui/LabelInput";
 

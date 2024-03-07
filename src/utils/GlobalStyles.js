@@ -3,8 +3,8 @@ import { StyleSheet } from "react-native";
 const GlobalStyles = StyleSheet.create({
   primary500: '#303234',
   primary600: '#616264',
-  secondary500: '#ffd60a',
-  secondary600: '#ffc300',
+  secondary500: '#ffbb00',
+  secondary600: '#f5d108',
   paleWhite: '#f0f1e9',
   fontBold: 'Poppins-Bold',
   fontRegular: 'Poppins-Regular',

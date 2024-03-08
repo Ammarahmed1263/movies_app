@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import SearchBar from "../components/ui/SearchBar";
+import SearchBar from "../components/search/SearchBar";
 
 function SearchScreen() {
   return (

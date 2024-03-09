@@ -1,30 +1,24 @@
 import {Pressable, View, StyleSheet} from 'react-native';
 import GlobalStyles from '../../utils/GlobalStyles';
 
-function MovieButton({children}) {
+function MovieButton({children, style}) {
+  // when clicked pass movie id to retrieve it's data
   return (
-    <View style={styles.movieContainer}>
-      {/* when clicked pass movie id to retrieve it's data */}
-      <Pressable
-        style={({pressed}) => [
-          styles.pressableContainer,
-          pressed && {opacity: 0.5},
-        ]}>
-        {children}
-      </Pressable>
-    </View>
+    <Pressable
+      style={({pressed}) => [
+        styles.pressableContainer,
+        style,
+        pressed && {opacity: 0.5},
+      ]}
+      >
+      {children}
+    </Pressable>
   );
 }
 
 export default MovieButton;
 
 const styles = StyleSheet.create({
-  movieContainer: {
-    borderRadius: 20,
-    marginHorizontal: 10,
-    width: 160,
-    height: 230,
-  },
   pressableContainer: {
     flex: 1,
     overflow: 'hidden',

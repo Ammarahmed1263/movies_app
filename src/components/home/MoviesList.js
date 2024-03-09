@@ -3,8 +3,8 @@ import Button from '../ui/Button';
 import GlobalStyles from '../../utils/GlobalStyles';
 import MovieCard from './MovieCard';
 
-const renderMovie = ({item: movie}) => {
-  return <MovieCard movie={movie}/>;
+const renderMovie = ({item}) => {
+  return <MovieCard movie={item}/>;
 };
 
 function MoviesList({movies, topic}) {

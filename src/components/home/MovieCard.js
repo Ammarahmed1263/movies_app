@@ -5,9 +5,9 @@ import MovieButton from '../ui/MovieButton';
 
 function MovieCard({movie}) {
   return (
-    <MovieButton>
+    <MovieButton style={styles.container}>
       <Text style={styles.rating}>
-        {Math.ceil(movie.vote_average * 10) / 10}
+        {movie.vote_average > 0 ? Math.ceil(movie.vote_average * 10) / 10 : 'NR'}
       </Text>
       <Image
         source={{
@@ -22,6 +22,11 @@ function MovieCard({movie}) {
 export default MovieCard;
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 10,
+    width: 160,
+    height: 230,
+  },
   rating: {
     position: 'absolute',
     zIndex: 1,

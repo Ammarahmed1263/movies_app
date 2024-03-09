@@ -1,7 +1,10 @@
 const ENDPOINT = {
   image: 'https://image.tmdb.org/t/p/original',
   movies: {
-    now_playing: 'https://api.themoviedb.org/3/movie/now_playing'
+    now_playing: 'https://api.themoviedb.org/3/movie/now_playing',
+    popular: 'https://api.themoviedb.org/3/movie/popular',
+    top_rated: 'https://api.themoviedb.org/3/movie/top_rated',
+    upcoming: 'https://api.themoviedb.org/3/movie/upcoming',
   }
 }
 

@@ -1,13 +1,14 @@
-import {useEffect, useState} from 'react';
-import {Image, ScrollView, View} from 'react-native';
+import {useEffect, useState, useCallback} from 'react';
+import {ScrollView, StatusBar, View} from 'react-native';
 import axios from 'axios';
 import MoviesList from '../components/home/MoviesList';
 import ENDPOINT from '../utils/Constants';
-import { API_KEY } from '../utils/Constants';
+import {API_KEY} from '../utils/Constants';
+import MoviesCarousel from '../components/home/MoviesCarousel';
+// import { useFocusEffect } from '@react-navigation/native';
 
 const options = {
   method: 'GET',
-  params: {language: 'en-US', page: '1'},
   headers: {
     accept: 'application/json',
     Authorization: `Bearer ${API_KEY}`,
@@ -28,6 +29,20 @@ function HomeScreen() {
   const [top_rated, settop_rated] = useState([]);
   const [upcoming, setupcoming] = useState([]);
 
+  // status bar in rest of screens solution
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     StatusBar.setTranslucent(true);
+  //     StatusBar.setBackgroundColor('transparent');
+  
+  //     return () => {
+  //       console.log('ran here')
+  //       StatusBar.setTranslucent(false);
+  //       StatusBar.setBackgroundColor(GlobalStyles.primary500);
+  //     };
+  //   }, [])
+  // );
+
   useEffect(() => {
     (async () => {
       try {
@@ -37,31 +52,25 @@ function HomeScreen() {
         );
         // console.log(now_playing.data);
         console.log(response.data.results);
-        setnow_playing([...now_playing, ...response.data.results])
+        setnow_playing([...now_playing, ...response.data.results]);
 
-        
-        const response2 = await axios.request(
-          ENDPOINT.movies.popular,
-          options,
-        );
+        const response2 = await axios.request(ENDPOINT.movies.popular, options);
         // console.log(now_playing.data);
-        setpopular([...popular, ...response2.data.results])
+        setpopular([...popular, ...response2.data.results]);
 
         const response3 = await axios.request(
           ENDPOINT.movies.top_rated,
           options,
         );
         // console.log(now_playing.data);
-        settop_rated([...top_rated, ...response3.data.results])
+        settop_rated([...top_rated, ...response3.data.results]);
 
         const response4 = await axios.request(
           ENDPOINT.movies.upcoming,
           options,
         );
         // console.log(now_playing.data);
-        setupcoming([...upcoming, ...response4.data.results])
-
-
+        setupcoming([...upcoming, ...response4.data.results]);
       } catch (e) {
         console.log('failed to retrieve movies', e);
       } finally {
@@ -71,20 +80,20 @@ function HomeScreen() {
   }, []);
 
   return (
-    <View style={{flex: 1, padding: 5}}>
-      
+    <>
+      <StatusBar translucent backgroundColor="transparent" />
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{flex: 1}}>
-
+          <MoviesCarousel movies={now_playing.slice(0, 10)} />
         </View>
-        <View style={{flex: 1.3}}>
-          <ScrollView>
-            <MoviesList movies={now_playing} topic='Now Playing' />
-            <MoviesList movies={top_rated} topic='Top Rated' />
-            <MoviesList movies={upcoming} topic='UpComing' />
-            <MoviesList movies={popular} topic='Popular' />
-          </ScrollView>
+        <View style={{flex: 1.3, padding: 5}}>
+          <MoviesList movies={now_playing} topic="Now Playing" />
+          <MoviesList movies={top_rated} topic="Top Rated" />
+          <MoviesList movies={upcoming} topic="UpComing" />
+          <MoviesList movies={popular} topic="Popular" />
         </View>
-    </View>
+      </ScrollView>
+    </>
   );
 }
 

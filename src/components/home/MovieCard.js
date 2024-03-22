@@ -24,8 +24,10 @@ export default MovieCard;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 10,
-    width: 160,
-    height: 230,
+    width: 150,
+    height: 225,
+    borderWidth: 1.7,
+    borderRadius: 14,
   },
   rating: {
     position: 'absolute',

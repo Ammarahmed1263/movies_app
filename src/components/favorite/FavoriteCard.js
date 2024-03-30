@@ -10,7 +10,6 @@ function FavoriteCard({movie}) {
       <Image
         source={{uri: ENDPOINT.image + movie.poster_path}}
         style={styles.image}
-        resizeMode="cover"
       />
       <View style={styles.description}>
         <View style={styles.headingContainer}>
@@ -34,20 +33,17 @@ export default FavoriteCard;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginHorizontal: 20,
-    borderWidth: 0,
-    marginVertical: 10,
     height: 140,
+    marginHorizontal: 20,
+    marginBottom: 25,
   },
   image: {
-    flex: 1,
-    height: '100%',
-    borderRadius: 20,
-    // borderWidth: 1.7,
-    // borderColor: GlobalStyles.secondary600,
+    flex: 1.2,
+    borderRadius: 8,
+    resizeMode: 'cover'
   },
   description: {
-    flex: 2.7,
+    flex: 3,
     marginLeft: 20,
     marginVertical: 4,
     justifyContent: 'space-between',

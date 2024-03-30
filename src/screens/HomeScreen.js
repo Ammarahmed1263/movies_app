@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from 'react';
+import {useEffect, useState} from 'react';
 import {ScrollView, StatusBar, View} from 'react-native';
 import axios from 'axios';
 import MoviesList from '../components/home/MoviesList';
@@ -83,10 +83,10 @@ function HomeScreen() {
     <>
       <StatusBar translucent backgroundColor="transparent" />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{flex: 1}}>
+        <View style={{flex: 2}}>
           <MoviesCarousel movies={now_playing.slice(0, 10)} />
         </View>
-        <View style={{flex: 1.3, padding: 5}}>
+        <View style={{flex: 1, padding: 5}}>
           <MoviesList movies={now_playing} topic="Now Playing" />
           <MoviesList movies={top_rated} topic="Top Rated" />
           <MoviesList movies={upcoming} topic="UpComing" />

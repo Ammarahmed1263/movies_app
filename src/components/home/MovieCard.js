@@ -2,10 +2,13 @@ import {StyleSheet, Text, Image} from 'react-native';
 import GlobalStyles from '../../utils/GlobalStyles';
 import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
+import { useNavigation } from '@react-navigation/native';
 
 function MovieCard({movie}) {
+  const navigation = useNavigation();
+
   return (
-    <MovieButton style={styles.container}>
+    <MovieButton style={styles.container} onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
       <Text style={styles.rating}>
         {movie.vote_average > 0 ? Math.ceil(movie.vote_average * 10) / 10 : 'NR'}
       </Text>

@@ -43,7 +43,7 @@ function FavoritesList() {
   return (
     <View style={{flex: 1}}>
       <FlatList
-        data={now_playing.slice(10, 30)}
+        data={now_playing.slice(1, 10)}
         renderItem={renderFavorite}
         showsVerticalScrollIndicator={false}
       />

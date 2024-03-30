@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   iconContainer: {
-    marginHorizontal: 15
+    margin: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(106, 106, 106, 0.54)',
+    borderRadius: 30,
+    padding: 7,
+    paddingLeft: 10
   }
 })

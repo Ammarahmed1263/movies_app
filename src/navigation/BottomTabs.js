@@ -2,15 +2,16 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import FavoritesScreen from '../screens/FavoritesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import FavoritesStack from './FavoritesStack';
 import GlobalStyles from '../utils/GlobalStyles';
+import MoviesStack from './MoviesStack';
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
+
   function getTabBarIcon({focused, color, size}, activeIcon, inActiveIcon) {
     const icon = focused ? activeIcon : inActiveIcon;
 
@@ -21,7 +22,7 @@ function BottomTabs() {
     <Tab.Navigator
       sceneContainerStyle={styles.content}
       screenOptions={{
-        headerShadowVisible: false,
+        headerShown: false,
         headerTitleStyle: {
           color: 'white',
         },
@@ -34,9 +35,10 @@ function BottomTabs() {
         tabBarInactiveTintColor: GlobalStyles.primary700,
       }}>
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeStack"
+        component={MoviesStack}
         options={{
+          title: 'Home',
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'home', 'home-outline'),
         }}
@@ -45,15 +47,17 @@ function BottomTabs() {
         name="Search"
         component={SearchScreen}
         options={{
-          headerShown: false,
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'search-sharp', 'search-outline'),
         }}
       />
       <Tab.Screen
-        name="Favorites"
-        component={FavoritesScreen}
+        name="FavoriteStack"
+        component={FavoritesStack}
         options={{
+          title: 'Favorites',
+          headerShown: true,
+          headerShadowVisible: false,
           headerTitleAlign: 'center',
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'star', 'star-outline'),

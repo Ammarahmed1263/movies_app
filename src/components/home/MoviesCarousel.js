@@ -1,41 +1,27 @@
 import {useState} from 'react';
 import {
-  Image,
   ImageBackground,
   View,
   Text,
   Dimensions,
   StyleSheet,
   StatusBar,
-  Pressable,
-  TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
 import ENDPOINT from '../../utils/Constants';
 import GlobalStyles from '../../utils/GlobalStyles';
+import CarouselItem from './CarouselItem';
 
 const {width} = Dimensions.get('window');
 
-// try adding title and other things beneath
+// isolate item
 const renderItem = ({item}) => {
-  return (
-    <View style={styles.cardContainer}>
-      <Image
-        source={{uri: ENDPOINT.image + item.poster_path}}
-        style={styles.cardImage}
-      />
-      <View style={{marginTop: 15, alignItems: 'center'}}>
-        <Text style={{fontSize: 20, fontFamily: GlobalStyles.fontRegular, color: 'white', textAlign: 'center'}} ellipsizeMode='tail' numberOfLines={2}>{item.title}</Text>
-        {/* <Text>{item.release_date}</Text> */}
-      </View>
-    </View>
-  );
+  return <CarouselItem item={item} />;
 };
 
 function MoviesCarousel({movies}) {
   const [activeMovieIndex, setActiveMovieIndex] = useState(0);
-  console.log(activeMovieIndex);
 
   // modify with better one
   if (movies.length === 0) {
@@ -49,28 +35,50 @@ function MoviesCarousel({movies}) {
   const handleSnapToItem = index => {
     setActiveMovieIndex(index);
   };
+
   return (
     <ImageBackground
       source={{uri: ENDPOINT.image + movies[activeMovieIndex].poster_path}}
       blurRadius={45}
       style={styles.backgroundImage}
-      resizeMode='cover'
+      resizeMode="cover"
     >
-      <LinearGradient colors={['transparent', '#303234']} locations={[0.5, 0.9]} style={{marginTop: StatusBar.currentHeight + 10}}>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <TouchableOpacity>
-            <Text style={{fontSize: 35, fontFamily: GlobalStyles.fontBold, color: 'white'}}>
-              <Text>Movie</Text>
-              <Text style={{color: GlobalStyles.secondary500}}>Corn</Text>
-            </Text>
-          </TouchableOpacity>
+      <LinearGradient
+        colors={['transparent', '#303234']}
+        style={styles.gradientContainer}
+      >
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>
+            <Text>Movie</Text>
+            <Text style={styles.textSpan}>Corn</Text>
+          </Text>
         </View>
         <Carousel
           data={movies}
           renderItem={renderItem}
-          itemWidth={width - 150}
+          itemWidth={width - 175}
           sliderWidth={width}
           onBeforeSnapToItem={handleSnapToItem}
+          inactiveSlideScale={0.86}
+          // autoplay={true}
+          loop={true}
+        />
+        <Pagination
+          containerStyle={{marginTop: -10}}
+          dotsLength={movies.length}
+          activeDotIndex={activeMovieIndex}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            backgroundColor: GlobalStyles.secondary500,
+          }}
+          inactiveDotStyle={{
+            width: 6,
+            height: 6,
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
         />
       </LinearGradient>
     </ImageBackground>
@@ -86,18 +94,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cardContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+  gradientContainer: {
+    marginTop: StatusBar.currentHeight + 10,
   },
-  cardImage: {
-    width: '85%',
-    height: '80%',
-    resizeMode: 'cover',
-    borderWidth: 2,
-    borderColor: GlobalStyles.secondary500,
-    borderRadius: 20,
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  headerText: {
+    fontSize: 35,
+    fontFamily: GlobalStyles.fontBold,
+    color: 'white',
+  },
+  textSpan: {
+    color: GlobalStyles.secondary500,
   },
 });

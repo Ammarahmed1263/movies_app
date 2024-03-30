@@ -2,7 +2,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 import AuthStack from './src/navigation/AuthStack';
 import BottomTabs from './src/navigation/BottomTabs';
-import GlobalStyles from './src/utils/GlobalStyles';
+import GlobalStyles from './src/styles/GlobalStyles';
 
 
 export default function App() {

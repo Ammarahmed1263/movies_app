@@ -1,6 +1,6 @@
 import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
 import MovieButton from '../ui/MovieButton';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 import ENDPOINT from '../../utils/Constants';
 import Icon from 'react-native-vector-icons/Ionicons'
 

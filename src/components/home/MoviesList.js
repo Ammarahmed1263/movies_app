@@ -1,6 +1,6 @@
 import {FlatList, Text, View, StyleSheet} from 'react-native';
 import Button from '../ui/Button';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 import MovieCard from './MovieCard';
 
 const renderMovie = ({item}) => {

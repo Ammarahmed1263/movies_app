@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text } from 'react-native';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 import AuthForm from './AuthForm';
 import Button from '../ui/Button';
 

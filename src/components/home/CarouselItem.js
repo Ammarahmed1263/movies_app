@@ -1,5 +1,5 @@
 import {View, Image, Text, StyleSheet} from 'react-native';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 import ENDPOINT from '../../utils/Constants';
 
 function CarouselItem({item}) {

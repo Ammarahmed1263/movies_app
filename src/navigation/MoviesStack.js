@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import GlobalStyles from "../utils/GlobalStyles";
+import GlobalStyles from "../styles/GlobalStyles";
 import HomeScreen from "../screens/HomeScreen";
 import MovieDetails from "../screens/MovieDetails";
 

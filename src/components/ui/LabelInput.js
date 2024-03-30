@@ -1,5 +1,5 @@
 import { Text, TextInput, View, StyleSheet } from "react-native";
-import GlobalStyles from "../../utils/GlobalStyles";
+import GlobalStyles from "../../styles/GlobalStyles";
 
 function LabelInput({ containerStyle, label, props }) {
   return (

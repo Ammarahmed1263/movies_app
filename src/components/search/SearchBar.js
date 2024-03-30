@@ -1,5 +1,5 @@
 import { View, TextInput, StyleSheet } from "react-native"
-import GlobalStyles from "../../utils/GlobalStyles";
+import GlobalStyles from "../../styles/GlobalStyles";
 import Icon from 'react-native-vector-icons/Ionicons'
 
 function SearchBar() {

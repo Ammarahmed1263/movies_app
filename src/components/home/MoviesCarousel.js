@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import ENDPOINT from '../../utils/Constants';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 import CarouselItem from './CarouselItem';
 
 const {width} = Dimensions.get('window');

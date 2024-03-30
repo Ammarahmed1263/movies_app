@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import SearchScreen from '../screens/SearchScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import FavoritesStack from './FavoritesStack';
-import GlobalStyles from '../utils/GlobalStyles';
+import GlobalStyles from '../styles/GlobalStyles';
 import MoviesStack from './MoviesStack';
 
 const Tab = createBottomTabNavigator();

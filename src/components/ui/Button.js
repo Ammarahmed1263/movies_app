@@ -1,5 +1,5 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 
 function Button({flat, textStyle, children, onPress, customView, customViewStyle}) {
   return (

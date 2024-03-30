@@ -1,5 +1,5 @@
 import {Pressable, View, StyleSheet} from 'react-native';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 
 function MovieButton({children, style, onPress}) {
   // when clicked pass movie id to retrieve it's data

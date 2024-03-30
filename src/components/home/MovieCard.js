@@ -1,5 +1,5 @@
 import {StyleSheet, Text, Image} from 'react-native';
-import GlobalStyles from '../../utils/GlobalStyles';
+import GlobalStyles from '../../styles/GlobalStyles';
 import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
 import { useNavigation } from '@react-navigation/native';

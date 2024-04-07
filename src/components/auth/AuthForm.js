@@ -5,7 +5,6 @@ import {useNavigation} from '@react-navigation/native';
 
 function AuthForm({isLogin}) {
   const navigation = useNavigation();
-  console.log(isLogin);
 
   return (
     <View style={styles.container}>

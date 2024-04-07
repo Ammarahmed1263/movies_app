@@ -1,16 +1,27 @@
 import {StyleSheet, Text, Image} from 'react-native';
-import GlobalStyles from '../../styles/GlobalStyles';
 import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {useTheme} from '../../store/context/ThemeContext';
 
 function MovieCard({movie}) {
   const navigation = useNavigation();
+  const {colors, fonts} = useTheme();
 
   return (
-    <MovieButton style={styles.container} onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
-      <Text style={styles.rating}>
-        {movie.vote_average > 0 ? Math.ceil(movie.vote_average * 10) / 10 : 'NR'}
+    <MovieButton
+      style={{...styles.container, backgroundColor: colors.secondary500}}
+      onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
+      <Text
+        style={{
+          ...styles.rating,
+          color: colors.primary500,
+          fontFamily: fonts.bold,
+          backgroundColor: colors.secondary500,
+        }}>
+        {movie.vote_average > 0
+          ? Math.ceil(movie.vote_average * 10) / 10
+          : 'NR'}
       </Text>
       <Image
         source={{
@@ -29,7 +40,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     width: 150,
     height: 225,
-    borderWidth: 1.7,
+    borderTopWidth: 2.4,
+    borderBottomWidth: 2.4,
+    borderWidth: 1.2,
     borderRadius: 14,
   },
   rating: {
@@ -38,9 +51,6 @@ const styles = StyleSheet.create({
     top: 10,
     right: 11,
     fontSize: 15,
-    color: GlobalStyles.primary500,
-    fontFamily: GlobalStyles.fontBold,
-    backgroundColor: GlobalStyles.secondary500,
     paddingHorizontal: 10,
     borderRadius: 7,
     alignSelf: 'center',

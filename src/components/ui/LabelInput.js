@@ -1,11 +1,27 @@
-import { Text, TextInput, View, StyleSheet } from "react-native";
-import GlobalStyles from "../../styles/GlobalStyles";
+import {Text, TextInput, View, StyleSheet} from 'react-native';
+import {useTheme} from '../../store/context/ThemeContext';
 
-function LabelInput({ containerStyle, label, props }) {
+function LabelInput({containerStyle, label, props}) {
+  const {colors, fonts} = useTheme();
+
   return (
     <View style={[styles.container, containerStyle]}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput {...props} style={styles.input}/>
+      <Text
+        style={{
+          ...styles.label,
+          fontFamily: fonts.bold,
+          color: colors.paleShade,
+        }}>
+        {label}
+      </Text>
+      <TextInput
+        {...props}
+        style={{
+          ...styles.input,
+          backgroundColor: colors.primary600,
+          borderColor: colors.secondary600,
+        }}
+      />
     </View>
   );
 }
@@ -14,17 +30,15 @@ export default LabelInput;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10
+    marginVertical: 10,
   },
   label: {
     fontSize: 16,
-    fontFamily: GlobalStyles.fontBold,
-    color: GlobalStyles.paleWhite
   },
   input: {
     borderRadius: 15,
-    backgroundColor: GlobalStyles.primary600,
-    borderColor: GlobalStyles.secondary600,
-    borderWidth: 2
-  }
-})
+    borderTopWidth: 1.6,
+    borderBottomWidth: 1.6,
+    borderWidth: 0.7,
+  },
+});

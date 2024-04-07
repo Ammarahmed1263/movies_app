@@ -1,11 +1,11 @@
 const COLORS = {
   light: {
-    primary500: '#1e96fc',
-    primary600: '#a2d6f9',
-    primary700: '#ffffff',
-    secondary500: '#ffc600',
-    secondary600: '#fcf300',
-    paleShade: '#1f1e1e',
+    primary500: '#f0f1e9',
+    primary600: '#f4efef',
+    primary700: '#8c8d87',
+    secondary500: '#ffaa00',
+    secondary600: '#fec34c',
+    paleShade: '#252729',
   },
   dark: {
     primary500: '#303234',

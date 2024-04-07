@@ -1,16 +1,17 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet} from 'react-native';
+import {useTheme} from '../store/context/ThemeContext';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import SearchScreen from '../screens/SearchScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import FavoritesStack from './FavoritesStack';
-import GlobalStyles from '../styles/GlobalStyles';
 import MoviesStack from './MoviesStack';
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
+  const {colors} = useTheme();
 
   function getTabBarIcon({focused, color, size}, activeIcon, inActiveIcon) {
     const icon = focused ? activeIcon : inActiveIcon;
@@ -20,19 +21,26 @@ function BottomTabs() {
 
   return (
     <Tab.Navigator
-      sceneContainerStyle={styles.content}
+      sceneContainerStyle={{
+        ...styles.content,
+        backgroundColor: colors.primary500,
+      }}
       screenOptions={{
         headerShown: false,
         headerTitleStyle: {
           color: 'white',
         },
         headerStyle: {
-          backgroundColor: GlobalStyles.primary500,
+          backgroundColor: colors.primary500,
         },
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: {
+          ...styles.tabBar,
+          backgroundColor: colors.primary500,
+          borderColor: colors.secondary600,
+        },
         tabBarLabelStyle: {marginBottom: 8},
-        tabBarActiveTintColor: GlobalStyles.secondary500,
-        tabBarInactiveTintColor: GlobalStyles.primary700,
+        tabBarActiveTintColor: colors.secondary500,
+        tabBarInactiveTintColor: colors.primary700,
       }}>
       <Tab.Screen
         name="HomeStack"
@@ -42,6 +50,7 @@ function BottomTabs() {
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'home', 'home-outline'),
         }}
+        initialParams={{colors}}
       />
       <Tab.Screen
         name="Search"
@@ -79,7 +88,6 @@ export default BottomTabs;
 
 const styles = StyleSheet.create({
   content: {
-    backgroundColor: GlobalStyles.primary500,
     paddingBottom: 65,
   },
   tabBar: {
@@ -90,9 +98,8 @@ const styles = StyleSheet.create({
     bottom: 10,
     overflow: 'hidden',
     height: 60,
-    backgroundColor: GlobalStyles.primary500,
-    borderTopWidth: 0.7,
-    borderWidth: 0.7,
-    borderColor: GlobalStyles.secondary600,
+    borderTopWidth: 1.6,
+    borderBottomWidth: 1.6,
+    borderWidth: 0.9,
   },
 });

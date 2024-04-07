@@ -1,21 +1,31 @@
 import {View, Image, Text, StyleSheet} from 'react-native';
-import GlobalStyles from '../../styles/GlobalStyles';
 import ENDPOINT from '../../utils/Constants';
+import {useTheme} from '../../store/context/ThemeContext';
+import MovieButton from '../ui/MovieButton';
 
 function CarouselItem({item}) {
+  const {colors, fonts} = useTheme();
+
   return (
-    <View style={styles.cardContainer}>
-      <Image
-        source={{uri: ENDPOINT.image + item.poster_path}}
-        style={styles.cardImage}
-      />
-        <Text
-          style={styles.title}
-          ellipsizeMode="tail"
-          numberOfLines={1}>
-          {item.title}
-        </Text>
+    <MovieButton style={styles.cardContainer}>
+      <View
+        style={{...styles.innerContainer, borderColor: colors.secondary500}}>
+        <Image
+          source={{uri: ENDPOINT.image + item.poster_path}}
+          style={styles.cardImage}
+        />
       </View>
+      <Text
+        style={{
+          ...styles.title,
+          fontFamily: fonts.regular,
+          color: colors.paleShade,
+        }}
+        ellipsizeMode="tail"
+        numberOfLines={1}>
+        {item.title}
+      </Text>
+    </MovieButton>
   );
 }
 
@@ -28,22 +38,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     minHeight: 400,
-    // backgroundColor: 'white',
+  },
+  innerContainer: {
+    width: '100%',
+    height: '87%',
+    borderTopWidth: 2.6,
+    borderBottomWidth: 2.6,
+    borderWidth: 1.2,
+    borderRadius: 20,
+    overflow: 'hidden'
   },
   cardImage: {
+    flex: 1,
     width: '100%',
-    height: '90%',
-    resizeMode: 'cover',
-    borderWidth: 2,
-    borderColor: GlobalStyles.secondary500,
-    borderRadius: 20,
+    height: '100%',
   },
   title: {
     fontSize: 20,
-    fontFamily: GlobalStyles.fontRegular,
     color: 'white',
     textAlign: 'center',
-    marginTop: 15, 
-    alignSelf: 'center'
-  }
+    marginTop: 15,
+    alignSelf: 'center',
+  },
 });

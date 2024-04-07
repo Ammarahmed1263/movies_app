@@ -1,17 +1,10 @@
 import {useState} from 'react';
-import {
-  ImageBackground,
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  StatusBar,
-} from 'react-native';
+import { ImageBackground, View, Text, Dimensions, StyleSheet, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import ENDPOINT from '../../utils/Constants';
-import GlobalStyles from '../../styles/GlobalStyles';
 import CarouselItem from './CarouselItem';
+import { useTheme } from '../../store/context/ThemeContext';
 
 const {width} = Dimensions.get('window');
 
@@ -22,6 +15,7 @@ const renderItem = ({item}) => {
 
 function MoviesCarousel({movies}) {
   const [activeMovieIndex, setActiveMovieIndex] = useState(0);
+  const { colors, fonts } = useTheme();
 
   // modify with better one
   if (movies.length === 0) {
@@ -44,13 +38,13 @@ function MoviesCarousel({movies}) {
       resizeMode="cover"
     >
       <LinearGradient
-        colors={['transparent', '#303234']}
+        colors={['transparent', colors.primary500]}
         style={styles.gradientContainer}
       >
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>
+          <Text style={{ ...styles.headerText, fontFamily: fonts.bold, color: colors.paleShade }}>
             <Text>Movie</Text>
-            <Text style={styles.textSpan}>Corn</Text>
+            <Text style={{color: colors.secondary500, fontSize: 29}}>Corn</Text>
           </Text>
         </View>
         <Carousel
@@ -71,7 +65,7 @@ function MoviesCarousel({movies}) {
             width: 10,
             height: 10,
             borderRadius: 5,
-            backgroundColor: GlobalStyles.secondary500,
+            backgroundColor: colors.secondary500,
           }}
           inactiveDotStyle={{
             width: 6,
@@ -103,10 +97,5 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 35,
-    fontFamily: GlobalStyles.fontBold,
-    color: 'white',
-  },
-  textSpan: {
-    color: GlobalStyles.secondary500,
   },
 });

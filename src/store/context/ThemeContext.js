@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useLayoutEffect } from "react";
 import { useColorScheme } from "react-native";
-import { FONTS } from "../../styles/Fonts";
+import FONTS from "../../styles/Fonts";
 import COLORS from "../../styles/Colors";
 
 const ThemeContext = createContext({
@@ -15,9 +15,9 @@ const ThemeContext = createContext({
     paleShade: '',
   },
   fonts: {  
-    fontBold: '',
-    fontRegular: '',
-    fontLight: ''
+    bold: '',
+    regular: '',
+    light: ''
   },
 });
 
@@ -37,7 +37,7 @@ function ContextProvider({ children }) {
     setTheme((prevState) => prevState === 'dark' ? 'light' : 'dark');
   }
 
-  const colors = COLORS['light'];
+  const colors = COLORS[theme];
   console.log(colors);
 
   return (

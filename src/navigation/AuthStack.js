@@ -1,17 +1,19 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import GlobalStyles from "../styles/GlobalStyles";
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
+import { useTheme } from "../store/context/ThemeContext";
 
 const Stack = createNativeStackNavigator();
 
 function AuthStack() {
+  const { colors } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         contentStyle: {
-          backgroundColor: GlobalStyles.primary500,
+          backgroundColor: colors.primary500,
         },
       }}>
       <Stack.Screen name="Login" component={LoginScreen} />

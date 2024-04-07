@@ -1,23 +1,34 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
-import GlobalStyles from '../../styles/GlobalStyles';
+import {useTheme} from '../../store/context/ThemeContext';
 
-function Button({flat, textStyle, children, onPress, customView, customViewStyle}) {
+function Button({ flat, textStyle, children, onPress, customView, customViewStyle }) {
+  const {colors, fonts} = useTheme();
+
   return (
     <View
       style={[
         styles.buttonContainer,
+        {backgroundColor: colors.secondary500},
         flat && {backgroundColor: '', elevation: 0},
       ]}>
       <Pressable
-        android_ripple={flat ? null : {color: GlobalStyles.secondary500}}
+        android_ripple={flat ? null : {color: colors.secondary600}}
         style={[!flat && styles.innerButton]}
-        onPress={onPress}>
+        onPress={onPress}
+      >
         {customView ? (
-          <View style={customViewStyle}>
-            {children}
-          </View>
+          <View style={customViewStyle}>{children}</View>
         ) : (
-          <Text style={[styles.text, textStyle, flat && styles.flatText]}>
+          <Text
+            style={[
+              styles.text,
+              {
+                fontFamily: fonts.bold,
+                color: colors.paleShade,
+              },
+              textStyle,
+              flat && {color: colors.secondary500},
+            ]}>
             {children}
           </Text>
         )}
@@ -30,7 +41,6 @@ export default Button;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: GlobalStyles.secondary500,
     borderRadius: 25,
     elevation: 6,
     overflow: 'hidden',
@@ -43,11 +53,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    fontFamily: GlobalStyles.fontBold,
-    color: GlobalStyles.paleWhite,
     textTransform: 'capitalize',
-  },
-  flatText: {
-    color: GlobalStyles.secondary500,
   },
 });

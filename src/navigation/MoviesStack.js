@@ -1,17 +1,18 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import GlobalStyles from "../styles/GlobalStyles";
 import HomeScreen from "../screens/HomeScreen";
-import MovieDetails from "../screens/MovieDetails";
+import MovieDetails from "../screens/DetailsScreen";
 
 const Stack = createNativeStackNavigator();
 
-function MoviesStack() {
+function MoviesStack({ route }) {
+  const { colors } = route.params
+
   return (
     <Stack.Navigator
     screenOptions={{
       headerShown: false,
       contentStyle: {
-        backgroundColor: GlobalStyles.primary500,
+        backgroundColor: colors.primary500,
       },
     }}>
     <Stack.Screen name="Home" component={HomeScreen} />

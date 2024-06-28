@@ -1,17 +1,15 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {StyleSheet} from 'react-native';
-import {useTheme} from '../store/context/ThemeContext';
-
 import Icon from 'react-native-vector-icons/Ionicons';
-import SearchScreen from '../screens/SearchScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import FavoritesStack from './FavoritesStack';
-import MoviesStack from './MoviesStack';
+
+import HomeScreen from "../screens/HomeScreen";
+import SearchScreen from "../screens/SearchScreen";
+import FavoritesScreen from "../screens/FavoritesScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
-
-function BottomTabs() {
-  const {colors} = useTheme();
+function MainTabs({route}) {
+  const {colors} = route.params;
 
   function getTabBarIcon({focused, color, size}, activeIcon, inActiveIcon) {
     const icon = focused ? activeIcon : inActiveIcon;
@@ -22,13 +20,13 @@ function BottomTabs() {
   return (
     <Tab.Navigator
       sceneContainerStyle={{
-        ...styles.content,
+        paddingBottom: 65,
         backgroundColor: colors.primary500,
       }}
       screenOptions={{
         headerShown: false,
         headerTitleStyle: {
-          color: 'white',
+          color: colors.paleShade,
         },
         headerStyle: {
           backgroundColor: colors.primary500,
@@ -43,8 +41,8 @@ function BottomTabs() {
         tabBarInactiveTintColor: colors.primary700,
       }}>
       <Tab.Screen
-        name="HomeStack"
-        component={MoviesStack}
+        name="Home"
+        component={HomeScreen}
         options={{
           title: 'Home',
           tabBarIcon: iconState =>
@@ -61,8 +59,8 @@ function BottomTabs() {
         }}
       />
       <Tab.Screen
-        name="FavoriteStack"
-        component={FavoritesStack}
+        name="Favorites"
+        component={FavoritesScreen}
         options={{
           title: 'Favorites',
           headerShown: true,
@@ -84,12 +82,9 @@ function BottomTabs() {
   );
 }
 
-export default BottomTabs;
+export default MainTabs;
 
 const styles = StyleSheet.create({
-  content: {
-    paddingBottom: 65,
-  },
   tabBar: {
     borderRadius: 30,
     marginHorizontal: 18,

@@ -30,7 +30,7 @@ function FavoritesList() {
           options,
         );
         // console.log(now_playing.data);
-        console.log(response.data.results);
+        // console.log(response.data.results);
         setnow_playing([...now_playing, ...response.data.results]);
       } catch (e) {
         console.log('failed to retrieve movies', e);

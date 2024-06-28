@@ -3,6 +3,7 @@ import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../store/context/ThemeContext';
+import toVote from '../../utils/toVote';
 
 function MovieCard({movie}) {
   const navigation = useNavigation();
@@ -19,9 +20,7 @@ function MovieCard({movie}) {
           fontFamily: fonts.bold,
           backgroundColor: colors.secondary500,
         }}>
-        {movie.vote_average > 0
-          ? Math.ceil(movie.vote_average * 10) / 10
-          : 'NR'}
+        {toVote(movie.vote_average)}
       </Text>
       <Image
         source={{

@@ -1,7 +1,7 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
 import {useTheme} from '../../store/context/ThemeContext';
 
-function Button({ flat, textStyle, children, onPress, customView, customViewStyle }) {
+function Button({ flat, textStyle, style, children, onPress, customView, customViewStyle }) {
   const {colors, fonts} = useTheme();
 
   return (
@@ -9,6 +9,7 @@ function Button({ flat, textStyle, children, onPress, customView, customViewStyl
       style={[
         styles.buttonContainer,
         {backgroundColor: colors.secondary500},
+        style,
         flat && {backgroundColor: '', elevation: 0},
       ]}>
       <Pressable
@@ -46,8 +47,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   innerButton: {
+    // flex: 1,
     paddingVertical: 10,
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },

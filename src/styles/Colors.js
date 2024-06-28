@@ -1,7 +1,7 @@
 const COLORS = {
   light: {
-    primary500: '#f0f1e9',
-    primary600: '#f4efef',
+    primary500: '#edede2',
+    primary600: '#f8f4f4',
     primary700: '#8c8d87',
     secondary500: '#ffaa00',
     secondary600: '#fec34c',

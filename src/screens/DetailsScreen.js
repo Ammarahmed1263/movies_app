@@ -133,14 +133,13 @@ function MovieDetails({route, navigation}) {
             contentContainerStyle={{flexGrow: 1, paddingHorizontal: 8}}
             alwaysBounceHorizontal={false}>
             {details.genres.map(genre => (
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <View key={genre.id} style={{...styles.categoryPill,backgroundColor: colors.primary700}}>
                 <Text
-                  key={genre.id}
                   style={{
-                    ...styles.categoryPill,
+                    ...styles.pillText,
                     color: colors.primary500,
                     fontFamily: fonts.regular,
-                    backgroundColor: colors.primary700,
+                    
                   }}>
                   {genre.name}
                 </Text>
@@ -252,11 +251,16 @@ const styles = StyleSheet.create({
     maxWidth: 300,
   },
   categoryPill: {
-    fontSize: 14,
     marginHorizontal: 5,
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 15,
+    justifyContent: 'center', 
+    alignItems: 'center', 
+  },
+  pillText: {
+    fontSize: 14,
+
   },
   centeredView: {
     flex: 1,

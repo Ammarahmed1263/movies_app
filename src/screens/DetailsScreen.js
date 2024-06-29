@@ -181,7 +181,7 @@ function MovieDetails({route, navigation}) {
               }}>
               <Icon
                 name="share-social-outline"
-                size={28}
+                size={30}
                 color={colors.secondary600}
               />
             </Button>
@@ -199,12 +199,12 @@ function MovieDetails({route, navigation}) {
         </View>
       </ScrollView>
 
-      <Modal animationType='slide' transparent visible={playing} onRequestClose={() => setPlaying(false)}>
-          <Pressable onPress={() => setPlaying(false)} style={styles.centeredView}>
+      <Modal animationType='slide' visible={playing} onRequestClose={() => setPlaying(false)}>
+          <Pressable onPress={() => setPlaying(false)} style={{...styles.centeredView, backgroundColor: colors.primary500}}>
               <View style={{flex: 1}} />
           </Pressable>
           
-          {trailId !== null && <View style={styles.modalView}>
+          {trailId !== null && <View style={{...styles.modalView, shadowColor: colors.secondary500}}>
             <YoutubeIframe
               height={200}
               width={350}
@@ -228,7 +228,9 @@ const styles = StyleSheet.create({
   },
   topButton: {
     width: '13%',
-    height: '11%',
+    height: '12%',
+    alignItems: 'center',
+    justifyContent: 'center',
     maxHeight: 52,
     maxWidth: 52,
   },
@@ -259,15 +261,16 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   modalView: {
     position: 'absolute',
-    top: 250,
-    borderRadius: 20,
-    padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    // elevation: 5,
+    top: 250,
+    borderRadius: 20,
+    margin: 10,
+    padding: 10,
+    elevation: 9,
   },
 });

@@ -5,6 +5,7 @@ const ENDPOINT = {
     popular: 'https://api.themoviedb.org/3/movie/popular',
     top_rated: 'https://api.themoviedb.org/3/movie/top_rated',
     upcoming: 'https://api.themoviedb.org/3/movie/upcoming',
+    videos: 'https://api.themoviedb.org/3/movie/'
   },
   details: 'https://api.themoviedb.org/3/movie/'
 }

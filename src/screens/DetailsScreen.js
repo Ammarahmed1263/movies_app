@@ -30,6 +30,7 @@ const options = {
 
 function MovieDetails({route, navigation}) {
   const movieID = route.params.id;
+  console.log('current id', movieID);
   const [details, setDetails] = useState({});
   const [cast, setCast] = useState([]);
   const [trailId, setTrailId] = useState(null);
@@ -129,19 +130,21 @@ function MovieDetails({route, navigation}) {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{marginHorizontal: 10}}
+            contentContainerStyle={{flexGrow: 1, paddingHorizontal: 8}}
             alwaysBounceHorizontal={false}>
             {details.genres.map(genre => (
-              <Text
-                key={genre.id}
-                style={{
-                  ...styles.categoryPill,
-                  color: colors.primary500,
-                  fontFamily: fonts.regular,
-                  backgroundColor: colors.primary700,
-                }}>
-                {genre.name}
-              </Text>
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Text
+                  key={genre.id}
+                  style={{
+                    ...styles.categoryPill,
+                    color: colors.primary500,
+                    fontFamily: fonts.regular,
+                    backgroundColor: colors.primary700,
+                  }}>
+                  {genre.name}
+                </Text>
+              </View>
             ))}
           </ScrollView>
         </View>
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
     maxWidth: 300,
   },
   categoryPill: {
-    fontSize: 15,
+    fontSize: 14,
     marginHorizontal: 5,
     paddingHorizontal: 10,
     paddingVertical: 3,

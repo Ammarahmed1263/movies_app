@@ -19,6 +19,7 @@ import CastList from '../components/Details/CastList';
 import toVote from '../utils/toVote';
 import stringDuration from '../utils/stringDuration';
 import YoutubeIframe from 'react-native-youtube-iframe';
+import TextSeeMore from '../components/ui/TextSeeMore';
 
 const options = {
   method: 'GET',
@@ -183,16 +184,17 @@ function MovieDetails({route, navigation}) {
               />
             </Button>
           </View>
-          <CastList cast={cast} />
-          <Text
+          <TextSeeMore
+            text={details.overview}
+            maxChars={150}
             style={{
               color: colors.paleShade,
               fontFamily: fonts.regular,
               fontSize: 19,
               marginHorizontal: 10,
-            }}>
-            {details.overview}
-          </Text>
+            }}
+          />
+          <CastList cast={cast} />
         </View>
       </ScrollView>
 

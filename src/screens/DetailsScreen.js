@@ -31,6 +31,7 @@ const options = {
 
 function MovieDetails({route, navigation}) {
   const movieID = route.params.id;
+  console.log('current id', movieID);
   const [details, setDetails] = useState({});
   const [cast, setCast] = useState([]);
   const [trailId, setTrailId] = useState(null);
@@ -87,17 +88,17 @@ function MovieDetails({route, navigation}) {
           resizeMode="stretch">
           <LinearGradient
             colors={['transparent', colors.primary500]}
-            locations={[0.5, 0.8]}
+            locations={[0.3, 0.9]}
             style={{flex: 1}}>
             <View style={styles.imageButtons}>
-              <Button onPress={() => navigation.goBack()} customView >
+              <Button onPress={() => navigation.goBack()} style={styles.topButton} customView>
                 <Icon
                   name="arrow-back-outline"
                   size={28}
                   color={colors.paleShade}
                 />
               </Button>
-              <Button>
+              <Button style={styles.topButton} customView>
                 <Icon name="heart-outline" size={28} color={colors.paleShade} />
               </Button>
             </View>
@@ -115,7 +116,7 @@ function MovieDetails({route, navigation}) {
                   style={{
                     color: colors.paleShade,
                     fontFamily: fonts.regular,
-                    fontSize: 20,
+                    fontSize: 17,
                     lineHeight: 28,
                   }}>
                   {`${toVote(details.vote_average)} · ${stringDuration(
@@ -130,19 +131,20 @@ function MovieDetails({route, navigation}) {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{marginHorizontal: 10}}
+            contentContainerStyle={{flexGrow: 1, paddingHorizontal: 8}}
             alwaysBounceHorizontal={false}>
             {details.genres.map(genre => (
-              <Text
-                key={genre.id}
-                style={{
-                  ...styles.categoryPill,
-                  color: colors.primary500,
-                  fontFamily: fonts.regular,
-                  backgroundColor: colors.primary700,
-                }}>
-                {genre.name}
-              </Text>
+              <View key={genre.id} style={{...styles.categoryPill,backgroundColor: colors.primary700}}>
+                <Text
+                  style={{
+                    ...styles.pillText,
+                    color: colors.primary500,
+                    fontFamily: fonts.regular,
+                    
+                  }}>
+                  {genre.name}
+                </Text>
+              </View>
             ))}
           </ScrollView>
         </View>
@@ -160,11 +162,11 @@ function MovieDetails({route, navigation}) {
               style={{flex: 4, marginRight: 10, borderRadius: 18}}
               onPress={() => setPlaying(true)}
               >
-              <Icon name="play" size={27} color={colors.paleShade} />
+              <Icon name="play" size={23} color={colors.paleShade} />
               <Text
                 style={{
                   fontFamily: fonts.bold,
-                  fontSize: 18,
+                  fontSize: 17,
                   color: colors.paleShade,
                 }}>
                 Watch Trailer
@@ -178,8 +180,8 @@ function MovieDetails({route, navigation}) {
                 backgroundColor: colors.primary600,
               }}>
               <Icon
-                name="share-outline"
-                size={32}
+                name="share-social-outline"
+                size={30}
                 color={colors.secondary600}
               />
             </Button>
@@ -190,7 +192,7 @@ function MovieDetails({route, navigation}) {
             style={{
               color: colors.paleShade,
               fontFamily: fonts.regular,
-              fontSize: 19,
+              fontSize: 17,
               marginHorizontal: 10,
             }}
           />
@@ -198,12 +200,12 @@ function MovieDetails({route, navigation}) {
         </View>
       </ScrollView>
 
-      <Modal animationType='slide' transparent visible={playing} onRequestClose={() => setPlaying(false)}>
-          <Pressable onPress={() => setPlaying(false)} style={styles.centeredView}>
+      <Modal animationType='slide' visible={playing} onRequestClose={() => setPlaying(false)}>
+          <Pressable onPress={() => setPlaying(false)} style={{...styles.centeredView, backgroundColor: colors.primary500}}>
               <View style={{flex: 1}} />
           </Pressable>
           
-          {trailId !== null && <View style={styles.modalView}>
+          {trailId !== null && <View style={{...styles.modalView, shadowColor: colors.secondary500}}>
             <YoutubeIframe
               height={200}
               width={350}
@@ -222,15 +224,23 @@ export default MovieDetails;
 
 const styles = StyleSheet.create({
   poster: {
-    height: 500,
+    height: 470,
     paddingTop: StatusBar.currentHeight + 10,
   },
+  topButton: {
+    width: '13%',
+    height: '12%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxHeight: 52,
+    maxWidth: 52,
+  },
   imageButtons: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 8,
     marginTop: 5,
-    height: 50,
   },
   quickpeak: {
     position: 'absolute',
@@ -238,29 +248,35 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   movieTitle: {
-    fontSize: 40,
+    fontSize: 37,
     lineHeight: 45,
     maxWidth: 300,
   },
   categoryPill: {
-    fontSize: 15,
     marginHorizontal: 5,
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 15,
+    justifyContent: 'center', 
+    alignItems: 'center', 
+  },
+  pillText: {
+    fontSize: 14,
+
   },
   centeredView: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   modalView: {
     position: 'absolute',
-    top: 250,
-    borderRadius: 20,
-    padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    // elevation: 5,
+    top: 250,
+    borderRadius: 20,
+    margin: 10,
+    padding: 10,
+    elevation: 9,
   },
 });

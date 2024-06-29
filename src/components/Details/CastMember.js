@@ -7,29 +7,30 @@ function Member({details}) {
 
   // console.log(details.character);
   return (
-    <View style={{...styles.container, borderColor: colors.secondary500, borderRadius: 20}}>
-      <Image
-        source={{uri: ENDPOINT.image + details.profile_path}}
-        style={styles.image}
-      />
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{...styles.container, borderColor: colors.secondary500}}>
+        <Image
+          source={{uri: ENDPOINT.image + details.profile_path}}
+          style={styles.image}
+        />
+      </View>
       <View style={{...styles.details, borderColor: colors.secondary500}}>
         <Text
           style={{
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: fonts.bold,
             color: colors.paleShade,
           }}>
-          {details.original_name}
+          {details.original_name.length > 15 ? details.original_name.split(' ')[0] : details.original_name}
         </Text>
         <Text
-          numberOfLines={2}
-          ellipsizeMode="tail"
           style={{
-            fontSize: 15,
+            fontSize: 13,
             fontFamily: fonts.regular,
             color: colors.paleShade,
           }}>
-          {details.character}
+          {details.character.length > 15 ? details.character.split(' ')[0] :  details.character}
+
         </Text>
       </View>
     </View>
@@ -40,31 +41,20 @@ export default Member;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    marginRight: 15,
-    marginBottom: 20,
+    width: 90,
+    height: 90,
     borderWidth: 2,
+    borderRadius: 45,
+    flexDirection: 'row',
     overflow: 'hidden'
   },
   image: {
     flex: 1,
-    minWidth: 65,
-    maxWidth: 75,
-    // borderTopLeftRadius: 20,
-    // borderBottomLeftRadius: 20,
-    resizeMode: 'stretch',
+    resizeMode: 'cover',
   },
   details: {
-    flex: 5,
-    paddingVertical: 5,
+    alignItems: 'center',
     paddingHorizontal: 10,
-    // borderRightWidth: 0.9, 
-    // borderTopWidth: 2.1,
-    // borderBottomWidth: 2.1,
-    // borderTopRightRadius: 20,
-    // borderBottomRightRadius: 20,
-    maxWidth: 250,
-    maxHeight: 120,
-    minHeight: 100,
-  },
+    marginVertical: 10,
+  }, 
 });

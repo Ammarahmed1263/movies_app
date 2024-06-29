@@ -6,6 +6,7 @@ const COLORS = {
     secondary500: '#ffaa00',
     secondary600: '#fec34c',
     paleShade: '#252729',
+    links: '#9494eb'
   },
   dark: {
     primary500: '#303234',
@@ -14,6 +15,7 @@ const COLORS = {
     secondary500: '#ffaa00',
     secondary600: '#ffd900',
     paleShade: '#f0f1e9',
+    links: '#6262ee'
   },
 };
 

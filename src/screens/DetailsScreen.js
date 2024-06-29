@@ -87,7 +87,7 @@ function MovieDetails({route, navigation}) {
           resizeMode="stretch">
           <LinearGradient
             colors={['transparent', colors.primary500]}
-            locations={[0.5, 0.8]}
+            locations={[0.3, 0.9]}
             style={{flex: 1}}>
             <View style={styles.imageButtons}>
               <Button onPress={() => navigation.goBack()} style={styles.topButton} customView>
@@ -115,7 +115,7 @@ function MovieDetails({route, navigation}) {
                   style={{
                     color: colors.paleShade,
                     fontFamily: fonts.regular,
-                    fontSize: 20,
+                    fontSize: 17,
                     lineHeight: 28,
                   }}>
                   {`${toVote(details.vote_average)} · ${stringDuration(
@@ -162,11 +162,11 @@ function MovieDetails({route, navigation}) {
               style={{flex: 4, marginRight: 10, borderRadius: 18}}
               onPress={() => setPlaying(true)}
               >
-              <Icon name="play" size={27} color={colors.paleShade} />
+              <Icon name="play" size={23} color={colors.paleShade} />
               <Text
                 style={{
                   fontFamily: fonts.bold,
-                  fontSize: 18,
+                  fontSize: 17,
                   color: colors.paleShade,
                 }}>
                 Watch Trailer
@@ -180,8 +180,8 @@ function MovieDetails({route, navigation}) {
                 backgroundColor: colors.primary600,
               }}>
               <Icon
-                name="share-outline"
-                size={32}
+                name="share-social-outline"
+                size={28}
                 color={colors.secondary600}
               />
             </Button>
@@ -191,7 +191,7 @@ function MovieDetails({route, navigation}) {
             style={{
               color: colors.paleShade,
               fontFamily: fonts.regular,
-              fontSize: 19,
+              fontSize: 17,
               marginHorizontal: 10,
             }}>
             {details.overview}
@@ -223,7 +223,7 @@ export default MovieDetails;
 
 const styles = StyleSheet.create({
   poster: {
-    height: 500,
+    height: 470,
     paddingTop: StatusBar.currentHeight + 10,
   },
   topButton: {
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   movieTitle: {
-    fontSize: 40,
+    fontSize: 37,
     lineHeight: 45,
     maxWidth: 300,
   },

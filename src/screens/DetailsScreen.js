@@ -89,14 +89,14 @@ function MovieDetails({route, navigation}) {
             locations={[0.5, 0.8]}
             style={{flex: 1}}>
             <View style={styles.imageButtons}>
-              <Button onPress={() => navigation.goBack()} customView >
+              <Button onPress={() => navigation.goBack()} style={styles.topButton} customView>
                 <Icon
                   name="arrow-back-outline"
                   size={28}
                   color={colors.paleShade}
                 />
               </Button>
-              <Button>
+              <Button style={styles.topButton} customView>
                 <Icon name="heart-outline" size={28} color={colors.paleShade} />
               </Button>
             </View>
@@ -223,12 +223,18 @@ const styles = StyleSheet.create({
     height: 500,
     paddingTop: StatusBar.currentHeight + 10,
   },
+  topButton: {
+    width: '13%',
+    height: '11%',
+    maxHeight: 52,
+    maxWidth: 52,
+  },
   imageButtons: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 8,
     marginTop: 5,
-    height: 50,
   },
   quickpeak: {
     position: 'absolute',

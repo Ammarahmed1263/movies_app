@@ -5,8 +5,10 @@ import {
   ScrollView,
   StyleSheet,
   StatusBar,
+  Modal,
+  Pressable,
 } from 'react-native';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import Button from '../components/ui/Button';
@@ -16,7 +18,7 @@ import {useTheme} from '../store/context/ThemeContext';
 import CastList from '../components/Details/CastList';
 import toVote from '../utils/toVote';
 import stringDuration from '../utils/stringDuration';
-import jestConfig from '../../jest.config';
+import YoutubeIframe from 'react-native-youtube-iframe';
 
 const options = {
   method: 'GET',
@@ -27,9 +29,11 @@ const options = {
 };
 
 function MovieDetails({route, navigation}) {
+  const movieID = route.params.id;
   const [details, setDetails] = useState({});
   const [cast, setCast] = useState([]);
-  const movieID = route.params.id;
+  const [trailId, setTrailId] = useState(null);
+  const [playing, setPlaying] = useState(false);
   const {colors, fonts} = useTheme();
 
   // console.log(details);
@@ -46,13 +50,27 @@ function MovieDetails({route, navigation}) {
           ENDPOINT.details + movieID + '\\credits',
           options,
         );
+
+        const response3 = await axios.request(
+          ENDPOINT.movies.videos + movieID + '\\videos',
+          options,
+        );
         setDetails(response.data);
         setCast(response2.data.cast);
+        // TODO: iterate to get the key of the type trailer
+        setTrailId(response3.data.results[0].key);
+        console.log(response3.data.results[0].key);
         // console.log(response2.data.cast);
       } catch (err) {
         console.log('failed to fetch details', err);
       }
     })();
+  }, []);
+
+  const onStateChange = useCallback((state) => {
+    if (state === 'ended') {
+      setPlaying(false);
+    }
   }, []);
 
   if (Object.keys(details).length === 0) {
@@ -71,7 +89,7 @@ function MovieDetails({route, navigation}) {
             locations={[0.5, 0.8]}
             style={{flex: 1}}>
             <View style={styles.imageButtons}>
-              <Button onPress={() => navigation.goBack()}>
+              <Button onPress={() => navigation.goBack()} customView >
                 <Icon
                   name="arrow-back-outline"
                   size={28}
@@ -138,7 +156,9 @@ function MovieDetails({route, navigation}) {
             <Button
               customView
               customViewStyle={{flexDirection: 'row', paddingVertical: 4}}
-              style={{flex: 4, marginRight: 10, borderRadius: 18}}>
+              style={{flex: 4, marginRight: 10, borderRadius: 18}}
+              onPress={() => setPlaying(true)}
+              >
               <Icon name="play" size={27} color={colors.paleShade} />
               <Text
                 style={{
@@ -175,6 +195,23 @@ function MovieDetails({route, navigation}) {
           </Text>
         </View>
       </ScrollView>
+
+      <Modal animationType='slide' transparent visible={playing} onRequestClose={() => setPlaying(false)}>
+          <Pressable onPress={() => setPlaying(false)} style={styles.centeredView}>
+              <View style={{flex: 1}} />
+          </Pressable>
+          
+          {trailId !== null && <View style={styles.modalView}>
+            <YoutubeIframe
+              height={200}
+              width={350}
+              play={playing}
+              videoId={`${trailId}`}
+              onChangeState={onStateChange}
+              initialPlayerParams={{color: 'blue'}}
+            />
+          </View>}
+      </Modal>
     </>
   );
 }
@@ -191,6 +228,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 8,
     marginTop: 5,
+    height: 50,
   },
   quickpeak: {
     position: 'absolute',
@@ -208,5 +246,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 15,
+  },
+  centeredView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modalView: {
+    position: 'absolute',
+    top: 250,
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // elevation: 5,
   },
 });

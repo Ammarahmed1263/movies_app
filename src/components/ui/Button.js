@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   innerButton: {
-    // flex: 1,
+    flex: 1,
     paddingVertical: 10,
     paddingHorizontal: 10,
     alignItems: 'center',

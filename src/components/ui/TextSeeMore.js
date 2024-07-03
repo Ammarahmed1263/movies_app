@@ -1,6 +1,5 @@
 import {useState} from 'react';
-import {Pressable, Text, View} from 'react-native';
-import COLORS from '../../styles/Colors';
+import {Text} from 'react-native';
 import { useTheme } from '../../store/context/ThemeContext';
 
 export default function TextSeeMore({text, maxChars, style}) {

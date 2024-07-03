@@ -6,9 +6,12 @@ import {
   StyleSheet,
   StatusBar,
   Modal,
+  Dimensions,
   Pressable,
+  Linking,
+  Alert,
 } from 'react-native';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useState, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import Button from '../components/ui/Button';
@@ -18,8 +21,9 @@ import {useTheme} from '../store/context/ThemeContext';
 import CastList from '../components/Details/CastList';
 import toVote from '../utils/toVote';
 import stringDuration from '../utils/stringDuration';
-import YoutubeIframe from 'react-native-youtube-iframe';
+import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/ui/TextSeeMore';
+import jestConfig from '../../jest.config';
 
 const options = {
   method: 'GET',
@@ -31,12 +35,16 @@ const options = {
 
 function MovieDetails({route, navigation}) {
   const movieID = route.params.id;
-  console.log('current id', movieID);
+  // console.log('current id', movieID);
   const [details, setDetails] = useState({});
   const [cast, setCast] = useState([]);
   const [trailId, setTrailId] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [contentDimensions, setContentDimensions] = useState({});
+  const [videoMeta, setVideoMeta] = useState({title: null, author: null});
+  const modalRef = useRef(null);
   const {colors, fonts} = useTheme();
+  const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
   // console.log(details);
 
@@ -60,8 +68,12 @@ function MovieDetails({route, navigation}) {
         setDetails(response.data);
         setCast(response2.data.cast);
         // TODO: iterate to get the key of the type trailer
-        setTrailId(response3.data.results[0].key);
-        console.log(response3.data.results[0].key);
+        response3.data.results.map((video) => {
+          if (video.type === "Trailer" && video.site === "YouTube") {
+            console.log(video);
+            setTrailId(video.key);
+          }
+        })
         // console.log(response2.data.cast);
       } catch (err) {
         console.log('failed to fetch details', err);
@@ -69,18 +81,56 @@ function MovieDetails({route, navigation}) {
     })();
   }, []);
 
-  const onStateChange = useCallback((state) => {
+  const onStateChange = useCallback(state => {
     if (state === 'ended') {
       setPlaying(false);
     }
   }, []);
 
+
+  useEffect(() => {
+    if (playing && modalRef.current) {
+      setTimeout(() => {
+        modalRef.current.measureInWindow((x, y, width, height) => {
+          console.log('calculated', {x, y, width, height});
+          setContentDimensions({x, y, width, height});
+        });
+      }, 300);
+    }
+  }, [playing]);
+
+  const handleOverlayPress = evt => {
+    const {pageX, pageY} = evt.nativeEvent;
+    if (
+      pageX < contentDimensions.x ||
+      pageX > (contentDimensions.x + contentDimensions.width) ||
+      pageY < contentDimensions.y ||
+      pageY > (contentDimensions.y + contentDimensions.height)
+    ) {
+      setPlaying(false);
+    }
+  };
+
+  // TODO: know why canOpenURL was always
+  const handleYoutubeRedirect = useCallback(() => {
+    (async () => {
+      try {
+        const url = `https://www.youtube.com/watch?v=${trailId}`;
+        await Linking.openURL(url);
+        setPlaying(false);
+      } catch (e) {
+        Alert.alert('error redirecting:', e);
+      }
+    })()
+  }, [trailId])
+  
   if (Object.keys(details).length === 0) {
     return <Text>Loading</Text>;
   }
 
   return (
     <>
+      {playing && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <ImageBackground
           source={{uri: ENDPOINT.image + details.poster_path}}
@@ -91,7 +141,10 @@ function MovieDetails({route, navigation}) {
             locations={[0.3, 0.9]}
             style={{flex: 1}}>
             <View style={styles.imageButtons}>
-              <Button onPress={() => navigation.goBack()} style={styles.topButton} customView>
+              <Button
+                onPress={() => navigation.goBack()}
+                style={styles.topButton}
+                customView>
                 <Icon
                   name="arrow-back-outline"
                   size={28}
@@ -134,13 +187,17 @@ function MovieDetails({route, navigation}) {
             contentContainerStyle={{flexGrow: 1, paddingHorizontal: 8}}
             alwaysBounceHorizontal={false}>
             {details.genres.map(genre => (
-              <View key={genre.id} style={{...styles.categoryPill,backgroundColor: colors.primary700}}>
+              <View
+                key={genre.id}
+                style={{
+                  ...styles.categoryPill,
+                  backgroundColor: colors.primary700,
+                }}>
                 <Text
                   style={{
                     ...styles.pillText,
                     color: colors.primary500,
                     fontFamily: fonts.regular,
-                    
                   }}>
                   {genre.name}
                 </Text>
@@ -160,8 +217,12 @@ function MovieDetails({route, navigation}) {
               customView
               customViewStyle={{flexDirection: 'row', paddingVertical: 4}}
               style={{flex: 4, marginRight: 10, borderRadius: 18}}
-              onPress={() => setPlaying(true)}
-              >
+              onPress={() => {
+                setPlaying(true);
+                getYoutubeMeta(trailId).then(meta =>
+                  setVideoMeta({title: meta.title, author: meta.author_name}),
+                );
+              }}>
               <Icon name="play" size={23} color={colors.paleShade} />
               <Text
                 style={{
@@ -200,21 +261,100 @@ function MovieDetails({route, navigation}) {
         </View>
       </ScrollView>
 
-      <Modal animationType='slide' visible={playing} onRequestClose={() => setPlaying(false)}>
-          <Pressable onPress={() => setPlaying(false)} style={{...styles.centeredView, backgroundColor: colors.primary500}}>
-              <View style={{flex: 1}} />
-          </Pressable>
-          
-          {trailId !== null && <View style={{...styles.modalView, shadowColor: colors.secondary500}}>
-            <YoutubeIframe
-              height={200}
-              width={350}
-              play={playing}
-              videoId={`${trailId}`}
-              onChangeState={onStateChange}
-              initialPlayerParams={{color: 'blue'}}
-            />
-          </View>}
+      <Modal
+        animationType='fade'
+        visible={playing}
+        transparent
+        onRequestClose={handleOverlayPress}>
+        <Pressable
+          onPress={handleOverlayPress}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(22, 21, 21, 0.8)',
+          }}>
+          <View
+            ref={modalRef}
+            style={{
+              width: screenWidth * 0.9,
+              maxHeight: screenHeight * 0.65,
+              backgroundColor: colors.primary500,
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              borderRadius: 30,
+              borderColor: colors.secondary600,
+              borderWidth: 1,
+              elevation: 6,
+              shadowColor: colors.secondary600,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}>
+              <Button flat customView onPress={() => setPlaying(false)}>
+                <Icon name="close-circle" size={33} color={colors.primary700} />
+              </Button>
+            </View>
+            <View
+              style={{
+                width: screenWidth * 0.9 - 40,
+                aspectRatio: 16 / 9,
+                overflow: 'hidden',
+                borderRadius: 20,
+                marginVertical: 10,
+              }}>
+              <YoutubeIframe
+                width="100%"
+                height="100%"
+                videoId={trailId}
+                play={playing}
+                onChangeState={onStateChange}
+              />
+            </View>
+            <View style={{marginVertical: 5}}>
+              <Text
+                style={{
+                  fontFamily: fonts.bold,
+                  color: colors.paleShade,
+                  fontSize: 21,
+                }}>
+                {videoMeta.title}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: fonts.light,
+                  color: colors.primary700,
+                  fontSize: 17,
+                }}>
+                By: {videoMeta.author}
+              </Text>
+            </View>
+            <View style={{justifyContent: 'flex-end'}}>
+              <Button
+                customView
+                customViewStyle={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                style={{marginBottom: 12}}
+                onPress={handleYoutubeRedirect}>
+                <Icon name="play" size={23} color={colors.paleShade} />
+                <Text
+                  style={{
+                    fontFamily: fonts.bold,
+                    fontSize: 17,
+                    color: colors.paleShade,
+                  }}>
+                  Open On Youtube
+                </Text>
+              </Button>
+            </View>
+          </View>
+        </Pressable>
       </Modal>
     </>
   );
@@ -257,26 +397,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 15,
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   pillText: {
     fontSize: 14,
-
   },
   centeredView: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(22, 21, 21, 0.8)',
   },
   modalView: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
     top: 250,
-    borderRadius: 20,
-    margin: 10,
-    padding: 10,
-    elevation: 9,
+    borderRadius: 15,
+    overflow: 'hidden',
+    marginLeft: 25,
+    // elevation: 9,
+    backgroundColor: 'yellow',
   },
 });

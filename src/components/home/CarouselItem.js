@@ -2,14 +2,16 @@ import {View, Image, Text, StyleSheet} from 'react-native';
 import ENDPOINT from '../../utils/Constants';
 import {useTheme} from '../../store/context/ThemeContext';
 import MovieButton from '../ui/MovieButton';
+import { useNavigation } from '@react-navigation/native';
 
 function CarouselItem({item}) {
+  const navigation = useNavigation();
   const {colors, fonts} = useTheme();
 
   return (
-    <MovieButton style={styles.cardContainer}>
+    <MovieButton style={styles.cardContainer} onPress={() => navigation.navigate('MovieDetails', {id: item.id})}>
       <View
-        style={{...styles.innerContainer, borderColor: colors.secondary500}}>
+        style={{...styles.innerContainer, borderColor: colors.secondary600}}>
         <Image
           source={{uri: ENDPOINT.image + item.poster_path}}
           style={styles.cardImage}

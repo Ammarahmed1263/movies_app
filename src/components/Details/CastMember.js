@@ -8,13 +8,13 @@ function Member({details}) {
   // console.log(details.character);
   return (
     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-      <View style={{...styles.container, borderColor: colors.secondary500}}>
+      <View style={{...styles.container, borderColor: colors.secondary600}}>
         <Image
           source={{uri: ENDPOINT.image + details.profile_path}}
           style={styles.image}
         />
       </View>
-      <View style={{...styles.details, borderColor: colors.secondary500}}>
+      <View style={{...styles.details, borderColor: colors.secondary600}}>
         <Text
           style={{
             fontSize: 16,

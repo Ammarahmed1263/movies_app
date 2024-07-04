@@ -1,11 +1,11 @@
-import { View } from "react-native";
+import { SafeAreaView, StatusBar, View } from "react-native";
 import SearchBar from "../components/search/SearchBar";
 
 function SearchScreen() {
   return (
-    <View>
+    <SafeAreaView style={{marginTop: StatusBar.currentHeight}}>
       <SearchBar />      
-    </View>
+    </SafeAreaView>
   )
 }
 

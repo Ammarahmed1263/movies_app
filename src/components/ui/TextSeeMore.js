@@ -13,16 +13,23 @@ export default function TextSeeMore({text, maxChars, style}) {
 
   return (
     <Text style={style}>
-      {fullShown ? text : text.slice(0, maxChars) + '...'}
-      <Text
-        onPress={toggleShowFull}
-        style={{
-          fontSize: 15,
-          color: colors.links,
-          textDecorationLine: 'underline',
-        }}>
-        {fullShown ? 'See Less' : 'See More'}
-      </Text>
+      {text.length < maxChars ? (
+        text
+      ) : (
+        <>
+          {fullShown ? text : text.slice(0, maxChars) + '...'}
+          <Text
+            onPress={toggleShowFull}
+            style={{
+              fontSize: 15,
+              color: colors.links,
+              textDecorationLine: 'underline',
+            }}
+          >
+            {fullShown ? ' See Less' : ' See More'}
+          </Text>
+        </>
+      )}
     </Text>
   );
 }

@@ -16,10 +16,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useTheme} from '../store/context/ThemeContext';
 import CastList from '../components/Details/CastList';
-import toVote from '../utils/toVote';
-import stringDuration from '../utils/stringDuration';
+import {toVote, stringDuration} from '../utils/utils';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/ui/TextSeeMore';
+import Heading from '../components/ui/Heading';
 
 const options = {
   method: 'GET',
@@ -69,7 +69,7 @@ function MovieDetails({route, navigation}) {
     })();
   }, []);
 
-  const onStateChange = useCallback((state) => {
+  const onStateChange = useCallback(state => {
     if (state === 'ended') {
       setPlaying(false);
     }
@@ -91,7 +91,10 @@ function MovieDetails({route, navigation}) {
             locations={[0.3, 0.9]}
             style={{flex: 1}}>
             <View style={styles.imageButtons}>
-              <Button onPress={() => navigation.goBack()} style={styles.topButton} customView>
+              <Button
+                onPress={() => navigation.goBack()}
+                style={styles.topButton}
+                customView>
                 <Icon
                   name="arrow-back-outline"
                   size={28}
@@ -134,13 +137,17 @@ function MovieDetails({route, navigation}) {
             contentContainerStyle={{flexGrow: 1, paddingHorizontal: 8}}
             alwaysBounceHorizontal={false}>
             {details.genres.map(genre => (
-              <View key={genre.id} style={{...styles.categoryPill,backgroundColor: colors.primary700}}>
+              <View
+                key={genre.id}
+                style={{
+                  ...styles.categoryPill,
+                  backgroundColor: colors.primary700,
+                }}>
                 <Text
                   style={{
                     ...styles.pillText,
                     color: colors.primary500,
                     fontFamily: fonts.regular,
-                    
                   }}>
                   {genre.name}
                 </Text>
@@ -160,8 +167,7 @@ function MovieDetails({route, navigation}) {
               customView
               customViewStyle={{flexDirection: 'row', paddingVertical: 4}}
               style={{flex: 4, marginRight: 10, borderRadius: 18}}
-              onPress={() => setPlaying(true)}
-              >
+              onPress={() => setPlaying(true)}>
               <Icon name="play" size={23} color={colors.paleShade} />
               <Text
                 style={{
@@ -192,20 +198,29 @@ function MovieDetails({route, navigation}) {
             style={{
               color: colors.paleShade,
               fontFamily: fonts.regular,
-              fontSize: 17,
+              fontSize: 16,
               marginHorizontal: 10,
             }}
           />
-          <CastList cast={cast} />
+          <Heading style={{color: colors.paleShade, fontFamily: fonts.bold, marginHorizontal: 10}}>
+            Top Cast
+          </Heading>
+          <CastList cast={cast.slice(0, 15)} />
         </View>
       </ScrollView>
 
-      <Modal animationType='slide' visible={playing} onRequestClose={() => setPlaying(false)}>
-          <Pressable onPress={() => setPlaying(false)} style={{...styles.centeredView, backgroundColor: colors.primary500}}>
-              <View style={{flex: 1}} />
-          </Pressable>
-          
-          {trailId !== null && <View style={{...styles.modalView, shadowColor: colors.secondary500}}>
+      <Modal
+        animationType="slide"
+        visible={playing}
+        onRequestClose={() => setPlaying(false)}>
+        <Pressable
+          onPress={() => setPlaying(false)}
+          style={{...styles.centeredView, backgroundColor: colors.primary500}}>
+          <View style={{flex: 1}} />
+        </Pressable>
+
+        {trailId !== null && (
+          <View style={{...styles.modalView, shadowColor: colors.secondary500}}>
             <YoutubeIframe
               height={200}
               width={350}
@@ -214,7 +229,8 @@ function MovieDetails({route, navigation}) {
               onChangeState={onStateChange}
               initialPlayerParams={{color: 'blue'}}
             />
-          </View>}
+          </View>
+        )}
       </Modal>
     </>
   );
@@ -257,12 +273,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 15,
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   pillText: {
     fontSize: 14,
-
   },
   centeredView: {
     flex: 1,

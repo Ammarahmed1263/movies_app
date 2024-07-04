@@ -5,14 +5,14 @@ import { useTheme } from '../../store/context/ThemeContext';
 
 export default function TextSeeMore({text, maxChars, style}) {
   const [fullShown, setFullShown] = useState(false);
-  const { colors } = useTheme();
+  const { colors, fonts } = useTheme();
 
   const toggleShowFull = () => {
     setFullShown(prev => !prev);
   };
 
   return (
-    <Text style={style}>
+    <Text style={[{fontFamily: fonts.regular}, style]}>
       {text.length < maxChars ? (
         text
       ) : (

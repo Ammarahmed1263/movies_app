@@ -12,7 +12,7 @@ function CastList({cast}) {
         data={cast}
         renderItem={renderItem}
         keyExtractor={member => member.id}
-        contentContainerStyle={{paddingHorizontal: 10}}
+        contentContainerStyle={{paddingHorizontal: 10, flexGrow: 1}}
         showsHorizontalScrollIndicator={false}
         horizontal
       />

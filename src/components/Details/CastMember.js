@@ -9,7 +9,7 @@ function Member({details}) {
 
   // console.log(details.character);
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("CastMember", details.id)} activeOpacity={0.5} style={{justifyContent: 'center', alignItems: 'center'}}>
+    <TouchableOpacity onPress={() => navigation.navigate("CastMember", {id: details.id})} activeOpacity={0.5} style={{justifyContent: 'center', alignItems: 'center'}}>
       <View style={{...styles.container, borderColor: colors.secondary500}}>
         <Image
           source={{uri: ENDPOINT.image + details.profile_path}}

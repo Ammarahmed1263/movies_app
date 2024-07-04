@@ -19,11 +19,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useTheme} from '../store/context/ThemeContext';
 import CastList from '../components/Details/CastList';
-import toVote from '../utils/toVote';
-import stringDuration from '../utils/stringDuration';
-import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
+import {toVote, stringDuration} from '../utils/utils';
+import YoutubeIframe from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/ui/TextSeeMore';
-import jestConfig from '../../jest.config';
+import Heading from '../components/ui/Heading';
 
 const options = {
   method: 'GET',
@@ -253,16 +252,19 @@ function MovieDetails({route, navigation}) {
             style={{
               color: colors.paleShade,
               fontFamily: fonts.regular,
-              fontSize: 17,
+              fontSize: 16,
               marginHorizontal: 10,
             }}
           />
-          <CastList cast={cast} />
+          <Heading style={{color: colors.paleShade, fontFamily: fonts.bold, marginHorizontal: 10}}>
+            Top Cast
+          </Heading>
+          <CastList cast={cast.slice(0, 15)} />
         </View>
       </ScrollView>
 
       <Modal
-        animationType='fade'
+        animationType='none'
         visible={playing}
         transparent
         onRequestClose={handleOverlayPress}>

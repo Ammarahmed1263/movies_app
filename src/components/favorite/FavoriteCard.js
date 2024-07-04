@@ -12,7 +12,7 @@ function FavoriteCard({movie}) {
   return (
     <MovieButton
       style={styles.container}
-      onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
+      onPress={() => navigation.navigate('MovieStack', {screen: 'MovieDetails', params: {id: movie.id}})}>
       <Image
         source={{uri: ENDPOINT.image + movie.poster_path}}
         style={styles.image}

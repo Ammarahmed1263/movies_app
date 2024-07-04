@@ -3,7 +3,7 @@ import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../store/context/ThemeContext';
-import toVote from '../../utils/toVote';
+import { toVote } from '../../utils/utils';
 
 function MovieCard({movie}) {
   const navigation = useNavigation();
@@ -12,7 +12,7 @@ function MovieCard({movie}) {
   return (
     <MovieButton
       style={{...styles.container, backgroundColor: colors.secondary500}}
-      onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
+      onPress={() => navigation.push('MovieStack', {screen: 'MovieDetails', params: {id: movie.id}})}>
       <Text
         style={{
           ...styles.rating,

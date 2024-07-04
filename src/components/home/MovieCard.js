@@ -12,7 +12,7 @@ function MovieCard({movie}) {
   return (
     <MovieButton
       style={{...styles.container, backgroundColor: colors.secondary500}}
-      onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
+      onPress={() => navigation.navigate('MovieStack', {screen: 'MovieDetails', params: {id: movie.id}})}>
       <Text
         style={{
           ...styles.rating,

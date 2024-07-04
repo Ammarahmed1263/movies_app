@@ -1,13 +1,15 @@
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, Text, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
 import ENDPOINT from '../../utils/Constants';
 import {useTheme} from '../../store/context/ThemeContext';
+import { useNavigation } from '@react-navigation/native';
 
 function Member({details}) {
   const {colors, fonts} = useTheme();
+  const navigation = useNavigation();
 
   // console.log(details.character);
   return (
-    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+    <TouchableOpacity onPress={() => navigation.navigate("CastMember", details.id)} activeOpacity={0.5} style={{justifyContent: 'center', alignItems: 'center'}}>
       <View style={{...styles.container, borderColor: colors.secondary500}}>
         <Image
           source={{uri: ENDPOINT.image + details.profile_path}}
@@ -33,7 +35,7 @@ function Member({details}) {
 
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

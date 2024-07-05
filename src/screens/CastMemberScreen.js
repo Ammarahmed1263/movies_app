@@ -14,10 +14,8 @@ import {useNavigation} from '@react-navigation/native';
 import Button from '../components/ui/Button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '../store/context/ThemeContext';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import TextSeeMore from '../components/ui/TextSeeMore';
 import {genderString} from '../utils/utils';
-import {toVote} from '../utils/utils';
 import Heading from '../components/ui/Heading';
 import MoviesList from '../components/home/MoviesList';
 
@@ -61,7 +59,7 @@ const CastMemberScreen = ({route}) => {
 
   return (
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{margin: 10, paddingTop: StatusBar.currentHeight}}>
+        <View style={{marginHorizontal: 10, paddingTop: StatusBar.currentHeight + 15}}>
           <Button
             onPress={() => navigation.goBack()}
             style={{

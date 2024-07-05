@@ -21,6 +21,7 @@ import {useTheme} from '../store/context/ThemeContext';
 import CastList from '../components/Details/CastList';
 import {toVote, stringDuration} from '../utils/utils';
 import YoutubeIframe from 'react-native-youtube-iframe';
+import { getYoutubeMeta } from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/ui/TextSeeMore';
 import Heading from '../components/ui/Heading';
 
@@ -66,7 +67,7 @@ function MovieDetails({route, navigation}) {
         );
         setDetails(response.data);
         setCast(response2.data.cast);
-        // TODO: iterate to get the key of the type trailer
+        // TODO: add more handling
         response3.data.results.map((video) => {
           if (video.type === "Trailer" && video.site === "YouTube") {
             console.log(video);
@@ -259,7 +260,7 @@ function MovieDetails({route, navigation}) {
           <Heading style={{color: colors.paleShade, fontFamily: fonts.bold, marginHorizontal: 10}}>
             Top Cast
           </Heading>
-          <CastList cast={cast.slice(0, 15)} />
+          {cast && <CastList cast={cast.slice(0, 15)} />}
         </View>
       </ScrollView>
 

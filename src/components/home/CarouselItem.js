@@ -9,7 +9,7 @@ function CarouselItem({item}) {
   const {colors, fonts} = useTheme();
 
   return (
-    <MovieButton style={styles.cardContainer} onPress={() => navigation.navigate('MovieDetails', {id: item.id})}>
+    <MovieButton style={styles.cardContainer} onPress={() => navigation.navigate('MovieStack',{screen: 'MovieDetails', params: {id: item.id}})}>
       <View
         style={{...styles.innerContainer, borderColor: colors.secondary600}}>
         <Image

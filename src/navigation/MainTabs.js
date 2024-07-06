@@ -6,11 +6,12 @@ import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 function MainTabs({route}) {
   const {colors} = route.params;
-
+  const { t } = useTranslation();
   function getTabBarIcon({focused, color, size}, activeIcon, inActiveIcon) {
     const icon = focused ? activeIcon : inActiveIcon;
 
@@ -44,7 +45,7 @@ function MainTabs({route}) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Home',
+          title: t("home"),
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'home', 'home-outline'),
         }}
@@ -54,6 +55,7 @@ function MainTabs({route}) {
         name="Search"
         component={SearchScreen}
         options={{
+          title: t('search'),
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'search-sharp', 'search-outline'),
         }}
@@ -62,20 +64,21 @@ function MainTabs({route}) {
         name="Favorites"
         component={FavoritesScreen}
         options={{
-          title: 'Favorites',
+          title: t('favorite'),
           headerShown: true,
           headerShadowVisible: false,
           headerTitleAlign: 'center',
           tabBarIcon: iconState =>
-            getTabBarIcon(iconState, 'star', 'star-outline'),
+            getTabBarIcon({...iconState, size: 27}, 'star', 'star-outline'),
         }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
+          title: t('profile'),
           tabBarIcon: iconState =>
-            getTabBarIcon(iconState, 'person', 'person-outline'),
+            getTabBarIcon(iconState, 'person-circle', 'person-circle-outline'),
         }}
       />
     </Tab.Navigator>

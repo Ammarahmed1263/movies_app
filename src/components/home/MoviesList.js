@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import MovieCard from './MovieCard';
 import {useTheme} from '../../store/context/ThemeContext';
 import Heading from '../ui/Heading';
+import { useTranslation } from 'react-i18next';
 
 const renderMovie = ({item}) => {
   return <MovieCard movie={item} />;
@@ -10,7 +11,8 @@ const renderMovie = ({item}) => {
 
 function MoviesList({movies, topic, seeAll, length = 10}) {
   const {colors, fonts} = useTheme();
-
+  const { t } = useTranslation();
+  
   return (
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
@@ -22,7 +24,7 @@ function MoviesList({movies, topic, seeAll, length = 10}) {
             color: colors.secondary500,
             fontFamily: fonts.light,
           }}>
-          See all
+          {t('see all')}
         </Button>}
       </View>
       <FlatList

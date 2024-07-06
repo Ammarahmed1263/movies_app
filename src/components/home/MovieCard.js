@@ -3,16 +3,23 @@ import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../store/context/ThemeContext';
-import { toVote } from '../../utils/utils';
+import {convertToArabicNumerals, toVote} from '../../utils/utils';
+import {useTranslation} from 'react-i18next';
 
 function MovieCard({movie}) {
   const navigation = useNavigation();
   const {colors, fonts} = useTheme();
+  const {i18n} = useTranslation();
 
   return (
     <MovieButton
       style={{...styles.container, backgroundColor: colors.secondary500}}
-      onPress={() => navigation.push('MovieStack', {screen: 'MovieDetails', params: {id: movie.id}})}>
+      onPress={() =>
+        navigation.push('MovieStack', {
+          screen: 'MovieDetails',
+          params: {id: movie.id},
+        })
+      }>
       <Text
         style={{
           ...styles.rating,
@@ -20,7 +27,10 @@ function MovieCard({movie}) {
           fontFamily: fonts.bold,
           backgroundColor: colors.secondary500,
         }}>
-        {toVote(movie.vote_average)}
+        {i18n.language == 'ar'
+          ? convertToArabicNumerals(toVote(movie.vote_average))
+          : toVote(movie.vote_average)
+        }
       </Text>
       <Image
         source={{

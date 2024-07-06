@@ -1,0 +1,16 @@
+{
+  "_COMMENT1": "navigation menu",
+  "home": "الرئيسية",
+  "search": "البحث",
+  "favorite": "المفضلة",
+  "profile": "الحساب",
+
+  "_COMMENT2": "Main Topics",
+  "now playing": "يُعرض الآن",
+  "top rated": "الأعلى تقييمًا",
+  "upcoming": "القادمة",
+  "popular": "الشائعة",
+
+  "_COMMENT3": "others",
+  "see all": "عرض الكُل"
+}

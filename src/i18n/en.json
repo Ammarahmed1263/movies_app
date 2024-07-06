@@ -1,0 +1,16 @@
+{
+  "_COMMENT1": "navigation menu",
+  "home": "Home",
+  "search": "Search",
+  "favorite": "Favorites",
+  "profile": "Account",
+
+  "_COMMENT2": "Main Topics",
+  "now playing": "Now Playing",
+  "top rated": "Top Rated",
+  "upcoming": "UpComing",
+  "popular": "Popular",
+
+  "_COMMENT3": "others",
+  "see all": "See all"
+}

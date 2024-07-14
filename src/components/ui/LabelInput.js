@@ -3,7 +3,7 @@ import {useTheme} from '../../store/context/ThemeContext';
 
 function LabelInput({containerStyle, label, children, ...props}) {
   const {colors, fonts} = useTheme();
-  console.log(props);
+
   return (
     <View style={[styles.container, containerStyle]}>
       <Text
@@ -20,9 +20,14 @@ function LabelInput({containerStyle, label, children, ...props}) {
           backgroundColor: colors.primary600,
           borderColor: colors.secondary600,
         }}>
-        <View style={{paddingHorizontal: 8}}>{children}</View>
+        <View style={{paddingHorizontal: 8, paddingBottom: 3}}>{children}</View>
         <TextInput
-          style={{...styles.textInput, fontFamily: fonts.regular, color: colors.paleShade}}
+          placeholderTextColor={colors.primary700}
+          style={{
+            ...styles.textInput,
+            fontFamily: fonts.regular,
+            color: colors.paleShade,
+          }}
           {...props}
         />
       </View>
@@ -35,7 +40,7 @@ export default LabelInput;
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   label: {
     fontSize: 18,
@@ -51,6 +56,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 });

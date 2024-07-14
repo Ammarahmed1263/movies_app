@@ -50,7 +50,7 @@ export default Button;
 const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: 25,
-    elevation: 6,
+    margin: 2,
     minHeight: 50,
     overflow: 'hidden',
   },

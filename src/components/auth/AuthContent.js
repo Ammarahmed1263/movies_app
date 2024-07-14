@@ -3,7 +3,7 @@ import AuthForm from './AuthForm';
 import Button from '../ui/Button';
 import {useTheme} from '../../store/context/ThemeContext';
 
-function AuthContent({isLogin}) {
+function AuthContent({isLogin, navigation}) {
   const {colors, fonts} = useTheme();
 
   return (
@@ -41,7 +41,7 @@ function AuthContent({isLogin}) {
               }}>
               {isLogin ? "Don't have an account?" : 'Already have an account?'}
             </Text>
-            <Button flat textStyle={styles.footerText}>
+            <Button flat textStyle={styles.footerText} onPress={() => navigation.replace(isLogin ? 'Signup' : 'Login')}>
               {isLogin ? 'register' : 'Login'}
             </Button>
           </View>
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 20,
-    marginTop: 5,
   },
   footerText: {
     fontSize: 16,

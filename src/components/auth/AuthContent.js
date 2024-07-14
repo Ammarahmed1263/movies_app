@@ -1,4 +1,4 @@
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import AuthForm from './AuthForm';
 import Button from '../ui/Button';
 import {useTheme} from '../../store/context/ThemeContext';
@@ -7,43 +7,47 @@ function AuthContent({isLogin}) {
   const {colors, fonts} = useTheme();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.innerContainer}>
-        <View>
-          <Text
-            style={{
-              ...styles.heading,
-              fontFamily: fonts.bold,
-              color: colors.paleShade,
-            }}>
-            {isLogin ? 'Welcome Back' : 'Create New Account'}
-          </Text>
-          <Text
-            style={{
-              ...styles.subHeading,
-              color: colors.paleShade,
-              fontFamily: fonts.regular,
-            }}>
-            {isLogin ? 'Login' : 'Signup'} to continue
-          </Text>
-        </View>
-        <AuthForm isLogin={isLogin} />
+    <KeyboardAvoidingView
+      behavior='padding'
+      style={{flex: 1}}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.innerContainer}>
+          <View>
+            <Text
+              style={{
+                ...styles.heading,
+                fontFamily: fonts.bold,
+                color: colors.paleShade,
+              }}>
+              {isLogin ? 'Welcome Back' : 'Create New Account'}
+            </Text>
+            <Text
+              style={{
+                ...styles.subHeading,
+                color: colors.paleShade,
+                fontFamily: fonts.regular,
+              }}>
+              {isLogin ? 'Login' : 'Signup'} to continue
+            </Text>
+          </View>
+          <AuthForm isLogin={isLogin} />
 
-        <View style={styles.footerContainer}>
-          <Text
-            style={{
-              ...styles.footerText,
-              color: colors.paleShade,
-              fontFamily: fonts.regular,
-            }}>
-            {isLogin ? "Don't have an account?" : 'Already have an account?'}
-          </Text>
-          <Button flat textStyle={styles.footerText}>
-            {isLogin ? 'register' : 'Login'}
-          </Button>
+          <View style={styles.footerContainer}>
+            <Text
+              style={{
+                ...styles.footerText,
+                color: colors.paleShade,
+                fontFamily: fonts.regular,
+              }}>
+              {isLogin ? "Don't have an account?" : 'Already have an account?'}
+            </Text>
+            <Button flat textStyle={styles.footerText}>
+              {isLogin ? 'register' : 'Login'}
+            </Button>
+          </View>
         </View>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -51,7 +55,7 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

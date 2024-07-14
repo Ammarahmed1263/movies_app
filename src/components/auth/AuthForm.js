@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    marginTop: Keyboard.isVisible ? 5 : 75,
+    marginTop: 75,
   },
 });

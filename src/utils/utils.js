@@ -6,7 +6,7 @@ export function stringDuration(durationInSeconds) {
     return 'Unknown';
   }
 
-  return (hours > 0  ? `${hours}h` : '') + ' ' + (minutes > 0 ? `${minutes} min` : '');
+  return (hours > 0  ? `${hours}h` : '') + ' ' + (minutes > 0 ? `${minutes}min` : '');
 }
 
 export function toVote(votes) {

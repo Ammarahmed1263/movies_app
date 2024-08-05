@@ -6,6 +6,7 @@ import SeeAllMoviesScreen from '../screens/SeeAllMoviesScreen';
 
 const Stack = createNativeStackNavigator();
 function MainStack({colors}) {
+  // TODO: initial params inconsistency
   return (
     <Stack.Navigator
       screenOptions={{
@@ -23,6 +24,14 @@ function MainStack({colors}) {
         name="seeAllMovies"
         component={SeeAllMoviesScreen}
         initialParams={{colors}}
+        options={{
+          headerShown: true,
+          title: 'All Movies',
+          headerStyle: {backgroundColor: colors.primary500, shadowColor: 'red'},
+          headerTintColor: colors.paleShade,
+          headerShadowVisible: false,
+          headerTitleAlign: 'center'
+        }}
       />
     </Stack.Navigator>
   );

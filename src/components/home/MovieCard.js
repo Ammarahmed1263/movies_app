@@ -5,13 +5,13 @@ import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../store/context/ThemeContext';
 import { toVote } from '../../utils/utils';
 
-function MovieCard({movie}) {
+function MovieCard({movie, style}) {
   const navigation = useNavigation();
   const {colors, fonts} = useTheme();
 
   return (
     <MovieButton
-      style={{...styles.container, backgroundColor: colors.secondary500}}
+      style={{...styles.container, backgroundColor: colors.secondary500, ...style}}
       onPress={() => navigation.push('MovieDetails', {id: movie.id})}>
       <Text
         style={{

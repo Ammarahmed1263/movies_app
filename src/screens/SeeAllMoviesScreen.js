@@ -14,6 +14,7 @@ const options = {
 };
 
 export default function SeeAllMoviesScreen() {
+  // TODO: find way to fetch data according to category
   const [now_playing, setnow_playing] = useState([]);
 
   useEffect(() => {

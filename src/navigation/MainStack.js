@@ -5,7 +5,7 @@ import CastMemberScreen from '../screens/CastMemberScreen';
 import SeeAllMoviesScreen from '../screens/SeeAllMoviesScreen';
 
 const Stack = createNativeStackNavigator();
-function MainStack({colors}) {
+function MainStack({colors, fonts}) {
   // TODO: initial params inconsistency
   return (
     <Stack.Navigator
@@ -30,7 +30,8 @@ function MainStack({colors}) {
           headerStyle: {backgroundColor: colors.primary500, shadowColor: 'red'},
           headerTintColor: colors.paleShade,
           headerShadowVisible: false,
-          headerTitleAlign: 'center'
+          headerTitleAlign: 'center',
+          headerTitleStyle: {fontFamily: fonts.regular}
         }}
       />
     </Stack.Navigator>

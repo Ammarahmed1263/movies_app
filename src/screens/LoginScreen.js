@@ -1,7 +1,7 @@
 import AuthContent from '../components/auth/AuthContent';
 
-function LoginScreen() {
-  return <AuthContent isLogin />;
+function LoginScreen({navigation}) {
+  return <AuthContent isLogin navigation={navigation}/>;
 }
 
 export default LoginScreen;

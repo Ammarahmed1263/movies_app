@@ -4,6 +4,7 @@ import MovieCard from './MovieCard';
 import {useTheme} from '../../store/context/ThemeContext';
 import Heading from '../ui/Heading';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 const renderMovie = ({item}) => {
   return <MovieCard movie={item} />;
@@ -11,6 +12,7 @@ const renderMovie = ({item}) => {
 
 function MoviesList({movies, topic, seeAll, length = 10}) {
   const {colors, fonts} = useTheme();
+  const navigation = useNavigation();
   const { t } = useTranslation();
   
   return (
@@ -18,12 +20,13 @@ function MoviesList({movies, topic, seeAll, length = 10}) {
       <View style={styles.heading}>
         <Heading>{topic}</Heading>
         {seeAll && <Button
-          flat
           textStyle={{
             ...styles.button,
             color: colors.secondary500,
             fontFamily: fonts.light,
-          }}>
+          }}
+          onPress={() => navigation.navigate('seeAllMovies')}
+          flat>
           {t('see all')}
         </Button>}
       </View>

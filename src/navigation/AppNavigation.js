@@ -8,13 +8,13 @@ import MainStack from './MainStack';
 
 export default function AppNavigation() {
   const authorized = true;
-  const { colors } = useTheme();
+  const { colors, fonts } = useTheme();
 
   return (
     <>
       <NavigationContainer>
         <StatusBar backgroundColor={colors.primary500} />
-        {authorized ? <MainStack colors={colors} /> : <AuthStack />}
+        {authorized ? <MainStack colors={colors} fonts={fonts}/> : <AuthStack />}
       </NavigationContainer>
     </>
   );

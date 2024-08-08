@@ -17,7 +17,7 @@ function Member({details}) {
   // console.log(details.character);
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('CastMember', {id: details.id})}
+      onPress={() => navigation.navigate('CastMemberDetails', {id: details.id})}
       style={styles.TouchableOpacityContainer}>
       <View style={styles.container}>
         <View style={{ ...styles.imageContainer, borderColor: colors.secondary500}}>

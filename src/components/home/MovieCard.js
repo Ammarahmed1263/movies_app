@@ -6,20 +6,15 @@ import {useTheme} from '../../store/context/ThemeContext';
 import {convertToArabicNumerals, toVote} from '../../utils/utils';
 import {useTranslation} from 'react-i18next';
 
-function MovieCard({movie}) {
+function MovieCard({movie, style}) {
   const navigation = useNavigation();
   const {colors, fonts} = useTheme();
   const {i18n} = useTranslation();
 
   return (
     <MovieButton
-      style={{...styles.container, backgroundColor: colors.secondary500}}
-      onPress={() =>
-        navigation.push('MovieStack', {
-          screen: 'MovieDetails',
-          params: {id: movie.id},
-        })
-      }>
+      style={{...styles.container, backgroundColor: colors.secondary500, ...style}}
+      onPress={() => navigation.push('MovieDetails', {id: movie.id})}>
       <Text
         style={{
           ...styles.rating,

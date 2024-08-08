@@ -15,7 +15,7 @@ import Button from '../components/ui/Button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '../store/context/ThemeContext';
 import TextSeeMore from '../components/ui/TextSeeMore';
-import {genderString} from '../utils/utils';
+import { getGenderString } from '../utils';
 import Heading from '../components/ui/Heading';
 import MoviesList from '../components/home/MoviesList';
 
@@ -106,7 +106,7 @@ const CastMemberScreen = ({route}) => {
               Gender
             </Text>
             <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
-              {genderString(details.gender)}
+              {getGenderString(details.gender)}
             </Text>
           </View>
           <View style={{...styles.shortItem, borderColor: colors.primary500}}>

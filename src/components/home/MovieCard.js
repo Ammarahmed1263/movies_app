@@ -3,7 +3,7 @@ import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../store/context/ThemeContext';
-import {convertToArabicNumerals, toVote} from '../../utils/utils';
+import { convertToArabicNumerals, formatVoteCount } from '../../utils';
 import {useTranslation} from 'react-i18next';
 
 function MovieCard({movie, style}) {
@@ -23,8 +23,8 @@ function MovieCard({movie, style}) {
           backgroundColor: colors.secondary500,
         }}>
         {i18n.language == 'ar'
-          ? convertToArabicNumerals(toVote(movie.vote_average))
-          : toVote(movie.vote_average)
+          ? convertToArabicNumerals(formatVoteCount(movie.vote_average))
+          : formatVoteCount(movie.vote_average)
         }
       </Text>
       <Image

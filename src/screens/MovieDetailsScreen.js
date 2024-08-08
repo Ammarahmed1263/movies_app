@@ -19,11 +19,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useTheme} from '../store/context/ThemeContext';
 import CastList from '../components/Cast/CastList';
-import {toVote, stringDuration} from '../utils/helpers';
+import { formatVoteCount, durationToString } from '../utils';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { getYoutubeMeta } from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/ui/TextSeeMore';
 import Heading from '../components/ui/Heading';
+import jestConfig from '../../jest.config';
 
 const options = {
   method: 'GET',
@@ -172,7 +173,7 @@ function MovieDetailsScreen({route, navigation}) {
                     fontSize: 17,
                     lineHeight: 28,
                   }}>
-                  {`${toVote(details.vote_average)} · ${stringDuration(
+                  {`${formatVoteCount(details.vote_average)} · ${durationToString(
                     details.runtime,
                   )} · ${details.release_date.split('-')[0]}`}
                 </Text>

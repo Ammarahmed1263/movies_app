@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useTheme} from '../store/context/ThemeContext';
 import CastList from '../components/Cast/CastList';
-import {toVote, stringDuration} from '../utils/utils';
+import {toVote, stringDuration} from '../utils/helpers';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { getYoutubeMeta } from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/ui/TextSeeMore';
@@ -33,7 +33,7 @@ const options = {
   },
 };
 
-function MovieDetails({route, navigation}) {
+function MovieDetailsScreen({route, navigation}) {
   const movieID = route.params.id;
   // console.log('current id', movieID);
   const [details, setDetails] = useState({});
@@ -363,7 +363,7 @@ function MovieDetails({route, navigation}) {
   );
 }
 
-export default MovieDetails;
+export default MovieDetailsScreen;
 
 const styles = StyleSheet.create({
   poster: {

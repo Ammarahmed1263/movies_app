@@ -1,5 +1,6 @@
 import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
-import {useTheme} from '../../store/context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
+;
 import {useNavigation} from '@react-navigation/native';
 import MovieButton from '../ui/MovieButton';
 import ENDPOINT from '../../utils/Constants';

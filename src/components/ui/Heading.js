@@ -1,5 +1,5 @@
 import { Text } from "react-native"
-import { useTheme } from "../../store/context/ThemeContext"
+import { useTheme } from "../../context/ThemeContext"
 
 
 export default function Heading({style, children}) {

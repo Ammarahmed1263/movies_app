@@ -13,7 +13,7 @@ import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useNavigation} from '@react-navigation/native';
 import Button from '../components/ui/Button';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '../store/context/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
 import TextSeeMore from '../components/ui/TextSeeMore';
 import { getGenderString } from '../utils';
 import Heading from '../components/ui/Heading';

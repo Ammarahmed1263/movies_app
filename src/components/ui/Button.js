@@ -1,5 +1,6 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
-import {useTheme} from '../../store/context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
+;
 import { useState } from 'react';
 
 function Button({ flat, textStyle, style, children, onPress, customView, customViewStyle }) {

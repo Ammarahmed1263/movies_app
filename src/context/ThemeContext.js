@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useLayoutEffect } from "react";
 import { useColorScheme } from "react-native";
-import FONTS from "../../styles/Fonts";
-import COLORS from "../../styles/Colors";
+import FONTS from "../styles/Fonts";
+import COLORS from "../styles/Colors";
 
 const ThemeContext = createContext({
   theme: 'light',

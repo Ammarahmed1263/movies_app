@@ -1,5 +1,6 @@
 import {Pressable, View, StyleSheet} from 'react-native';
-import {useTheme} from '../../store/context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
+;
 
 function MovieButton({children, style, onPress}) {
   const { colors } = useTheme();

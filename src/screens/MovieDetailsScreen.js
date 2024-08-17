@@ -17,7 +17,7 @@ import axios from 'axios';
 import Button from '../components/ui/Button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
-import {useTheme} from '../store/context/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
 import CastList from '../components/Cast/CastList';
 import { formatVoteCount, durationToString } from '../utils';
 import YoutubeIframe from 'react-native-youtube-iframe';

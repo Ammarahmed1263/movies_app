@@ -2,7 +2,8 @@ import {StyleSheet, Text, Image} from 'react-native';
 import ENDPOINT from '../../utils/Constants';
 import MovieButton from '../ui/MovieButton';
 import {useNavigation} from '@react-navigation/native';
-import {useTheme} from '../../store/context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
+;
 import { convertToArabicNumerals, formatVoteCount } from '../../utils';
 import {useTranslation} from 'react-i18next';
 

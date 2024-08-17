@@ -1,5 +1,6 @@
 import {Text, TextInput, View, StyleSheet} from 'react-native';
-import {useTheme} from '../../store/context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
+;
 
 function LabelInput({containerStyle, label, children, ...props}) {
   const {colors, fonts} = useTheme();

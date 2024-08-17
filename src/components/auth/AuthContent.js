@@ -1,7 +1,8 @@
 import {StyleSheet, View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import AuthForm from './AuthForm';
 import Button from '../ui/Button';
-import {useTheme} from '../../store/context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
+;
 
 function AuthContent({isLogin, navigation}) {
   const {colors, fonts} = useTheme();

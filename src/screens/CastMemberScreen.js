@@ -17,7 +17,7 @@ import { useTheme } from '../context/ThemeContext';
 import TextSeeMore from '../components/ui/TextSeeMore';
 import { getGenderString } from '../utils';
 import Heading from '../components/ui/Heading';
-import MoviesList from '../components/home/MoviesList';
+import MoviesList from '../components/home/MoviesSlider';
 
 const options = {
   method: 'GET',

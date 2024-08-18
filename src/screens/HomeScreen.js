@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import {RefreshControl, Text, ScrollView, StatusBar, View} from 'react-native';
 import axios from 'axios';
-import MoviesList from '../components/home/MoviesList';
+import MoviesList from '../components/home/MoviesSlider';
 import ENDPOINT from '../utils/Constants';
 import {API_KEY} from '../utils/Constants';
 import MoviesCarousel from '../components/home/MoviesCarousel';

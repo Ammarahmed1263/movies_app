@@ -1,6 +1,6 @@
 import {View, StyleSheet, Keyboard, ScrollView} from 'react-native';
-import Button from '../ui/Button';
-import LabelInput from '../ui/LabelInput';
+import Button from '../atoms/AppButton/AppButton';
+import LabelInput from '../molecules/LabelInput';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';

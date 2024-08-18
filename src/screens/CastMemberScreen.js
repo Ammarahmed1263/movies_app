@@ -11,12 +11,12 @@ import {
 } from 'react-native';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useNavigation} from '@react-navigation/native';
-import Button from '../components/ui/Button';
+import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../context/ThemeContext';
-import TextSeeMore from '../components/ui/TextSeeMore';
+import TextSeeMore from '../components/atoms/SeeMoreText/SeeMoreText';
 import { getGenderString } from '../utils';
-import Heading from '../components/ui/Heading';
+import Heading from '../components/atoms/AppHeadingText/AppHeading';
 import MoviesList from '../components/home/MoviesList';
 
 const options = {

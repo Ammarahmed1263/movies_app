@@ -14,7 +14,7 @@ import {
 import {useCallback, useEffect, useState, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
-import Button from '../components/ui/Button';
+import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
 import { useTheme } from '../context/ThemeContext';
@@ -22,8 +22,8 @@ import CastList from '../components/Cast/CastList';
 import { formatVoteCount, durationToString } from '../utils';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { getYoutubeMeta } from 'react-native-youtube-iframe';
-import TextSeeMore from '../components/ui/TextSeeMore';
-import Heading from '../components/ui/Heading';
+import TextSeeMore from '../components/atoms/SeeMoreText/SeeMoreText';
+import Heading from '../components/atoms/AppHeadingText/AppHeading';
 import jestConfig from '../../jest.config';
 
 const options = {

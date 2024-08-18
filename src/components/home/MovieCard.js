@@ -1,6 +1,6 @@
 import {StyleSheet, Text, Image} from 'react-native';
 import ENDPOINT from '../../utils/Constants';
-import MovieButton from '../ui/MovieButton';
+import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 ;

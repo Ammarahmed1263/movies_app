@@ -1,7 +1,7 @@
 import {Pressable, View, StyleSheet} from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../../context/ThemeContext';
 
-function MovieButton({children, style, onPress}) {
+function MovieCardButton({children, style, onPress}) {
   const { colors } = useTheme();
   // when clicked pass movie id to retrieve it's data
   return (
@@ -18,7 +18,7 @@ function MovieButton({children, style, onPress}) {
   );
 }
 
-export default MovieButton;
+export default MovieCardButton;
 
 const styles = StyleSheet.create({
   pressableContainer: {

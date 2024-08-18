@@ -1,8 +1,8 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../../context/ThemeContext';
 import { useState } from 'react';
 
-function Button({ flat, textStyle, style, children, onPress, customView, customViewStyle }) {
+function AppButton({ flat, textStyle, style, children, onPress, customView, customViewStyle }) {
   const {colors, fonts} = useTheme();
   const [clicked, setClicked] = useState(false);
 
@@ -45,7 +45,7 @@ function Button({ flat, textStyle, style, children, onPress, customView, customV
   );
 }
 
-export default Button;
+export default AppButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {

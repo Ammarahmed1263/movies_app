@@ -2,7 +2,7 @@ import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 ;
 import {useNavigation} from '@react-navigation/native';
-import MovieButton from '../ui/MovieButton';
+import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import ENDPOINT from '../../utils/Constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 

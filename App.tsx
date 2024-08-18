@@ -1,10 +1,10 @@
-import ContextProvider from './src/context/ThemeContext';
+import ThemeProvider from './src/context/ThemeContext';
 import AppNavigation from './src/navigation/AppNavigation';
 
 export default function App() {
   return (
-    <ContextProvider>
+    <ThemeProvider>
       <AppNavigation />
-    </ContextProvider>
+    </ThemeProvider>
   );
 }

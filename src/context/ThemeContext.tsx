@@ -2,10 +2,7 @@ import { createContext, useContext, useState, useLayoutEffect, ReactNode, FC } f
 import { useColorScheme } from "react-native";
 import FONTS from "../styles/Fonts";
 import COLORS from "../styles/Colors";
-<<<<<<<< HEAD:src/context/ThemeContext.js
-========
 import { ThemeContextType } from "../types/themeTypes";
->>>>>>>> eca13be (switch theme context to ts and fix imports):src/context/ThemeContext.tsx
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',

@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTabs from './MainTabs';
-import { MovieDetailsScreen, SeeAllMoviesScreen, CastMemberScreen } from '../screens';
+import { MovieDetailsScreen, MoviesList, CastMemberScreen } from '../screens';
 
 const Stack = createNativeStackNavigator();
 function MainStack({colors, fonts}) {
@@ -20,7 +20,7 @@ function MainStack({colors, fonts}) {
       <Stack.Screen name="CastMemberDetails" component={CastMemberScreen} />
       <Stack.Screen
         name="seeAllMovies"
-        component={SeeAllMoviesScreen}
+        component={MoviesList}
         initialParams={{colors}}
         options={{
           headerShown: true,

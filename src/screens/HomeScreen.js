@@ -5,8 +5,9 @@ import MoviesList from '../components/home/MoviesList';
 import ENDPOINT from '../utils/Constants';
 import {API_KEY} from '../utils/Constants';
 import MoviesCarousel from '../components/home/MoviesCarousel';
-import { useTranslation } from 'react-i18next';
-import i18n from '../i18n/i18n'
+import {useTranslation} from 'react-i18next';
+import i18n from '../i18n/i18n';
+import {useTheme} from '../context/ThemeContext';
 // import { useFocusEffect } from '@react-navigation/native';
 
 const options = {
@@ -35,7 +36,8 @@ function HomeScreen() {
   const [top_rated, settop_rated] = useState([]);
   const [upcoming, setupcoming] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const { t } = useTranslation();
+  const {t} = useTranslation();
+  const {theme} = useTheme();
   // status bar in rest of screens solution
   // useFocusEffect(
   //   useCallback(() => {
@@ -96,7 +98,11 @@ function HomeScreen() {
 
   return (
     <>
-      <StatusBar translucent backgroundColor="transparent" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         // refreshControl={
@@ -107,15 +113,15 @@ function HomeScreen() {
         //     colors={['red', 'blue', 'chocolate']}
         //   />
         // }>
-        >
+      >
         <View style={{flex: 2}}>
           <MoviesCarousel movies={now_playing.slice(0, 10)} />
         </View>
         <View style={{flex: 1}}>
-          <MoviesList movies={now_playing} topic={t("now playing")} seeAll/>
-          <MoviesList movies={top_rated} topic={t("top rated")} seeAll/>
-          <MoviesList movies={upcoming} topic={t("upcoming")} seeAll/>
-          <MoviesList movies={popular} topic={t("popular")} seeAll/>
+          <MoviesList movies={now_playing} topic={t('now playing')} seeAll />
+          <MoviesList movies={top_rated} topic={t('top rated')} seeAll />
+          <MoviesList movies={upcoming} topic={t('upcoming')} seeAll />
+          <MoviesList movies={popular} topic={t('popular')} seeAll />
         </View>
       </ScrollView>
     </>

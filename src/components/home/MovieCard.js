@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
   rating: {
     position: 'absolute',
     zIndex: 1,
-    top: 10,
-    right: 11,
-    fontSize: 15,
+    top: 0,
+    right: 0,
+    fontSize: 12,
     paddingHorizontal: 10,
-    borderRadius: 7,
+    borderBottomLeftRadius: 7,
     alignSelf: 'center',
   },
   image: {

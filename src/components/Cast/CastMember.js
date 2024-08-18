@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import ENDPOINT from '../../utils/Constants';
 import { useTheme } from '../../context/ThemeContext';
-;
 import {useNavigation} from '@react-navigation/native';
 
 function Member({details}) {

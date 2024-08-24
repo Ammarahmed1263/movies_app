@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import ENDPOINT from '../utils/Constants';
 import {API_KEY} from '../utils/Constants';
-import MovieCard from '../components/home/MovieCard';
+import MovieCard from '../components/molecules/MovieCard';
 
 const options = {
   method: 'GET',

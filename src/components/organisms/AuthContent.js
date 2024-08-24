@@ -1,6 +1,7 @@
 import {StyleSheet, View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
-import AuthForm from './AuthForm';
-import Button from '../atoms/AppButton/AppButton';
+import AuthForm from '../molecules/AuthForm';
+// import Button from '../atoms/AppButton/AppButton';
+import Button from '../ui/Button';
 import { useTheme } from '../../context/ThemeContext';
 ;
 

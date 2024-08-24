@@ -8,7 +8,6 @@ import { useTheme } from '../../context/ThemeContext';
 
 const {width} = Dimensions.get('window');
 
-// isolate item
 const renderItem = ({item}) => {
   return <CarouselItem item={item} />;
 };

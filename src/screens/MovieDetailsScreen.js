@@ -18,7 +18,7 @@ import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
 import { useTheme } from '../context/ThemeContext';
-import CastList from '../components/Cast/CastList';
+import CastList from '../components/organisms/CastList';
 import { formatVoteCount, durationToString } from '../utils';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { getYoutubeMeta } from 'react-native-youtube-iframe';

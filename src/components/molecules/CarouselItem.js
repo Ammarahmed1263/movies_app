@@ -1,7 +1,7 @@
 import {View, Image, Text, StyleSheet} from 'react-native';
 import ENDPOINT from '../../utils/Constants';
 import { useTheme } from '../../context/ThemeContext';
-import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
+import MovieCardButton from '../atoms/MovieCardButton/MovieCardButton';
 import { useNavigation } from '@react-navigation/native';
 
 function CarouselItem({item}) {
@@ -9,7 +9,7 @@ function CarouselItem({item}) {
   const {colors, fonts} = useTheme();
 
   return (
-    <MovieButton style={styles.cardContainer} onPress={() => navigation.navigate('MovieDetails', {id: item.id})}>
+    <MovieCardButton style={styles.cardContainer} onPress={() => navigation.navigate('MovieDetails', {id: item.id})}>
       <View
         style={{...styles.innerContainer, borderColor: colors.secondary600}}>
         <Image
@@ -27,7 +27,7 @@ function CarouselItem({item}) {
         numberOfLines={1}>
         {item.title}
       </Text>
-    </MovieButton>
+    </MovieCardButton>
   );
 }
 

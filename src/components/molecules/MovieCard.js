@@ -42,7 +42,6 @@ export default MovieCard;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 10,
     width: 150,
     height: 225,
     borderTopWidth: 2.4,

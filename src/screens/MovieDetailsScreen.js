@@ -17,11 +17,11 @@ import axios from 'axios';
 import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ENDPOINT, {API_KEY} from '../utils/Constants';
-import { useTheme } from '../context/ThemeContext';
+import {useTheme} from '../context/ThemeContext';
 import CastList from '../components/organisms/CastList';
-import { formatVoteCount, durationToString } from '../utils';
+import {formatVoteCount, durationToString} from '../utils';
 import YoutubeIframe from 'react-native-youtube-iframe';
-import { getYoutubeMeta } from 'react-native-youtube-iframe';
+import {getYoutubeMeta} from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/atoms/SeeMoreText/SeeMoreText';
 import Heading from '../components/atoms/AppHeadingText/AppHeading';
 import jestConfig from '../../jest.config';
@@ -69,12 +69,12 @@ function MovieDetailsScreen({route, navigation}) {
         setDetails(response.data);
         setCast(response2.data.cast);
         // TODO: add more handling
-        response3.data.results.map((video) => {
-          if (video.type === "Trailer" && video.site === "YouTube") {
+        response3.data.results.map(video => {
+          if (video.type === 'Trailer' && video.site === 'YouTube') {
             console.log(video);
             setTrailId(video.key);
           }
-        })
+        });
         // console.log(response2.data.cast);
       } catch (err) {
         console.log('failed to fetch details', err);
@@ -87,7 +87,6 @@ function MovieDetailsScreen({route, navigation}) {
       setPlaying(false);
     }
   }, []);
-
 
   useEffect(() => {
     if (playing && modalRef.current) {
@@ -104,9 +103,9 @@ function MovieDetailsScreen({route, navigation}) {
     const {pageX, pageY} = evt.nativeEvent;
     if (
       pageX < contentDimensions.x ||
-      pageX > (contentDimensions.x + contentDimensions.width) ||
+      pageX > contentDimensions.x + contentDimensions.width ||
       pageY < contentDimensions.y ||
-      pageY > (contentDimensions.y + contentDimensions.height)
+      pageY > contentDimensions.y + contentDimensions.height
     ) {
       setPlaying(false);
     }
@@ -122,9 +121,9 @@ function MovieDetailsScreen({route, navigation}) {
       } catch (e) {
         Alert.alert('error redirecting:', e);
       }
-    })()
-  }, [trailId])
-  
+    })();
+  }, [trailId]);
+
   if (Object.keys(details).length === 0) {
     return <Text>Loading</Text>;
   }
@@ -144,7 +143,7 @@ function MovieDetailsScreen({route, navigation}) {
             <View style={styles.imageButtons}>
               <Button
                 onPress={() => navigation.goBack()}
-                style={styles.topButton}
+                style={{...styles.topButton, backgroundColor: colors.secondaryShadow}}
                 customView>
                 <Icon
                   name="arrow-back-outline"
@@ -152,7 +151,9 @@ function MovieDetailsScreen({route, navigation}) {
                   color={colors.paleShade}
                 />
               </Button>
-              <Button style={styles.topButton} customView>
+              <Button
+                style={{...styles.topButton, backgroundColor: colors.secondaryShadow}}
+                customView>
                 <Icon name="heart-outline" size={28} color={colors.paleShade} />
               </Button>
             </View>
@@ -173,9 +174,11 @@ function MovieDetailsScreen({route, navigation}) {
                     fontSize: 17,
                     lineHeight: 28,
                   }}>
-                  {`${formatVoteCount(details.vote_average)} · ${durationToString(
-                    details.runtime,
-                  )} · ${details.release_date.split('-')[0]}`}
+                  {`${formatVoteCount(
+                    details.vote_average,
+                  )} · ${durationToString(details.runtime)} · ${
+                    details.release_date.split('-')[0]
+                  }`}
                 </Text>
               </View>
             </View>
@@ -258,7 +261,12 @@ function MovieDetailsScreen({route, navigation}) {
               marginHorizontal: 10,
             }}
           />
-          <Heading style={{color: colors.paleShade, fontFamily: fonts.bold, marginHorizontal: 10}}>
+          <Heading
+            style={{
+              color: colors.paleShade,
+              fontFamily: fonts.bold,
+              marginHorizontal: 10,
+            }}>
             Top Cast
           </Heading>
           {cast && <CastList cast={cast.slice(0, 15)} />}
@@ -266,7 +274,7 @@ function MovieDetailsScreen({route, navigation}) {
       </ScrollView>
 
       <Modal
-        animationType='none'
+        animationType="none"
         visible={playing}
         transparent
         onRequestClose={handleOverlayPress}>
@@ -384,7 +392,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 8,
-    marginTop: 5,
   },
   quickpeak: {
     position: 'absolute',

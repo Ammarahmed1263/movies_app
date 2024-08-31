@@ -32,7 +32,7 @@ function MoviesSection({movies, topic, seeAll, length = 10}) {
       </View>
       <FlatList
         data={movies.slice(0, length)}
-        contentContainerStyle={{flexGrow: 1}}
+        contentContainerStyle={{flexGrow: 1, gap: 15, paddingHorizontal: 20}}
         renderItem={renderMovie}
         keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}

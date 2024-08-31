@@ -1,6 +1,5 @@
 import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
-;
+import {useTheme} from '../../context/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import ENDPOINT from '../../utils/Constants';
@@ -30,8 +29,14 @@ function FavoriteCard({movie}) {
             }}>
             {movie.title}
           </Text>
-          <Pressable style={{flex: 1}}>
-            <Icon name="close-outline" size={30} color={colors.primary700} />
+          <Pressable
+            style={{
+              flex: 1,
+              paddingVertical: 4,
+              borderRadius: 5,
+              alignItems: 'center',
+            }}>
+            <Icon name="trash-outline" size={26} color={colors.primary700} />
           </Pressable>
         </View>
         <Text

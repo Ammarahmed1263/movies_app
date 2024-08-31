@@ -4,6 +4,7 @@ export type ColorsType = {
   primary700: string;
   secondary500: string;
   secondary600: string;
+  secondaryShadow: string;
   paleShade: string;
 };
 

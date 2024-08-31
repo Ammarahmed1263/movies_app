@@ -2,7 +2,7 @@ import {FlatList, Text, View, StyleSheet} from 'react-native';
 import Button from '../atoms/AppButton/AppButton';
 import MovieCard from '../molecules/MovieCard';
 import { useTheme } from '../../context/ThemeContext';
-import Heading from '../atoms/AppHeadingText/AppHeading';
+import AppHeading from '../atoms/AppHeadingText/AppHeading';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,7 +18,7 @@ function MoviesSection({movies, topic, seeAll, length = 10}) {
   return (
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
-        <Heading>{topic}</Heading>
+        <AppHeading>{topic}</AppHeading>
         {seeAll && <Button
           textStyle={{
             ...styles.button,
@@ -47,14 +47,14 @@ export default MoviesSection;
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 20,
-    marginBottom: -2
   },
   heading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
-    marginHorizontal: 14,
+    marginStart: 20,
+    marginEnd: 8
   },
   button: {
     fontSize: 18,

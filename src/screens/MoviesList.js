@@ -13,7 +13,7 @@ const options = {
   },
 };
 
-export default function MoviesListingScreen({movies}) {
+export default function MoviesList({movies}) {
   // TODO: find way to fetch data according to category
   const [now_playing, setnow_playing] = useState([]);
 
@@ -39,12 +39,8 @@ export default function MoviesListingScreen({movies}) {
     return (
       <View
         style={{
-          flex: 1,
-          marginVertical: 10,
-          marginHorizontal: 5,
-          alignItems: 'center',
-          justifyContent: 'center',
-          // backgroundColor: 'blue'
+          marginVertical: 12,
+          marginHorizontal: 12,
         }}>
         <MovieCard
           movie={item}
@@ -64,6 +60,7 @@ export default function MoviesListingScreen({movies}) {
     <View style={{marginHorizontal: 10}}>
       <FlatList
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{alignItems: 'center'}}
         numColumns={2}
         data={movies || now_playing}
         renderItem={renderItem}

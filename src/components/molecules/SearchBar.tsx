@@ -35,7 +35,7 @@ function SearchBar({setKeyword, keyword}) {
       const active = await Voice.isRecognizing();
       if(!active) {
         console.log('recording')
-        await Voice.start('en-US') // TODO: change based on app locale
+        await Voice.start('ar-EG') // TODO: change based on app locale
       } else {
         console.log('stop recording')
         await Voice.stop();

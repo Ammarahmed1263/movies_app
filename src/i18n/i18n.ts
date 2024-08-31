@@ -1,20 +1,22 @@
 import 'intl-pluralrules';
-import i18n from 'i18next'; 
+import i18n, { InitOptions } from 'i18next';
 import {initReactI18next} from 'react-i18next'; 
 import en from './en.json'; 
 import ar from './ar.json'; 
-  
-i18n.use(initReactI18next).init({ 
+
+const resources = { 
+  en: {
+    translation: en
+  }, 
+  ar: {
+    translation: ar
+  }, 
+}
+
+const options: InitOptions = { 
   lng: 'en', 
-  fallbackLng: 'en', 
-  resources: { 
-    en: {
-      translation: en
-    }, 
-    ar: {
-      translation: ar
-    }, 
-  },
+  fallbackLng: 'en',
+  resources,
   interpolation: { 
     escapeValue: false // react already safes from xss 
   }, 
@@ -25,6 +27,9 @@ i18n.use(initReactI18next).init({
     cookieMinutes: 10,
     cookieDomain: 'myDomain'
   }
-}); 
+}
+
+
+i18n.use(initReactI18next).init(options); 
   
 export default i18n;

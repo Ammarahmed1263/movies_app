@@ -10,6 +10,7 @@ import {
   Pressable,
   Linking,
   Alert,
+  Share,
 } from 'react-native';
 import {useCallback, useEffect, useState, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -112,17 +113,28 @@ function MovieDetailsScreen({route, navigation}) {
   };
 
   // TODO: know why canOpenURL was always
-  const handleYoutubeRedirect = useCallback(() => {
-    (async () => {
-      try {
-        const url = `https://www.youtube.com/watch?v=${trailId}`;
-        await Linking.openURL(url);
-        setPlaying(false);
-      } catch (e) {
-        Alert.alert('error redirecting:', e);
-      }
-    })();
+  const handleYoutubeRedirect = useCallback(async () => {
+    try {
+      const url = `https://www.youtube.com/watch?v=${trailId}`;
+      await Linking.openURL(url);
+      setPlaying(false);
+    } catch (e) {
+      Alert.alert('error redirecting:', e.request.data);
+    }
   }, [trailId]);
+
+  const handleShare = useCallback(async () => {
+    try {
+      await Share.share({
+        title: 'Look what I found!',
+        message: `Check out this awesome Trailer on YouTube: https://www.youtube.com/watch?v=${trailId}`,
+        url: `https://www.youtube.com/watch?v=${trailId}`,
+        subject: 'Check out this video!',
+      });
+    } catch (e) {
+      console.log('ooops error sharing data', error.request.data);
+    }
+  });
 
   if (Object.keys(details).length === 0) {
     return <Text>Loading</Text>;
@@ -143,7 +155,10 @@ function MovieDetailsScreen({route, navigation}) {
             <View style={styles.imageButtons}>
               <Button
                 onPress={() => navigation.goBack()}
-                style={{...styles.topButton, backgroundColor: colors.secondaryShadow}}
+                style={{
+                  ...styles.topButton,
+                  backgroundColor: colors.secondaryShadow,
+                }}
                 customView>
                 <Icon
                   name="arrow-back-outline"
@@ -152,7 +167,10 @@ function MovieDetailsScreen({route, navigation}) {
                 />
               </Button>
               <Button
-                style={{...styles.topButton, backgroundColor: colors.secondaryShadow}}
+                style={{
+                  ...styles.topButton,
+                  backgroundColor: colors.secondaryShadow,
+                }}
                 customView>
                 <Icon name="heart-outline" size={28} color={colors.paleShade} />
               </Button>
@@ -239,6 +257,7 @@ function MovieDetailsScreen({route, navigation}) {
             </Button>
             <Button
               customView
+              onPress={handleShare}
               style={{
                 flex: 1,
                 borderRadius: 18,

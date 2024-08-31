@@ -1,8 +1,8 @@
 import { SafeAreaView, StatusBar, View } from "react-native";
+import MoviesList from "./MoviesList";
 import SearchBar from "../components/molecules/SearchBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import MoviesList from "./MoviesListing";
 
 const options = {
   method: 'GET',

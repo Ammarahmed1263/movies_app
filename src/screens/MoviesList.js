@@ -39,15 +39,15 @@ export default function MoviesList({movies}) {
     return (
       <View
         style={{
-          marginVertical: 12,
-          marginHorizontal: 12,
+          marginVertical: 10,
+          marginHorizontal: 10,
         }}>
         <MovieCard
           movie={item}
           style={{
             flex: 1,
-            width: 165,
-            height: 240,
+            width: 175,
+            height: 250,
             backgroundColor: 'white',
             marginHorizontal: 0
           }}

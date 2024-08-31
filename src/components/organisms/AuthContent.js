@@ -1,9 +1,7 @@
 import {StyleSheet, View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import AuthForm from '../molecules/AuthForm';
-// import Button from '../atoms/AppButton/AppButton';
-import Button from '../ui/Button';
+import Button from '../atoms/AppButton/AppButton';
 import { useTheme } from '../../context/ThemeContext';
-;
 
 function AuthContent({isLogin, navigation}) {
   const {colors, fonts} = useTheme();

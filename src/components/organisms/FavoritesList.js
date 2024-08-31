@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import ENDPOINT from '../../utils/Constants';
 import {API_KEY} from '../../utils/Constants';
 import axios from 'axios';
-import FavoriteCard from './FavoriteCard';
+import FavoriteCard from '../molecules/FavoriteCard';
 
 const options = {
   method: 'GET',

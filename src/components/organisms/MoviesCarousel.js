@@ -3,7 +3,7 @@ import { ImageBackground, View, Text, Dimensions, StyleSheet, StatusBar } from '
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import ENDPOINT from '../../utils/Constants';
-import CarouselItem from './CarouselItem';
+import CarouselItem from '../molecules/CarouselItem';
 import { useTheme } from '../../context/ThemeContext';
 
 const {width} = Dimensions.get('window');

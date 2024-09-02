@@ -1,6 +1,6 @@
 import axios from "axios";
 import Config from "react-native-config";
-import { MOVIE_BASE_URL } from "../constants/Constants";
+import { MOVIE_BASE_URL } from "../constants";
 
 const instance = axios.create({
   baseURL: MOVIE_BASE_URL,

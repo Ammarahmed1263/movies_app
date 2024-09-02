@@ -1,11 +1,12 @@
 import {StyleSheet, Text, Image} from 'react-native';
-import ENDPOINT from '../../utils/Constants';
+import ENDPOINT from '../../constants';
 import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 ;
 import { convertToArabicNumerals, formatVoteCount } from '../../utils';
 import {useTranslation} from 'react-i18next';
+import getImageUrl from '../../utils/getImageUrl';
 
 function MovieCard({movie, style}) {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ function MovieCard({movie, style}) {
       </Text>
       <Image
         source={{
-          uri: ENDPOINT.image + movie.poster_path,
+          uri: getImageUrl(movie.poster_path),
         }}
         style={styles.image}
       />

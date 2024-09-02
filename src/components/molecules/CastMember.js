@@ -6,7 +6,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import ENDPOINT from '../../utils/Constants';
+import ENDPOINT from '../../constants';
 import { useTheme } from '../../context/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 

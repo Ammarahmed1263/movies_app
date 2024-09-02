@@ -2,9 +2,10 @@ import {useState} from 'react';
 import { ImageBackground, View, Text, Dimensions, StyleSheet, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import ENDPOINT from '../../utils/Constants';
+import ENDPOINT from '../../constants';
 import CarouselItem from '../molecules/CarouselItem';
 import { useTheme } from '../../context/ThemeContext';
+import getImageUrl from '../../utils/getImageUrl';
 
 const {width} = Dimensions.get('window');
 
@@ -31,7 +32,7 @@ function MoviesCarousel({movies}) {
 
   return (
     <ImageBackground
-      source={{uri: ENDPOINT.image + movies[activeMovieIndex].poster_path}}
+      source={{uri: getImageUrl(movies[activeMovieIndex].poster_path)}}
       blurRadius={45}
       style={styles.backgroundImage}
       resizeMode="cover"

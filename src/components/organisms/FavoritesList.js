@@ -1,7 +1,7 @@
 import {FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
-import ENDPOINT from '../../utils/Constants';
-import {API_KEY} from '../../utils/Constants';
+import ENDPOINT from '../../constants';
+import {API_KEY} from '../../constants';
 import axios from 'axios';
 import FavoriteCard from '../molecules/FavoriteCard';
 

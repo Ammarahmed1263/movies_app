@@ -33,3 +33,11 @@ const options: InitOptions = {
 i18n.use(initReactI18next).init(options); 
   
 export default i18n;
+// const getDeviceLanguage = () => {
+//   const deviceLanguage = Platform.OS === 'ios' 
+//     ? I18nManager.localeIdentifier 
+//     : I18nManager.isRTL 
+//     ? 'ar' 
+//     : 'en';
+//   return deviceLanguage.startsWith('ar') ? 'ar' : 'en';
+// };

@@ -1,12 +1,11 @@
 import {StyleSheet, Text, Image} from 'react-native';
-import ENDPOINT from '../../constants';
 import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
 import { useTheme } from '../../context/ThemeContext';
 ;
 import { convertToArabicNumerals, formatVoteCount } from '../../utils';
 import {useTranslation} from 'react-i18next';
-import getImageUrl from '../../utils/getImageUrl';
+import { getImageUrl } from '../../utils';
 
 function MovieCard({movie, style}) {
   const navigation = useNavigation();

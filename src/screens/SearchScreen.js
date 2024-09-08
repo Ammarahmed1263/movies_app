@@ -33,7 +33,7 @@ function SearchScreen() {
   }, [keyword])
 
   return (
-    <SafeAreaView style={{marginTop: StatusBar.currentHeight}}>
+    <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
       <SearchBar keyword={keyword} setKeyword={setkeyword}/>
       <MoviesList movies={movies}/> 
     </SafeAreaView>

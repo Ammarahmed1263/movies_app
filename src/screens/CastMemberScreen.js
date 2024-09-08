@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {
   Image,
@@ -7,7 +6,6 @@ import {
   StyleSheet,
   Text,
   View,
-  useWindowDimensions,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Button from '../components/atoms/AppButton/AppButton';

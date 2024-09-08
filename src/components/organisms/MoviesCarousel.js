@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import CarouselItem from '../molecules/CarouselItem';
 import { useTheme } from '../../context/ThemeContext';
-import getImageUrl from '../../utils/getImageUrl';
+import { getImageUrl } from '../../utils';
 
 const {width} = Dimensions.get('window');
 
@@ -16,19 +16,19 @@ function MoviesCarousel({movies}) {
   const [activeMovieIndex, setActiveMovieIndex] = useState(0);
   const { colors, fonts } = useTheme();
 
+  
+  const handleSnapToItem = index => {
+    setActiveMovieIndex(index);
+  };
+  
   // modify with better one
-  if (movies.length === 0) {
+  if (!movies || movies.length === 0) {
     return (
       <View>
         <Text>Loading...</Text>
       </View>
     );
   }
-
-  const handleSnapToItem = index => {
-    setActiveMovieIndex(index);
-  };
-
   return (
     <ImageBackground
       source={{uri: getImageUrl(movies[activeMovieIndex].poster_path)}}

@@ -1,9 +1,8 @@
 import {View, Image, Text, StyleSheet} from 'react-native';
-import ENDPOINT from '../../constants';
 import { useTheme } from '../../context/ThemeContext';
 import MovieCardButton from '../atoms/MovieCardButton/MovieCardButton';
 import { useNavigation } from '@react-navigation/native';
-import getImageUrl from '../../utils/getImageUrl';
+import { getImageUrl } from '../../utils';
 
 function CarouselItem({item}) {
   const navigation = useNavigation();

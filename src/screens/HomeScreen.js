@@ -3,7 +3,7 @@ import {RefreshControl, Text, ScrollView, StatusBar, View} from 'react-native';
 import MoviesList from '../components/organisms/MoviesSection';
 import MoviesCarousel from '../components/organisms/MoviesCarousel';
 import {useTranslation} from 'react-i18next';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/ThemeContext';
 import {
   getNowPlaying,
   getPopular,

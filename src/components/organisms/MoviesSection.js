@@ -1,7 +1,7 @@
 import {FlatList, Text, View, StyleSheet} from 'react-native';
 import Button from '../atoms/AppButton/AppButton';
 import MovieCard from '../molecules/MovieCard';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import AppHeading from '../atoms/AppHeadingText/AppHeading';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';

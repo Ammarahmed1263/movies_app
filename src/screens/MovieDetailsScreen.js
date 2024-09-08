@@ -16,7 +16,7 @@ import {useCallback, useEffect, useState, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/ThemeContext';
 import CastList from '../components/organisms/CastList';
 import {formatVoteCount, durationToString, getImageUrl} from '../utils';
 import YoutubeIframe from 'react-native-youtube-iframe';

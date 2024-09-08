@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Text} from 'react-native';
-import { useTheme } from '../../../context/ThemeContext';
+import { useTheme } from '../../../contexts/ThemeContext';
 
 export default function SeeMoreText({text, maxChars, style}) {
   const [fullShown, setFullShown] = useState(false);

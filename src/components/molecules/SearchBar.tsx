@@ -1,6 +1,6 @@
 import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '../../contexts/ThemeContext';
 import Voice from '@react-native-voice/voice';
 import { useEffect, useState } from 'react';
 

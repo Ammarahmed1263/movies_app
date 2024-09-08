@@ -10,7 +10,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
 import TextSeeMore from '../components/atoms/SeeMoreText/SeeMoreText';
 import { getGenderString, getImageUrl } from '../utils';
 import Heading from '../components/atoms/AppHeadingText/AppHeading';

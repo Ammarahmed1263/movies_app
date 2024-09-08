@@ -6,7 +6,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import { getImageUrl } from '../../utils';
 

@@ -4,7 +4,7 @@ import LabelInput from './LabelInput';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 function AuthForm({isLogin}) {
   const navigation = useNavigation();

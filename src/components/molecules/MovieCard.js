@@ -1,7 +1,7 @@
 import {StyleSheet, Text, Image} from 'react-native';
 import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext';
 ;
 import { convertToArabicNumerals, formatVoteCount } from '../../utils';
 import {useTranslation} from 'react-i18next';

@@ -1,5 +1,5 @@
 import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '../../contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import Icon from 'react-native-vector-icons/Ionicons';

@@ -1,6 +1,6 @@
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';

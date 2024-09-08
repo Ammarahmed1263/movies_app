@@ -1,4 +1,4 @@
-import ThemeProvider from './src/context/ThemeContext';
+import ThemeProvider from './src/contexts/ThemeContext';
 import AppNavigation from './src/navigation/AppNavigation';
 import './src/i18n'
 

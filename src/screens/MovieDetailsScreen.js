@@ -110,14 +110,14 @@ function MovieDetailsScreen({route, navigation}) {
     try {
       await Share.share({
         title: 'Look what I found!',
-        message: `Check out this awesome Trailer on YouTube: https://www.youtube.com/watch?v=${trailId}`,
+        message: `Check out "${details.title}" Trailer on YouTube: https://www.youtube.com/watch?v=${trailId}`,
         url: `https://www.youtube.com/watch?v=${trailId}`,
         subject: 'Check out this video!',
       });
     } catch (e) {
       console.log('ooops error sharing data', error.request.data);
     }
-  });
+  }, [trailId]);
 
   if (Object.keys(details).length === 0) {
     return <Text>Loading</Text>;

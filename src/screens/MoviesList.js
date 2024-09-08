@@ -46,10 +46,10 @@ export default function MoviesList({movies}) {
   }
 
   return (
-    <View style={{marginHorizontal: 10}}>
+    <View style={{flex: 1, marginHorizontal: 10}}>
       <FlatList
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{alignItems: 'center'}}
+        contentContainerStyle={{alignItems: 'center', paddingBottom: 15}}
         numColumns={2}
         data={movies || now_playing}
         renderItem={renderItem}

@@ -4,8 +4,12 @@ import MoviesList from '../components/organisms/MoviesSection';
 import MoviesCarousel from '../components/organisms/MoviesCarousel';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '../context/ThemeContext';
-import { getNowPlaying, getPopular, getTopRated, getUpcoming } from '../api/services/movieService';
-
+import {
+  getNowPlaying,
+  getPopular,
+  getTopRated,
+  getUpcoming,
+} from '../api/services/movieService';
 
 function HomeScreen() {
   /*required data from response:
@@ -47,10 +51,10 @@ function HomeScreen() {
         const response2 = await getPopular();
         const response3 = await getTopRated();
         const response4 = await getUpcoming();
-        setnow_playing([...now_playing, ...response.results]);
-        setpopular([...popular, ...response2.results]);
-        settop_rated([...top_rated, ...response3.results]);
-        setupcoming([...upcoming, ...response4.results]);
+        setnow_playing(response.results);
+        setpopular(response2.results);
+        settop_rated(response3.results);
+        setupcoming(response4.results);
       } catch (e) {
         console.log('Full error object:', e);
       } finally {
@@ -65,6 +69,19 @@ function HomeScreen() {
   //     setRefreshing(false);
   //   }, 2000);
   // }, []);
+
+  if (
+    now_playing.length === 0 ||
+    popular.length === 0 ||
+    top_rated.length === 0 ||
+    upcoming.length === 0
+  ) {
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text>loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -85,7 +102,7 @@ function HomeScreen() {
         // }>
       >
         <View style={{flex: 2}}>
-          <MoviesCarousel movies={now_playing.slice(0, 8)} />
+          <MoviesCarousel movies={now_playing?.slice(0, 8)} />
         </View>
         <View style={{flex: 1}}>
           <MoviesList movies={now_playing} topic={t('now playing')} seeAll />

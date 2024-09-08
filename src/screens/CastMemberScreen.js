@@ -9,24 +9,16 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useNavigation} from '@react-navigation/native';
 import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../context/ThemeContext';
 import TextSeeMore from '../components/atoms/SeeMoreText/SeeMoreText';
-import { getGenderString } from '../utils';
+import { getGenderString, getImageUrl } from '../utils';
 import Heading from '../components/atoms/AppHeadingText/AppHeading';
 import MoviesList from '../components/organisms/MoviesSection';
+import { getMemberCredits, getMemberDetails } from '../api/services/castMemberService';
 
-const options = {
-  method: 'GET',
-  params: {language: 'en-US', page: '1'},
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
 
 const CastMemberScreen = ({route}) => {
   const {id} = route.params;
@@ -39,14 +31,11 @@ const CastMemberScreen = ({route}) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.request(
-          `https://api.themoviedb.org/3/person/${id}`,
-          options,
-        );
-        const response2 = await axios.request(`https://api.themoviedb.org/3/person/${id}/movie_credits`, options)
-        console.log('result here', response2.data);
-        setCredits(response2.data.cast)
-        setDetails(response.data);
+        const response = await getMemberDetails(id);
+        const response2 = await getMemberCredits(id)
+        console.log('result here', response2);
+        setCredits(response2.cast)
+        setDetails(response);
       } catch (e) {
         console.log('member retrieval error', e);
       }
@@ -86,7 +75,7 @@ const CastMemberScreen = ({route}) => {
               shadowColor: colors.secondary500,
             }}>
             <Image
-              source={{uri: ENDPOINT.image + details.profile_path}}
+              source={{uri: getImageUrl(details.profile_path)}}
               style={{width: '100%', height: '115%'}}
               resizeMode="cover" />
           </View>

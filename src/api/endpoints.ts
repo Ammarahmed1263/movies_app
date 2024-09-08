@@ -4,7 +4,15 @@ export const ENDPOINTS = {
     popular: 'movie/popular',
     top_rated: 'movie/top_rated',
     upcoming: 'movie/upcoming',
-    videos: 'movie/'
+    search: 'search/movie',
+    videos: (movieId: number) => `movie/${movieId}/videos`,
   },
-  details: 'movie/'
-}
+  movieDetails: {
+    details: (movieId: number) => `movie/${movieId}`,
+    credits: (movieId: number) => `movie/${movieId}/credits`,
+  },
+  castMember: {
+    details: (personId: number) => `person/${personId}`,
+    movieCredits: (personId: number) => `person/${personId}/movie_credits`,
+  }
+};

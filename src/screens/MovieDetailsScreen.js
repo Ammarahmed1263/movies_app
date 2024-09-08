@@ -14,29 +14,21 @@ import {
 } from 'react-native';
 import {useCallback, useEffect, useState, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import axios from 'axios';
 import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ENDPOINT, {API_KEY} from '../utils/Constants';
 import {useTheme} from '../context/ThemeContext';
 import CastList from '../components/organisms/CastList';
-import {formatVoteCount, durationToString} from '../utils';
+import {formatVoteCount, durationToString, getImageUrl} from '../utils';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import {getYoutubeMeta} from 'react-native-youtube-iframe';
 import TextSeeMore from '../components/atoms/SeeMoreText/SeeMoreText';
 import Heading from '../components/atoms/AppHeadingText/AppHeading';
-import jestConfig from '../../jest.config';
+import { getMovieCredits, getMovieDetails } from '../api/services/movieDetailsService';
+import { getMovieVideos } from '../api/services/movieService';
 
-const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
 
 function MovieDetailsScreen({route, navigation}) {
-  const movieID = route.params.id;
+  const movieId = route.params.id;
   // console.log('current id', movieID);
   const [details, setDetails] = useState({});
   const [cast, setCast] = useState([]);
@@ -53,24 +45,15 @@ function MovieDetailsScreen({route, navigation}) {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.request(
-          ENDPOINT.details + movieID,
-          options,
-        );
+        const response = await getMovieDetails(movieId);
 
-        const response2 = await axios.request(
-          ENDPOINT.details + movieID + '\\credits',
-          options,
-        );
+        const response2 = await getMovieCredits(movieId);
 
-        const response3 = await axios.request(
-          ENDPOINT.movies.videos + movieID + '\\videos',
-          options,
-        );
-        setDetails(response.data);
-        setCast(response2.data.cast);
+        const response3 = await getMovieVideos(movieId);
+        setDetails(response);
+        setCast(response2.cast);
         // TODO: add more handling
-        response3.data.results.map(video => {
+        response3.results.map(video => {
           if (video.type === 'Trailer' && video.site === 'YouTube') {
             console.log(video);
             setTrailId(video.key);
@@ -145,7 +128,7 @@ function MovieDetailsScreen({route, navigation}) {
       {playing && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <ImageBackground
-          source={{uri: ENDPOINT.image + details.poster_path}}
+          source={{uri: getImageUrl(details.poster_path)}}
           style={styles.poster}
           resizeMode="stretch">
           <LinearGradient

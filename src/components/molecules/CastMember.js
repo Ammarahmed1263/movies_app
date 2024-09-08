@@ -6,9 +6,9 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import ENDPOINT from '../../constants';
 import { useTheme } from '../../context/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
+import { getImageUrl } from '../../utils';
 
 function Member({details}) {
   const {colors, fonts} = useTheme();
@@ -22,7 +22,7 @@ function Member({details}) {
       <View style={styles.container}>
         <View style={{ ...styles.imageContainer, borderColor: colors.secondary500}}>
           <Image
-            source={{uri: ENDPOINT.image + details.profile_path}}
+            source={{uri: getImageUrl(details.profile_path)}}
             style={styles.image}
           />
         </View>

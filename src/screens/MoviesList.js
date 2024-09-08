@@ -1,17 +1,9 @@
 import {FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
-import axios from 'axios';
-import ENDPOINT from '../utils/Constants';
-import {API_KEY} from '../utils/Constants';
 import MovieCard from '../components/molecules/MovieCard';
+import { getNowPlaying } from '../api/services/movieService';
 
-const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+
 
 export default function MoviesList({movies}) {
   // TODO: find way to fetch data according to category
@@ -20,13 +12,10 @@ export default function MoviesList({movies}) {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.request(
-          ENDPOINT.movies.now_playing + '?page=1',
-          options
-        );
+        const response = await getNowPlaying();
         // console.log(now_playing.data);
-        console.log(response.data.results);
-        setnow_playing(response.data.results);
+        console.log(response.results);
+        setnow_playing(response.results);
       } catch (e) {
         console.log('failed to retrieve movies', e);
       } finally {

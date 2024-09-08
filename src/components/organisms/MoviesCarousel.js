@@ -2,7 +2,6 @@ import {useState} from 'react';
 import { ImageBackground, View, Text, Dimensions, StyleSheet, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import ENDPOINT from '../../constants';
 import CarouselItem from '../molecules/CarouselItem';
 import { useTheme } from '../../context/ThemeContext';
 import getImageUrl from '../../utils/getImageUrl';

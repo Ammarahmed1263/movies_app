@@ -2,8 +2,8 @@ import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
 import {useTheme} from '../../context/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
-import ENDPOINT from '../../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { getImageUrl } from '../../utils';
 
 function FavoriteCard({movie}) {
   const {colors, fonts} = useTheme();
@@ -14,7 +14,7 @@ function FavoriteCard({movie}) {
       style={styles.container}
       onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
       <Image
-        source={{uri: ENDPOINT.image + movie.poster_path}}
+        source={{uri: getImageUrl(movie.poster_path)}}
         style={styles.image}
       />
       <View style={styles.description}>

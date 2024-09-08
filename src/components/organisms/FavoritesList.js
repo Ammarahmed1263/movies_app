@@ -1,18 +1,8 @@
 import {FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
-import ENDPOINT from '../../constants';
-import {API_KEY} from '../../constants';
-import axios from 'axios';
 import FavoriteCard from '../molecules/FavoriteCard';
+import { getNowPlaying } from '../../api/services/movieService';
 
-const options = {
-  method: 'GET',
-  params: {language: 'en-US', page: '1'},
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
 
 function renderFavorite({item}) {
   return <FavoriteCard movie={item} />;
@@ -25,13 +15,10 @@ function FavoritesList() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.request(
-          ENDPOINT.movies.now_playing,
-          options,
-        );
+        const response = await getNowPlaying();
         // console.log(now_playing.data);
         // console.log(response.data.results);
-        setnow_playing([...now_playing, ...response.data.results]);
+        setnow_playing([...now_playing, ...response.results]);
       } catch (e) {
         console.log('failed to retrieve movies', e);
       } finally {

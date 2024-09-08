@@ -1,23 +1,11 @@
 import {useCallback, useEffect, useState} from 'react';
 import {RefreshControl, Text, ScrollView, StatusBar, View} from 'react-native';
-import axios from 'axios';
 import MoviesList from '../components/organisms/MoviesSection';
-import ENDPOINT from '../utils/Constants';
-import {API_KEY} from '../utils/Constants';
 import MoviesCarousel from '../components/organisms/MoviesCarousel';
 import {useTranslation} from 'react-i18next';
-import i18n from '../i18n/i18n';
 import {useTheme} from '../context/ThemeContext';
-// import { useFocusEffect } from '@react-navigation/native';
+import { getNowPlaying, getPopular, getTopRated, getUpcoming } from '../api/services/movieService';
 
-const options = {
-  method: 'GET',
-  params: {language: i18n.language === 'ar' ? 'ar-EG' : 'en-US'},
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
 
 function HomeScreen() {
   /*required data from response:
@@ -55,34 +43,16 @@ function HomeScreen() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.request(
-          ENDPOINT.movies.now_playing,
-          options,
-        );
-        // console.log(now_playing.data);
-        // console.log(response.data.results);
-        setnow_playing([...now_playing, ...response.data.results]);
-
-        const response2 = await axios.request(ENDPOINT.movies.popular, options);
-        // console.log(now_playing.data);
-        setpopular([...popular, ...response2.data.results]);
-
-        const response3 = await axios.request(
-          ENDPOINT.movies.top_rated,
-          options,
-        );
-        // console.log(now_playing.data);
-        settop_rated([...top_rated, ...response3.data.results]);
-
-        const response4 = await axios.request(
-          ENDPOINT.movies.upcoming,
-          options,
-        );
-        // console.log(now_playing.data);
-        // console.log(response4.data);
-        setupcoming([...upcoming, ...response4.data.results]);
+        const response = await getNowPlaying();
+        const response2 = await getPopular();
+        const response3 = await getTopRated();
+        const response4 = await getUpcoming();
+        setnow_playing([...now_playing, ...response.results]);
+        setpopular([...popular, ...response2.results]);
+        settop_rated([...top_rated, ...response3.results]);
+        setupcoming([...upcoming, ...response4.results]);
       } catch (e) {
-        console.log('failed to retrieve movies', e);
+        console.log('Full error object:', e);
       } finally {
         console.log('fetching APIs data done');
       }
@@ -115,7 +85,7 @@ function HomeScreen() {
         // }>
       >
         <View style={{flex: 2}}>
-          <MoviesCarousel movies={now_playing.slice(0, 10)} />
+          <MoviesCarousel movies={now_playing.slice(0, 8)} />
         </View>
         <View style={{flex: 1}}>
           <MoviesList movies={now_playing} topic={t('now playing')} seeAll />

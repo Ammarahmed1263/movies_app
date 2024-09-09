@@ -1,5 +1,5 @@
 import {Pressable, Text, StyleSheet, View} from 'react-native';
-import { useTheme } from '../../../contexts/ThemeContext';
+import { useTheme } from '@contexts/ThemeContext';
 import { useState } from 'react';
 
 function AppButton({ flat, textStyle, style, children, onPress, customView, customViewStyle }) {

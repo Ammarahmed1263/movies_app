@@ -6,9 +6,9 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import { getImageUrl } from '../../utils';
+import { getImageUrl } from '@utils';
 
 function Member({details}) {
   const {colors, fonts} = useTheme();

@@ -1,6 +1,6 @@
 import { SafeAreaView, StatusBar, View } from "react-native";
 import MoviesList from "./MoviesList";
-import SearchBar from "../components/molecules/SearchBar";
+import SearchBar from "@components/molecules/SearchBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

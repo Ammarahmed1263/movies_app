@@ -1,9 +1,9 @@
 import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
-import {useTheme} from '../../contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import MovieButton from '../atoms/MovieCardButton/MovieCardButton';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { getImageUrl } from '../../utils';
+import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
+import { getImageUrl } from '@utils';
 
 function FavoriteCard({movie}) {
   const {colors, fonts} = useTheme();

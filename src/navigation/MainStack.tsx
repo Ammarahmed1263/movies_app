@@ -1,10 +1,19 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTabs from './MainTabs';
-import { MovieDetailsScreen, MoviesList, CastMemberScreen } from '../screens';
+import { MovieDetailsScreen, MoviesList, CastMemberScreen } from '@screens';
+import { ColorsType, FontsType } from 'types/themeTypes';
+import { FC } from 'react';
 
 const Stack = createNativeStackNavigator();
-function MainStack({colors, fonts}) {
+
+interface MainStackProps {
+  colors: ColorsType
+  fonts: FontsType
+}
+
+const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
   // TODO: initial params inconsistency
+  
   return (
     <Stack.Navigator
       screenOptions={{
@@ -25,7 +34,7 @@ function MainStack({colors, fonts}) {
         options={{
           headerShown: true,
           title: 'All Movies',
-          headerStyle: {backgroundColor: colors.primary500, shadowColor: 'red'},
+          headerStyle: {backgroundColor: colors.primary500},
           headerTintColor: colors.paleShade,
           headerShadowVisible: false,
           headerTitleAlign: 'center',

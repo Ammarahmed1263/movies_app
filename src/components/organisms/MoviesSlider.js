@@ -1,10 +1,10 @@
 import {FlatList, Text, View, StyleSheet} from 'react-native';
-import Button from '../ui/Button';
-import MovieCard from './MovieCard';
-import { useTheme } from '../../contexts/ThemeContext';
-import Heading from '../ui/Heading';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import AppButton from '@atoms/AppButton/AppButton';
+import MovieCard from '@molecules/MovieCard';
+import { useTheme } from '@contexts/ThemeContext';
+import AppHeading from '@atoms/AppHeadingText/AppHeading';
 
 const renderMovie = ({item}) => {
   return <MovieCard movie={item} />;
@@ -18,8 +18,8 @@ function MoviesList({movies, topic, seeAll, length = 10}) {
   return (
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
-        <Heading>{topic}</Heading>
-        {seeAll && <Button
+        <AppHeading>{topic}</AppHeading>
+        {seeAll && <AppButton
           textStyle={{
             ...styles.button,
             color: colors.secondary500,
@@ -28,7 +28,7 @@ function MoviesList({movies, topic, seeAll, length = 10}) {
           onPress={() => navigation.navigate('seeAllMovies')}
           flat>
           {t('see all')}
-        </Button>}
+        </AppButton>}
       </View>
       <FlatList
         data={movies.slice(0, length)}

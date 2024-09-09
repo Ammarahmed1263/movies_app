@@ -1,8 +1,7 @@
 import {FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
-import MovieCard from '../components/molecules/MovieCard';
-import { getNowPlaying } from '../api/services/movieService';
-
+import MovieCard from '@molecules/MovieCard';
+import { getNowPlaying } from '@services/movieService';
 
 
 export default function MoviesList({movies}) {

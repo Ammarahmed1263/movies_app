@@ -1,5 +1,5 @@
 import { FlatList, View } from "react-native";
-import Member from "../molecules/CastMember";
+import Member from "@molecules/CastMember";
 
 
 const renderItem = ({item}) => {

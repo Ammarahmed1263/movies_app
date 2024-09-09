@@ -1,4 +1,4 @@
-import FavoritesList from "../components/organisms/FavoritesList";
+import FavoritesList from "@organisms/FavoritesList";
 
 function FavoritesScreen() {
   return <FavoritesList />;

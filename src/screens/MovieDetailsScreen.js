@@ -14,17 +14,16 @@ import {
 } from 'react-native';
 import {useCallback, useEffect, useState, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import Button from '../components/atoms/AppButton/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '../contexts/ThemeContext';
-import CastList from '../components/organisms/CastList';
-import {formatVoteCount, durationToString, getImageUrl} from '../utils';
-import YoutubeIframe from 'react-native-youtube-iframe';
-import {getYoutubeMeta} from 'react-native-youtube-iframe';
-import TextSeeMore from '../components/atoms/SeeMoreText/SeeMoreText';
-import Heading from '../components/atoms/AppHeadingText/AppHeading';
-import { getMovieCredits, getMovieDetails } from '../api/services/movieDetailsService';
-import { getMovieVideos } from '../api/services/movieService';
+import Button from '@atoms/AppButton/AppButton';
+import {useTheme} from '@contexts/ThemeContext';
+import CastList from '@organisms/CastList';
+import {formatVoteCount, durationToString, getImageUrl} from '@utils';
+import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
+import TextSeeMore from '@atoms/SeeMoreText/SeeMoreText';
+import Heading from '@atoms/AppHeadingText/AppHeading';
+import { getMovieCredits, getMovieDetails } from '@services/movieDetailsService';
+import { getMovieVideos } from '@services/movieService';
 
 
 function MovieDetailsScreen({route, navigation}) {

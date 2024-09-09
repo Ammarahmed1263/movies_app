@@ -1,8 +1,7 @@
 import {FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
-import FavoriteCard from '../molecules/FavoriteCard';
-import { getNowPlaying } from '../../api/services/movieService';
-
+import FavoriteCard from '@molecules/FavoriteCard';
+import { getNowPlaying } from '@services/movieService';
 
 function renderFavorite({item}) {
   return <FavoriteCard movie={item} />;

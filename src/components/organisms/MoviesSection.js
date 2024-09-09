@@ -1,10 +1,10 @@
-import {FlatList, Text, View, StyleSheet} from 'react-native';
-import Button from '../atoms/AppButton/AppButton';
-import MovieCard from '../molecules/MovieCard';
-import { useTheme } from '../../contexts/ThemeContext';
-import AppHeading from '../atoms/AppHeadingText/AppHeading';
+import {FlatList, View, StyleSheet} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import Button from '@atoms/AppButton/AppButton';
+import MovieCard from '@molecules/MovieCard';
+import { useTheme } from '@contexts/ThemeContext';
+import AppHeading from '@atoms/AppHeadingText/AppHeading';
 
 const renderMovie = ({item}) => {
   return <MovieCard movie={item} />;

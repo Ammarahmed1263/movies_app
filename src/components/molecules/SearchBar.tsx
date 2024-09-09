@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '../../contexts/ThemeContext';
 import Voice from '@react-native-voice/voice';
-import { useEffect, useState } from 'react';
+import {useTheme} from '@contexts/ThemeContext';
 
 function SearchBar({setKeyword, keyword}) {
   const { colors, fonts } = useTheme();

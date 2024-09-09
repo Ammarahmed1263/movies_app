@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useLayoutEffect, ReactNode, FC } from "react";
 import { useColorScheme } from "react-native";
-import FONTS from "../styles/Fonts";
-import COLORS from "../styles/Colors";
-import { ThemeContextType } from "../types/themeTypes";
+import FONTS from "@styles/Fonts";
+import COLORS from "@styles/Colors";
+import { ThemeContextType } from "types/themeTypes";
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',

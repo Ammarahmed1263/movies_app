@@ -2,9 +2,9 @@ import {useState} from 'react';
 import { ImageBackground, View, Text, Dimensions, StyleSheet, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import CarouselItem from '../molecules/CarouselItem';
-import { useTheme } from '../../contexts/ThemeContext';
-import { getImageUrl } from '../../utils';
+import CarouselItem from '@molecules/CarouselItem';
+import { useTheme } from '@contexts/ThemeContext';
+import { getImageUrl } from '@utils';
 
 const {width} = Dimensions.get('window');
 

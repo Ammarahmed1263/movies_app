@@ -1,4 +1,4 @@
-import AuthContent from '../components/organisms/AuthContent';
+import AuthContent from '@organisms/AuthContent';
 
 function LoginScreen({navigation}) {
   return <AuthContent isLogin navigation={navigation}/>;

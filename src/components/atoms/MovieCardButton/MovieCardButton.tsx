@@ -1,7 +1,14 @@
-import {Pressable, View, StyleSheet} from 'react-native';
+import {FC, ReactNode} from 'react'
+import {Pressable, View, StyleSheet, TextStyle} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
 
-function MovieCardButton({children, style, onPress}) {
+interface MovieCardButtonProps {
+  style?: TextStyle,
+  children: ReactNode,
+  onPress: () => void
+}
+
+const MovieCardButton: FC<MovieCardButtonProps> = ({children, style, onPress}) => {
   const { colors } = useTheme();
   // when clicked pass movie id to retrieve it's data
   return (

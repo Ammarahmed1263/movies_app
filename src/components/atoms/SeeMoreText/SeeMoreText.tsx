@@ -1,8 +1,15 @@
+import {FC} from 'react'
 import {useState} from 'react';
-import {Text} from 'react-native';
+import {Text, TextStyle} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
 
-export default function SeeMoreText({text, maxChars, style}) {
+interface SeeMoreTextProps {
+  text: string
+  maxChars?: number
+  style?: TextStyle,
+}
+
+const SeeMoreText: FC<SeeMoreTextProps> = ({text, maxChars = 150, style}) =>{
   const [fullShown, setFullShown] = useState(false);
   const { colors, fonts } = useTheme();
 
@@ -32,3 +39,5 @@ export default function SeeMoreText({text, maxChars, style}) {
     </Text>
   );
 }
+
+export default SeeMoreText;

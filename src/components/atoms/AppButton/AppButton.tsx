@@ -1,8 +1,18 @@
-import {Pressable, Text, StyleSheet, View} from 'react-native';
+import {Pressable, Text, StyleSheet, View, TextStyle, ViewStyle} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
-import { useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 
-function AppButton({ flat, textStyle, style, children, onPress, customView, customViewStyle }) {
+interface AppButtonProps {
+  flat?: boolean
+  textStyle?: TextStyle
+  style?: ViewStyle
+  onPress: () => void
+  customView?: ReactNode
+  customViewStyle?: ViewStyle
+  children: ReactNode
+}
+
+const AppButton: FC<AppButtonProps> = ({ flat = false, textStyle, style, children, onPress, customView, customViewStyle }) => {
   const {colors, fonts} = useTheme();
   const [clicked, setClicked] = useState(false);
 

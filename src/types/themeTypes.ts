@@ -6,6 +6,7 @@ export type ColorsType = {
   secondary600: string;
   secondaryShadow: string;
   paleShade: string;
+  links: string;
 };
 
 export type FontsType = {

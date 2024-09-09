@@ -1,8 +1,13 @@
-import { Text } from "react-native"
+import { FC, ReactNode } from "react";
+import { Text, TextStyle } from "react-native"
 import { useTheme } from "@contexts/ThemeContext"
 
+interface AppHeadingProps {
+  style?: TextStyle,
+  children: ReactNode
+}
 
-export default function AppHeading({style, children}) {
+const AppHeading: FC<AppHeadingProps> = ({style, children}) => {
   const { fonts, colors } = useTheme();
 
   return (
@@ -16,3 +21,5 @@ export default function AppHeading({style, children}) {
   </Text>
   )
 }
+
+export default AppHeading;

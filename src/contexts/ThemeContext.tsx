@@ -15,6 +15,7 @@ const ThemeContext = createContext<ThemeContextType>({
     secondary600: '',
     secondaryShadow: '',
     paleShade: '',
+    links: ''
   },
   fonts: {  
     bold: '',

@@ -10,9 +10,9 @@ export const getUpcoming = (page: number = 1) => apiClient(MOVIES_BASE.upcoming,
 
 interface SearchMoviesParams {
   query: string
-  page: number
-  include_adult?: boolean
   language?: string
+  page?: number
+  include_adult?: boolean
   primary_release_year?: string
   region?: string
   year?: string

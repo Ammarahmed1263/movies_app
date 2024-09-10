@@ -1,11 +1,18 @@
-import {StyleSheet, Text, Image} from 'react-native';
+import {StyleSheet, Text, Image, ViewStyle} from 'react-native';
 import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
 import { useTheme } from '@contexts/ThemeContext';
 import { convertToArabicNumerals, formatVoteCount, getImageUrl } from '@utils';
 import {useTranslation} from 'react-i18next';
+import { FC } from 'react';
+import { Movie } from 'types/movieTypes';
 
-function MovieCard({movie, style}) {
+interface MovieCardProps {
+  movie: Movie
+  style?: ViewStyle
+}
+
+const MovieCard: FC<MovieCardProps> = ({movie, style}) => {
   const navigation = useNavigation();
   const {colors, fonts} = useTheme();
   const {i18n} = useTranslation();

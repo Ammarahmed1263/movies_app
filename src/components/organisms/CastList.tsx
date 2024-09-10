@@ -1,17 +1,22 @@
 import { FlatList, View } from "react-native";
 import Member from "@molecules/CastMember";
+import { CastMember } from "types/castTypes";
+import { FC } from "react";
 
 
-const renderItem = ({item}) => {
+const renderItem = ({item}: {item: CastMember}) => {
   return <Member details={item} />
 }
 
-function CastList({cast}) {
+interface CastListProps {
+  cast: CastMember[]
+}
+
+const CastList: FC<CastListProps> = ({cast}) => {
   return (
       <FlatList
         data={cast}
         renderItem={renderItem}
-        keyExtractor={member => member.id}
         contentContainerStyle={{paddingHorizontal: 10, flexGrow: 1}}
         showsHorizontalScrollIndicator={false}
         horizontal

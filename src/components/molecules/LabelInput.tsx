@@ -1,8 +1,14 @@
-import {Text, TextInput, View, StyleSheet} from 'react-native';
+import {Text, TextInput, View, StyleSheet, ViewStyle, TextInputProps} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
+import { FC, ReactNode } from 'react';
 
+interface LabelInputProps extends TextInputProps{
+  containerStyle?: ViewStyle
+  label: string
+  children: ReactNode
+}
 
-function LabelInput({containerStyle, label, children, ...props}) {
+const LabelInput: FC<LabelInputProps> = ({containerStyle, label, children, ...props}) => {
   const {colors, fonts} = useTheme();
 
   return (

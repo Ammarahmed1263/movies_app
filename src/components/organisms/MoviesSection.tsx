@@ -1,16 +1,25 @@
-import {FlatList, Text, View, StyleSheet} from 'react-native';
+import {FlatList, View, StyleSheet} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import AppButton from '@atoms/AppButton/AppButton';
+import Button from '@atoms/AppButton/AppButton';
 import MovieCard from '@molecules/MovieCard';
 import { useTheme } from '@contexts/ThemeContext';
 import AppHeading from '@atoms/AppHeadingText/AppHeading';
+import { FC } from 'react';
+import { Movie } from 'types/movieTypes';
 
-const renderMovie = ({item}) => {
+const renderMovie = ({item}: {item: Movie}) => {
   return <MovieCard movie={item} />;
 };
 
-function MoviesList({movies, topic, seeAll, length = 10}) {
+interface MoviesSectionProps {
+  movies: Movie[],
+  topic: string
+  seeAll?: boolean
+  length?: number
+}
+
+const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, length = 10}) => {
   const {colors, fonts} = useTheme();
   const navigation = useNavigation();
   const { t } = useTranslation();
@@ -19,7 +28,7 @@ function MoviesList({movies, topic, seeAll, length = 10}) {
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
         <AppHeading>{topic}</AppHeading>
-        {seeAll && <AppButton
+        {seeAll && <Button
           textStyle={{
             ...styles.button,
             color: colors.secondary500,
@@ -28,13 +37,12 @@ function MoviesList({movies, topic, seeAll, length = 10}) {
           onPress={() => navigation.navigate('seeAllMovies')}
           flat>
           {t('see all')}
-        </AppButton>}
+        </Button>}
       </View>
       <FlatList
         data={movies.slice(0, length)}
-        contentContainerStyle={{flexGrow: 1}}
+        contentContainerStyle={{flexGrow: 1, gap: 15, paddingHorizontal: 20}}
         renderItem={renderMovie}
-        keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
         horizontal
       />
@@ -42,19 +50,19 @@ function MoviesList({movies, topic, seeAll, length = 10}) {
   );
 }
 
-export default MoviesList;
+export default MoviesSection;
 
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 20,
-    marginBottom: -2
   },
   heading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
-    marginHorizontal: 14,
+    marginStart: 20,
+    marginEnd: 8
   },
   button: {
     fontSize: 18,

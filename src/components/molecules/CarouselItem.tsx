@@ -3,8 +3,14 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@contexts/ThemeContext';
 import MovieCardButton from '@atoms/MovieCardButton/MovieCardButton';
 import { getImageUrl } from '@utils';
+import { FC } from 'react';
+import { Movie } from 'types/movieTypes';
 
-function CarouselItem({item}) {
+interface CarouselItemProps {
+  item: Movie
+}
+
+const CarouselItem: FC<CarouselItemProps> = ({item}) => {
   const navigation = useNavigation();
   const {colors, fonts} = useTheme();
 

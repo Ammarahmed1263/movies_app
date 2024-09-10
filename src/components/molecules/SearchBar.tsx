@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Voice from '@react-native-voice/voice';
+import Voice, { SpeechEndEvent, SpeechResultsEvent, SpeechStartEvent } from '@react-native-voice/voice';
 import {useTheme} from '@contexts/ThemeContext';
 
-function SearchBar({setKeyword, keyword}) {
+interface SearchBarProps {
+  keyword: string,
+  setKeyword: Dispatch<SetStateAction<string>>
+}
+
+const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword}) => {
   const { colors, fonts } = useTheme();
 
   useEffect(() => {
@@ -12,16 +17,16 @@ function SearchBar({setKeyword, keyword}) {
     Voice.onSpeechEnd = onSpeechEndHandler
     Voice.onSpeechResults = onSpeechResultsHandler
 
-    function onSpeechStartHandler(e) {
+    function onSpeechStartHandler(e: SpeechStartEvent) {
           console.log('onSpeechStart: ', e)
     }
     
-    function onSpeechEndHandler(e) {
+    function onSpeechEndHandler(e: SpeechEndEvent) {
       console.log('onSpeechEnd: ', e)      
     }
     
-    function onSpeechResultsHandler(e) {
-      setKeyword(e.value[0])
+    function onSpeechResultsHandler(e: SpeechResultsEvent) {
+      setKeyword(e?.value?.[0] ?? '')
       console.log('onSpeechResult: ', e)      
     }
     

@@ -1,23 +1,28 @@
-import {useState} from 'react';
+import {FC, useState} from 'react';
 import { ImageBackground, View, Text, Dimensions, StyleSheet, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import CarouselItem from '@molecules/CarouselItem';
 import { useTheme } from '@contexts/ThemeContext';
 import { getImageUrl } from '@utils';
+import { Movie } from 'types/movieTypes';
 
 const {width} = Dimensions.get('window');
 
-const renderItem = ({item}) => {
+const renderItem = ({item}: {item: Movie}) => {
   return <CarouselItem item={item} />;
 };
 
-function MoviesCarousel({movies}) {
-  const [activeMovieIndex, setActiveMovieIndex] = useState(0);
+interface MoviesCarouselProps {
+  movies: Movie[]
+}
+
+const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
+  const [activeMovieIndex, setActiveMovieIndex] = useState<number>(0);
   const { colors, fonts } = useTheme();
 
   
-  const handleSnapToItem = index => {
+  const handleSnapToItem = (index: number) => {
     setActiveMovieIndex(index);
   };
   
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gradientContainer: {
-    marginTop: StatusBar.currentHeight + 10,
+    marginTop: (StatusBar?.currentHeight ?? 50) + 10,
   },
   headerContainer: {
     flexDirection: 'row',

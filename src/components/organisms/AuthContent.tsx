@@ -2,8 +2,15 @@ import {StyleSheet, View, Text, KeyboardAvoidingView, ScrollView} from 'react-na
 import AuthForm from '@molecules/AuthForm';
 import Button from '@atoms/AppButton/AppButton';
 import { useTheme } from '@contexts/ThemeContext';
+import { FC } from 'react';
 
-function AuthContent({isLogin, navigation}) {
+// TODO: complete props
+interface AuthContentProps {
+  isLogin: boolean
+  navigation: object
+}
+
+const AuthContent: FC<AuthContentProps> = ({isLogin, navigation}) => {
   const {colors, fonts} = useTheme();
 
   return (

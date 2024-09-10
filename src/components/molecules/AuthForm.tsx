@@ -5,8 +5,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '@atoms/AppButton/AppButton';
 import LabelInput from './LabelInput';
 import { useTheme } from '@contexts/ThemeContext';
+import { FC } from 'react';
 
-function AuthForm({isLogin}) {
+interface AuthFormProps {
+  isLogin: boolean
+}
+
+const AuthForm: FC<AuthFormProps> = ({isLogin}) => {
   const navigation = useNavigation();
   const {colors} = useTheme();
 
@@ -34,7 +39,7 @@ function AuthForm({isLogin}) {
       </View>
 
       <View style={styles.button}>
-        <Button>
+        <Button onPress={() => console.log('hello, world')}>
           {isLogin ? 'Login' : 'Signup'}
         </Button>
       </View>

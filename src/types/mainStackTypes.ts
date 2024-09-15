@@ -4,7 +4,7 @@ import { NavigatorScreenParams } from "@react-navigation/native"
 import { MainTabsParamList } from "./mainTabsTypes"
 
 export type MainStackParamList = {
-  BottomTabs: NavigatorScreenParams<MainTabsParamList>,
+  BottomTabs: { colors: ColorsType } & NavigatorScreenParams<MainTabsParamList>,
   MovieDetails: {id: number},
   CastMemberDetails: {id: number},
   MovieListing: { category: string, colors?: ColorsType },

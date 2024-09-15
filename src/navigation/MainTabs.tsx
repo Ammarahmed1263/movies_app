@@ -1,14 +1,28 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {FC} from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { HomeScreen, SearchScreen, FavoritesScreen, ProfileScreen } from "@screens";
-import { useTranslation } from "react-i18next";
+import {
+  HomeScreen,
+  SearchScreen,
+  FavoritesScreen,
+  ProfileScreen,
+} from '@screens/index';
+import {useTranslation} from 'react-i18next';
+import {MainTabsParamList} from 'types/mainTabsTypes';
+import {MainTabsProps} from 'types/mainStackTypes';
 
-const Tab = createBottomTabNavigator();
-function MainTabs({route}) {
+const Tab = createBottomTabNavigator<MainTabsParamList>();
+
+const MainTabs: FC<MainTabsProps> = ({route}) => {
   const {colors} = route.params;
-  const { t } = useTranslation();
-  function getTabBarIcon({focused, color, size}, activeIcon, inActiveIcon) {
+  const {t} = useTranslation();
+
+  function getTabBarIcon(
+    {focused, color, size}: {focused: boolean; color: string; size: number},
+    activeIcon: string,
+    inActiveIcon: string,
+  ) {
     const icon = focused ? activeIcon : inActiveIcon;
 
     return <Icon name={icon} size={size} color={color} />;
@@ -41,7 +55,7 @@ function MainTabs({route}) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: t("home"),
+          title: t('home'),
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'home', 'home-outline'),
         }}
@@ -79,7 +93,7 @@ function MainTabs({route}) {
       />
     </Tab.Navigator>
   );
-}
+};
 
 export default MainTabs;
 

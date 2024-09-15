@@ -12,7 +12,6 @@ interface MoviesListProps {
 
 const MoviesList: FC<MoviesListProps> = ({movies, onEndReached, isLoading}) => {
   const {colors} = useTheme();
-  console.log('loading state now: ', isLoading);
 
   function renderItem({item}: {item: Movie}) {
     return (
@@ -49,7 +48,7 @@ const MoviesList: FC<MoviesListProps> = ({movies, onEndReached, isLoading}) => {
         onEndReachedThreshold={0.4}
         ListFooterComponent={
           isLoading ? (
-            <View style={{alignItems: 'center', marginTop: 8}}>
+            <View style={{alignItems: 'center', marginTop: 4}}>
               <ActivityIndicator color={colors.secondary500} size="large" />
             </View>
           ) : null

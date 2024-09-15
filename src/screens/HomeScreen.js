@@ -110,10 +110,10 @@ function HomeScreen() {
           <MoviesCarousel movies={state.nowPlaying.movies?.slice(0, 8)} />
         </View>
         <View style={{flex: 1}}>
-          <MoviesSection movies={state.nowPlaying.movies} topic={t('now playing')} seeAll />
-          <MoviesSection movies={state.popular.movies} topic={t('popular')} seeAll />
-          <MoviesSection movies={state.topRated.movies} topic={t('top rated')} seeAll />
-          <MoviesSection movies={state.upcoming.movies} topic={t('upcoming')} seeAll />
+          <MoviesSection category='now playing' movies={state.nowPlaying.movies} topic={t('now playing')} seeAll />
+          <MoviesSection category='popular' movies={state.popular.movies} topic={t('popular')} seeAll />
+          <MoviesSection category='top rated' movies={state.topRated.movies} topic={t('top rated')} seeAll />
+          <MoviesSection category='upcoming' movies={state.upcoming.movies} topic={t('upcoming')} seeAll />
         </View>
       </ScrollView>
     </>

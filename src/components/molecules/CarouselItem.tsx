@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     width: hs(210),
+    minHeight: vs(400),
     alignSelf: 'center'
   },
   innerContainer: {

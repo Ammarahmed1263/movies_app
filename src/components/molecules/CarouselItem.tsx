@@ -1,10 +1,12 @@
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@contexts/ThemeContext';
 import MovieCardButton from '@atoms/MovieCardButton/MovieCardButton';
 import { getImageUrl } from '@utils';
 import { FC } from 'react';
 import { Movie } from 'types/movieTypes';
+import { hs, vs } from '@styles/metrics';
+import Image from '@atoms/AppImage'
 
 interface CarouselItemProps {
   item: Movie
@@ -19,8 +21,7 @@ const CarouselItem: FC<CarouselItemProps> = ({item}) => {
       <View
         style={{...styles.innerContainer, borderColor: colors.secondary600}}>
         <Image
-          source={{uri: getImageUrl(item.poster_path)}}
-          style={styles.cardImage}
+          uri={getImageUrl(item.poster_path)}
         />
       </View>
       <Text
@@ -45,7 +46,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
-    minHeight: 400,
+    width: hs(210),
+    alignSelf: 'center'
   },
   innerContainer: {
     width: '100%',

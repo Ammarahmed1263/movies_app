@@ -1,11 +1,18 @@
-import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
+import {Text, StyleSheet, View, Pressable} from 'react-native';
+import Image from '@atoms/AppImage'
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
-import { getImageUrl } from '@utils';
+import { getImageUrl } from '@utils/index';
+import { Movie } from 'types/movieTypes';
+import { FC } from 'react';
 
-function FavoriteCard({movie}) {
+interface FavoriteCardProps {
+  movie: Movie
+}
+
+const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
   const {colors, fonts} = useTheme();
   const navigation = useNavigation();
 
@@ -14,7 +21,7 @@ function FavoriteCard({movie}) {
       style={styles.container}
       onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
       <Image
-        source={{uri: getImageUrl(movie.poster_path)}}
+        uri={getImageUrl(movie.poster_path)}
         style={styles.image}
       />
       <View style={styles.description}>
@@ -67,6 +74,7 @@ const styles = StyleSheet.create({
     flex: 1.2,
     borderRadius: 8,
     resizeMode: 'cover',
+    overflow: 'hidden'
   },
   description: {
     flex: 3,

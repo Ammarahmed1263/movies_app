@@ -1,22 +1,15 @@
 import {useEffect, useState} from 'react';
-import {
-  Image,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import Image from '@atoms/AppImage';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '@atoms/AppButton/AppButton';
-import { useTheme } from '@contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
 import TextSeeMore from '@atoms/SeeMoreText/SeeMoreText';
-import { getGenderString, getImageUrl } from '@utils';
+import {getGenderString, getImageUrl} from '@utils';
 import Heading from '@atoms/AppHeadingText/AppHeading';
 import MoviesList from '@organisms/MoviesSection';
-import { getMemberDetails, getMemberCredits } from '@services/castMemberService';
-
+import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
 
 const CastMemberScreen = ({route}) => {
   const {id} = route.params;
@@ -30,9 +23,9 @@ const CastMemberScreen = ({route}) => {
     (async () => {
       try {
         const response = await getMemberDetails(id);
-        const response2 = await getMemberCredits(id)
-        console.log('result here', response2);
-        setCredits(response2.cast)
+        const response2 = await getMemberCredits(id);
+        console.log('member details here: ', response);
+        setCredits(response2.cast);
         setDetails(response);
       } catch (e) {
         console.log('member retrieval error', e);
@@ -45,97 +38,115 @@ const CastMemberScreen = ({route}) => {
   }
 
   return (
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{marginHorizontal: 10, paddingTop: StatusBar.currentHeight + 15}}>
-          <Button
-            onPress={() => navigation.goBack()}
-            style={{
-              width: '13%',
-              height: '12%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 52,
-              width: 52,
-            }}
-            customView>
-            <Icon
-              name="arrow-back-outline"
-              size={28}
-              color={colors.paleShade}
-            />
-          </Button>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View
+        style={{
+          marginHorizontal: 10,
+          paddingTop: StatusBar.currentHeight + 15,
+        }}>
+        <Button
+          onPress={() => navigation.goBack()}
+          style={{
+            width: '13%',
+            height: '12%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 52,
+            width: 52,
+          }}
+          customView>
+          <Icon name="arrow-back-outline" size={28} color={colors.paleShade} />
+        </Button>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <View
+          style={{
+            ...styles.imageContainer,
+            borderColor: colors.secondary500,
+            shadowColor: colors.secondary500,
+          }}>
+          <Image
+            uri={getImageUrl(details.profile_path)}
+            resizeMode="stretch"
+          />
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <View
-            style={{
-              ...styles.imageContainer,
-              borderColor: colors.secondary500,
-              shadowColor: colors.secondary500,
-            }}>
-            <Image
-              source={{uri: getImageUrl(details.profile_path)}}
-              style={{width: '100%', height: '115%'}}
-              resizeMode="cover" />
-          </View>
-        </View>
-        <View style={{alignItems: 'center', marginVertical: 8}}>
-          <Text style={{fontFamily: fonts.bold, fontSize: 28, color: colors.paleShade}}>
-            {details.name}
+      </View>
+      <View style={{alignItems: 'center', marginVertical: 8}}>
+        <Text
+          style={{
+            fontFamily: fonts.bold,
+            fontSize: 28,
+            color: colors.paleShade,
+          }}>
+          {details.name}
+        </Text>
+        <Text
+          style={{
+            fontFamily: fonts.regular,
+            fontSize: 13,
+            color: colors.paleShade,
+          }}>
+          {details.place_of_birth}
+        </Text>
+      </View>
+      <View
+        style={{...styles.shortDetails, backgroundColor: colors.primary700}}>
+        <View style={{...styles.shortItem, borderColor: colors.primary500}}>
+          <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
+            Gender
           </Text>
-          <Text style={{fontFamily: fonts.regular, fontSize: 13, color: colors.paleShade}}>
-            {details.place_of_birth}
+          <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
+            {getGenderString(details.gender)}
+          </Text>
+        </View>
+        <View style={{...styles.shortItem, borderColor: colors.primary500}}>
+          <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
+            Birthday
+          </Text>
+          <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
+            {details.birthday}
+          </Text>
+        </View>
+        <View style={{...styles.shortItem, borderColor: colors.primary500}}>
+          <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
+            Known for
+          </Text>
+          <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
+            {details.known_for_department}
           </Text>
         </View>
         <View
-          style={{...styles.shortDetails, backgroundColor: colors.primary700}}>
-          <View style={{...styles.shortItem, borderColor: colors.primary500}}>
-            <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
-              Gender
-            </Text>
-            <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
-              {getGenderString(details.gender)}
-            </Text>
-          </View>
-          <View style={{...styles.shortItem, borderColor: colors.primary500}}>
-            <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
-              Birthday
-            </Text>
-            <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
-              {details.birthday}
-            </Text>
-          </View>
-          <View style={{...styles.shortItem, borderColor: colors.primary500}}>
-            <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
-              Known for
-            </Text>
-            <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
-              {details.known_for_department}
-            </Text>
-          </View>
-          <View
-            style={{...styles.shortItem, borderRightWidth: 0, paddingRight: 0}}>
-            <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
-              Popularity
-            </Text>
-            <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
-              {Math.round(details.popularity * 10) / 10}
-            </Text>
-          </View>
+          style={{...styles.shortItem, borderRightWidth: 0, paddingRight: 0}}>
+          <Text style={{fontFamily: fonts.regular, color: colors.primary500}}>
+            Popularity
+          </Text>
+          <Text style={{fontFamily: fonts.light, color: colors.primary500}}>
+            {Math.round(details.popularity * 10) / 10}
+          </Text>
         </View>
-        <View style={{marginHorizontal: 10, marginVertical: 8}}>
-          <Heading>Biography</Heading>
-          <TextSeeMore
-            style={{
-              color: colors.paleShade,
-              fontFamily: fonts.regular,
-              fontSize: 16,
-            }}
-            text={details.biography.replace(/\n/g, ' ')}
-            maxChars={400}
-          />
-        </View>
-        {credits && <MoviesList movies={credits.sort((a, b) => Number(b.vote_average) - Number(a.vote_average))} length={15} topic='Top Movies'/>}
-      </ScrollView>
+      </View>
+      <View style={{marginHorizontal: 10, marginVertical: 8}}>
+        <Heading>Biography</Heading>
+        <TextSeeMore
+          style={{
+            color: colors.paleShade,
+            fontFamily: fonts.regular,
+            fontSize: 16,
+          }}
+          text={details.biography.replace(/\n/g, ' ')}
+          maxChars={400}
+        />
+      </View>
+      {credits && (
+        <MoviesList
+          movies={credits.sort(
+            (a, b) => Number(b.vote_average) - Number(a.vote_average),
+          )}
+          length={15}
+          topic="Top Movies"
+        />
+      )}
+    </ScrollView>
   );
 };
 
@@ -143,7 +154,6 @@ export default CastMemberScreen;
 
 const styles = StyleSheet.create({
   imageContainer: {
-    alignItems: 'center',
     overflow: 'hidden',
     width: 230,
     height: 230,

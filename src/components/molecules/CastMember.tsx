@@ -1,11 +1,11 @@
 import {
   View,
-  Image,
   Text,
   StyleSheet,
   Pressable,
   TouchableOpacity,
 } from 'react-native';
+import Image from '@atoms/AppImage'
 import { useTheme } from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import { getImageUrl } from '@utils';
@@ -20,7 +20,6 @@ const Member: FC<MemberProps> = ({details}) => {
   const {colors, fonts} = useTheme();
   const navigation = useNavigation();
 
-  console.log('member details here', details);
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('CastMemberDetails', {id: details.id})}
@@ -28,8 +27,10 @@ const Member: FC<MemberProps> = ({details}) => {
       <View style={styles.container}>
         <View style={{ ...styles.imageContainer, borderColor: colors.secondary500}}>
           <Image
-            source={{uri: getImageUrl(details.profile_path)}}
+            uri={getImageUrl(details.profile_path)}
+            placeholder='person'
             style={styles.image}
+            resizeMode='stretch'
           />
         </View>
       </View>
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     height: 90,
     borderWidth: 2,
     borderRadius: 45,
+    padding: -12,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',

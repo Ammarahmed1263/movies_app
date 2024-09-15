@@ -1,15 +1,16 @@
-import {StyleSheet, Text, Image, ViewStyle} from 'react-native';
+import {StyleSheet, Text, ViewStyle} from 'react-native';
 import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
-import { useTheme } from '@contexts/ThemeContext';
-import { convertToArabicNumerals, formatVoteCount, getImageUrl } from '@utils';
+import {useTheme} from '@contexts/ThemeContext';
+import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils';
+import Image from '@atoms/AppImage';
 import {useTranslation} from 'react-i18next';
-import { FC } from 'react';
-import { Movie } from 'types/movieTypes';
+import {FC} from 'react';
+import {Movie} from 'types/movieTypes';
 
 interface MovieCardProps {
-  movie: Movie
-  style?: ViewStyle
+  movie: Movie;
+  style?: ViewStyle;
 }
 
 const MovieCard: FC<MovieCardProps> = ({movie, style}) => {
@@ -19,7 +20,10 @@ const MovieCard: FC<MovieCardProps> = ({movie, style}) => {
 
   return (
     <MovieButton
-      style={{...styles.container, backgroundColor: colors.secondary500, ...style}}
+      style={{
+        ...styles.container,
+        ...style,
+      }}
       onPress={() => navigation.push('MovieDetails', {id: movie.id})}>
       <Text
         style={{
@@ -30,18 +34,12 @@ const MovieCard: FC<MovieCardProps> = ({movie, style}) => {
         }}>
         {i18n.language == 'ar'
           ? convertToArabicNumerals(formatVoteCount(movie.vote_average))
-          : formatVoteCount(movie.vote_average)
-        }
+          : formatVoteCount(movie.vote_average)}
       </Text>
-      <Image
-        source={{
-          uri: getImageUrl(movie.poster_path),
-        }}
-        style={styles.image}
-      />
+      <Image uri={getImageUrl(movie.poster_path)} />
     </MovieButton>
   );
-}
+};
 
 export default MovieCard;
 
@@ -63,10 +61,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderBottomLeftRadius: 7,
     alignSelf: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
   },
 });

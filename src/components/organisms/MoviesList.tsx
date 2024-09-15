@@ -26,7 +26,6 @@ const MoviesList: FC<MoviesListProps> = ({movies, onEndReached, isLoading}) => {
             flex: 1,
             width: 160,
             height: 220,
-            backgroundColor: 'white',
             marginHorizontal: 0,
           }}
         />

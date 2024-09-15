@@ -3,6 +3,7 @@ import i18n, { InitOptions } from 'i18next';
 import {initReactI18next} from 'react-i18next'; 
 import en from './en.json'; 
 import ar from './ar.json'; 
+import getDeviceLanguage from '@utils/getDeviceLanguage';
 
 const resources = { 
   en: {
@@ -14,7 +15,7 @@ const resources = {
 }
 
 const options: InitOptions = { 
-  lng: 'en', 
+  lng: getDeviceLanguage(), 
   fallbackLng: 'en',
   resources,
   interpolation: { 
@@ -33,11 +34,3 @@ const options: InitOptions = {
 i18n.use(initReactI18next).init(options); 
   
 export default i18n;
-// const getDeviceLanguage = () => {
-//   const deviceLanguage = Platform.OS === 'ios' 
-//     ? I18nManager.localeIdentifier 
-//     : I18nManager.isRTL 
-//     ? 'ar' 
-//     : 'en';
-//   return deviceLanguage.startsWith('ar') ? 'ar' : 'en';
-// };

@@ -3,6 +3,9 @@ import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Voice, { SpeechEndEvent, SpeechResultsEvent, SpeechStartEvent } from '@react-native-voice/voice';
 import {useTheme} from '@contexts/ThemeContext';
+import i18n from '../../i18n'
+import getDeviceLanguage from '@utils/getDeviceLanguage';
+import { useTranslation } from 'react-i18next';
 
 interface SearchBarProps {
   keyword: string,
@@ -11,6 +14,7 @@ interface SearchBarProps {
 
 const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword}) => {
   const { colors, fonts } = useTheme();
+  const { t } = useTranslation();
 
   useEffect(() => {
     Voice.onSpeechStart = onSpeechStartHandler
@@ -40,7 +44,7 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword}) => {
       const active = await Voice.isRecognizing();
       if(!active) {
         console.log('recording')
-        await Voice.start('ar-EG') // TODO: change based on app locale
+        await Voice.start(getDeviceLanguage() === 'ar' ? 'ar-EG' : 'en-US') // TODO: change based on app locale
       } else {
         console.log('stop recording')
         await Voice.stop();
@@ -58,7 +62,7 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword}) => {
         backgroundColor: colors.primary500,
       }}>
       <TextInput
-        placeholder="Search Movies"
+        placeholder={t("search movies")}
         placeholderTextColor={colors.primary700}
         cursorColor={colors.primary700}
         value={keyword}

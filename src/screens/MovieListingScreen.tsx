@@ -1,7 +1,8 @@
 import MoviesList from '@organisms/MoviesList';
 import {getNowPlaying, getPopular, getTopRated, getUpcoming} from '@services/movieService';
-import {useEffect, useReducer} from 'react';
+import {FC, useEffect, useReducer} from 'react';
 import {Text, View} from 'react-native';
+import { MovieListingScreenProps } from 'types/mainStackTypes';
 
 const initialState = {
   movies: [],
@@ -10,7 +11,7 @@ const initialState = {
   totalPages: 1,
 };
 
-const reducer = (state, action) => {
+const reducer = (state: any, action: any) => {
   switch (action.type) {
     case 'RESET_SEARCH':
       return {
@@ -43,7 +44,7 @@ const reducer = (state, action) => {
   }
 };
 
-const MoviesListingScreen = ({route}) => {
+const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category} = route.params;
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log('state here: ', state)
@@ -112,4 +113,4 @@ const MoviesListingScreen = ({route}) => {
   );
 };
 
-export default MoviesListingScreen;
+export default MovieListingScreen;

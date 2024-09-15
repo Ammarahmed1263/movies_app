@@ -1,18 +1,16 @@
-import {View, StyleSheet, Keyboard, ScrollView} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { FC } from 'react';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '@atoms/AppButton/AppButton';
 import LabelInput from './LabelInput';
 import { useTheme } from '@contexts/ThemeContext';
-import { FC } from 'react';
 
 interface AuthFormProps {
   isLogin: boolean
 }
 
 const AuthForm: FC<AuthFormProps> = ({isLogin}) => {
-  const navigation = useNavigation();
   const {colors} = useTheme();
 
   return (

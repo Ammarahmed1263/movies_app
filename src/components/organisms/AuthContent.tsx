@@ -3,11 +3,13 @@ import AuthForm from '@molecules/AuthForm';
 import Button from '@atoms/AppButton/AppButton';
 import { useTheme } from '@contexts/ThemeContext';
 import { FC } from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthStackParamList } from 'types/authStackTypes';
 
 // TODO: complete props
 interface AuthContentProps {
   isLogin: boolean
-  navigation: object
+  navigation: NativeStackNavigationProp<AuthStackParamList, 'Login' | 'Signup'>
 }
 
 const AuthContent: FC<AuthContentProps> = ({isLogin, navigation}) => {

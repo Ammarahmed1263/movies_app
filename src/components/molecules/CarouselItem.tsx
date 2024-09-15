@@ -2,18 +2,19 @@ import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@contexts/ThemeContext';
 import MovieCardButton from '@atoms/MovieCardButton/MovieCardButton';
-import { getImageUrl } from '@utils';
+import { getImageUrl } from '@utils/index';
 import { FC } from 'react';
 import { Movie } from 'types/movieTypes';
 import { hs, vs } from '@styles/metrics';
 import Image from '@atoms/AppImage'
+import { BottomTabsNavigationProp } from 'types/mainStackTypes';
 
 interface CarouselItemProps {
   item: Movie
 }
 
 const CarouselItem: FC<CarouselItemProps> = ({item}) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<BottomTabsNavigationProp>();
   const {colors, fonts} = useTheme();
 
   return (

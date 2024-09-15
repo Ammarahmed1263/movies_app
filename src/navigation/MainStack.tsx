@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTabs from './MainTabs';
-import { MovieDetailsScreen, MoviesList, CastMemberScreen } from '@screens';
+import { MovieDetailsScreen, MoviesListingScreen, CastMemberScreen } from '@screens/index';
 import { ColorsType, FontsType } from 'types/themeTypes';
 import { FC } from 'react';
 
@@ -28,8 +28,8 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
       <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
       <Stack.Screen name="CastMemberDetails" component={CastMemberScreen} />
       <Stack.Screen
-        name="seeAllMovies"
-        component={MoviesList}
+        name="moviesListing"
+        component={MoviesListingScreen}
         initialParams={{colors}}
         options={{
           headerShown: true,

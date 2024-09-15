@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useReducer, useState} from 'react';
 import {RefreshControl, Text, ScrollView, StatusBar, View} from 'react-native';
 import MoviesSection from '@organisms/MoviesSection';
 import MoviesCarousel from '@organisms/MoviesCarousel';
@@ -11,15 +11,35 @@ import {
   getUpcoming,
 } from '@services/movieService';
 
+const initialState = {
+  nowPlaying: {movies: [], page: 1, totalPages: 1},
+  popular: {movies: [], page: 1, totalPages: 1},
+  topRated: {movies: [], page: 1, totalPages: 1},
+  upcoming: {movies: [], page: 1, totalPages: 1},
+  loading: false,
+  refreshing: false
+}
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH':
+      console.log(state, action)
+      return {
+        ...state,
+        [action.category]: {...state[action.category], movies: [...state[action.category].movies,...action.payload]}
+      }
+    default:
+      break;
+  }
+}
+
 function HomeScreen() {
   /* TODO: work with useReducer hook here
       handle no network connection*/
-  const [now_playing, setnow_playing] = useState([]);
-  const [popular, setpopular] = useState([]);
-  const [top_rated, settop_rated] = useState([]);
-  const [upcoming, setupcoming] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [state, dispatch] = useReducer(reducer, initialState)
+  console.log('total state', state.nowPlaying.movies)
   const {t} = useTranslation();
   const {theme, colors} = useTheme();
 
@@ -39,10 +59,10 @@ function HomeScreen() {
           getTopRated(),
           getUpcoming(),
         ]);
-        setnow_playing(nowPlayingResponse.value.results)
-        setpopular(popularResponse.value.results)
-        settop_rated(topRatedResponse.value.results)
-        setupcoming(upcomingResponse.value.results)
+        dispatch({type: 'FETCH', category: 'nowPlaying', payload: nowPlayingResponse.value.results})
+        dispatch({type: 'FETCH', category: 'popular', payload: popularResponse.value.results})
+        dispatch({type: 'FETCH', category: 'topRated', payload: topRatedResponse.value.results})
+        dispatch({type: 'FETCH', category: 'upcoming', payload: upcomingResponse.value.results})
       } catch (e) {
         console.log('Full error object:', e);
       } finally {
@@ -86,14 +106,14 @@ function HomeScreen() {
             progressBackgroundColor={colors.primary500}
           />
         }>
-        <View style={{flex: 1.5}}>
-          <MoviesCarousel movies={now_playing?.slice(0, 8)} />
+        <View style={{flex: 3}}>
+          <MoviesCarousel movies={state.nowPlaying.movies?.slice(0, 8)} />
         </View>
         <View style={{flex: 1}}>
-          <MoviesSection movies={now_playing} topic={t('now playing')} seeAll />
-          <MoviesSection movies={popular} topic={t('popular')} seeAll />
-          <MoviesSection movies={top_rated} topic={t('top rated')} seeAll />
-          <MoviesSection movies={upcoming} topic={t('upcoming')} seeAll />
+          <MoviesSection movies={state.nowPlaying.movies} topic={t('now playing')} seeAll />
+          <MoviesSection movies={state.popular.movies} topic={t('popular')} seeAll />
+          <MoviesSection movies={state.topRated.movies} topic={t('top rated')} seeAll />
+          <MoviesSection movies={state.upcoming.movies} topic={t('upcoming')} seeAll />
         </View>
       </ScrollView>
     </>

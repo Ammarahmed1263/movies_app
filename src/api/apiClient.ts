@@ -10,7 +10,7 @@ const apiClient = async (endpoint: string, params = {}, method = 'GET', data = n
     });
     return response.data;
   } catch (error: any) {
-    console.error('API Error:', endpoint, error.response);
+    console.error('API Error:', endpoint, error);
     throw new Error(error.response?.data?.message || 'An error occurred');
   }
 };

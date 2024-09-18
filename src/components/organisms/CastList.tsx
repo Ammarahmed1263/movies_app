@@ -1,6 +1,6 @@
 import { FlatList, View } from "react-native";
 import Member from "@molecules/CastMember";
-import { CastMember } from "types/castTypes";
+import { CastMember, CastMemberArray } from "types/castTypes";
 import { FC } from "react";
 
 
@@ -9,7 +9,7 @@ const renderItem = ({item}: {item: CastMember}) => {
 }
 
 interface CastListProps {
-  cast: CastMember[]
+  cast: CastMemberArray
 }
 
 const CastList: FC<CastListProps> = ({cast}) => {

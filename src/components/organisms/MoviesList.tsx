@@ -1,11 +1,11 @@
 import {ActivityIndicator, FlatList, Keyboard, View} from 'react-native';
 import {FC} from 'react';
 import MovieCard from '@molecules/MovieCard';
-import {Movie} from 'types/movieTypes';
+import {Movie, MovieArray} from 'types/movieTypes';
 import {useTheme} from '@contexts/ThemeContext';
 
 interface MoviesListProps {
-  movies: Movie[];
+  movies: MovieArray;
   onEndReached: () => void;
   isLoading: boolean
 }
@@ -18,7 +18,6 @@ const MoviesList: FC<MoviesListProps> = ({movies, onEndReached, isLoading}) => {
       <View
         style={{
           marginVertical: 10,
-          // marginHorizontal: 10,
         }}>
         <MovieCard
           movie={item}

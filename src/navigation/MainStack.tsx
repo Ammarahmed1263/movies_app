@@ -13,7 +13,6 @@ interface MainStackProps {
 }
 
 const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
-  // TODO: initial params inconsistency
   
   return (
     <Stack.Navigator

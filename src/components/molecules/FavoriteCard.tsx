@@ -7,6 +7,7 @@ import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
 import { getImageUrl } from '@utils/index';
 import { Movie } from 'types/movieTypes';
 import { FC } from 'react';
+import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 
 interface FavoriteCardProps {
   movie: Movie
@@ -14,7 +15,7 @@ interface FavoriteCardProps {
 
 const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
   const {colors, fonts} = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<MovieDetailsNavigationProp>();
 
   return (
     <MovieButton

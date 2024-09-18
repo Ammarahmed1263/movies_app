@@ -2,11 +2,12 @@ import {StyleSheet, Text, ViewStyle} from 'react-native';
 import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '@contexts/ThemeContext';
-import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils';
+import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils/index';
 import Image from '@atoms/AppImage';
 import {useTranslation} from 'react-i18next';
 import {FC} from 'react';
 import {Movie} from 'types/movieTypes';
+import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 
 interface MovieCardProps {
   movie: Movie;
@@ -14,7 +15,7 @@ interface MovieCardProps {
 }
 
 const MovieCard: FC<MovieCardProps> = ({movie, style}) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<MovieDetailsNavigationProp>();
   const {colors, fonts} = useTheme();
   const {i18n} = useTranslation();
 

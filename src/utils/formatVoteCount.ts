@@ -1,6 +1,6 @@
 import i18next from "i18next";
 
-export default function formatVoteCount(votes: number, t: (key: string) => string): string {
+export default function formatVoteCount(votes: number): string {
 
   const conversion = Math.ceil(votes * 10) / 10;
   const result = (conversion + '').replace(".", ",");

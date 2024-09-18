@@ -2,14 +2,14 @@ import {FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
 import FavoriteCard from '@molecules/FavoriteCard';
 import { getNowPlaying } from '@services/movieService';
-import { Movie } from 'types/movieTypes';
+import { Movie, MovieArray } from 'types/movieTypes';
 
 function renderFavorite({item}: {item: Movie}) {
   return <FavoriteCard movie={item} />;
 }
 
 function FavoritesList() {
-  const [now_playing, setnow_playing] = useState<Movie[]>([]);
+  const [now_playing, setnow_playing] = useState<MovieArray>([]);
   console.log(now_playing);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function FavoritesList() {
   return (
     <View style={{flex: 1}}>
       <FlatList
-        data={now_playing.slice(1, 10)}
+        data={now_playing}
         renderItem={renderFavorite}
         showsVerticalScrollIndicator={false}
       />

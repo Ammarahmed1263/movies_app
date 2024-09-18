@@ -48,6 +48,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category} = route.params;
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log('state here: ', state)
+  // TODO: refactor to specific service
   useEffect(() => {
     (async () => {
       dispatch({type: 'RESET_SEARCH'});

@@ -6,7 +6,6 @@ import { FC } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from 'types/authStackTypes';
 
-// TODO: complete props
 interface AuthContentProps {
   isLogin: boolean
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login' | 'Signup'>

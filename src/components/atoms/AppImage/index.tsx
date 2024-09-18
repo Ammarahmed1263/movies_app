@@ -1,12 +1,10 @@
-import { useTheme } from '@contexts/ThemeContext';
 import React, { useState } from 'react';
-import { Image, StyleSheet, View, ActivityIndicator, ImageProps, ImageStyle } from 'react-native';
-import person_placeholder from '../../../assets/images/person_placeholder.png' 
-import movie_placeholder from '../../../assets/images/movie_placeholder.png' 
+import { Image, StyleSheet, View, ActivityIndicator, ImageProps } from 'react-native';
+import { useTheme } from '@contexts/ThemeContext';
 
 enum imagePlaceHolder {
-  PERSON= person_placeholder,
-  MOVIE= movie_placeholder,
+  PERSON = require('../../../assets/images/person_placeholder.png'),
+  MOVIE = require('../../../assets/images/movie_placeholder.png'),
 }
 
 interface AppImageProps extends ImageProps {

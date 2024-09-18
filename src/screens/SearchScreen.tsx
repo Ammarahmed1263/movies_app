@@ -3,16 +3,24 @@ import MoviesList from '../components/organisms/MoviesList';
 import SearchBar from '@molecules/SearchBar';
 import {useCallback, useEffect, useReducer, useState} from 'react';
 import {searchMovies} from '@services/movieService';
+import { MovieArray } from 'types/movieTypes';
 
-const initialState = {
+
+type SearchResult = {
+  loading: boolean;
+  page: number;
+  totalPages: number;
+  searchResults: MovieArray;
+};
+
+const initialState: SearchResult = {
   searchResults: [],
   loading: false,
   page: 1,
   totalPages: 1,
 };
 
-
-const reducer = (state, action) => {
+const reducer = (state: SearchResult, action: any) => {
   switch (action.type) {
     case 'RESET_SEARCH':
       return {

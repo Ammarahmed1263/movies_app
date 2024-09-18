@@ -8,9 +8,10 @@ import {
 import Image from '@atoms/AppImage'
 import { useTheme } from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import { getImageUrl } from '@utils';
+import { getImageUrl } from '@utils/index';
 import { FC } from 'react';
 import { CastMember } from 'types/castTypes';
+import { CastMemberDetailsNavigationProp, CastMemberScreenProps } from 'types/mainStackTypes';
 
 interface MemberProps {
   details: CastMember
@@ -18,7 +19,7 @@ interface MemberProps {
 
 const Member: FC<MemberProps> = ({details}) => {
   const {colors, fonts} = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<CastMemberDetailsNavigationProp>();
 
   return (
     <TouchableOpacity

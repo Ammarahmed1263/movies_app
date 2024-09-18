@@ -16,3 +16,6 @@ export type MovieDetailsScreenProps = NativeStackScreenProps<MainStackParamList,
 export type MainTabsProps = NativeStackScreenProps<MainStackParamList, 'BottomTabs'>
 
 export type MainTabsNavigationProp = NativeStackNavigationProp<MainStackParamList, 'BottomTabs'>
+export type CastMemberDetailsNavigationProp = NativeStackNavigationProp<MainStackParamList, 'CastMemberDetails'>
+export type MovieDetailsNavigationProp = NativeStackNavigationProp<MainStackParamList, 'MovieDetails'>
+export type MovieListingNavigationProp = NativeStackNavigationProp<MainStackParamList, 'MovieListing'>

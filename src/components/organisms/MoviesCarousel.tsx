@@ -17,7 +17,7 @@ import Pagination from '@molecules/Pagination';
 import CarouselItem from '@molecules/CarouselItem';
 import {useTheme} from '@contexts/ThemeContext';
 import {getImageUrl} from '@utils/index';
-import {Movie} from 'types/movieTypes';
+import {Movie, MovieArray} from 'types/movieTypes';
 import { vs } from '@styles/metrics';
 
 const {width} = Dimensions.get('window');
@@ -27,7 +27,7 @@ const renderItem = ({item, index}: {item: Movie; index: number}) => {
 };
 
 interface MoviesCarouselProps {
-  movies: Movie[];
+  movies: MovieArray;
 }
 
 const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {

@@ -6,15 +6,15 @@ import MovieCard from '@molecules/MovieCard';
 import { useTheme } from '@contexts/ThemeContext';
 import AppHeading from '@atoms/AppHeadingText/AppHeading';
 import { FC } from 'react';
-import { Movie } from 'types/movieTypes';
-import { MainTabsNavigationProp } from 'types/mainStackTypes';
+import { Movie, MovieArray } from 'types/movieTypes';
+import { MainTabsNavigationProp, MovieListingNavigationProp } from 'types/mainStackTypes';
 
 const renderMovie = ({item}: {item: Movie}) => {
   return <MovieCard movie={item} />;
 };
 
 interface MoviesSectionProps {
-  movies: Movie[],
+  movies: MovieArray,
   topic: string
   seeAll?: boolean
   length?: number
@@ -23,7 +23,7 @@ interface MoviesSectionProps {
 
 const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, length = 10, category}) => {
   const {colors, fonts} = useTheme();
-  const navigation = useNavigation<MainTabsNavigationProp>();
+  const navigation = useNavigation<MovieListingNavigationProp>();
   const { t } = useTranslation();
   
   return (
@@ -42,7 +42,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, l
         </Button>}
       </View>
       <FlatList
-        data={movies.slice(0, length)}
+        data={movies}
         contentContainerStyle={{flexGrow: 1, gap: 15, paddingHorizontal: 20}}
         renderItem={renderMovie}
         showsHorizontalScrollIndicator={false}

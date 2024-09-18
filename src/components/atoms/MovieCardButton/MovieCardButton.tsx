@@ -10,7 +10,6 @@ interface MovieCardButtonProps {
 
 const MovieCardButton: FC<MovieCardButtonProps> = ({children, style, onPress}) => {
   const { colors } = useTheme();
-  // when clicked pass movie id to retrieve it's data
   return (
     <Pressable
       onPress={onPress}

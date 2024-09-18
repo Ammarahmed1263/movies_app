@@ -7,14 +7,14 @@ import { FC } from 'react';
 import { Movie } from 'types/movieTypes';
 import { hs, vs } from '@styles/metrics';
 import Image from '@atoms/AppImage'
-import { MainTabsNavigationProp } from 'types/mainStackTypes';
+import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 
 interface CarouselItemProps {
   item: Movie
 }
 
 const CarouselItem: FC<CarouselItemProps> = ({item}) => {
-  const navigation = useNavigation<MainTabsNavigationProp>();
+  const navigation = useNavigation<MovieDetailsNavigationProp>();
   const {colors, fonts} = useTheme();
 
   return (

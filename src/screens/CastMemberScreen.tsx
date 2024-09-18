@@ -11,11 +11,12 @@ import Heading from '@atoms/AppHeadingText/AppHeading';
 import MoviesList from '@organisms/MoviesSection';
 import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
 import { CastMemberScreenProps } from 'types/mainStackTypes';
+import { MemberCreditArray, MemberDetails } from 'types/castTypes';
 
 const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const {id} = route.params;
-  const [details, setDetails] = useState(null);
-  const [credits, setCredits] = useState([]);
+  const [details, setDetails] = useState<MemberDetails | undefined>(undefined);
+  const [credits, setCredits] = useState<MemberCreditArray>([]);
   const navigation = useNavigation();
   const {colors, fonts} = useTheme();
 
@@ -43,17 +44,15 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
       <View
         style={{
           marginHorizontal: 10,
-          paddingTop: StatusBar.currentHeight + 15,
+          paddingTop: StatusBar.currentHeight ?? 50 + 15,
         }}>
         <Button
           onPress={() => navigation.goBack()}
           style={{
             width: '13%',
-            height: '12%',
+            aspectRatio: 1 / 1,
             alignItems: 'center',
             justifyContent: 'center',
-            height: 52,
-            width: 52,
           }}
           customView>
           <Icon name="arrow-back-outline" size={28} color={colors.paleShade} />
@@ -67,7 +66,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
             shadowColor: colors.secondary500,
           }}>
           <Image
-            uri={getImageUrl(details.profile_path)}
+            uri={getImageUrl(details?.profile_path)}
             resizeMode="stretch"
           />
         </View>

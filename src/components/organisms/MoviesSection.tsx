@@ -7,6 +7,7 @@ import { useTheme } from '@contexts/ThemeContext';
 import AppHeading from '@atoms/AppHeadingText/AppHeading';
 import { FC } from 'react';
 import { Movie } from 'types/movieTypes';
+import { MainTabsNavigationProp } from 'types/mainStackTypes';
 
 const renderMovie = ({item}: {item: Movie}) => {
   return <MovieCard movie={item} />;
@@ -17,12 +18,12 @@ interface MoviesSectionProps {
   topic: string
   seeAll?: boolean
   length?: number
-  category: string
+  category?: string
 }
 
 const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, length = 10, category}) => {
   const {colors, fonts} = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<MainTabsNavigationProp>();
   const { t } = useTranslation();
   
   return (
@@ -35,7 +36,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, l
             color: colors.secondary500,
             fontFamily: fonts.light,
           }}
-          onPress={() => navigation.navigate('moviesListing', {category})}
+          onPress={() => navigation.navigate('MovieListing', {category})}
           flat>
           {t('see all')}
         </Button>}

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import Image from '@atoms/AppImage';
 import {useNavigation} from '@react-navigation/native';
@@ -6,12 +6,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '@atoms/AppButton/AppButton';
 import {useTheme} from '@contexts/ThemeContext';
 import TextSeeMore from '@atoms/SeeMoreText/SeeMoreText';
-import {getGenderString, getImageUrl} from '@utils';
+import {getGenderString, getImageUrl} from '@utils/index';
 import Heading from '@atoms/AppHeadingText/AppHeading';
 import MoviesList from '@organisms/MoviesSection';
 import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
+import { CastMemberScreenProps } from 'types/mainStackTypes';
 
-const CastMemberScreen = ({route}) => {
+const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const {id} = route.params;
   const [details, setDetails] = useState(null);
   const [credits, setCredits] = useState([]);

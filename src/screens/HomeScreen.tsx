@@ -20,7 +20,7 @@ const initialState = {
   refreshing: false
 }
 
-const reducer = (state, action) => {
+const reducer = (state: any, action: any) => {
   switch (action.type) {
     case 'FETCH':
       console.log(state, action)
@@ -59,11 +59,29 @@ function HomeScreen() {
           getTopRated(),
           getUpcoming(),
         ]);
-        dispatch({type: 'FETCH', category: 'nowPlaying', payload: nowPlayingResponse.value.results})
-        dispatch({type: 'FETCH', category: 'popular', payload: popularResponse.value.results})
-        dispatch({type: 'FETCH', category: 'topRated', payload: topRatedResponse.value.results})
-        dispatch({type: 'FETCH', category: 'upcoming', payload: upcomingResponse.value.results})
-      } catch (e) {
+        if (nowPlayingResponse.status === "fulfilled") {
+          dispatch({ type: 'FETCH', category: 'nowPlaying', payload: nowPlayingResponse.value.results });
+        } else {
+          console.error('Failed to fetch now playing movies:', nowPlayingResponse.reason);
+        }
+        
+        if (popularResponse.status === "fulfilled") {
+          dispatch({ type: 'FETCH', category: 'popular', payload: popularResponse.value.results });
+        } else {
+          console.error('Failed to fetch popular movies:', popularResponse.reason);
+        }
+        
+        if (topRatedResponse.status === "fulfilled") {
+          dispatch({ type: 'FETCH', category: 'topRated', payload: topRatedResponse.value.results });
+        } else {
+          console.error('Failed to fetch top-rated movies:', topRatedResponse.reason);
+        }
+        
+        if (upcomingResponse.status === "fulfilled") {
+          dispatch({ type: 'FETCH', category: 'upcoming', payload: upcomingResponse.value.results });
+        } else {
+          console.error('Failed to fetch upcoming movies:', upcomingResponse.reason);
+        }      } catch (e) {
         console.log('Full error object:', e);
       } finally {
         console.log('fetching APIs data done');

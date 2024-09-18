@@ -2,13 +2,14 @@ import {FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
 import FavoriteCard from '@molecules/FavoriteCard';
 import { getNowPlaying } from '@services/movieService';
+import { Movie } from 'types/movieTypes';
 
-function renderFavorite({item}) {
+function renderFavorite({item}: {item: Movie}) {
   return <FavoriteCard movie={item} />;
 }
 
 function FavoritesList() {
-  const [now_playing, setnow_playing] = useState([]);
+  const [now_playing, setnow_playing] = useState<Movie[]>([]);
   console.log(now_playing);
 
   useEffect(() => {

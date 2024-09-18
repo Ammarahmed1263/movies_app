@@ -12,7 +12,7 @@ import {
   Alert,
   Share,
 } from 'react-native';
-import {useCallback, useEffect, useState, useRef} from 'react';
+import {useCallback, useEffect, useState, useRef, FC} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '@atoms/AppButton/AppButton';
@@ -22,13 +22,15 @@ import {formatVoteCount, durationToString, getImageUrl} from '@utils';
 import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
 import TextSeeMore from '@atoms/SeeMoreText/SeeMoreText';
 import Heading from '@atoms/AppHeadingText/AppHeading';
-import { getMovieCredits, getMovieDetails } from '@services/movieDetailsService';
-import { getMovieVideos } from '@services/movieService';
+import {getMovieCredits, getMovieDetails} from '@services/movieDetailsService';
+import {getMovieVideos} from '@services/movieService';
+import {MovieDetailsScreenProps} from 'types/mainStackTypes';
 
-
-function MovieDetailsScreen({route, navigation}) {
+const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
+  route,
+  navigation,
+}) => {
   const movieId = route.params.id;
-  // console.log('current id', movieID);
   const [details, setDetails] = useState({});
   const [cast, setCast] = useState([]);
   const [trailId, setTrailId] = useState(null);
@@ -38,8 +40,6 @@ function MovieDetailsScreen({route, navigation}) {
   const modalRef = useRef(null);
   const {colors, fonts} = useTheme();
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
-
-  // console.log(details);
 
   useEffect(() => {
     (async () => {
@@ -107,14 +107,18 @@ function MovieDetailsScreen({route, navigation}) {
 
   const handleShare = useCallback(async () => {
     try {
-      await Share.share({
-        title: 'Look what I found!',
-        message: `Check out "${details.title}" Trailer on YouTube: https://www.youtube.com/watch?v=${trailId}`,
-        url: `https://www.youtube.com/watch?v=${trailId}`,
-        subject: 'Check out this video!',
-      });
+      await Share.share(
+        {
+          title: 'Look what I found!',
+          message: `Check out "${details.title}" Trailer on YouTube: https://www.youtube.com/watch?v=${trailId}`,
+          url: `https://www.youtube.com/watch?v=${trailId}`,
+        },
+        {
+          subject: 'Check out this video!',
+        },
+      );
     } catch (e) {
-      console.log('ooops error sharing data', error.request.data);
+      console.log('ooops error sharing data', e.request.data);
     }
   }, [trailId]);
 
@@ -371,7 +375,7 @@ function MovieDetailsScreen({route, navigation}) {
       </Modal>
     </>
   );
-}
+};
 
 export default MovieDetailsScreen;
 

@@ -7,10 +7,12 @@ export type MainStackParamList = {
   BottomTabs: { colors: ColorsType } & NavigatorScreenParams<MainTabsParamList>,
   MovieDetails: {id: number},
   CastMemberDetails: {id: number},
-  MovieListing: { category: string, colors?: ColorsType },
+  MovieListing: { category?: string, colors?: ColorsType },
 }
 
 export type MovieListingScreenProps = NativeStackScreenProps<MainStackParamList, 'MovieListing'>
+export type CastMemberScreenProps = NativeStackScreenProps<MainStackParamList, 'CastMemberDetails'>
+export type MovieDetailsScreenProps = NativeStackScreenProps<MainStackParamList, 'MovieDetails'>
 export type MainTabsProps = NativeStackScreenProps<MainStackParamList, 'BottomTabs'>
 
-export type BottomTabsNavigationProp = NativeStackNavigationProp<MainStackParamList, 'BottomTabs'>
+export type MainTabsNavigationProp = NativeStackNavigationProp<MainStackParamList, 'BottomTabs'>

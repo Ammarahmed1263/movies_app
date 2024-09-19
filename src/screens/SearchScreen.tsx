@@ -3,15 +3,8 @@ import MoviesList from '../components/organisms/MoviesList';
 import SearchBar from '@molecules/SearchBar';
 import {useCallback, useEffect, useReducer, useState} from 'react';
 import {searchMovies} from '@services/movieService';
-import { MovieArray } from 'types/movieTypes';
+import { SearchResult } from 'types/searchTypes';
 
-
-type SearchResult = {
-  loading: boolean;
-  page: number;
-  totalPages: number;
-  searchResults: MovieArray;
-};
 
 const initialState: SearchResult = {
   searchResults: [],

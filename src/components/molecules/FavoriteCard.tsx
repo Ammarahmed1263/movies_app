@@ -1,9 +1,10 @@
 import {Text, StyleSheet, View, Pressable} from 'react-native';
-import Image from '@atoms/AppImage'
+import Image from '@atoms/AppImage';
+
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
+import MovieButton from '@atoms/MovieCardButton';
 import { getImageUrl } from '@utils/index';
 import { Movie } from 'types/movieTypes';
 import { FC } from 'react';

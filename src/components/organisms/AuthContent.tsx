@@ -1,6 +1,7 @@
 import {StyleSheet, View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import AuthForm from '@molecules/AuthForm';
-import Button from '@atoms/AppButton/AppButton';
+import Button from '@atoms/AppButton';
+
 import { useTheme } from '@contexts/ThemeContext';
 import { FC } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';

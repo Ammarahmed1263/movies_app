@@ -1,13 +1,14 @@
 import {FC, useEffect, useState} from 'react';
 import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
-import Image from '@atoms/AppImage';
+import Image from '@atoms/AppImage.tsx';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Button from '@atoms/AppButton/AppButton';
+import Button from '@atoms/AppButton';
+
 import {useTheme} from '@contexts/ThemeContext';
-import TextSeeMore from '@atoms/SeeMoreText/SeeMoreText';
+import TextSeeMore from '@atoms/SeeMoreText';
 import {getGenderString, getImageUrl} from '@utils/index';
-import Heading from '@atoms/AppHeadingText/AppHeading';
+import Heading from '@atoms/AppHeading';
 import MoviesList from '@organisms/MoviesSection';
 import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
 import { CastMemberScreenProps } from 'types/mainStackTypes';

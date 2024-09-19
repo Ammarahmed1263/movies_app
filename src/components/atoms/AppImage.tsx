@@ -3,8 +3,8 @@ import { Image, StyleSheet, View, ActivityIndicator, ImageProps } from 'react-na
 import { useTheme } from '@contexts/ThemeContext';
 
 enum imagePlaceHolder {
-  PERSON = require('../../../assets/images/person_placeholder.png'),
-  MOVIE = require('../../../assets/images/movie_placeholder.png'),
+  PERSON = require('../../assets/images/person_placeholder.png'),
+  MOVIE = require('../../assets/images/movie_placeholder.png'),
 }
 
 interface AppImageProps extends ImageProps {

@@ -1,10 +1,11 @@
 import {FlatList, View, StyleSheet} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import Button from '@atoms/AppButton/AppButton';
+import Button from '@atoms/AppButton';
+
 import MovieCard from '@molecules/MovieCard';
 import { useTheme } from '@contexts/ThemeContext';
-import AppHeading from '@atoms/AppHeadingText/AppHeading';
+import AppHeading from '@atoms/AppHeading';
 import { FC } from 'react';
 import { Movie, MovieArray } from 'types/movieTypes';
 import { MainTabsNavigationProp, MovieListingNavigationProp } from 'types/mainStackTypes';

@@ -1,5 +1,5 @@
 import {StyleSheet, Text, ViewStyle} from 'react-native';
-import MovieButton from '@atoms/MovieCardButton/MovieCardButton';
+import MovieButton from '@atoms/MovieCardButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '@contexts/ThemeContext';
 import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils/index';

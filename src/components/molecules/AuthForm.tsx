@@ -2,7 +2,8 @@ import { FC } from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Button from '@atoms/AppButton/AppButton';
+import Button from '@atoms/AppButton';
+
 import LabelInput from './LabelInput';
 import { useTheme } from '@contexts/ThemeContext';
 

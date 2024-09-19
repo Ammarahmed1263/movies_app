@@ -5,7 +5,8 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import Image from '@atoms/AppImage'
+import Image from '@atoms/AppImage';
+
 import { useTheme } from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import { getImageUrl } from '@utils/index';
@@ -72,12 +73,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 120,
+    width: 100,
     maxWidth: 135
   },
   imageContainer: {
     width: 90,
-    height: 90,
+    aspectRatio: 1 / 1,
     borderWidth: 2,
     borderRadius: 45,
     padding: -12,

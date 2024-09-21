@@ -1,11 +1,12 @@
 import { hs, vs } from '@styles/metrics';
-import React, { FC } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { Dispatch, FC, SetStateAction } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 export interface PaginationProps {
   containerStyle?: object;
   dotsLength: number;
   activeDotIndex: number;
+  setActiveIndex: (index: number) => void
   dotStyle?: object;
   inactiveDotStyle?: object;
   inactiveDotOpacity?: number;
@@ -20,13 +21,17 @@ const Pagination: FC<PaginationProps> = ({
   inactiveDotStyle,
   inactiveDotOpacity,
   inactiveDotScale,
+  setActiveIndex
 }) => {
 
   return (
     <View style={[styles.paginationContainer, containerStyle]}>
       {Array.from({ length: dotsLength }, (_, index) => (
-        <View
+        <TouchableOpacity
           key={index}
+          disabled={activeDotIndex === index}
+          hitSlop={15}
+          onPress={() => setActiveIndex(index)}
           style={[
             styles.dot,
             dotStyle,
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
     paddingVertical: vs(20),
   },
   dot: {
-    marginHorizontal: hs(5),
+    marginHorizontal: hs(4),
   },
 });
 

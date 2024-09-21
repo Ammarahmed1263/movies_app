@@ -9,13 +9,14 @@ import { getImageUrl } from '@utils/index';
 import { Movie } from 'types/movieTypes';
 import { FC } from 'react';
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
+import AppText from '@atoms/AppText';
 
 interface FavoriteCardProps {
   movie: Movie
 }
 
 const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
-  const {colors, fonts} = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation<MovieDetailsNavigationProp>();
 
   return (
@@ -28,36 +29,31 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
       />
       <View style={styles.description}>
         <View style={styles.headingContainer}>
-          <Text
+          <AppText
+            variant='heading'
             numberOfLines={1}
             ellipsizeMode="tail"
             style={{
               ...styles.title,
-              fontFamily: fonts.bold,
               color: colors.secondary500,
             }}>
             {movie.title}
-          </Text>
+          </AppText>
           <Pressable
-            style={{
-              flex: 1,
-              paddingVertical: 4,
-              borderRadius: 5,
-              alignItems: 'center',
-            }}>
+            style={styles.trash}>
             <Icon name="trash-outline" size={26} color={colors.primary700} />
           </Pressable>
         </View>
-        <Text
+        <AppText
+          variant='body'
           numberOfLines={3}
           ellipsizeMode="tail"
           style={{
             ...styles.overview,
-            fontFamily: fonts.light,
             color: colors.paleShade,
           }}>
           {movie.overview}
-        </Text>
+        </AppText>
       </View>
     </MovieButton>
   );
@@ -68,7 +64,7 @@ export default FavoriteCard;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: 140,
+    minHeight: 140,
     marginHorizontal: 20,
     marginBottom: 25,
   },
@@ -89,11 +85,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    flex: 7,
-    fontSize: 22,
+    width: '80%'
+  },
+  trash: {
+    borderRadius: 5,
+    alignItems: 'center',
+    marginHorizontal: 5,
+    width: '20%'
   },
   overview: {
-    fontSize: 16,
     marginBottom: 8,
   },
 });

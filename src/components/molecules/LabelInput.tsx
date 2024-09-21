@@ -1,6 +1,7 @@
 import {Text, TextInput, View, StyleSheet, ViewStyle, TextInputProps} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
 import { FC, ReactNode } from 'react';
+import AppText from '@atoms/AppText';
 
 interface LabelInputProps extends TextInputProps{
   containerStyle?: ViewStyle
@@ -13,14 +14,14 @@ const LabelInput: FC<LabelInputProps> = ({containerStyle, label, children, ...pr
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <Text
+      <AppText
+        variant='bold'
         style={{
           ...styles.label,
-          fontFamily: fonts.bold,
           color: colors.paleShade,
         }}>
         {label}
-      </Text>
+      </AppText>
       <View
         style={{
           ...styles.input,
@@ -32,7 +33,7 @@ const LabelInput: FC<LabelInputProps> = ({containerStyle, label, children, ...pr
           placeholderTextColor={colors.primary700}
           style={{
             ...styles.textInput,
-            fontFamily: fonts.regular,
+            fontFamily: fonts.regular.fontFamily,
             color: colors.paleShade,
           }}
           {...props}
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   label: {
-    fontSize: 18,
+    fontSize: 16
   },
   input: {
     borderRadius: 15,
@@ -63,6 +64,5 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    fontSize: 15,
   },
 });

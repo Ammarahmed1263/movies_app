@@ -1,9 +1,9 @@
 import {FC, ReactNode} from 'react'
-import {Pressable, View, StyleSheet, TextStyle} from 'react-native';
+import {Pressable, View, StyleSheet, TextStyle, ViewStyle} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
 
 interface MovieCardButtonProps {
-  style?: TextStyle,
+  style?: ViewStyle | ViewStyle[],
   children: ReactNode,
   onPress: () => void
 }

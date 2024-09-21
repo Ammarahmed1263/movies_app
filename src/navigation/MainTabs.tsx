@@ -15,7 +15,7 @@ import {MainTabsProps} from 'types/mainStackTypes';
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 
 const MainTabs: FC<MainTabsProps> = ({route}) => {
-  const {colors} = route.params;
+  const {colors, fonts} = route.params;
   const {t} = useTranslation();
 
   function getTabBarIcon(
@@ -47,7 +47,10 @@ const MainTabs: FC<MainTabsProps> = ({route}) => {
           backgroundColor: colors.primary500,
           borderColor: colors.secondary600,
         },
-        tabBarLabelStyle: {marginBottom: 8},
+        tabBarLabelStyle: {
+          marginBottom: 4,
+          fontFamily: fonts.regular.fontFamily,
+        },
         tabBarActiveTintColor: colors.secondary500,
         tabBarInactiveTintColor: colors.primary700,
       }}>

@@ -1,43 +1,51 @@
-import {FC} from 'react'
+import {FC} from 'react';
 import {useState} from 'react';
-import {Text, TextStyle} from 'react-native';
-import { useTheme } from '@contexts/ThemeContext';
+import {Text, TextProps, TextStyle} from 'react-native';
+import {useTheme} from '@contexts/ThemeContext';
+import AppText from './AppText';
+import {FontVariants} from 'types/themeTypes';
 
-interface SeeMoreTextProps {
-  text: string
-  maxChars?: number
-  style?: TextStyle,
+interface SeeMoreTextProps extends TextProps {
+  text: string;
+  maxChars?: number;
+  style?: TextStyle;
+  variant: FontVariants;
 }
 
-const SeeMoreText: FC<SeeMoreTextProps> = ({text, maxChars = 150, style}) =>{
+const SeeMoreText: FC<SeeMoreTextProps> = ({
+  text,
+  variant,
+  maxChars = 150,
+  style,
+  ...props
+}) => {
   const [fullShown, setFullShown] = useState(false);
-  const { colors, fonts } = useTheme();
+  const {colors} = useTheme();
 
+  console.log(fullShown);
   const toggleShowFull = () => {
     setFullShown(prev => !prev);
   };
 
   return (
-    <Text style={[{fontFamily: fonts.regular}, style]}>
-      {text.length < maxChars ? (
+    <AppText variant={variant} style={style} {...props} onPress={toggleShowFull} disabled={text.length < maxChars}>
+      {text.length <= maxChars ? (
         text
       ) : (
         <>
           {fullShown ? text : text.slice(0, maxChars) + '...'}
-          <Text
-            onPress={toggleShowFull}
+          <AppText
+            variant="light"
             style={{
-              fontSize: 15,
               color: colors.links,
               textDecorationLine: 'underline',
-            }}
-          >
+            }}>
             {fullShown ? ' See Less' : ' See More'}
-          </Text>
+          </AppText>
         </>
       )}
-    </Text>
+    </AppText>
   );
-}
+};
 
 export default SeeMoreText;

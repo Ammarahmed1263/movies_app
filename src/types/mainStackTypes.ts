@@ -1,10 +1,10 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack"
-import { ColorsType } from "./themeTypes"
+import { ColorsType, FontsType } from "./themeTypes"
 import { NavigatorScreenParams } from "@react-navigation/native"
 import { MainTabsParamList } from "./mainTabsTypes"
 
 export type MainStackParamList = {
-  BottomTabs: { colors: ColorsType } & NavigatorScreenParams<MainTabsParamList>,
+  BottomTabs: { colors: ColorsType, fonts: FontsType } & NavigatorScreenParams<MainTabsParamList>,
   MovieDetails: {id: number},
   CastMemberDetails: {id: number},
   MovieListing: { category?: string, colors?: ColorsType },

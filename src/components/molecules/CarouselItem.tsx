@@ -9,6 +9,7 @@ import { hs, vs } from '@styles/metrics';
 import Image from '@atoms/AppImage';
 
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
+import AppText from '@atoms/AppText';
 
 interface CarouselItemProps {
   item: Movie
@@ -16,7 +17,7 @@ interface CarouselItemProps {
 
 const CarouselItem: FC<CarouselItemProps> = ({item}) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
-  const {colors, fonts} = useTheme();
+  const {colors} = useTheme();
 
   return (
     <MovieCardButton style={styles.cardContainer} onPress={() => navigation.navigate('MovieDetails', {id: item.id})}>
@@ -26,16 +27,16 @@ const CarouselItem: FC<CarouselItemProps> = ({item}) => {
           uri={getImageUrl(item.poster_path)}
         />
       </View>
-      <Text
+      <AppText
+        variant='subheading'
         style={{
           ...styles.title,
-          fontFamily: fonts.regular,
           color: colors.paleShade,
         }}
         ellipsizeMode="tail"
         numberOfLines={1}>
         {item.title}
-      </Text>
+      </AppText>
     </MovieCardButton>
   );
 }
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     width: hs(210),
-    minHeight: vs(400),
+    aspectRatio: 9 / 16,
     alignSelf: 'center'
   },
   innerContainer: {
@@ -67,10 +68,10 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    fontSize: 21,
     color: 'white',
     textAlign: 'center',
     marginTop: 15,
     alignSelf: 'center',
+    width: '70%',
   },
 });

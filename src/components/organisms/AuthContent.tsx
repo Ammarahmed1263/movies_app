@@ -6,6 +6,7 @@ import { useTheme } from '@contexts/ThemeContext';
 import { FC } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthStackParamList } from 'types/authStackTypes';
+import AppText from '@atoms/AppText';
 
 interface AuthContentProps {
   isLogin: boolean
@@ -13,7 +14,7 @@ interface AuthContentProps {
 }
 
 const AuthContent: FC<AuthContentProps> = ({isLogin, navigation}) => {
-  const {colors, fonts} = useTheme();
+  const {colors} = useTheme();
 
   return (
     <KeyboardAvoidingView
@@ -22,34 +23,33 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation}) => {
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.innerContainer}>
           <View>
-            <Text
+            <AppText
+              variant='heading'
               style={{
-                ...styles.heading,
-                fontFamily: fonts.bold,
                 color: colors.paleShade,
               }}>
               {isLogin ? 'Welcome Back' : 'Create New Account'}
-            </Text>
-            <Text
+            </AppText>
+            <AppText
+              variant='body'
               style={{
                 ...styles.subHeading,
                 color: colors.paleShade,
-                fontFamily: fonts.regular,
               }}>
               {isLogin ? 'Login' : 'Signup'} to continue
-            </Text>
+            </AppText>
           </View>
           <AuthForm isLogin={isLogin} />
 
           <View style={styles.footerContainer}>
-            <Text
+            <AppText
+              variant='regular'
               style={{
                 ...styles.footerText,
                 color: colors.paleShade,
-                fontFamily: fonts.regular,
               }}>
               {isLogin ? "Don't have an account?" : 'Already have an account?'}
-            </Text>
+            </AppText>
             <Button flat textStyle={styles.footerText} onPress={() => navigation.replace(isLogin ? 'Signup' : 'Login')}>
               {isLogin ? 'register' : 'Login'}
             </Button>
@@ -71,11 +71,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     width: '84%',
   },
-  heading: {
-    fontSize: 30,
-  },
   subHeading: {
-    fontSize: 17,
     position: 'absolute',
     top: 38,
     left: 4,
@@ -87,7 +83,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   footerText: {
-    fontSize: 16,
     marginHorizontal: 4,
+    fontSize: 14
   },
 });

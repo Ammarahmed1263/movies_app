@@ -23,7 +23,7 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
       <Stack.Screen
         name="BottomTabs"
         component={MainTabs}
-        initialParams={{colors}}
+        initialParams={{colors, fonts}}
       />
       <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
       <Stack.Screen name="CastMemberDetails" component={CastMemberScreen} />
@@ -38,7 +38,7 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
           headerTintColor: colors.paleShade,
           headerShadowVisible: false,
           headerTitleAlign: 'center',
-          headerTitleStyle: {fontFamily: fonts.regular}
+          headerTitleStyle: {fontFamily: fonts.regular.fontFamily}
         }}
       />
     </Stack.Navigator>

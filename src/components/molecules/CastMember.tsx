@@ -12,14 +12,16 @@ import {useNavigation} from '@react-navigation/native';
 import { getImageUrl } from '@utils/index';
 import { FC } from 'react';
 import { CastMember } from 'types/castTypes';
-import { CastMemberDetailsNavigationProp, CastMemberScreenProps } from 'types/mainStackTypes';
+import { CastMemberDetailsNavigationProp,  } from 'types/mainStackTypes';
+import AppText from '@atoms/AppText';
+import { ms } from '@styles/metrics';
 
 interface MemberProps {
   details: CastMember
 }
 
 const Member: FC<MemberProps> = ({details}) => {
-  const {colors, fonts} = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation<CastMemberDetailsNavigationProp>();
 
   return (
@@ -37,26 +39,25 @@ const Member: FC<MemberProps> = ({details}) => {
         </View>
       </View>
       <View style={{...styles.details, borderColor: colors.secondary600}}>
-        <Text
+        <AppText
+          variant='bold'
           style={{
-            fontSize: 16,
-            fontFamily: fonts.bold,
+            fontSize: ms(16),
             color: colors.paleShade,
           }}>
           {details.original_name.length >= 14
             ? details.original_name.split(' ')[0]
             : details.original_name}
-        </Text>
-        <Text
+        </AppText>
+        <AppText
+          variant='caption'
           style={{
-            fontSize: 13,
-            fontFamily: fonts.regular,
             color: colors.paleShade,
           }}>
           {details.character.length >= 15
             ? details.character.split(' ')[0]
             : details.character}
-        </Text>
+        </AppText>
       </View>
     </TouchableOpacity>
   );

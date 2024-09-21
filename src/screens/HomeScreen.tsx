@@ -10,6 +10,7 @@ import {
   getTopRated,
   getUpcoming,
 } from '@services/movieService';
+import AppText from '@atoms/AppText';
 
 const initialState = {
   nowPlaying: {movies: [], page: 1, totalPages: 1},
@@ -100,7 +101,7 @@ function HomeScreen() {
   if (isLoading) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>loading...</Text>
+        <AppText variant='heading'>loading...</AppText>
       </View>
     );
   }

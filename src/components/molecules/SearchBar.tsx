@@ -67,7 +67,7 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword}) => {
         cursorColor={colors.primary700}
         value={keyword}
         onChangeText={text => setKeyword(text)}
-        style={{...styles.input, color: colors.primary700, fontFamily:  fonts.regular}}
+        style={{...styles.input, color: colors.primary700, fontFamily:  fonts.regular.fontFamily}}
       />
       <TouchableOpacity style={styles.iconContainer} onPress={onStartButtonPress}>
         <Icon name="mic" size={30} color={colors.secondary500} />
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 8,
-    fontSize: 13,
     paddingHorizontal: 15,
   },
   iconContainer: {

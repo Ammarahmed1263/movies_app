@@ -1,9 +1,12 @@
 import {Pressable, Text, StyleSheet, View, TextStyle, ViewStyle} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
 import { FC, ReactNode, useState } from 'react';
+import AppText from './AppText';
+import { FontVariants } from 'types/themeTypes';
 
 interface AppButtonProps {
   flat?: boolean
+  variant?: FontVariants,
   textStyle?: TextStyle
   style?: ViewStyle
   onPress: () => void
@@ -12,8 +15,8 @@ interface AppButtonProps {
   children: ReactNode
 }
 
-const AppButton: FC<AppButtonProps> = ({ flat = false, textStyle, style, children, onPress, customView, customViewStyle }) => {
-  const {colors, fonts} = useTheme();
+const AppButton: FC<AppButtonProps> = ({ flat = false, variant = 'regular', textStyle, style, children, onPress, customView, customViewStyle }) => {
+  const {colors} = useTheme();
   const [clicked, setClicked] = useState(false);
 
   const pressAction = () => {
@@ -37,18 +40,18 @@ const AppButton: FC<AppButtonProps> = ({ flat = false, textStyle, style, childre
         {customView ? (
           <View style={customViewStyle}>{children}</View>
         ) : (
-          <Text
-            style={[
+          <AppText
+            variant={variant}
+            style={StyleSheet.flatten([
               styles.text,
               {
-                fontFamily: fonts.bold,
                 color: colors.paleShade,
               },
-              textStyle,
               flat && {color: colors.secondary500},
-            ]}>
+              textStyle,
+            ])}>
             {children}
-          </Text>
+          </AppText>
         )}
       </Pressable>
     </View>
@@ -75,7 +78,6 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   text: {
-    fontSize: 20,
     textTransform: 'capitalize',
   },
 });

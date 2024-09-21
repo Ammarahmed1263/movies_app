@@ -1,3 +1,4 @@
+import AppText from '@atoms/AppText';
 import MoviesList from '@organisms/MoviesList';
 import {getNowPlaying, getPopular, getTopRated, getUpcoming} from '@services/movieService';
 import {FC, useEffect, useReducer} from 'react';
@@ -76,7 +77,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   if (state.movies.length === 0) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>loading...</Text>
+        <AppText variant='heading'>loading...</AppText>
       </View>
     );
   }

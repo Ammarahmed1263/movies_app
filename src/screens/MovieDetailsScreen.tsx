@@ -1,45 +1,46 @@
 import {
   View,
-  Text,
   ImageBackground,
   ScrollView,
   StyleSheet,
   StatusBar,
-  Modal,
-  Dimensions,
-  Pressable,
   Linking,
   Alert,
   Share,
 } from 'react-native';
-import {useCallback, useEffect, useState, useRef, FC} from 'react';
+import {useCallback, useEffect, useState, FC} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Button from '@atoms/AppButton/AppButton';
+import Button from '@atoms/AppButton';
+
 import {useTheme} from '@contexts/ThemeContext';
 import CastList from '@organisms/CastList';
-import {formatVoteCount, durationToString, getImageUrl} from '@utils';
+import {formatVoteCount, durationToString, getImageUrl} from '@utils/index';
 import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
-import TextSeeMore from '@atoms/SeeMoreText/SeeMoreText';
-import Heading from '@atoms/AppHeadingText/AppHeading';
+import TextSeeMore from '@atoms/SeeMoreText';
 import {getMovieCredits, getMovieDetails} from '@services/movieDetailsService';
 import {getMovieVideos} from '@services/movieService';
 import {MovieDetailsScreenProps} from 'types/mainStackTypes';
+import {MovieDetails, Trailer} from 'types/movieTypes';
+import {width, height} from '@styles/metrics';
+import AppText from '@atoms/AppText';
+import AppModal from '@atoms/AppModal';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
   navigation,
 }) => {
   const movieId = route.params.id;
-  const [details, setDetails] = useState({});
+  console.log('movie id here: ', movieId)
+  const [details, setDetails] = useState<MovieDetails | undefined>(undefined);
   const [cast, setCast] = useState([]);
-  const [trailId, setTrailId] = useState(null);
+  const [trailId, setTrailId] = useState<string>('');
   const [playing, setPlaying] = useState(false);
-  const [contentDimensions, setContentDimensions] = useState({});
-  const [videoMeta, setVideoMeta] = useState({title: null, author: null});
-  const modalRef = useRef(null);
-  const {colors, fonts} = useTheme();
-  const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+  const [videoMeta, setVideoMeta] = useState<{
+    title: string | null;
+    author: string | null;
+  }>({title: null, author: null});
+  const {colors} = useTheme();
 
   useEffect(() => {
     (async () => {
@@ -49,58 +50,40 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
         const response2 = await getMovieCredits(movieId);
 
         const response3 = await getMovieVideos(movieId);
+        // console.log('details here: ', response);
         setDetails(response);
+        // console.log('cast here: ', response2.cast);
         setCast(response2.cast);
         // TODO: add more handling
-        response3.results.map(video => {
+        response3.results.map((video: Trailer) => {
           if (video.type === 'Trailer' && video.site === 'YouTube') {
             console.log(video);
             setTrailId(video.key);
           }
         });
-        // console.log(response2.data.cast);
+        console.log('videos here: ', response3.results);
       } catch (err) {
         console.log('failed to fetch details', err);
       }
     })();
   }, []);
 
-  const onStateChange = useCallback(state => {
+  const onStateChange = useCallback((state: string) => {
     if (state === 'ended') {
       setPlaying(false);
     }
   }, []);
 
-  useEffect(() => {
-    if (playing && modalRef.current) {
-      setTimeout(() => {
-        modalRef.current.measureInWindow((x, y, width, height) => {
-          console.log('calculated', {x, y, width, height});
-          setContentDimensions({x, y, width, height});
-        });
-      }, 300);
-    }
-  }, [playing]);
-
-  const handleOverlayPress = evt => {
-    const {pageX, pageY} = evt.nativeEvent;
-    if (
-      pageX < contentDimensions.x ||
-      pageX > contentDimensions.x + contentDimensions.width ||
-      pageY < contentDimensions.y ||
-      pageY > contentDimensions.y + contentDimensions.height
-    ) {
-      setPlaying(false);
-    }
+  const handleClose = () => {
+    setPlaying(false);
   };
 
-  // TODO: know why canOpenURL was always
   const handleYoutubeRedirect = useCallback(async () => {
     try {
       const url = `https://www.youtube.com/watch?v=${trailId}`;
       await Linking.openURL(url);
       setPlaying(false);
-    } catch (e) {
+    } catch (e: any) {
       Alert.alert('error redirecting:', e.request.data);
     }
   }, [trailId]);
@@ -110,20 +93,24 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
       await Share.share(
         {
           title: 'Look what I found!',
-          message: `Check out "${details.title}" Trailer on YouTube: https://www.youtube.com/watch?v=${trailId}`,
+          message: `Check out "${details?.title}" Trailer on YouTube: https://www.youtube.com/watch?v=${trailId}`,
           url: `https://www.youtube.com/watch?v=${trailId}`,
         },
         {
           subject: 'Check out this video!',
         },
       );
-    } catch (e) {
+    } catch (e: any) {
       console.log('ooops error sharing data', e.request.data);
     }
   }, [trailId]);
 
-  if (Object.keys(details).length === 0) {
-    return <Text>Loading</Text>;
+  if (!details) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <AppText variant="heading">loading...</AppText>
+      </View>
+    );
   }
 
   return (
@@ -157,34 +144,29 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                   ...styles.topButton,
                   backgroundColor: colors.secondaryShadow,
                 }}
+                onPress={() => console.log('hello heart outline')}
                 customView>
                 <Icon name="heart-outline" size={28} color={colors.paleShade} />
               </Button>
             </View>
             <View style={styles.quickpeak}>
-              <Text
+              <AppText
+                variant="heading"
                 style={{
                   ...styles.movieTitle,
                   color: colors.paleShade,
-                  fontFamily: fonts.bold,
                 }}>
                 {details.title}
-              </Text>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{
-                    color: colors.paleShade,
-                    fontFamily: fonts.regular,
-                    fontSize: 17,
-                    lineHeight: 28,
-                  }}>
-                  {`${formatVoteCount(
-                    details.vote_average,
-                  )} · ${durationToString(details.runtime)} · ${
-                    details.release_date.split('-')[0]
-                  }`}
-                </Text>
-              </View>
+              </AppText>
+              <AppText
+                variant="regular"
+                style={{
+                  color: colors.paleShade,
+                }}>
+                {`${formatVoteCount(details.vote_average)} · ${durationToString(
+                  details.runtime,
+                )} · ${details.release_date.split('-')[0]}`}
+              </AppText>
             </View>
           </LinearGradient>
         </ImageBackground>
@@ -201,14 +183,14 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                   ...styles.categoryPill,
                   backgroundColor: colors.primary700,
                 }}>
-                <Text
+                <AppText
+                  variant="light"
                   style={{
                     ...styles.pillText,
                     color: colors.primary500,
-                    fontFamily: fonts.regular,
                   }}>
                   {genre.name}
-                </Text>
+                </AppText>
               </View>
             ))}
           </ScrollView>
@@ -223,7 +205,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             }}>
             <Button
               customView
-              customViewStyle={{flexDirection: 'row', paddingVertical: 4}}
+              customViewStyle={{flexDirection: 'row', alignItems: 'center'}}
               style={{flex: 4, marginRight: 10, borderRadius: 18}}
               onPress={() => {
                 setPlaying(true);
@@ -232,14 +214,14 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 );
               }}>
               <Icon name="play" size={23} color={colors.paleShade} />
-              <Text
+              <AppText
+                variant="bold"
                 style={{
-                  fontFamily: fonts.bold,
-                  fontSize: 17,
                   color: colors.paleShade,
+                  marginTop: 2,
                 }}>
                 Watch Trailer
-              </Text>
+              </AppText>
             </Button>
             <Button
               customView
@@ -257,122 +239,88 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             </Button>
           </View>
           <TextSeeMore
+            variant='body'
             text={details.overview}
-            maxChars={150}
             style={{
               color: colors.paleShade,
-              fontFamily: fonts.regular,
-              fontSize: 16,
               marginHorizontal: 10,
             }}
           />
-          <Heading
+          <AppText
+            variant="heading"
             style={{
               color: colors.paleShade,
-              fontFamily: fonts.bold,
               marginHorizontal: 10,
             }}>
-            Top Cast
-          </Heading>
-          {cast && <CastList cast={cast.slice(0, 15)} />}
+            Top Billed Cast
+          </AppText>
+          {cast && <CastList cast={cast} />}
         </View>
       </ScrollView>
 
-      <Modal
-        animationType="none"
-        visible={playing}
-        transparent
-        onRequestClose={handleOverlayPress}>
-        <Pressable
-          onPress={handleOverlayPress}
+      <AppModal visible={playing} handleClose={handleClose}>
+        <View
           style={{
-            flex: 1,
-            justifyContent: 'center',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
             alignItems: 'center',
-            backgroundColor: 'rgba(22, 21, 21, 0.8)',
           }}>
-          <View
-            ref={modalRef}
+          <Button flat customView onPress={handleClose}>
+            <Icon name="close-circle" size={33} color={colors.primary700} />
+          </Button>
+        </View>
+        <View
+          style={{
+            overflow: 'hidden',
+            borderRadius: 20,
+            marginVertical: 10,
+          }}>
+          <YoutubeIframe
+            height={(width * 0.9 - 40) * (9 / 16)}
+            width={width * 0.9 - 40}
+            videoId={trailId}
+            play={playing}
+            onChangeState={onStateChange}
+          />
+        </View>
+        <View style={{marginVertical: 5}}>
+          <AppText
+            variant="bold"
             style={{
-              width: screenWidth * 0.9,
-              maxHeight: screenHeight * 0.65,
-              backgroundColor: colors.primary500,
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              borderRadius: 30,
-              borderColor: colors.secondary600,
-              borderWidth: 1,
-              elevation: 6,
-              shadowColor: colors.secondary600,
+              color: colors.paleShade,
             }}>
-            <View
+            {videoMeta.title}
+          </AppText>
+          <AppText
+            variant="light"
+            style={{
+              color: colors.primary700,
+            }}>
+            By: {videoMeta.author}
+          </AppText>
+        </View>
+        <View style={{justifyContent: 'flex-end'}}>
+          <Button
+            customView
+            customViewStyle={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            style={{marginBottom: 12}}
+            onPress={handleYoutubeRedirect}>
+            <Icon name="play" size={24} color={colors.paleShade} />
+            <AppText
+              variant="bold"
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
+                color: colors.paleShade,
+                marginTop: 2,
               }}>
-              <Button flat customView onPress={() => setPlaying(false)}>
-                <Icon name="close-circle" size={33} color={colors.primary700} />
-              </Button>
-            </View>
-            <View
-              style={{
-                width: screenWidth * 0.9 - 40,
-                aspectRatio: 16 / 9,
-                overflow: 'hidden',
-                borderRadius: 20,
-                marginVertical: 10,
-              }}>
-              <YoutubeIframe
-                width="100%"
-                height="100%"
-                videoId={trailId}
-                play={playing}
-                onChangeState={onStateChange}
-              />
-            </View>
-            <View style={{marginVertical: 5}}>
-              <Text
-                style={{
-                  fontFamily: fonts.bold,
-                  color: colors.paleShade,
-                  fontSize: 21,
-                }}>
-                {videoMeta.title}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: fonts.light,
-                  color: colors.primary700,
-                  fontSize: 17,
-                }}>
-                By: {videoMeta.author}
-              </Text>
-            </View>
-            <View style={{justifyContent: 'flex-end'}}>
-              <Button
-                customView
-                customViewStyle={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                style={{marginBottom: 12}}
-                onPress={handleYoutubeRedirect}>
-                <Icon name="play" size={23} color={colors.paleShade} />
-                <Text
-                  style={{
-                    fontFamily: fonts.bold,
-                    fontSize: 17,
-                    color: colors.paleShade,
-                  }}>
-                  Open On Youtube
-                </Text>
-              </Button>
-            </View>
-          </View>
-        </Pressable>
-      </Modal>
+              Open On Youtube
+            </AppText>
+          </Button>
+        </View>
+      </AppModal>
     </>
   );
 };
@@ -381,12 +329,13 @@ export default MovieDetailsScreen;
 
 const styles = StyleSheet.create({
   poster: {
-    height: 470,
-    paddingTop: StatusBar.currentHeight + 10,
+    width: width,
+    aspectRatio: 3 / 4,
+    paddingTop: StatusBar.currentHeight ?? 50 + 10,
   },
   topButton: {
     width: '13%',
-    height: '12%',
+    aspectRatio: 1 / 1,
     alignItems: 'center',
     justifyContent: 'center',
     maxHeight: 52,
@@ -417,23 +366,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pillText: {
-    fontSize: 14,
+    // fontSize: 14,
   },
   centeredView: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(22, 21, 21, 0.8)',
-  },
-  modalView: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 250,
-    borderRadius: 15,
-    overflow: 'hidden',
-    marginLeft: 25,
-    // elevation: 9,
-    backgroundColor: 'yellow',
   },
 });

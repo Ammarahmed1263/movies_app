@@ -7,7 +7,7 @@ import {useTheme} from '@contexts/ThemeContext';
 interface MoviesListProps {
   movies: MovieArray;
   onEndReached: () => void;
-  isLoading: boolean
+  isLoading: boolean;
 }
 
 const MoviesList: FC<MoviesListProps> = ({movies, onEndReached, isLoading}) => {
@@ -15,20 +15,12 @@ const MoviesList: FC<MoviesListProps> = ({movies, onEndReached, isLoading}) => {
 
   function renderItem({item}: {item: Movie}) {
     return (
-      <View
+      <MovieCard
+        movie={item}
         style={{
-          marginVertical: 10,
-        }}>
-        <MovieCard
-          movie={item}
-          style={{
-            flex: 1,
-            width: 160,
-            height: 220,
-            marginHorizontal: 0,
-          }}
-        />
-      </View>
+          margin: 10,
+        }}
+      />
     );
   }
 
@@ -37,7 +29,7 @@ const MoviesList: FC<MoviesListProps> = ({movies, onEndReached, isLoading}) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 15}}
-        columnWrapperStyle={{justifyContent: 'space-evenly'}}
+        columnWrapperStyle={{justifyContent: 'flex-start'}}
         numColumns={2}
         data={movies}
         renderItem={renderItem}

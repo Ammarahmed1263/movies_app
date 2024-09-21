@@ -5,14 +5,11 @@ import Button from '@atoms/AppButton';
 
 import MovieCard from '@molecules/MovieCard';
 import { useTheme } from '@contexts/ThemeContext';
-import AppHeading from '@atoms/AppHeading';
 import { FC } from 'react';
 import { Movie, MovieArray } from 'types/movieTypes';
-import { MainTabsNavigationProp, MovieListingNavigationProp } from 'types/mainStackTypes';
+import { MovieListingNavigationProp } from 'types/mainStackTypes';
+import AppText from '@atoms/AppText';
 
-const renderMovie = ({item}: {item: Movie}) => {
-  return <MovieCard movie={item} />;
-};
 
 interface MoviesSectionProps {
   movies: MovieArray,
@@ -22,6 +19,9 @@ interface MoviesSectionProps {
   category?: string
 }
 
+const renderMovie = ({item}: {item: Movie}) => {
+  return <MovieCard movie={item} />;
+};
 const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, length = 10, category}) => {
   const {colors, fonts} = useTheme();
   const navigation = useNavigation<MovieListingNavigationProp>();
@@ -30,12 +30,12 @@ const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, l
   return (
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
-        <AppHeading>{topic}</AppHeading>
+        <AppText variant='heading'>{topic}</AppText>
         {seeAll && <Button
+          variant='body'
           textStyle={{
             ...styles.button,
             color: colors.secondary500,
-            fontFamily: fonts.light,
           }}
           onPress={() => navigation.navigate('MovieListing', {category})}
           flat>
@@ -62,13 +62,11 @@ const styles = StyleSheet.create({
   heading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
+    alignItems: 'baseline',
     marginStart: 20,
-    marginEnd: 8
+    marginEnd: 10,
   },
   button: {
-    fontSize: 18,
     textTransform: 'none',
   },
 });

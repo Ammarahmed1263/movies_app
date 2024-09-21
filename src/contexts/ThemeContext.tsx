@@ -17,11 +17,44 @@ const ThemeContext = createContext<ThemeContextType>({
     paleShade: '',
     links: ''
   },
-  fonts: {  
-    bold: '',
-    regular: '',
-    light: ''
-  },
+  fonts: {
+    light: {
+      fontFamily: '',
+      fontSize: 14,
+      fontWeight: undefined,
+    },
+    regular: {
+      fontFamily: '',
+      fontSize: 16,
+      fontWeight: undefined,
+    },
+    bold: {
+      fontFamily: '',
+      fontSize: 18,
+      fontWeight: undefined,
+    },
+    heading: {
+      fontFamily: '',
+      fontSize: 24,
+      fontWeight: undefined,
+    },
+    subheading: {
+      fontFamily: '',
+      fontSize: 20,
+      fontWeight: undefined,
+    },
+    body: {
+      fontFamily: '',
+      fontSize: 16,
+      fontWeight: undefined,
+    },
+    caption: {
+      fontFamily: '',
+      fontSize: 12,
+      fontWeight: undefined,
+    },
+
+  }
 });
 
 interface ThemeProviderProps {
@@ -42,6 +75,7 @@ const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
 
   const colors = COLORS[theme];
 
+  
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, colors, fonts: FONTS }} >
       {children}

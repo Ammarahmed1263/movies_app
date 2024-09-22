@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useLayoutEffect, ReactNode, FC } from "react";
 import { useColorScheme } from "react-native";
-import FONTS from "@styles/Fonts";
 import COLORS from "@styles/Colors";
+import getFonts from "@styles/Fonts";
 import { ThemeContextType } from "types/themeTypes";
 
 const ThemeContext = createContext<ThemeContextType>({
@@ -74,10 +74,10 @@ const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   }
 
   const colors = COLORS[theme];
-
+  const fonts = getFonts();
   
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, colors, fonts: FONTS }} >
+    <ThemeContext.Provider value={{ theme, toggleTheme, colors, fonts }} >
       {children}
     </ThemeContext.Provider>
   )

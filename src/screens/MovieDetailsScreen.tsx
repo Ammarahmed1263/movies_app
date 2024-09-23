@@ -7,6 +7,7 @@ import {
   Linking,
   Alert,
   Share,
+  I18nManager,
 } from 'react-native';
 import {useCallback, useEffect, useState, FC} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -132,6 +133,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                   ...styles.topButton,
                   backgroundColor: colors.secondaryShadow,
                 }}
+                customViewStyle={{transform: [{rotate: I18nManager.isRTL ? '180deg' : '0deg'}] }}
                 customView>
                 <Icon
                   name="arrow-back-outline"
@@ -218,7 +220,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 variant="bold"
                 style={{
                   color: colors.paleShade,
-                  marginTop: 2,
+                  lineHeight: 35
                 }}>
                 Watch Trailer
               </AppText>

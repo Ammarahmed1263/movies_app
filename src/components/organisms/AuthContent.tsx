@@ -10,10 +10,11 @@ import AppText from '@atoms/AppText';
 
 interface AuthContentProps {
   isLogin: boolean
+  onSubmit: ({email, password}: {email: string; password: string}) => void
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login' | 'Signup'>
 }
 
-const AuthContent: FC<AuthContentProps> = ({isLogin, navigation}) => {
+const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
   const {colors} = useTheme();
 
   return (
@@ -39,7 +40,7 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation}) => {
               {isLogin ? 'Login' : 'Signup'} to continue
             </AppText>
           </View>
-          <AuthForm isLogin={isLogin} />
+          <AuthForm isLogin={isLogin} onSubmit={onSubmit}/>
 
           <View style={styles.footerContainer}>
             <AppText

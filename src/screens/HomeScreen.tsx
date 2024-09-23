@@ -24,7 +24,6 @@ const initialState = {
 const reducer = (state: any, action: any) => {
   switch (action.type) {
     case 'FETCH':
-      console.log(state, action)
       return {
         ...state,
         [action.category]: {...state[action.category], movies: [...state[action.category].movies,...action.payload]}
@@ -40,7 +39,7 @@ function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, initialState)
-  console.log('total state', state.nowPlaying.movies)
+  // console.log('total state', state.nowPlaying.movies)
   const {t} = useTranslation();
   const {theme, colors} = useTheme();
 

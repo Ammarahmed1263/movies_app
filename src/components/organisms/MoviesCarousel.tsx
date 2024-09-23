@@ -1,5 +1,5 @@
 import {FC, useRef, useState} from 'react';
-import {ImageBackground, View, StyleSheet, StatusBar} from 'react-native';
+import {ImageBackground, View, StyleSheet, StatusBar, I18nManager} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import Pagination from '@molecules/Pagination';
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   appName: {
-    flexDirection: 'row',
+    flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
     alignItems: 'baseline',
   },
   carouselItem: {

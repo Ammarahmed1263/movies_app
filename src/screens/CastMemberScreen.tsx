@@ -58,7 +58,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
             justifyContent: 'center',
           }}
           customView>
-          <Icon name="arrow-back-outline" size={28} color={colors.paleShade} />
+          <Icon name="chevron-back" size={28} color={colors.paleShade} />
         </Button>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>

@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
   carouselItem: {
     // justifyContent: 'center',
     // alignItems: 'center',
+    flex: 1,
     paddingTop: 10,
     aspectRatio: 8.5 / 16,
     alignSelf: 'center',

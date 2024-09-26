@@ -136,7 +136,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 customViewStyle={{transform: [{rotate: I18nManager.isRTL ? '180deg' : '0deg'}] }}
                 customView>
                 <Icon
-                  name="arrow-back-outline"
+                  name="chevron-back"
                   size={28}
                   color={colors.paleShade}
                 />

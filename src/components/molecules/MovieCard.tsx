@@ -77,7 +77,7 @@ export default MovieCard;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    flex: 1,
+    flex: 1 / 2,
     justifyContent: 'center',
     alignItems: 'center',
     width: hs(150),

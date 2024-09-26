@@ -31,6 +31,8 @@ const LabelInput: FC<LabelInputProps> = ({containerStyle, label, children, ...pr
         <View style={{paddingHorizontal: 8, paddingBottom: 3}}>{children}</View>
         <TextInput
           placeholderTextColor={colors.primary700}
+          autoCapitalize='none'
+          cursorColor={colors.secondary600}
           style={{
             ...styles.textInput,
             fontFamily: fonts.regular.fontFamily,
@@ -55,9 +57,9 @@ const styles = StyleSheet.create({
   },
   input: {
     borderRadius: 15,
-    borderTopWidth: 1.6,
-    borderBottomWidth: 1.6,
-    borderWidth: 0.7,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    borderWidth: 0.5,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 8,

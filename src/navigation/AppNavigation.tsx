@@ -11,9 +11,9 @@ import MainStack from './MainStack';
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  console.log('active user data: ', user)
   const { colors, fonts } = useTheme();
   function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
+    console.log('active user data: ', user)
     setUser(user);
     if (initializing) setInitializing(false);
   }

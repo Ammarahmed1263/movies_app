@@ -1,5 +1,5 @@
 import {FC, useState} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '@atoms/AppButton';
@@ -21,14 +21,14 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View>
         <LabelInput
           value={userCredentials.email}
           onChangeText={email => setUserCredentials({...userCredentials, email})}
           label="Email"
           autoComplete="email"
-          cursorColor={colors.secondary600}
+          keyboardType="email-address"
           placeholder="john@example.com">
           <Ionicons name="mail" size={20} color={colors.secondary500} />
         </LabelInput>
@@ -37,8 +37,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
           onChangeText={password => setUserCredentials({...userCredentials, password})}
           label="Password"
           autoComplete="new-password"
-          cursorColor={colors.secondary600}
-          placeholder="********"
+          // placeholder="********"
           secureTextEntry>
           <MaterialIcons name="lock" size={22} color={colors.secondary500} />
         </LabelInput>
@@ -46,10 +45,9 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
           <LabelInput
             value={userCredentials.confirmPassword}
             onChangeText={confirmPassword => setUserCredentials({...userCredentials, confirmPassword})}
-            placeholder="********"
+            // placeholder="********"
             label="Confirm Password"
             autoComplete="new-password"
-            cursorColor={colors.secondary600}
             secureTextEntry>
             <MaterialIcons
               name="lock-check"
@@ -63,7 +61,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
       <View style={styles.button}>
         <Button onPress={handleSubmit}>{isLogin ? 'Login' : 'Signup'}</Button>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

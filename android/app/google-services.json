@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "157066102582",
+    "project_id": "movie-corn-219a4",
+    "storage_bucket": "movie-corn-219a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157066102582:android:9e9bfa659881adfe37d597",
+        "android_client_info": {
+          "package_name": "com.moviesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "157066102582-sol1ugbdcgnkj73eaeke1jplnsmp28m9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moviesapp",
+            "certificate_hash": "409c549873ee620947f74e0e6ea1191f35f665f5"
+          }
+        },
+        {
+          "client_id": "157066102582-ui67cqpdmdr9bq5m1ufbbneufds27mau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDut-jeTO9MZ1aSL6MmBwWvy604cEAaD7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "157066102582-ui67cqpdmdr9bq5m1ufbbneufds27mau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

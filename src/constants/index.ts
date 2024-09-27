@@ -2,3 +2,8 @@ export const API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTVjMDE0NjIxZGNlNGNhNGY
 
 export const MOVIE_BASE_URL = 'https://api.themoviedb.org/3/'
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/'
+
+export enum imagePlaceHolder {
+  PERSON = require('../../assets/images/person_placeholder.png'),
+  MOVIE = require('../../assets/images/movie_placeholder.png'),
+}

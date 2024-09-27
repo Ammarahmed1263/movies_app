@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, View, ActivityIndicator, ImageProps } from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
+import { imagePlaceHolder } from '../../constants';
 
-enum imagePlaceHolder {
-  PERSON = require('../../assets/images/person_placeholder.png'),
-  MOVIE = require('../../assets/images/movie_placeholder.png'),
-}
 
 interface AppImageProps extends ImageProps {
   uri: string | undefined;

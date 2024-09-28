@@ -7,3 +7,6 @@ export enum imagePlaceHolder {
   PERSON = require('../assets/images/person_placeholder.png'),
   MOVIE = require('../assets/images/movie_placeholder.png'),
 }
+
+export const emailRegex =
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

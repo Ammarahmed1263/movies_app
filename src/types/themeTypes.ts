@@ -6,7 +6,8 @@ export type ColorsType = {
   secondary600: string;
   secondaryShadow: string;
   paleShade: string;
-  links: string;
+  link: string;
+  error: string;
 };
 
 interface FontStyle {

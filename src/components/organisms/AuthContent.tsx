@@ -14,10 +14,12 @@ import {FC} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {AuthStackParamList} from 'types/authStackTypes';
 import AppText from '@atoms/AppText';
+import { AuthFormValues } from 'types/authFormTypes';
+import { FormikHelpers } from 'formik';
 
 interface AuthContentProps {
   isLogin: boolean;
-  onSubmit: ({email, password}: {email: string; password: string}) => void;
+  onSubmit: (values: AuthFormValues, actions: FormikHelpers<AuthFormValues>) => void;
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login' | 'Signup'>;
 }
 

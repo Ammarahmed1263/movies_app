@@ -1,5 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { FormikHelpers } from 'formik';
+import { AuthFormValues } from 'types/authFormTypes';
 import { User } from 'types/userTypes';
 
 export const userSignup = async (email: User["email"], password: User["password"]) => {
@@ -10,18 +12,17 @@ export const userSignup = async (email: User["email"], password: User["password"
       password,
     )
     await firestore().collection('users').doc(userCredential.user.uid).set({name: email.split('@')[0]});
-    console.log('User account created & signed in!');
-    
+    console.log('User account created & signed in!'); 
   } catch (e: any) {
-    throw handleFirebaseError(e);
+    throw e;
   }
 }
 export const userLogin = async (email: User["email"], password: User["password"]) => {
   try {
-    const userCredential = await auth().signInWithEmailAndPassword(email, password);
+    await auth().signInWithEmailAndPassword(email, password);
     console.log('user loggedin successfully');
-  } catch (error) {
-    throw error;
+  } catch (e: any) {
+    throw e;
   }
 }
 export const userLogout = async () => {
@@ -33,14 +34,39 @@ export const userLogout = async () => {
   }
 }
 
-const handleFirebaseError = (error: any) => {
-  if (error.code === 'auth/email-already-in-use') {
-    return 'Email already in use';
-  } else if (error.code === 'auth/invalid-email') {
-    return 'Invalid email address';
-  } else if (error.code === 'auth/weak-password') {
-    return 'Weak password';
-  } else {
-    return error.message;
+const generateFirebaseErrorMessage = (error: any) => {
+  switch (error.code) {
+    case 'auth/email-already-in-use':
+      return 'Email already in use';  
+    case 'auth/invalid-email':
+      return 'Invalid email address';  
+    case 'auth/weak-password':
+      return 'Weak password';  
+    case 'auth/invalid-credential':
+      return "User credentials doesn't exist";  
+    case 'auth/wrong-password':
+      return "Password doesn't match entered email address"  
+    case 'auth/user-not-found':
+      return "User doesn't exits"  
+    default:
+      return error.message;
   }
 };
+
+export const handleFirebaseError = (error: any, actions: FormikHelpers<AuthFormValues>) => {
+  const errorMessage = generateFirebaseErrorMessage(error);
+  switch (error.code) {
+    case 'auth/email-already-in-use':
+    case 'auth/invalid-email':
+    case 'auth/user-not-found':
+      actions.setFieldError('email', errorMessage);
+      break;
+    case 'auth/wrong-password':
+    case 'auth/weak-password':
+      actions.setFieldError('password', errorMessage);
+      break;
+    default:
+      actions.setStatus({generalError: errorMessage});
+  }
+};
+

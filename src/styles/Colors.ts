@@ -7,7 +7,8 @@ const COLORS = {
     secondary600: '#fec34c',
     secondaryShadow: 'rgba(255, 170, 0, 0.8)',
     paleShade: '#252729',
-    links: '#9494eb'
+    link: '#9494eb',
+    error: '#F44336'
   },
   dark: {
     primary500: '#303234',
@@ -17,7 +18,8 @@ const COLORS = {
     secondary600: '#ffd900',
     secondaryShadow: 'rgba(255, 170, 0, 0.8)',
     paleShade: '#f0f1e9',
-    links: '#6262ee'
+    link: '#6262ee',
+    error: '#D32F2F'
   },
 };
 

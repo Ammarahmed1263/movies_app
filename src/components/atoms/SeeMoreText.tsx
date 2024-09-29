@@ -37,7 +37,7 @@ const SeeMoreText: FC<SeeMoreTextProps> = ({
           <AppText
             variant="light"
             style={{
-              color: colors.links,
+              color: colors.link,
               textDecorationLine: 'underline',
             }}>
             {fullShown ? ' See Less' : ' See More'}

@@ -1,8 +1,17 @@
-import { createContext, useContext, useState, useLayoutEffect, ReactNode, FC } from "react";
-import { useColorScheme } from "react-native";
-import COLORS from "@styles/Colors";
-import getFonts from "@styles/Fonts";
-import { ThemeContextType } from "types/themeTypes";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  FC,
+  useEffect,
+} from 'react';
+import {useColorScheme} from 'react-native';
+import COLORS from '@styles/Colors';
+import getFonts from '@styles/Fonts';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import {ThemeContextType} from 'types/themeTypes';
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
@@ -16,7 +25,7 @@ const ThemeContext = createContext<ThemeContextType>({
     secondaryShadow: '',
     paleShade: '',
     link: '',
-    error: ''
+    error: '',
   },
   fonts: {
     light: {
@@ -54,34 +63,53 @@ const ThemeContext = createContext<ThemeContextType>({
       fontSize: 12,
       fontWeight: undefined,
     },
-
-  }
+  },
 });
 
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
+const ThemeProvider: FC<ThemeProviderProps> = ({children}) => {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState<'dark' | 'light'>(colorScheme || 'light');
 
-  useLayoutEffect(() => {
-    setTheme(colorScheme === 'dark' ? 'dark' : 'light')
+  useEffect(() => {
+    (async () => {
+      const userdata = await firestore()
+      .collection('users')
+      .doc(auth().currentUser?.uid)
+      .get();
+    
+    const userTheme = userdata?.data()?.userPreferences?.theme;
+
+    setTheme(userTheme ? userTheme : colorScheme === 'dark' ? 'dark' : 'light');
+    })();
   }, [colorScheme]);
-  
-  const toggleTheme = () => {
-    setTheme((prevState) => prevState === 'dark' ? 'light' : 'dark');
-  }
+
+  const toggleTheme = async () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+
+    // Save theme preference to Firestore
+    if (auth().currentUser?.uid) {
+      await firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .update({
+          'userPreferences.theme': newTheme,
+        });
+    }
+  };
 
   const colors = COLORS[theme];
   const fonts = getFonts();
-  
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, colors, fonts }} >
+    <ThemeContext.Provider value={{theme, toggleTheme, colors, fonts}}>
       {children}
     </ThemeContext.Provider>
-  )
+  );
 };
 
 export const useTheme = () => useContext(ThemeContext);

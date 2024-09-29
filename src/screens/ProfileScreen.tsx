@@ -1,34 +1,60 @@
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import i18n from '../i18n';
-import {useEffect, useState} from 'react';
-import {Switch, View} from 'react-native';
+import {useCallback, useEffect, useState} from 'react';
+import {I18nManager, StatusBar, Switch, View} from 'react-native';
 import auth, { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import RNRestart from 'react-native-restart';
 import AppButton from '@atoms/AppButton';
+import RNRestart from 'react-native-restart'
 
 function ProfileScreen() {
   const [isEnabled, setIsEnabled] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<string | undefined>(undefined);
   const {toggleTheme, theme} = useTheme();
   console.log('theme now: ', theme, user);
   console.log(i18n.language);
-  const toggleAppTheme = () => {
+  const toggleAppTheme = async () => {
     toggleTheme();
     setIsEnabled(previousState => !previousState);
-    RNRestart.restart();
+    await firestore()
+    .collection('users')
+    .doc(auth().currentUser?.uid)
+    .set(
+      {
+        userPreferences: {
+          theme: theme === 'dark' ? 'light' : 'dark'
+        },
+      },
+      {merge: true},
+    );
+    // RNRestart.restart();
     // persist and reload app
   };
 
-  const toggleAppLanguage = () => {
-    i18n.language === 'en'
-      ? i18n.changeLanguage('ar')
-      : i18n.changeLanguage('en');
+  const toggleAppLanguage = async () => {
+    if (i18n.language === 'en') {
+      i18n.changeLanguage('ar')
+      I18nManager.forceRTL(true);
+    } else {
+      i18n.changeLanguage('en');
+      I18nManager.forceRTL(false);
+    }
 
     setIsEnabled2(previousState => !previousState);
-    RNRestart.restart();
+    await firestore()
+    .collection('users')
+    .doc(auth().currentUser?.uid)
+    .set(
+      {
+        userPreferences: {
+          language: i18n.language === 'en' ? 'ar' : 'en'
+        },
+      },
+      {merge: true},
+    );
+    // RNRestart.restart();
     // persist and reload app
   };
 
@@ -38,17 +64,21 @@ function ProfileScreen() {
       .then(() => console.log('User signed out!'));
   };
 
+  
+
   useEffect(() => {
     (async () => {
-      const userData = await firestore().collection('users').doc(auth().currentUser?.uid).get()
-      console.log('user data in profile: ', userData.data()?.name)
-      setUser(userData.data()?.name);
+      const userData = auth().currentUser?.uid
+      setIsEnabled(theme === 'dark' ? true : false)
+      setIsEnabled2(i18n.language === 'ar' ? true : false)
+      console.log('user data in profile: ', userData)
+      setUser(userData);
     })()
-  }, [user])
+  }, [])
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <AppText>username: {user}</AppText>
+      <AppText>user Id: {user}</AppText>
       <View style={{flexDirection: 'row'}}>
         <AppText>Dark Mode: </AppText>
         <Switch

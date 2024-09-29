@@ -13,19 +13,18 @@ interface MainStackProps {
 }
 
 const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
-  
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: {backgroundColor: colors.primary500},
+        // contentStyle: {backgroundColor: colors.primary500},
       }}>
       <Stack.Screen
         name="BottomTabs"
         component={MainTabs}
         initialParams={{colors, fonts}}
       />
-      <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
+      <Stack.Screen name="MovieDetails" component={MovieDetailsScreen}/>
       <Stack.Screen name="CastMemberDetails" component={CastMemberScreen} />
       <Stack.Screen
         name="MovieListing"
@@ -34,7 +33,6 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
         options={{
           headerShown: true,
           title: 'All Movies',
-          headerStyle: {backgroundColor: colors.primary500},
           headerTintColor: colors.paleShade,
           headerShadowVisible: false,
           headerTitleAlign: 'center',

@@ -1,3 +1,4 @@
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
 import { ColorsType } from "./themeTypes"
 
 export type MainTabsParamList = {
@@ -6,3 +7,5 @@ export type MainTabsParamList = {
   Favorites: undefined
   Profile: undefined
 }
+
+export type HomeNavigationProp = BottomTabNavigationProp<MainTabsParamList, 'Home'>;

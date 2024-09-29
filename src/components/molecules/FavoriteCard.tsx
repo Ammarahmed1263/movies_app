@@ -1,13 +1,14 @@
 import {Text, StyleSheet, View, Pressable} from 'react-native';
 import Image from '@atoms/AppImage';
-
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MovieButton from '@atoms/MovieCardButton';
 import { getImageUrl } from '@utils/index';
 import { Movie } from 'types/movieTypes';
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
 
@@ -18,6 +19,33 @@ interface FavoriteCardProps {
 const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MovieDetailsNavigationProp>();
+
+  const handleDelete = useCallback(async () => {
+    try {
+        await firestore()
+          .collection('users')
+          .doc(auth().currentUser?.uid)
+          .set(
+            {
+              favoriteMovies: firestore.FieldValue.arrayRemove({
+                id: movie?.id,
+                title: movie?.title,
+                overview: movie?.overview,
+                poster_path: movie?.poster_path,
+              }),
+            },
+            {merge: true},
+          );
+    } catch (error) {
+      console.log('movie error occurred: ', error);
+    } finally {
+      const user = await firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .get();
+      console.log('user is here: ', user?.data());
+    }
+  }, [movie]);
 
   return (
     <MovieButton
@@ -40,7 +68,8 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
             {movie.title}
           </AppText>
           <Pressable
-            style={styles.trash}>
+            style={styles.trash}
+            onPress={handleDelete}>
             <Icon name="trash-outline" size={26} color={colors.primary700} />
           </Pressable>
         </View>

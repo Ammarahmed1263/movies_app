@@ -1,38 +1,36 @@
 import {FlatList, View} from 'react-native';
-import {useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import FavoriteCard from '@molecules/FavoriteCard';
 import { getNowPlaying } from '@services/movieService';
 import { Movie, MovieArray } from 'types/movieTypes';
+import AppText from '@atoms/AppText';
+import AppButton from '@atoms/AppButton';
+import { useNavigation } from '@react-navigation/native';
+import { HomeNavigationProp } from 'types/mainTabsTypes';
+import { vs } from '@styles/metrics';
 
 function renderFavorite({item}: {item: Movie}) {
   return <FavoriteCard movie={item} />;
 }
 
-function FavoritesList() {
-  const [now_playing, setnow_playing] = useState<MovieArray>([]);
-  console.log(now_playing);
+interface FavoritesListProps {
+  movies: MovieArray;
+}
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await getNowPlaying();
-        // console.log(now_playing.data);
-        // console.log(response.data.results);
-        setnow_playing([...now_playing, ...response.results]);
-      } catch (e) {
-        console.log('failed to retrieve movies', e);
-      } finally {
-        console.log('done favorites');
-      }
-    })();
-  }, []);
+const FavoritesList: FC<FavoritesListProps> = ({movies}) => {
+  const navigation = useNavigation<HomeNavigationProp>();
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flexGrow: 1, marginTop: vs(20)}}>
       <FlatList
-        data={now_playing}
+        data={movies}
         renderItem={renderFavorite}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={<View>
+          <AppText>no favorites</AppText>
+          <AppText>you can add add an item to your favorites by clicking "heart icon"</AppText>
+          <AppButton onPress={() => navigation.navigate("Home")}>start adding</AppButton>
+        </View>}
       />
     </View>
   );

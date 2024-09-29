@@ -13,7 +13,8 @@ import {useCallback, useEffect, useState, FC} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '@atoms/AppButton';
-
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import {useTheme} from '@contexts/ThemeContext';
 import CastList from '@organisms/CastList';
 import {formatVoteCount, durationToString, getImageUrl} from '@utils/index';
@@ -32,11 +33,12 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   navigation,
 }) => {
   const movieId = route.params.id;
-  console.log('movie id here: ', movieId)
+  console.log('movie id here: ', movieId);
   const [details, setDetails] = useState<MovieDetails | undefined>(undefined);
   const [cast, setCast] = useState([]);
   const [trailId, setTrailId] = useState<string>('');
   const [playing, setPlaying] = useState(false);
+  const [isFavorite, setFavorite] = useState(false);
   const [videoMeta, setVideoMeta] = useState<{
     title: string | null;
     author: string | null;
@@ -46,6 +48,15 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   useEffect(() => {
     (async () => {
       try {
+        const userDoc = await firestore()
+          .collection('users')
+          .doc(auth().currentUser?.uid)
+          .get();
+
+        const favoriteMovies = userDoc.data()?.favoriteMovies || [];
+        setFavorite(
+          favoriteMovies.some((movie: {id: number}) => movie.id === movieId),
+        );
         const response = await getMovieDetails(movieId);
 
         const response2 = await getMovieCredits(movieId);
@@ -62,7 +73,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             setTrailId(video.key);
           }
         });
-        console.log('videos here: ', response3.results);
+        // console.log('videos here: ', response3.results);
       } catch (err) {
         console.log('failed to fetch details', err);
       }
@@ -106,6 +117,58 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
     }
   }, [trailId]);
 
+  const handleAddToFavorite = useCallback(async () => {
+    try {
+      setFavorite(prev => !prev);
+      if (!isFavorite) {
+        console.log(
+          'data to add: ',
+          details?.id,
+          details?.title,
+          details?.overview,
+          getImageUrl(details?.poster_path),
+        );
+        await firestore()
+          .collection('users')
+          .doc(auth().currentUser?.uid)
+          .set(
+            {
+              favoriteMovies: firestore.FieldValue.arrayUnion({
+                id: details?.id,
+                title: details?.title,
+                overview: details?.overview,
+                poster_path: getImageUrl(details?.poster_path),
+              }),
+            },
+            {merge: true},
+          );
+      } else {
+        await firestore()
+          .collection('users')
+          .doc(auth().currentUser?.uid)
+          .set(
+            {
+              favoriteMovies: firestore.FieldValue.arrayRemove({
+                id: details?.id,
+                title: details?.title,
+                overview: details?.overview,
+                poster_path: getImageUrl(details?.poster_path),
+              }),
+            },
+            {merge: true},
+          );
+      }
+    } catch (error) {
+      console.log('details error occurred: ', error);
+    } finally {
+      const user = await firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .get();
+      console.log('user is here: ', user?.data());
+    }
+  }, [details]);
+
   if (!details) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -133,22 +196,24 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                   ...styles.topButton,
                   backgroundColor: colors.secondaryShadow,
                 }}
-                customViewStyle={{transform: [{rotate: I18nManager.isRTL ? '180deg' : '0deg'}] }}
+                customViewStyle={{
+                  transform: [{rotate: I18nManager.isRTL ? '180deg' : '0deg'}],
+                }}
                 customView>
-                <Icon
-                  name="chevron-back"
-                  size={28}
-                  color={colors.paleShade}
-                />
+                <Icon name="chevron-back" size={28} color={colors.paleShade} />
               </Button>
               <Button
                 style={{
                   ...styles.topButton,
                   backgroundColor: colors.secondaryShadow,
                 }}
-                onPress={() => console.log('hello heart outline')}
+                onPress={handleAddToFavorite}
                 customView>
-                <Icon name="heart-outline" size={28} color={colors.paleShade} />
+                <Icon
+                  name={isFavorite ? 'heart' : 'heart-outline'}
+                  size={28}
+                  color={colors.paleShade}
+                />
               </Button>
             </View>
             <View style={styles.quickpeak}>
@@ -220,7 +285,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 variant="bold"
                 style={{
                   color: colors.paleShade,
-                  lineHeight: 35
+                  lineHeight: 35,
                 }}>
                 Watch Trailer
               </AppText>
@@ -241,7 +306,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             </Button>
           </View>
           <TextSeeMore
-            variant='body'
+            variant="body"
             text={details.overview}
             style={{
               color: colors.paleShade,

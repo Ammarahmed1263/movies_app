@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {View, StyleSheet, Keyboard} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '@atoms/AppButton';
@@ -23,7 +23,6 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
   ) => {
     onSubmit(values, actions);
     actions.setSubmitting(false);
-    Keyboard.dismiss();
   };
 
   return (

@@ -32,19 +32,13 @@ const MainTabs: FC<MainTabsProps> = ({route}) => {
     <Tab.Navigator
       sceneContainerStyle={{
         paddingBottom: 65,
-        backgroundColor: colors.primary500,
+        // backgroundColor: colors.primary500,
       }}
       screenOptions={{
         headerShown: false,
-        headerTitleStyle: {
-          color: colors.paleShade,
-        },
-        headerStyle: {
-          backgroundColor: colors.primary500,
-        },
         tabBarStyle: {
           ...styles.tabBar,
-          backgroundColor: colors.primary500,
+          // backgroundColor: colors.primary500,
           borderColor: colors.secondary600,
         },
         tabBarLabelStyle: {

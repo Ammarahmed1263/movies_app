@@ -1,17 +1,17 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import getDeviceLanguage from '@utils/getDeviceLanguage';
 import { FormikHelpers } from 'formik';
 import { AuthFormValues } from 'types/authFormTypes';
 import { User } from 'types/userTypes';
 
 export const userSignup = async (email: User["email"], password: User["password"]) => {
   try {
-    const userCredential = await auth()
+    await auth()
     .createUserWithEmailAndPassword(
       email,
       password,
     )
-    await firestore().collection('users').doc(userCredential.user.uid).set({name: email.split('@')[0]});
     console.log('User account created & signed in!'); 
   } catch (e: any) {
     throw e;
@@ -37,7 +37,7 @@ export const userLogout = async () => {
 const generateFirebaseErrorMessage = (error: any) => {
   switch (error.code) {
     case 'auth/email-already-in-use':
-      return 'Email already in use';  
+      return 'Email already exists!';  
     case 'auth/invalid-email':
       return 'Invalid email address';  
     case 'auth/weak-password':

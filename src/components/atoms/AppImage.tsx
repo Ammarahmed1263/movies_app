@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, View, ActivityIndicator, ImageProps } from 'react-native';
+import { Image, StyleSheet, View, ActivityIndicator, ImageProps, ViewStyle, ImageStyle } from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
 import { imagePlaceHolder } from '../../constants';
 
@@ -7,24 +7,28 @@ import { imagePlaceHolder } from '../../constants';
 interface AppImageProps extends ImageProps {
   uri: string | undefined;
   placeholder?: string;
+  viewStyle?: ViewStyle;
+  style?: ImageStyle;
 }
 
-const AppImage: React.FC<AppImageProps> = ({ uri, placeholder= 'movie', style, ...rest }) => {
+const AppImage: React.FC<AppImageProps> = ({ uri, placeholder= 'movie', viewStyle, style, ...props }) => {
   const imageHolder = placeholder === 'movie' ? imagePlaceHolder.MOVIE : imagePlaceHolder.PERSON;
   const [isLoading, setIsLoading] = useState(true);
   const { colors } = useTheme();
   
+  const isLocalImage = typeof uri === 'number';
+
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, viewStyle]}>
       {isLoading && (
         <ActivityIndicator style={styles.loading} size="small" color={colors.secondary500} />
       )}
 
       <Image
-        source={uri ? { uri } : imageHolder}
-        style={[styles.image, isLoading ? { opacity: 0 } : { opacity: 1 }]}
+        source={isLocalImage ? uri : uri ? { uri } : imageHolder}
+        style={[styles.image, style, isLoading ? { opacity: 0 } : { opacity: 1 }]}
         onLoadEnd={() => setIsLoading(false)}
-        {...rest}
+        {...props}
       />
     </View>
   );

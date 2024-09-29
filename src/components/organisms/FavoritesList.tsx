@@ -7,7 +7,8 @@ import AppText from '@atoms/AppText';
 import AppButton from '@atoms/AppButton';
 import {useNavigation} from '@react-navigation/native';
 import {HomeNavigationProp} from 'types/mainTabsTypes';
-import {hs, vs} from '@styles/metrics';
+import {hs, vs, width} from '@styles/metrics';
+import AppImage from '@atoms/AppImage';
 
 function renderFavorite({item}: {item: Movie}) {
   return <FavoriteCard movie={item} />;
@@ -35,9 +36,10 @@ const FavoritesList: FC<FavoritesListProps> = ({movies}) => {
               alignItems: 'center',
               marginHorizontal: hs(15)
             }}>
+            <AppImage uri={require('../../assets/images/no-favorites.png')} viewStyle={{width: width * 0.5, aspectRatio: 1 / 1}}/>
             <AppText variant='heading'>No Favorites</AppText>
             <AppText style={{textAlign: 'center', marginBottom: vs(8)}}>
-              you can add add an item to your favorites by clicking "heart icon"
+              You can favorite a movie by clicking on the heart that shows up when you view movie details (top right).
             </AppText>
             <AppButton onPress={() => navigation.navigate('Home')} style={{height: 50, width: '50%'}}>
               Find Favorites

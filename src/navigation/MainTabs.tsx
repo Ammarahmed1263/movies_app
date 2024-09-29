@@ -76,7 +76,7 @@ const MainTabs: FC<MainTabsProps> = ({route}) => {
           headerShadowVisible: false,
           headerTitleAlign: 'center',
           tabBarIcon: iconState =>
-            getTabBarIcon({...iconState, size: 27}, 'star', 'star-outline'),
+            getTabBarIcon({...iconState, size: 27}, 'heart', 'heart-outline'),
         }}
       />
       <Tab.Screen

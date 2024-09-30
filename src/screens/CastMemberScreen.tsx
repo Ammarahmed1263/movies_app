@@ -69,7 +69,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
             shadowColor: colors.secondary500,
           }}>
           <Image
-            uri={getImageUrl(details?.profile_path)}
+            source={getImageUrl(details?.profile_path)}
             resizeMode="stretch"
           />
         </View>

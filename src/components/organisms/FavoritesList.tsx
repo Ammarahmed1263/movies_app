@@ -36,7 +36,7 @@ const FavoritesList: FC<FavoritesListProps> = ({movies}) => {
               alignItems: 'center',
               marginHorizontal: hs(15)
             }}>
-            <AppImage uri={require('../../assets/images/no-favorites.png')} viewStyle={{width: width * 0.5, aspectRatio: 1 / 1}}/>
+            <AppImage source={require('../../assets/images/no-favorites.png')} viewStyle={{width: width * 0.5, aspectRatio: 1 / 1}}/>
             <AppText variant='heading'>No Favorites</AppText>
             <AppText style={{textAlign: 'center', marginBottom: vs(8)}}>
               You can favorite a movie by clicking on the heart that shows up when you view movie details (top right).

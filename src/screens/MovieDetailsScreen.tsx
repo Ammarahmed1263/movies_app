@@ -137,7 +137,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 id: details?.id,
                 title: details?.title,
                 overview: details?.overview,
-                poster_path: getImageUrl(details?.poster_path),
+                poster_path: details?.poster_path,
               }),
             },
             {merge: true},
@@ -182,7 +182,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
       {playing && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <ImageBackground
-          source={{uri: getImageUrl(details.poster_path)}}
+          source={getImageUrl(details.poster_path)}
           style={styles.poster}
           resizeMode="stretch">
           <LinearGradient

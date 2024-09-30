@@ -52,8 +52,8 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
       style={styles.container}
       onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
       <Image
-        uri={getImageUrl(movie.poster_path)}
-        style={styles.image}
+        source={getImageUrl(movie.poster_path)}
+        viewStyle={styles.image}
       />
       <View style={styles.description}>
         <View style={styles.headingContainer}>

@@ -31,9 +31,9 @@ const Member: FC<MemberProps> = ({details}) => {
       <View style={styles.container}>
         <View style={{ ...styles.imageContainer, borderColor: colors.secondary500}}>
           <Image
-            uri={getImageUrl(details.profile_path)}
+            source={getImageUrl(details.profile_path)}
             placeholder='person'
-            style={styles.image}
+            viewStyle={styles.image}
             resizeMode='stretch'
           />
         </View>

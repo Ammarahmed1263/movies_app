@@ -1,3 +1,4 @@
+import { ImageSourcePropType } from "react-native";
 import { IMAGE_BASE_URL } from "../constants";
 
 export enum ImageSize {
@@ -8,5 +9,5 @@ export enum ImageSize {
 }
 
 export default function getImageUrl(path: string | undefined, size: ImageSize = ImageSize.ORIGINAL) {
-  return path ? `${IMAGE_BASE_URL}${size}${path}` : undefined;
+  return (path ? {uri: `${IMAGE_BASE_URL}${size}${path}`} : undefined);
 };

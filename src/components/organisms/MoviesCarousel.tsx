@@ -83,7 +83,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
   }
   return (
     <ImageBackground
-      source={{uri: getImageUrl(movies[activeMovieIndex].poster_path)}}
+      source={getImageUrl(movies[activeMovieIndex].poster_path)}
       blurRadius={45}
       style={styles.backgroundImage}
       resizeMode="cover">

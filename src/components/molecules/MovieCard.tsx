@@ -57,7 +57,7 @@ const MovieCard: FC<MovieCardProps> = ({
               : formatVoteCount(movie.vote_average)}
           </AppText>
         )}
-        <Image uri={getImageUrl(movie.poster_path)} />
+        <Image source={getImageUrl(movie.poster_path)} />
       </View>
       <AppText
         variant={titleVariant}

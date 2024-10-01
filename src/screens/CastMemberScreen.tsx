@@ -13,7 +13,7 @@ import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
 import {CastMemberScreenProps} from 'types/mainStackTypes';
 import {MemberCreditArray, MemberDetails} from 'types/castTypes';
 import AppText from '@atoms/AppText';
-import {vs} from '@styles/metrics';
+import {hs, vs} from '@styles/metrics';
 import DetailPillItem from '@molecules/DetailPillItem';
 
 const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
@@ -52,7 +52,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
         <Button
           onPress={() => navigation.goBack()}
           style={{
-            width: '13%',
+            width: hs(45),
             aspectRatio: 1 / 1,
             alignItems: 'center',
             justifyContent: 'center',

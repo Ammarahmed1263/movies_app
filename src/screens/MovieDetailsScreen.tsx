@@ -24,7 +24,7 @@ import {getMovieCredits, getMovieDetails} from '@services/movieDetailsService';
 import {getMovieVideos} from '@services/movieService';
 import {MovieDetailsScreenProps} from 'types/mainStackTypes';
 import {MovieDetails, Trailer} from 'types/movieTypes';
-import {width, height} from '@styles/metrics';
+import {width, hs} from '@styles/metrics';
 import AppText from '@atoms/AppText';
 import AppModal from '@atoms/AppModal';
 
@@ -401,12 +401,10 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight ?? 50 + 10,
   },
   topButton: {
-    width: '13%',
+    width: hs(45),
     aspectRatio: 1 / 1,
     alignItems: 'center',
     justifyContent: 'center',
-    maxHeight: 52,
-    maxWidth: 52,
   },
   imageButtons: {
     flex: 1,

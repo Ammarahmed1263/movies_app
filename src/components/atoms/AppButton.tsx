@@ -16,7 +16,7 @@ interface AppButtonProps extends PressableProps{
   flat?: boolean;
   variant?: FontVariants;
   textStyle?: TextStyle;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   onPress: () => void;
   customView?: ReactNode;
   customViewStyle?: ViewStyle;

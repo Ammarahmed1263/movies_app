@@ -87,7 +87,7 @@ function SearchScreen() {
       <SearchBar keyword={keyword} setKeyword={setkeyword} />
       {state.searchResults.length ? (
         <MoviesList
-          movies={state.searchResults}
+          data={state.searchResults}
           onEndReached={handlePagination}
           isLoading={state.page < state.totalPages}
         />

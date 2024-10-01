@@ -108,7 +108,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
 
   return (
     <MoviesList
-      movies={state.movies}
+      data={state.movies}
       onEndReached={handlePagination}
       isLoading={state.loading}
     />

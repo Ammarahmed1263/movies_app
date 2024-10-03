@@ -1,80 +1,62 @@
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import i18n from '../i18n';
-import {useCallback, useEffect, useState} from 'react';
-import {I18nManager, StatusBar, Switch, View} from 'react-native';
-import auth, { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import {useEffect, useState} from 'react';
+import {I18nManager, Switch, View} from 'react-native';
+import auth from '@react-native-firebase/auth';
 import AppButton from '@atoms/AppButton';
-import RNRestart from 'react-native-restart'
+import {userLogout} from '@services/authService';
+import RNRestart from 'react-native-restart';
+import {getCurrentUserId, updateUserPreferences} from '@services/userService';
 
 function ProfileScreen() {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [isEnabled2, setIsEnabled2] = useState(false);
+  const [themeActive, setThemeActive] = useState(false);
+  const [languageArabic, setLanguageArabic] = useState(false);
   const [user, setUser] = useState<string | undefined>(undefined);
   const {toggleTheme, theme} = useTheme();
-  console.log('theme now: ', theme, user);
-  console.log(i18n.language);
+
   const toggleAppTheme = async () => {
+    setThemeActive(prev => !prev);
+    
     toggleTheme();
-    setIsEnabled(previousState => !previousState);
-    await firestore()
-    .collection('users')
-    .doc(auth().currentUser?.uid)
-    .set(
-      {
-        userPreferences: {
-          theme: theme === 'dark' ? 'light' : 'dark'
-        },
-      },
-      {merge: true},
-    );
-    // RNRestart.restart();
-    // persist and reload app
+
+    await updateUserPreferences({
+      theme: theme === 'dark' ? 'light' : 'dark',
+    });
+    
   };
-
-  const toggleAppLanguage = async () => {
-    if (i18n.language === 'en') {
-      i18n.changeLanguage('ar')
-      I18nManager.forceRTL(true);
-    } else {
-      i18n.changeLanguage('en');
-      I18nManager.forceRTL(false);
-    }
-
-    setIsEnabled2(previousState => !previousState);
-    await firestore()
-    .collection('users')
-    .doc(auth().currentUser?.uid)
-    .set(
-      {
-        userPreferences: {
-          language: i18n.language === 'en' ? 'ar' : 'en'
-        },
-      },
-      {merge: true},
-    );
-    // RNRestart.restart();
-    // persist and reload app
-  };
-
-  const handleSignOut = () => {
-    auth()
-      .signOut()
-      .then(() => console.log('User signed out!'));
-  };
-
   
+  const toggleAppLanguage = async () => {
+    let language = i18n.language;
+    let newLanguage = language === 'en' ? 'ar' : 'en';
+    
+    setLanguageArabic(prev => !prev);
+    i18n.changeLanguage(newLanguage);
+    I18nManager.forceRTL(newLanguage === 'ar');
+    
+    await updateUserPreferences({
+      language: newLanguage,
+    });
+    RNRestart.restart();
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await userLogout();
+    } catch (error) {
+      console.log('oops user failed to logout', error);
+    }
+  };
 
   useEffect(() => {
     (async () => {
-      const userData = auth().currentUser?.uid
-      setIsEnabled(theme === 'dark' ? true : false)
-      setIsEnabled2(i18n.language === 'ar' ? true : false)
-      console.log('user data in profile: ', userData)
+      const userData = getCurrentUserId();
+      setThemeActive(theme === 'dark' ? true : false);
+      setLanguageArabic(i18n.language === 'ar' ? true : false);
       setUser(userData);
-    })()
-  }, [])
+      console.log('user data in profile: ', userData);
+    })();
+  }, []);
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -83,24 +65,28 @@ function ProfileScreen() {
         <AppText>Dark Mode: </AppText>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          thumbColor={themeActive ? '#f5dd4b' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleAppTheme}
-          value={isEnabled}
+          value={themeActive}
         />
       </View>
       <View style={{flexDirection: 'row'}}>
-        <AppText>Language: </AppText>
+        <AppText>Arabic: </AppText>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={isEnabled2 ? '#f5dd4b' : '#f4f3f4'}
+          thumbColor={languageArabic ? '#f5dd4b' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleAppLanguage}
-          value={isEnabled2}
+          value={languageArabic}
         />
       </View>
-      <AppText>Created at: {auth().currentUser?.metadata.creationTime?.split('T')[0]}</AppText>
-      <AppButton onPress={handleSignOut} flat>Sign out</AppButton>
+      <AppText>
+        Created at: {auth().currentUser?.metadata.creationTime?.split('T')[0]}
+      </AppText>
+      <AppButton onPress={handleSignOut} flat>
+        Sign out
+      </AppButton>
     </View>
   );
 }

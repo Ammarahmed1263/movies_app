@@ -9,9 +9,8 @@ import {
 import {useColorScheme} from 'react-native';
 import COLORS from '@styles/Colors';
 import getFonts from '@styles/Fonts';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import {ThemeContextType} from 'types/themeTypes';
+import { getUserProfile } from '@services/userService';
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
@@ -76,12 +75,9 @@ const ThemeProvider: FC<ThemeProviderProps> = ({children}) => {
 
   useEffect(() => {
     (async () => {
-      const userdata = await firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .get();
+      const user = await getUserProfile();
     
-    const userTheme = userdata?.data()?.userPreferences?.theme;
+    const userTheme = user?.userPreferences?.theme;
 
     setTheme(userTheme ? userTheme : colorScheme === 'dark' ? 'dark' : 'light');
     })();
@@ -90,16 +86,6 @@ const ThemeProvider: FC<ThemeProviderProps> = ({children}) => {
   const toggleTheme = async () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
-
-    // Save theme preference to Firestore
-    if (auth().currentUser?.uid) {
-      await firestore()
-        .collection('users')
-        .doc(auth().currentUser?.uid)
-        .update({
-          'userPreferences.theme': newTheme,
-        });
-    }
   };
 
   const colors = COLORS[theme];

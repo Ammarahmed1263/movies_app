@@ -8,6 +8,7 @@ import {
   Alert,
   Share,
   I18nManager,
+  useWindowDimensions,
 } from 'react-native';
 import {useCallback, useEffect, useState, FC} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,9 +25,14 @@ import {getMovieCredits, getMovieDetails} from '@services/movieDetailsService';
 import {getMovieVideos} from '@services/movieService';
 import {MovieDetailsScreenProps} from 'types/mainStackTypes';
 import {MovieDetails, Trailer} from 'types/movieTypes';
-import {width, hs} from '@styles/metrics';
+import {height, hs, ms} from '@styles/metrics';
 import AppText from '@atoms/AppText';
 import AppModal from '@atoms/AppModal';
+import {
+  addFavoriteMovie,
+  isFavoriteMovie,
+  removeFavoriteMovie,
+} from '@services/userService';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
@@ -35,6 +41,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   const movieId = route.params.id;
   console.log('movie id here: ', movieId);
   const [details, setDetails] = useState<MovieDetails | undefined>(undefined);
+  const {width} = useWindowDimensions();
   const [cast, setCast] = useState([]);
   const [trailId, setTrailId] = useState<string>('');
   const [playing, setPlaying] = useState(false);
@@ -48,15 +55,9 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   useEffect(() => {
     (async () => {
       try {
-        const userDoc = await firestore()
-          .collection('users')
-          .doc(auth().currentUser?.uid)
-          .get();
-
-        const favoriteMovies = userDoc.data()?.favoriteMovies || [];
-        setFavorite(
-          favoriteMovies.some((movie: {id: number}) => movie.id === movieId),
-        );
+        const isFavorite = await isFavoriteMovie(movieId);
+        setFavorite(isFavorite);
+        
         const response = await getMovieDetails(movieId);
 
         const response2 = await getMovieCredits(movieId);
@@ -119,53 +120,24 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 
   const handleAddToFavorite = useCallback(async () => {
     try {
-      setFavorite(prev => !prev);
       if (!isFavorite) {
-        console.log(
-          'data to add: ',
-          details?.id,
-          details?.title,
-          details?.overview,
-          getImageUrl(details?.poster_path),
-        );
-        await firestore()
-          .collection('users')
-          .doc(auth().currentUser?.uid)
-          .set(
-            {
-              favoriteMovies: firestore.FieldValue.arrayUnion({
-                id: details?.id,
-                title: details?.title,
-                overview: details?.overview,
-                poster_path: details?.poster_path,
-              }),
-            },
-            {merge: true},
-          );
+        if (details) {
+          await addFavoriteMovie({
+            id: details.id,
+            title: details.title,
+            overview: details.overview,
+            poster_path: details.poster_path,
+          });
+        }
       } else {
-        await firestore()
-          .collection('users')
-          .doc(auth().currentUser?.uid)
-          .set(
-            {
-              favoriteMovies: firestore.FieldValue.arrayRemove({
-                id: details?.id,
-                title: details?.title,
-                overview: details?.overview,
-                poster_path: getImageUrl(details?.poster_path),
-              }),
-            },
-            {merge: true},
-          );
+        if (details) {
+          await removeFavoriteMovie(details.id);
+        }
       }
     } catch (error) {
       console.log('details error occurred: ', error);
     } finally {
-      const user = await firestore()
-        .collection('users')
-        .doc(auth().currentUser?.uid)
-        .get();
-      console.log('user is here: ', user?.data());
+      setFavorite(prev => !prev);
     }
   }, [details]);
 
@@ -183,7 +155,10 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <ImageBackground
           source={getImageUrl(details.poster_path)}
-          style={styles.poster}
+          style={[
+            styles.poster,
+            {width: width, aspectRatio: width > height ? 4 / 3 : 3 / 4},
+          ]}
           resizeMode="stretch">
           <LinearGradient
             colors={['transparent', colors.primary500]}
@@ -396,8 +371,6 @@ export default MovieDetailsScreen;
 
 const styles = StyleSheet.create({
   poster: {
-    width: width,
-    aspectRatio: 3 / 4,
     paddingTop: StatusBar.currentHeight ?? 50 + 10,
   },
   topButton: {
@@ -418,7 +391,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   movieTitle: {
-    fontSize: 37,
+    fontSize: ms(37),
     lineHeight: 45,
     maxWidth: 300,
   },

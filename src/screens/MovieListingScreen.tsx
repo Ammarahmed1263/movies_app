@@ -1,8 +1,9 @@
 import AppText from '@atoms/AppText';
+import { useTheme } from '@contexts/ThemeContext';
 import MoviesList from '@organisms/MoviesList';
 import {getNowPlaying, getPopular, getTopRated, getUpcoming} from '@services/movieService';
 import {FC, useEffect, useReducer} from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import { MovieListingScreenProps } from 'types/mainStackTypes';
 
 const initialState = {
@@ -48,6 +49,8 @@ const reducer = (state: any, action: any) => {
 const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category} = route.params;
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { colors } = useTheme();
+
   console.log('state here: ', state)
   // TODO: refactor to specific service
   useEffect(() => {
@@ -110,7 +113,15 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
     <MoviesList
       data={state.movies}
       onEndReached={handlePagination}
-      isLoading={state.loading}
+      numColumns={2}
+      columnWrapperStyle={{justifyContent: 'flex-start'}}
+      ListFooterComponent={
+        state.loading ? (
+          <View style={{alignItems: 'center', marginTop: 4, paddingVertical: 10}}>
+            <ActivityIndicator color={colors.secondary500} size="large" />
+          </View>
+        ) : null
+      }
     />
   );
 };

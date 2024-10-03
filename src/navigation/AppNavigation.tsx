@@ -11,7 +11,8 @@ export default function AppNavigation() {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const {colors, fonts, theme} = useTheme();
   console.log('theme in navigation: ', theme);
-  function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
+
+  const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
     console.log('active user data: ', user);
     setUser(user);
     if (initializing) setInitializing(false);

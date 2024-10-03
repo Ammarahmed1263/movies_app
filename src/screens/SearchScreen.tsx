@@ -1,9 +1,10 @@
-import {SafeAreaView, StatusBar} from 'react-native';
+import {ActivityIndicator, SafeAreaView, StatusBar, View} from 'react-native';
 import MoviesList from '../components/organisms/MoviesList';
 import SearchBar from '@molecules/SearchBar';
 import {useCallback, useEffect, useReducer, useState} from 'react';
 import {searchMovies} from '@services/movieService';
 import { SearchResult } from 'types/searchTypes';
+import { useTheme } from '@contexts/ThemeContext';
 
 
 const initialState: SearchResult = {
@@ -50,6 +51,7 @@ const reducer = (state: SearchResult, action: any) => {
 function SearchScreen() {
   const [keyword, setkeyword] = useState('');
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { colors } = useTheme();
   console.log('state here', state, keyword);
 
   const handleSearch = useCallback(async () => {
@@ -89,7 +91,15 @@ function SearchScreen() {
         <MoviesList
           data={state.searchResults}
           onEndReached={handlePagination}
-          isLoading={state.page < state.totalPages}
+          columnWrapperStyle={{justifyContent: 'flex-start'}}
+          numColumns={2}
+          ListFooterComponent={
+            state.loading ? (
+              <View style={{alignItems: 'center', marginTop: 4, paddingVertical: 10}}>
+                <ActivityIndicator color={colors.secondary500} size="large" />
+              </View>
+            ) : null
+          }
         />
       ) : null}
     </SafeAreaView>

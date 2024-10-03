@@ -1,12 +1,12 @@
 import {FC, useRef, useState} from 'react';
-import {ImageBackground, View, StyleSheet, StatusBar, I18nManager} from 'react-native';
+import {ImageBackground, View, StyleSheet, StatusBar, I18nManager, useWindowDimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import Pagination from '@molecules/Pagination';
 import {useTheme} from '@contexts/ThemeContext';
 import {getImageUrl} from '@utils/index';
 import {Movie, MovieArray} from 'types/movieTypes';
-import {hs, vs, width} from '@styles/metrics';
+import {hs, vs } from '@styles/metrics';
 import AppText from '@atoms/AppText';
 import MovieCard from '@molecules/MovieCard';
 import Animated, {
@@ -15,6 +15,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 interface MoviesCarouselProps {
   movies: MovieArray;
@@ -23,7 +24,9 @@ interface MoviesCarouselProps {
 const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
   const [activeMovieIndex, setActiveMovieIndex] = useState<number>(0);
   const carouselRef = useRef<ICarouselInstance>(null);
+  const { width } = useWindowDimensions();
   const {colors} = useTheme();
+  const { t } = useTranslation();
 
   const handleSnapToItem = (index: number) => {
     setActiveMovieIndex(index);
@@ -98,12 +101,12 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
                 fontSize: 35,
                 color: colors.paleShade,
               }}>
-              Movie
+              {t('movie')}
             </AppText>
             <AppText
               variant="heading"
               style={{color: colors.secondary500, fontSize: 25}}>
-              Corn
+              {t('corn')}
             </AppText>
           </View>
         </View>
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   appName: {
-    flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+    flexDirection: 'row',
     alignItems: 'baseline',
   },
   carouselItem: {

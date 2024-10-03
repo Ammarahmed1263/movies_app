@@ -20,13 +20,11 @@ import { height, hs, vs } from '@styles/metrics';
 
 interface MoviesListProps extends Omit<FlatListProps<Movie>, 'renderItem'> {
   containerStyle?: ViewStyle;
-  isLoading: boolean;
   renderItem?: ({item}: {item: Movie}) => JSX.Element;
 }
 
 const MoviesList: FC<MoviesListProps> = ({
   containerStyle,
-  isLoading,
   renderItem,
   ...props
 }) => {
@@ -73,7 +71,6 @@ const MoviesList: FC<MoviesListProps> = ({
     <View style={[styles.container, containerStyle]}>
       <FlatList
         ref={flatListRef}
-        numColumns={2}
         renderItem={renderItem ?? defaultRenderItem}
         showsVerticalScrollIndicator={false}
         onScroll={scrollHandler}
@@ -81,15 +78,7 @@ const MoviesList: FC<MoviesListProps> = ({
         onScrollBeginDrag={handleOnScrollBeginDrag}
         onEndReachedThreshold={0.4}
         maxToRenderPerBatch={10}
-        ListFooterComponent={
-          isLoading ? (
-            <View style={{alignItems: 'center', marginTop: 4, paddingVertical: 10}}>
-              <ActivityIndicator color={colors.secondary500} size="large" />
-            </View>
-          ) : null
-        }
         contentContainerStyle={{marginBottom: 10}}
-        columnWrapperStyle={{justifyContent: 'flex-start'}}
         {...props}
       />
       <Animated.View style={animatedStyle}>

@@ -1,4 +1,6 @@
 {
+  "movie": "Movie",
+  "corn": "Corn",
   "_COMMENT1": "navigation menu",
   "home": "Home",
   "search": "Search",

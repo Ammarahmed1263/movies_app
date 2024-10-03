@@ -1,7 +1,5 @@
 import {Text, StyleSheet, View, Pressable} from 'react-native';
 import Image from '@atoms/AppImage';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,6 +9,7 @@ import { Movie } from 'types/movieTypes';
 import { FC, useCallback } from 'react';
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
+import { removeFavoriteMovie } from '@services/userService';
 
 interface FavoriteCardProps {
   movie: Movie
@@ -22,28 +21,9 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
 
   const handleDelete = useCallback(async () => {
     try {
-        await firestore()
-          .collection('users')
-          .doc(auth().currentUser?.uid)
-          .set(
-            {
-              favoriteMovies: firestore.FieldValue.arrayRemove({
-                id: movie?.id,
-                title: movie?.title,
-                overview: movie?.overview,
-                poster_path: movie?.poster_path,
-              }),
-            },
-            {merge: true},
-          );
+        await removeFavoriteMovie(movie.id);
     } catch (error) {
       console.log('movie error occurred: ', error);
-    } finally {
-      const user = await firestore()
-        .collection('users')
-        .doc(auth().currentUser?.uid)
-        .get();
-      console.log('user is here: ', user?.data());
     }
   }, [movie]);
 
@@ -94,7 +74,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     minHeight: 140,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     marginBottom: 25,
   },
   image: {

@@ -23,10 +23,9 @@ const renderMovie = ({item}: {item: Movie}) => {
   return <MovieCard movie={item} />;
 };
 const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, length = 10, category}) => {
-  const {colors, fonts} = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation<MovieListingNavigationProp>();
   const { t } = useTranslation();
-  
   return (
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
@@ -44,6 +43,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, l
       </View>
       <FlatList
         data={movies}
+        maxToRenderPerBatch={10}
         contentContainerStyle={{flexGrow: 1, gap: 15, paddingHorizontal: 20}}
         renderItem={renderMovie}
         showsHorizontalScrollIndicator={false}

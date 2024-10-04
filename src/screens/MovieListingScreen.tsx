@@ -1,7 +1,7 @@
 import AppText from '@atoms/AppText';
 import { useTheme } from '@contexts/ThemeContext';
 import MoviesList from '@organisms/MoviesList';
-import {getNowPlaying, getPopular, getTopRated, getUpcoming} from '@services/movieService';
+import {getNowPlaying, getPopular, getTopRated, getTrending, getUpcoming} from '@services/movieService';
 import {FC, useEffect, useReducer} from 'react';
 import {ActivityIndicator, Text, View} from 'react-native';
 import { MovieListingScreenProps } from 'types/mainStackTypes';
@@ -51,7 +51,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { colors } = useTheme();
 
-  console.log('state here: ', state)
+  console.log('category here', category)
   // TODO: refactor to specific service
   useEffect(() => {
     (async () => {
@@ -61,14 +61,17 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
         case 'popular':
           response = await getPopular();
           break;
-        case 'now playing':
+        case 'now_playing':
           response = await getNowPlaying();
           break;
         case 'upcoming':
           response = await getUpcoming();
           break;
-        case 'top rated':
+        case 'top_rated':
           response = await getTopRated();
+          break;
+        case 'trending':
+          response = await getTrending('day')
           break;
         default:
           response = [];
@@ -93,14 +96,17 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
         case 'popular':
           response = await getPopular(state.page + 1);
           break;
-        case 'now playing':
+        case 'now_playing':
           response = await getNowPlaying(state.page + 1);
           break;
         case 'upcoming':
           response = await getUpcoming(state.page + 1);
           break;
-        case 'top rated':
+        case 'top_rated':
           response = await getTopRated(state.page + 1);
+          break;
+        case 'trending':
+          response = await getTrending('day', state.page + 1)
           break;
         default:
           response = [];

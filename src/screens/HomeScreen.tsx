@@ -8,6 +8,7 @@ import {
   getNowPlaying,
   getPopular,
   getTopRated,
+  getTrending,
   getUpcoming,
 } from '@services/movieService';
 import AppText from '@atoms/AppText';
@@ -17,6 +18,7 @@ const initialState = {
   popular: {movies: [], page: 1, totalPages: 1},
   topRated: {movies: [], page: 1, totalPages: 1},
   upcoming: {movies: [], page: 1, totalPages: 1},
+  trending: {movies: [], page: 1, totalPages: 1},
   loading: false,
   refreshing: false
 }
@@ -28,24 +30,40 @@ const reducer = (state: any, action: any) => {
         ...state,
         [action.category]: {...state[action.category], movies: [...state[action.category].movies,...action.payload]}
       }
+    case 'SET_LOADING':
+      return {
+        ...state,
+        loading: true
+      }
+    case 'STOP_LOADING':
+      return {
+        ...state,
+        loading: false
+      }
+    case 'SET_REFRESHING':
+      return {
+        ...state,
+        refreshing: true
+      }
+    case 'STOP_REFRESHING':
+      return {
+        ...state,
+        refreshing: false
+      }
     default:
       break;
   }
 }
 
 function HomeScreen() {
-  /* TODO: work with useReducer hook here
-      handle no network connection*/
-  const [refreshing, setRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, initialState)
-  // console.log('total state', state.nowPlaying.movies)
+  console.log('state', state.trending.movies)
   const {t} = useTranslation();
   const {theme, colors} = useTheme();
 
   useEffect(() => {
     console.log('fetching started');
-    setIsLoading(true);
+    dispatch({type: 'SET_LOADING'});
     (async () => {
       try {
         const [
@@ -53,12 +71,15 @@ function HomeScreen() {
           popularResponse,
           topRatedResponse,
           upcomingResponse,
+          trendingResponse
         ] = await Promise.allSettled([
           getNowPlaying(),
           getPopular(),
           getTopRated(),
           getUpcoming(),
+          getTrending("day")
         ]);
+
         if (nowPlayingResponse.status === "fulfilled") {
           dispatch({ type: 'FETCH', category: 'nowPlaying', payload: nowPlayingResponse.value.results });
         } else {
@@ -81,23 +102,31 @@ function HomeScreen() {
           dispatch({ type: 'FETCH', category: 'upcoming', payload: upcomingResponse.value.results });
         } else {
           console.error('Failed to fetch upcoming movies:', upcomingResponse.reason);
-        }      } catch (e) {
+        }
+
+        if (trendingResponse.status === "fulfilled") {
+          dispatch({ type: 'FETCH', category: 'trending', payload: trendingResponse.value.results });
+        } else {
+          console.error('Failed to fetch upcoming movies:', trendingResponse.reason);
+        }
+
+      } catch (e) {
         console.log('Full error object:', e);
       } finally {
         console.log('fetching APIs data done');
-        setIsLoading(false);
+        dispatch({type: 'STOP_LOADING'});
       }
     })();
   }, []);
 
   const onRefresh = useCallback(() => {
-    setRefreshing(true);
+    dispatch({type: 'SET_REFRESHING'});
     setTimeout(() => {
-      setRefreshing(false);
+      dispatch({type: 'STOP_REFRESHING'});
     }, 5000);
   }, []);
 
-  if (isLoading) {
+  if (state.loading) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <AppText variant='heading'>loading...</AppText>
@@ -117,7 +146,7 @@ function HomeScreen() {
         refreshControl={
           <RefreshControl
             progressViewOffset={StatusBar.currentHeight}
-            refreshing={refreshing}
+            refreshing={state.refreshing}
             onRefresh={onRefresh}
             colors={[colors.secondaryShadow, colors.secondary600]}
             tintColor={colors.primary500}
@@ -128,10 +157,10 @@ function HomeScreen() {
           <MoviesCarousel movies={state.nowPlaying.movies?.slice(0, 8)} />
         </View>
         <View style={{flex: 1}}>
-          <MoviesSection category='now playing' movies={state.nowPlaying.movies} topic={t('now playing')} seeAll />
-          <MoviesSection category='popular' movies={state.popular.movies} topic={t('popular')} seeAll />
-          <MoviesSection category='top rated' movies={state.topRated.movies} topic={t('top rated')} seeAll />
+          <MoviesSection category='trending' movies={state.trending.movies} topic={t('trending_today')} seeAll />
           <MoviesSection category='upcoming' movies={state.upcoming.movies} topic={t('upcoming')} seeAll />
+          <MoviesSection category='popular' movies={state.popular.movies} topic={t('popular')} seeAll />
+          <MoviesSection category='top_rated' movies={state.topRated.movies} topic={t('top_rated')} seeAll />
         </View>
       </ScrollView>
     </>

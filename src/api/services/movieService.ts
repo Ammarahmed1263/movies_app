@@ -7,6 +7,7 @@ export const getNowPlaying = (page: number = 1) => apiClient(MOVIES_BASE.now_pla
 export const getPopular = (page: number = 1) => apiClient(MOVIES_BASE.popular, { page });
 export const getTopRated = (page: number = 1) => apiClient(MOVIES_BASE.top_rated, { page });
 export const getUpcoming = (page: number = 1) => apiClient(MOVIES_BASE.upcoming, { page });
+export const getTrending = (time_window: "day" | "week" = "day", page: number = 1) => apiClient(MOVIES_BASE.trending + time_window, { page });
 
 interface SearchMoviesParams {
   query: string

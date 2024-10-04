@@ -8,10 +8,11 @@
   "profile": "الحساب",
 
   "_COMMENT2": "Main Topics",
-  "now playing": "يُعرض الآن",
-  "top rated": "الأعلى تقييمًا",
-  "upcoming": "القادمة",
-  "popular": "الشائعة",
+  "now_playing": "يُعرض حاليا",
+  "top_rated": "الأعلى تقييمًا",
+  "upcoming": "قادمة",
+  "popular": "شائع",
+  "trending_today": "رائج اليوم",
 
   "_COMMENT3": "others",
   "see all": "عرض الكُل",

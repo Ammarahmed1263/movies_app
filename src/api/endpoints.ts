@@ -4,6 +4,7 @@ export const ENDPOINTS = {
     popular: 'movie/popular',
     top_rated: 'movie/top_rated',
     upcoming: 'movie/upcoming',
+    trending: 'trending/movie/',
     search: 'search/movie',
     videos: (movieId: number) => `movie/${movieId}/videos`,
   },

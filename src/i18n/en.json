@@ -8,10 +8,11 @@
   "profile": "Account",
 
   "_COMMENT2": "Main Topics",
-  "now playing": "Now Playing",
-  "top rated": "Top Rated",
+  "now_playing": "Now Playing",
+  "top_rated": "Top Rated",
   "upcoming": "UpComing",
   "popular": "Popular",
+  "trending_today": "Trending Today",
 
   "_COMMENT3": "others",
   "see all": "See all",

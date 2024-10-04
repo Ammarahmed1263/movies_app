@@ -12,7 +12,7 @@ const SignupScreen: FC<SignupScreenProps> = ({navigation}) => {
     actions: FormikHelpers<AuthFormValues>,
   ) => {    try {
       const user = await userSignup(values.email, values.password);
-      console.log('user is here: ', user)
+      console.log('user in signup: ', user)
     } catch (error) {
       handleFirebaseError(error, actions);
     }

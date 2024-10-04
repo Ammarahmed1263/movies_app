@@ -7,20 +7,22 @@ import { User } from 'types/userTypes';
 
 export const userSignup = async (email: User["email"], password: User["password"]) => {
   try {
-    await auth()
+    const user = await auth()
     .createUserWithEmailAndPassword(
       email,
       password,
     )
-    console.log('User account created & signed in!'); 
+    console.log('User account created & signed in!');
+    return user;
   } catch (e: any) {
     throw e;
   }
 }
 export const userLogin = async (email: User["email"], password: User["password"]) => {
   try {
-    await auth().signInWithEmailAndPassword(email, password);
+    const user = await auth().signInWithEmailAndPassword(email, password);
     console.log('user loggedin successfully');
+    return user
   } catch (e: any) {
     throw e;
   }

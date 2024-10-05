@@ -3,16 +3,17 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@atoms/*": ["components/atoms/*"],
-      "@molecules/*": ["components/molecules/*"],
-      "@organisms/*": ["components/organisms/*"],
-      "@hooks/*": ["hooks/*"],
-      "@utils/*": ["utils/*"],
-      "@styles/*": ["styles/*"],
-      "@contexts/*": ["contexts/*"],
-      "@navigation/*": ["navigation/*"],
-      "@screens/*": ["screens/*"],
-      "@services/*": ["api/services/*"]
+      "@atoms/*": ["./components/atoms/*"],
+      "@molecules/*": ["./components/molecules/*"],
+      "@organisms/*": ["./components/organisms/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@utils/*": ["./utils/*"],
+      "@styles/*": ["./styles/*"],
+      "@contexts/*": ["./contexts/*"],
+      "@navigation/*": ["./navigation/*"],
+      "@screens/*": ["./screens/*"],
+      "@services/*": ["./api/services/*"],
+      "@redux/*": ["./redux/*"]
     }
   }
 }

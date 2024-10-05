@@ -6,7 +6,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
-import { clearUserId, selectUser, setUserId } from '../redux/userSlice';
+import { clearUserId, selectUser, setUserId } from '@redux/userSlice';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);

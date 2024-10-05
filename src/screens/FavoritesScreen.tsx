@@ -6,8 +6,8 @@ import FavoriteCard from '@molecules/FavoriteCard';
 import {Movie} from 'types/movieTypes';
 
 function FavoritesScreen() {
-  const [favoriteIds, setFavoriteIds] = useState([]);
-  console.log('favorite ids: ', favoriteIds);
+  const [favorites, setFavorites] = useState([]);
+  console.log('favorite ids: ', favorites);
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -16,7 +16,7 @@ function FavoritesScreen() {
       .onSnapshot(
         documentSnapshot => {
           const data = documentSnapshot.data();
-          setFavoriteIds(data?.favoriteMovies || []);
+          setFavorites(data?.favoriteMovies.reverse() || []);
         },
         error => {
           console.error('Failed to retrieve movies', error);
@@ -33,7 +33,7 @@ function FavoritesScreen() {
 
   return (
     <MoviesList
-      data={favoriteIds}
+      data={favorites}
       renderItem={renderFavorite}
     />
   );

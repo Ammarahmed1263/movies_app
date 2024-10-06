@@ -39,7 +39,9 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   }, []);
 
   if (!details) {
-    return <AppText variant="heading">loading...</AppText>;
+    return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <AppText variant='heading'>Loading...</AppText>
+    </View>
   }
 
   return (

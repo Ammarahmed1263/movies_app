@@ -1,4 +1,4 @@
-import { FetchMoviesOptions, MovieCategory, TrendingFetchOptions } from "types/categoryTypes";
+import { getMoviesByCategoryOptions, MovieCategory, TrendingFetchOptions } from "types/categoryTypes";
 import apiClient from "../apiClient";
 import { ENDPOINTS } from "../endpoints";
 
@@ -11,10 +11,10 @@ export const getUpcoming = (page: number = 1) => apiClient(MOVIES_BASE.upcoming,
 export const getTrending = (time_window: "day" | "week" = "day", page: number = 1) => apiClient(MOVIES_BASE.trending + time_window, { page });
 
 
-export function getMoviesByCategory(category: 'trending', options: TrendingFetchOptions): Promise<any>;
-export function getMoviesByCategory(category: Exclude<MovieCategory, 'trending'>, options?: FetchMoviesOptions): Promise<any>;
+export function getMovies(category: 'trending', options: TrendingFetchOptions): Promise<any>;
+export function getMovies(category: Exclude<MovieCategory, 'trending'>, options?: getMoviesByCategoryOptions): Promise<any>;
 
-export async function getMoviesByCategory(category: MovieCategory, options: FetchMoviesOptions = {}): Promise<any> {
+export async function getMovies(category: MovieCategory, options: getMoviesByCategoryOptions = {}): Promise<any> {
   const { page = 1 } = options;
 
   if (!(category in MOVIES_BASE)) {

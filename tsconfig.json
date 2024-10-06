@@ -7,13 +7,14 @@
       "@molecules/*": ["./components/molecules/*"],
       "@organisms/*": ["./components/organisms/*"],
       "@hooks/*": ["./hooks/*"],
-      "@utils/*": ["./utils/*"],
+      "@utils": ["./utils"],
       "@styles/*": ["./styles/*"],
       "@contexts/*": ["./contexts/*"],
       "@navigation/*": ["./navigation/*"],
-      "@screens/*": ["./screens/*"],
+      "@screens": ["./screens"],
       "@services/*": ["./api/services/*"],
-      "@redux/*": ["./redux/*"]
+      "@redux/*": ["./redux/*"],
+      "@validation": ["./validation"]
     }
   }
 }

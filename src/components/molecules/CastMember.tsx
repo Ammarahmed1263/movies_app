@@ -9,7 +9,7 @@ import Image from '@atoms/AppImage';
 
 import { useTheme } from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import { getImageUrl } from '@utils/index';
+import { getImageUrl } from '@utils';
 import { FC } from 'react';
 import { CastMember } from 'types/castTypes';
 import { CastMemberDetailsNavigationProp,  } from 'types/mainStackTypes';

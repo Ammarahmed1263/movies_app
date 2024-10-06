@@ -6,13 +6,13 @@ import {
   convertToArabicNumerals,
   formatVoteCount,
   getImageUrl,
-} from '@utils/index';
+  getDeviceLanguage
+} from '@utils';
 import Image from '@atoms/AppImage';
 import {FC} from 'react';
 import {Movie} from 'types/movieTypes';
 import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-import getDeviceLanguage from '@utils/getDeviceLanguage';
 import {hs} from '@styles/metrics';
 import {FontVariants} from 'types/themeTypes';
 

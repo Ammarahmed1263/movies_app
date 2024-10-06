@@ -18,7 +18,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {useTheme} from '@contexts/ThemeContext';
 import CastList from '@organisms/CastList';
-import {formatVoteCount, durationToString, getImageUrl} from '@utils/index';
+import {formatVoteCount, durationToString, getImageUrl} from '@utils';
 import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
 import TextSeeMore from '@atoms/SeeMoreText';
 import {getMovieCredits, getMovieDetails} from '@services/movieDetailsService';

@@ -4,7 +4,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MovieButton from '@atoms/MovieCardButton';
-import { getImageUrl } from '@utils/index';
+import { getImageUrl } from '@utils';
 import { Movie } from 'types/movieTypes';
 import { FC, useCallback } from 'react';
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';

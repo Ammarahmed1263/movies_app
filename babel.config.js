@@ -17,7 +17,8 @@ module.exports = {
           "@navigation": "./src/navigation",
           "@screens": "./src/screens",
           "@services": "./src/api/services",
-          "@redux": "./src/redux"
+          "@redux": "./src/redux",
+          "@validation": "./src/validation"
         }
       }
     ],

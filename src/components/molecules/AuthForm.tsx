@@ -7,7 +7,7 @@ import LabelInput from './LabelInput';
 import {useTheme} from '@contexts/ThemeContext';
 import {Formik, FormikHelpers} from 'formik';
 import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
-import {loginSchema, signupSchema} from '../../validation';
+import { loginSchema, signupSchema } from '@validation';
 import AppText from '@atoms/AppText';
 import { ms, vs } from '@styles/metrics';
 

@@ -30,7 +30,7 @@ const Pagination: FC<PaginationProps> = ({
         <TouchableOpacity
           key={index}
           disabled={activeDotIndex === index}
-          hitSlop={15}
+          hitSlop={25}
           onPress={() => setActiveIndex(index)}
           style={[
             styles.dot,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     paddingVertical: vs(20),
   },
   dot: {
-    marginHorizontal: hs(4),
+    marginHorizontal: hs(6),
   },
 });
 

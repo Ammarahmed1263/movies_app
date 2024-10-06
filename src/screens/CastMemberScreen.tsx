@@ -7,7 +7,7 @@ import Button from '@atoms/AppButton';
 
 import {useTheme} from '@contexts/ThemeContext';
 import TextSeeMore from '@atoms/SeeMoreText';
-import {getGenderString, getImageUrl} from '@utils/index';
+import {getGenderString, getImageUrl} from '@utils';
 import MoviesSection from '@organisms/MoviesSection';
 import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
 import {CastMemberScreenProps} from 'types/mainStackTypes';

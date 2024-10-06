@@ -1,4 +1,4 @@
-import {FC, useRef, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {ImageBackground, View, StyleSheet, StatusBar, I18nManager, useWindowDimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
@@ -16,17 +16,40 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
+import { MovieCategory } from 'types/categoryTypes';
+import { getMoviesByCategory } from '@services/movieService';
 
 interface MoviesCarouselProps {
-  movies: MovieArray;
+  category: MovieCategory;
+  time_window?: 'day' | 'week';
 }
 
-const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
+const MoviesCarousel: FC<MoviesCarouselProps> = ({category, time_window}) => {
   const [activeMovieIndex, setActiveMovieIndex] = useState<number>(0);
+  const [movies, setMovies] = useState<MovieArray>([]);
+  const [loading, setLoading] = useState(true);
   const carouselRef = useRef<ICarouselInstance>(null);
   const { width } = useWindowDimensions();
   const {colors} = useTheme();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      let response;
+      if (category === 'trending') {
+        if (time_window) {
+          response = await getMoviesByCategory(category, { time_window: time_window });
+        } else {
+          console.log('no valid time window passed');
+        }
+      } else {
+        response = await getMoviesByCategory(category);
+      } 
+      setMovies(response.results.slice(0, 8));
+      setLoading(false);
+    })();
+  }, []);
 
   const handleSnapToItem = (index: number) => {
     setActiveMovieIndex(index);
@@ -129,6 +152,8 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
           }}
           onSnapToItem={handleSnapToItem}
           pagingEnabled
+          // loop
+          // autoPlay
         />
 
         <Pagination

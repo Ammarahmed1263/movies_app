@@ -1,9 +1,9 @@
+import {FC, useEffect, useReducer} from 'react';
+import {ActivityIndicator, Text, View} from 'react-native';
 import AppText from '@atoms/AppText';
 import { useTheme } from '@contexts/ThemeContext';
 import MoviesList from '@organisms/MoviesList';
-import {getNowPlaying, getPopular, getTopRated, getTrending, getUpcoming} from '@services/movieService';
-import {FC, useEffect, useReducer} from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import {getMoviesByCategory} from '@services/movieService';
 import { MovieListingScreenProps } from 'types/mainStackTypes';
 
 const initialState = {
@@ -47,35 +47,24 @@ const reducer = (state: any, action: any) => {
 };
 
 const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
-  const {category} = route.params;
+  const {category, time_window} = route.params;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { colors } = useTheme();
 
-  console.log('category here', category)
-  // TODO: refactor to specific service
   useEffect(() => {
     (async () => {
       dispatch({type: 'RESET_SEARCH'});
+      dispatch({type: 'SET_LOADING'});
       let response;
-      switch (category) {
-        case 'popular':
-          response = await getPopular();
-          break;
-        case 'now_playing':
-          response = await getNowPlaying();
-          break;
-        case 'upcoming':
-          response = await getUpcoming();
-          break;
-        case 'top_rated':
-          response = await getTopRated();
-          break;
-        case 'trending':
-          response = await getTrending('day')
-          break;
-        default:
-          response = [];
-      }
+      if (category === 'trending') {
+        if (time_window) {
+          response = await getMoviesByCategory(category, { time_window: time_window });
+        } else {
+          console.log('no valid time window passed');
+        }
+      } else {
+        response = await getMoviesByCategory(category);
+      } 
       dispatch({type: 'FETCH_MOVIES', payload: response});
     })();
   }, []);
@@ -89,28 +78,19 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   }
 
   const handlePagination = async () => {
-    if (state.page < state.totalPages) {
+    if (state.page < state.totalPages && !state.loading) {
+      console.log('fetching page now');
       dispatch({type: 'SET_LOADING'});
       let response;
-      switch (category) {
-        case 'popular':
-          response = await getPopular(state.page + 1);
-          break;
-        case 'now_playing':
-          response = await getNowPlaying(state.page + 1);
-          break;
-        case 'upcoming':
-          response = await getUpcoming(state.page + 1);
-          break;
-        case 'top_rated':
-          response = await getTopRated(state.page + 1);
-          break;
-        case 'trending':
-          response = await getTrending('day', state.page + 1)
-          break;
-        default:
-          response = [];
-      }
+      if (category === 'trending') {
+        if (time_window) {
+          response = await getMoviesByCategory(category, { page: state.page + 1, time_window: time_window });
+        } else {
+          console.log('no valid time window passed');
+        }
+      } else {
+        response = await getMoviesByCategory(category, { page: state.page + 1 });
+      } 
       dispatch({type: 'FETCH_MOVIES', payload: response});
     }
   };
@@ -119,11 +99,12 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
     <MoviesList
       data={state.movies}
       onEndReached={handlePagination}
+      keyExtractor={(movie) => movie.id.toString() + category}
       numColumns={2}
       columnWrapperStyle={{justifyContent: 'flex-start'}}
       ListFooterComponent={
         state.loading ? (
-          <View style={{alignItems: 'center', marginTop: 4, paddingVertical: 10}}>
+          <View style={{alignItems: 'center', paddingBottom: 10}}>
             <ActivityIndicator color={colors.secondary500} size="large" />
           </View>
         ) : null

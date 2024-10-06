@@ -18,14 +18,12 @@ const reducer = (state: SearchResult, action: any) => {
   switch (action.type) {
     case 'RESET_SEARCH':
       return {
-        ...state,
         searchResults: [],
         page: 1,
         totalPages: 1,
         loading: false,
       };
     case 'SET_RESULTS':
-      // console.log('fetch here 2: ', state, action.paylaod);
       return {
         ...state,
         searchResults: [...state.searchResults, ...action?.payload?.results],
@@ -57,23 +55,25 @@ function SearchScreen() {
   const handleSearch = useCallback(async () => {
     console.log('search key now: ', keyword);
     dispatch({type: 'SET_LOADING'});
-    // if (keyword === '') {
-      dispatch({type: 'RESET_SEARCH'});
-      // return;
-    // }
+    dispatch({type: 'RESET_SEARCH'});
     const response = await searchMovies({query: keyword, page: state.page});
     dispatch({type: 'SET_RESULTS', payload: response});
     console.log('search response here: ', state);
   }, [keyword]);
 
   useEffect(() => {
+    if (keyword === '') {
+      dispatch({type: 'RESET_SEARCH'});
+      return;
+    }
+
     const id = setTimeout(() => handleSearch(), 500);
 
     return () => clearTimeout(id);
   }, [keyword]);
 
   const handlePagination = async () => {
-    if (state.page < state.totalPages) {
+    if (state.page < state.totalPages && !state.loading) {
       dispatch({type: 'SET_LOADING'});
       const response = await searchMovies({
         query: keyword,
@@ -95,7 +95,7 @@ function SearchScreen() {
           numColumns={2}
           ListFooterComponent={
             state.loading ? (
-              <View style={{alignItems: 'center', marginTop: 4, paddingVertical: 10}}>
+              <View style={{alignItems: 'center', paddingBottom: 10}}>
                 <ActivityIndicator color={colors.secondary500} size="large" />
               </View>
             ) : null

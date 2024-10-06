@@ -8,11 +8,10 @@ export const getMoviesByCategory = createAsyncThunk(
     let response;
 
     if (category === 'trending') {
-      if (time_window) {
-        response = await getMovies(category, { page, time_window: time_window });
-      } else {
+      if (!time_window) {
         throw new Error("time_window is required for trending movies");
-      }
+      } 
+      response = await getMovies(category, { page, time_window: time_window });
     } else {
       response = await getMovies(category, { page });
     }
@@ -22,7 +21,5 @@ export const getMoviesByCategory = createAsyncThunk(
       movies: response.results,
       page: response.page,
       total_pages: response.total_pages,
-      loading: false,
-      error: null
     };
 })

@@ -11,6 +11,8 @@ import {RootState} from '@redux/types';
 function HomeScreen() {
   const {t} = useTranslation();
   const {theme} = useTheme();
+  const {movies: now_playingMovies, loading: now_playingLoading} =
+    useMoviesByCategory('now_playing');
   const {movies: trendingMovies, loading: trendingLoading} =
     useMoviesByCategory('trending', 'day');
   const {movies: upcomingMovies, loading: upcomingLoading} =
@@ -19,7 +21,6 @@ function HomeScreen() {
     useMoviesByCategory('top_rated');
   const {movies: popularMovies, loading: popularLoading} =
     useMoviesByCategory('popular');
-  const state = useAppSelector((state: RootState) => state.movies);
 
   const onRefresh = useCallback(() => {
     setTimeout(() => {}, 5000);
@@ -45,15 +46,15 @@ function HomeScreen() {
         //   />
         // }
       >
-        {/* <View style={{flex: 3}}>
-          <MoviesCarousel category="now_playing" />
-        </View> */}
-        <View style={{flex: 1, marginTop: 100}}>
+        <View>
+          <MoviesCarousel movies={trendingMovies} loading={trendingLoading}/>
+        </View>
+        <View>
           <MoviesSection
-            movies={trendingMovies}
-            loading={trendingLoading}
-            category="trending"
-            time_window="day"
+            movies={now_playingMovies}
+            loading={now_playingLoading}
+            category="now_playing"
+            // time_window="day"
             topic={t('trending_today')}
             seeAll
           />

@@ -1,7 +1,6 @@
 import {FC, ReactNode} from 'react';
-import { Modal, ModalProps, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+import { Modal, ModalProps, StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View, ViewStyle } from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
-import { height, width } from '@styles/metrics';
 
 interface AppModalProps extends ModalProps{
   children: ReactNode;
@@ -12,6 +11,7 @@ interface AppModalProps extends ModalProps{
 
 const AppModal: FC<AppModalProps> = ({children, visible, handleClose, viewStyle, ...props}) => {
   const { colors } = useTheme();
+  const { width, height } = useWindowDimensions();
 
   return (
     <Modal
@@ -28,7 +28,11 @@ const AppModal: FC<AppModalProps> = ({children, visible, handleClose, viewStyle,
         style={[
           styles.modalBody,
           {
-            flex: 1,
+            bottom: height * 0.3,
+            left: width * 0.05,
+            width: width * 0.9,
+            maxHeight: height * 0.65,
+            minHeight: height / 2,
             borderColor: colors.secondary600,
             backgroundColor: colors.primary500,
             shadowColor: colors.secondary600,
@@ -45,12 +49,8 @@ export default AppModal;
 
 const styles = StyleSheet.create({
   modalBody: {
+    flex: 1,
     position: 'absolute',
-    bottom: height * 0.3,
-    left: width * 0.05,
-    width: width * 0.9,
-    maxHeight: height * 0.65,
-    minHeight: height / 2,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 30,

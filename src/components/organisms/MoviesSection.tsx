@@ -29,7 +29,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
   loading,
   topic,
   seeAll = false,
-  length,
+  length = 20,
   category,
   time_window,
 }) => {
@@ -62,7 +62,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
         </View>
       :
       <FlatList
-        data={length ? movies.slice(0, length) : movies}
+        data={movies.slice(0, length)}
         keyExtractor={movie => movie.id + ''}
         maxToRenderPerBatch={10}
         contentContainerStyle={{flexGrow: 1, gap: 15, paddingHorizontal: 20}}

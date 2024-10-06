@@ -8,7 +8,7 @@ import { useMoviesByCategory } from '@hooks/useMoviesByCategory';
 
 const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category, time_window} = route.params;
-  const {movies, handlePagination, loading} = useMoviesByCategory(category, time_window);
+  const {movies, page, total_pages, handlePagination, loading} = useMoviesByCategory(category, time_window);
   const {colors} = useTheme();
 
   if (movies.length === 0) {
@@ -19,6 +19,10 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
     );
   }
 
+  // useEffect(() => {
+  //   console.log('component rendered with data: ', page, total_pages);
+  // }, [page]);
+
   return (
     <MoviesList
       data={movies}
@@ -27,7 +31,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
       numColumns={2}
       columnWrapperStyle={{justifyContent: 'flex-start'}}
       ListFooterComponent={
-        loading ? (
+        page < total_pages && movies.length !== 0 ? (
           <View style={{alignItems: 'center', paddingBottom: 10}}>
             <ActivityIndicator color={colors.secondary500} size="large" />
           </View>

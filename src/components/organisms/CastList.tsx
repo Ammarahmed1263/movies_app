@@ -1,7 +1,7 @@
+import { FC } from "react";
 import { FlatList, View } from "react-native";
 import Member from "@molecules/CastMember";
 import { CastMember, CastMemberArray } from "types/castTypes";
-import { FC } from "react";
 
 
 const renderItem = ({item}: {item: CastMember}) => {

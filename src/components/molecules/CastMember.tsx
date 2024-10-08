@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import {
   View,
   Text,
@@ -6,18 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Image from '@atoms/AppImage';
-
-import { useTheme } from '@contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import { getImageUrl } from '@utils/index';
-import { FC } from 'react';
-import { CastMember } from 'types/castTypes';
-import { CastMemberDetailsNavigationProp,  } from 'types/mainStackTypes';
+import {getImageUrl} from '@utils';
+import {CastMember} from 'types/castTypes';
+import {CastMemberDetailsNavigationProp} from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-import { ms } from '@styles/metrics';
+import {ms} from '@styles/metrics';
 
 interface MemberProps {
-  details: CastMember
+  details: CastMember;
 }
 
 const Member: FC<MemberProps> = ({details}) => {
@@ -28,19 +27,19 @@ const Member: FC<MemberProps> = ({details}) => {
     <TouchableOpacity
       onPress={() => navigation.navigate('CastMemberDetails', {id: details.id})}
       style={styles.TouchableOpacityContainer}>
-      <View style={styles.container}>
-        <View style={{ ...styles.imageContainer, borderColor: colors.secondary500}}>
-          <Image
-            source={getImageUrl(details.profile_path)}
-            placeholder='person'
-            viewStyle={styles.image}
-            resizeMode='stretch'
-          />
-        </View>
+      <View
+        style={{...styles.imageContainer, borderColor: colors.secondary500}}>
+        <Image
+          source={getImageUrl(details.profile_path)}
+          placeholder="person"
+          viewStyle={styles.image}
+          resizeMode="stretch"
+        />
       </View>
       <View style={{...styles.details, borderColor: colors.secondary600}}>
         <AppText
-          variant='bold'
+          variant="bold"
+          numberOfLines={1}
           style={{
             fontSize: ms(16),
             color: colors.paleShade,
@@ -50,7 +49,8 @@ const Member: FC<MemberProps> = ({details}) => {
             : details.original_name}
         </AppText>
         <AppText
-          variant='caption'
+          variant="caption"
+          numberOfLines={1}
           style={{
             color: colors.paleShade,
           }}>
@@ -61,28 +61,21 @@ const Member: FC<MemberProps> = ({details}) => {
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 export default Member;
 
 const styles = StyleSheet.create({
   TouchableOpacityContainer: {
-    justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
-  },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 100,
-    maxWidth: 135
+    width: 120,
   },
   imageContainer: {
     width: 90,
     aspectRatio: 1 / 1,
     borderWidth: 2,
     borderRadius: 45,
-    padding: -12,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
@@ -94,7 +87,8 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: 'center',
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     marginVertical: 10,
+    width: '90%',
   },
 });

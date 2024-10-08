@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import getDeviceLanguage from '@utils/getDeviceLanguage';
+import { getDeviceLanguage } from '@utils';
 import { FormikHelpers } from 'formik';
 import { AuthFormValues } from 'types/authFormTypes';
 import { User } from 'types/userTypes';

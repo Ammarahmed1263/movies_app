@@ -138,18 +138,18 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
         />
 
         <Pagination
-          containerStyle={{marginTop: -10}}
           dotsLength={movies.length > length ? length : movies.length}
           activeDotIndex={activeMovieIndex}
           dotStyle={{
-            width: 12,
-            height: 12,
-            borderRadius: 6,
+            width: hs(12),
+            height: vs(8),
+            borderRadius: hs(6),
             backgroundColor: colors.secondary500,
+            marginHorizontal: hs(4)
           }}
+          activeDotStyle={{width: hs(36)}}
           inactiveDotStyle={{backgroundColor: colors.primary700}}
           inactiveDotOpacity={0.6}
-          inactiveDotScale={0.4}
           setActiveIndex={handleDotPress}
         />
       </LinearGradient>
@@ -176,8 +176,6 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   carouselItem: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flex: 1,
     paddingTop: 10,
     aspectRatio: 8.5 / 16,

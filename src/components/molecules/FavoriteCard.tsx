@@ -34,6 +34,7 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
       <Image
         source={getImageUrl(movie.poster_path)}
         viewStyle={styles.image}
+        loadingSize='small'
       />
       <View style={styles.description}>
         <View style={styles.headingContainer}>

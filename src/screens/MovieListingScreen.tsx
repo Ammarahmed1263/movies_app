@@ -4,24 +4,21 @@ import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import MoviesList from '@organisms/MoviesList';
 import {MovieListingScreenProps} from 'types/mainStackTypes';
-import { useMoviesByCategory } from '@hooks/useMoviesByCategory';
+import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
+import AppLoading from '@atoms/AppLoading';
+import { vs } from '@styles/metrics';
 
 const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category, time_window} = route.params;
-  const {movies, page, total_pages, handlePagination, loading} = useMoviesByCategory(category, time_window);
-  const {colors} = useTheme();
+  const {movies, page, total_pages, handlePagination} = useMoviesByCategory(category, time_window);
 
   if (movies.length === 0) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <AppText variant="heading">loading...</AppText>
+        <AppText variant="heading">Ooops...No items found</AppText>
       </View>
     );
   }
-
-  // useEffect(() => {
-  //   console.log('component rendered with data: ', page, total_pages);
-  // }, [page]);
 
   return (
     <MoviesList
@@ -32,8 +29,12 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
       columnWrapperStyle={{justifyContent: 'flex-start'}}
       ListFooterComponent={
         page < total_pages && movies.length !== 0 ? (
-          <View style={{alignItems: 'center', paddingBottom: 10}}>
-            <ActivityIndicator color={colors.secondary500} size="large" />
+          <View style={{alignItems: 'center', paddingBottom: vs(20)}}>
+            <AppLoading
+              size={35}
+              speed={2.5}
+              source={require('../assets/lottie/loading_fade.json')}
+            />
           </View>
         ) : null
       }

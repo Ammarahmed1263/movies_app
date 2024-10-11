@@ -53,9 +53,10 @@ function SearchScreen() {
   const [keyword, setkeyword] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log('state here: ', state.loading)
 
   const handleSearch = useCallback(async () => {
-    dispatch({type: 'SET_LOADING'});
+    // dispatch({type: 'SET_LOADING'});
     dispatch({type: 'RESET_SEARCH'});
     const response = await searchMovies({query: keyword, page: state.page});
     dispatch({type: 'SET_RESULTS', payload: response});
@@ -64,11 +65,13 @@ function SearchScreen() {
   useEffect(() => {
     if (keyword === '') {
       dispatch({type: 'RESET_SEARCH'});
+      dispatch({type: 'STOP_LOADING'});
       return;
     }
-    setIsTyping(true);
-    const id = setTimeout(() => {handleSearch(); setIsTyping(false)}, 500);
 
+    dispatch({type: 'SET_LOADING'});
+    const id = setTimeout(() => handleSearch(), 500);
+    // dispatch({type: 'STOP_LOADING'});
     return () => clearTimeout(id);
   }, [keyword]);
 
@@ -83,46 +86,61 @@ function SearchScreen() {
     }
   };
 
-  
   return (
     <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
       <SearchBar keyword={keyword} setKeyword={setkeyword} />
-        {!state.loading && !keyword && 
-            <AppText variant='heading'>search here</AppText>
-        }
-        <MoviesList
-          data={state.searchResults}
-          onEndReached={handlePagination}
-          columnWrapperStyle={{justifyContent: 'flex-start'}}
-          numColumns={2}
-          ListEmptyComponent={<View
-            style={{
-              alignItems: 'center',
-              paddingHorizontal: 30,
-            }}>
-            <LottieView
-              source={require('../assets/lottie/no_search_results.json')}
-              style={{width: width * 0.8, aspectRatio: 1 / 1}}
-              autoPlay
-              loop
+      {state.loading && state.searchResults.length === 0 ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <AppLoading source={require('../assets/lottie/loading_fade.json')} size={70} speed={1.8}/>
+        </View>
+      ) : (
+        <View style={{flex: 1}}>
+          {keyword ? (
+            <MoviesList
+              data={state.searchResults}
+              onEndReached={handlePagination}
+              columnWrapperStyle={{justifyContent: 'flex-start'}}
+              numColumns={2}
+              ListEmptyComponent={
+                keyword && state.searchResults.length === 0 ? (
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      paddingHorizontal: 30,
+                    }}>
+                    <LottieView
+                      source={require('../assets/lottie/no_search_results.json')}
+                      style={{width: width * 0.8, aspectRatio: 1 / 1}}
+                      autoPlay
+                      loop
+                    />
+                    <AppText variant="heading" style={{textAlign: 'center'}}>
+                      Ooops...No movie found with {keyword}!
+                    </AppText>
+                  </View>
+                ) : null
+              }
+              ListFooterComponent={
+                state.page < state.total_pages &&
+                state.searchResults.length !== 0 ? (
+                  <View style={{alignItems: 'center', paddingBottom: vs(20)}}>
+                    <AppLoading
+                      size={35}
+                      speed={2.5}
+                      source={require('../assets/lottie/loading_fade.json')}
+                    />
+                  </View>
+                ) : null
+              }
             />
-            <AppText variant="heading" style={{textAlign: 'center'}}>
-              Ooops...No movie found with this keyword: "{keyword}"
-            </AppText>
-          </View>}
-          ListFooterComponent={
-            state.page < state.total_pages &&
-            state.searchResults.length !== 0 ? (
-              <View style={{alignItems: 'center', paddingBottom: vs(20)}}>
-                <AppLoading
-                  size={35}
-                  speed={2.5}
-                  source={require('../assets/lottie/loading_fade.json')}
-                />
-              </View>
-            ) : null
-          }
-        />
+          ) : (
+            <View
+              style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+              <AppText variant="heading">search here</AppText>
+            </View>
+          )}
+        </View>
+      )}
     </SafeAreaView>
   );
 }

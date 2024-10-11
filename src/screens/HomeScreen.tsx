@@ -55,7 +55,7 @@ function HomeScreen() {
             loading={now_playingLoading}
             category="now_playing"
             // time_window="day"
-            topic={t('trending_today')}
+            topic={t('now_playing')}
             seeAll
           />
           <MoviesSection

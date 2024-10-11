@@ -75,9 +75,11 @@ const MoviesList: FC<MoviesListProps> = ({
         showsVerticalScrollIndicator={false}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
+        maxToRenderPerBatch={10}
+        initialNumToRender={8}
+        windowSize={15}
         onScrollBeginDrag={handleOnScrollBeginDrag}
         onEndReachedThreshold={0.4}
-        maxToRenderPerBatch={10}
         contentContainerStyle={{marginBottom: 10}}
         {...props}
       />

@@ -44,10 +44,14 @@ const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, l
       <FlatList
         data={movies}
         maxToRenderPerBatch={10}
+        scrollEventThrottle={16}
+        initialNumToRender={5}
+        windowSize={5}
         contentContainerStyle={{flexGrow: 1, gap: 15, paddingHorizontal: 20}}
         renderItem={renderMovie}
         showsHorizontalScrollIndicator={false}
-        horizontal
+        horizontal={true}
+        getItemLayout={(_, index) => ({length: 100, offset: 100 * index, index})}
       />
     </View>
   );

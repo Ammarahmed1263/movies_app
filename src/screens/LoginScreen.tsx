@@ -13,7 +13,7 @@ const LoginScreen: FC<LoginScreenProps> = ({navigation}) => {
   ) => {
     try {
       const user = await userLogin(values.email, values.password);
-      console.log('user is here: ', user);
+      console.log('user in login: ', user);
     } catch (error: any) {
       console.log('login Failed: ', error);
       handleFirebaseError(error, actions);

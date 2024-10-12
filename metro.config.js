@@ -12,7 +12,7 @@ const defaultConfig = getDefaultConfig(__dirname);
 const customConfig = {
   resolver: {
     sourceExts: [...defaultConfig.resolver.sourceExts, 'ts', 'tsx', 'js', 'jsx'], // Ensure these extensions are handled
-    assetExts: [...defaultConfig.resolver.assetExts, 'png', 'jpg', 'jpeg', 'svg'], // Support image assets
+    assetExts: [...defaultConfig.resolver.assetExts, 'png', 'jpg', 'jpeg', 'svg', 'lottie'], // Support image assets
   },
 };
 

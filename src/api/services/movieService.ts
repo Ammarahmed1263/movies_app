@@ -1,3 +1,4 @@
+import { getMoviesByCategoryOptions, MovieCategory, TrendingFetchOptions } from "types/categoryTypes";
 import apiClient from "../apiClient";
 import { ENDPOINTS } from "../endpoints";
 
@@ -8,6 +9,32 @@ export const getPopular = (page: number = 1) => apiClient(MOVIES_BASE.popular, {
 export const getTopRated = (page: number = 1) => apiClient(MOVIES_BASE.top_rated, { page });
 export const getUpcoming = (page: number = 1) => apiClient(MOVIES_BASE.upcoming, { page });
 export const getTrending = (time_window: "day" | "week" = "day", page: number = 1) => apiClient(MOVIES_BASE.trending + time_window, { page });
+
+
+export function getMovies(category: 'trending', options: TrendingFetchOptions): Promise<any>;
+export function getMovies(category: Exclude<MovieCategory, 'trending'>, options?: getMoviesByCategoryOptions): Promise<any>;
+
+export async function getMovies(category: MovieCategory, options: getMoviesByCategoryOptions = {}): Promise<any> {
+  const { page = 1 } = options;
+
+  if (!(category in MOVIES_BASE)) {
+    throw new Error('Unknown category');
+  }
+
+  let endpoint = MOVIES_BASE[category];
+
+  if (category === 'trending') {
+    const { time_window } = options as TrendingFetchOptions;
+
+    if (!time_window) {
+      throw new Error('time_window is required for trending movies');
+    }
+    endpoint += time_window;
+  }
+
+  return apiClient(endpoint, { page });
+}
+
 
 interface SearchMoviesParams {
   query: string

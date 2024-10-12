@@ -2,12 +2,13 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-naviga
 import { ColorsType, FontsType } from "./themeTypes"
 import { NavigatorScreenParams } from "@react-navigation/native"
 import { MainTabsParamList } from "./mainTabsTypes"
+import { MovieCategory } from "./categoryTypes"
 
 export type MainStackParamList = {
   BottomTabs: { colors: ColorsType, fonts: FontsType } & NavigatorScreenParams<MainTabsParamList>,
   MovieDetails: {id: number},
   CastMemberDetails: {id: number},
-  MovieListing: { category?: string, colors?: ColorsType },
+  MovieListing: { category: MovieCategory, time_window?: 'day' | 'week', colors?: ColorsType },
 }
 
 export type MovieListingScreenProps = NativeStackScreenProps<MainStackParamList, 'MovieListing'>

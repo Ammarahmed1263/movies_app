@@ -4,7 +4,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MovieButton from '@atoms/MovieCardButton';
-import { getImageUrl } from '@utils/index';
+import { getImageUrl } from '@utils';
 import { Movie } from 'types/movieTypes';
 import { FC, useCallback } from 'react';
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
@@ -34,6 +34,7 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
       <Image
         source={getImageUrl(movie.poster_path)}
         viewStyle={styles.image}
+        loadingSize='small'
       />
       <View style={styles.description}>
         <View style={styles.headingContainer}>

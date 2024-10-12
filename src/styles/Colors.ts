@@ -11,7 +11,7 @@ const COLORS = {
     error: '#F44336'
   },
   dark: {
-    primary500: '#303234',
+    primary500: '#303030',
     primary600: '#616264',
     primary700: '#c1bcbc',
     secondary500: '#ffaa00',

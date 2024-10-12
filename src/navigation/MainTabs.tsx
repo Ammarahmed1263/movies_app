@@ -7,7 +7,7 @@ import {
   SearchScreen,
   FavoritesScreen,
   ProfileScreen,
-} from '@screens/index';
+} from '@screens';
 import {useTranslation} from 'react-i18next';
 import {MainTabsParamList} from 'types/mainTabsTypes';
 import {MainTabsProps} from 'types/mainStackTypes';

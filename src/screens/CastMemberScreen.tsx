@@ -7,7 +7,7 @@ import Button from '@atoms/AppButton';
 
 import {useTheme} from '@contexts/ThemeContext';
 import TextSeeMore from '@atoms/SeeMoreText';
-import {getGenderString, getImageUrl} from '@utils/index';
+import {getGenderString, getImageUrl} from '@utils';
 import MoviesSection from '@organisms/MoviesSection';
 import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
 import {CastMemberScreenProps} from 'types/mainStackTypes';
@@ -40,11 +40,9 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   }, []);
 
   if (!details) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <AppText variant="heading">Loading...</AppText>
-      </View>
-    );
+    return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <AppText variant='heading'>Loading...</AppText>
+    </View>
   }
 
   return (

@@ -1,48 +1,69 @@
-import {FlatList, View, StyleSheet} from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
+import {FlatList, View, StyleSheet, Text} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {useNavigation} from '@react-navigation/native';
 import Button from '@atoms/AppButton';
 
 import MovieCard from '@molecules/MovieCard';
-import { useTheme } from '@contexts/ThemeContext';
-import { FC } from 'react';
-import { Movie, MovieArray } from 'types/movieTypes';
-import { MovieListingNavigationProp } from 'types/mainStackTypes';
+import {useTheme} from '@contexts/ThemeContext';
+import {FC, useEffect, useState} from 'react';
+import {Movie, MovieArray} from 'types/movieTypes';
+import {MovieListingNavigationProp} from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-
+import {MovieCategory} from 'types/categoryTypes';
 
 interface MoviesSectionProps {
-  movies: MovieArray,
-  topic: string
-  seeAll?: boolean
-  length?: number
-  category?: string
+  movies: MovieArray;
+  topic: string;
+  loading?: boolean;
+  seeAll?: boolean;
+  length?: number;
+  category?: MovieCategory;
+  time_window?: 'day' | 'week';
 }
 
 const renderMovie = ({item}: {item: Movie}) => {
   return <MovieCard movie={item} />;
 };
-const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, length = 10, category}) => {
+const MoviesSection: FC<MoviesSectionProps> = ({
+  movies,
+  loading,
+  topic,
+  seeAll = false,
+  length = 20,
+  category,
+  time_window,
+}) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MovieListingNavigationProp>();
-  const { t } = useTranslation();
+  const {t} = useTranslation();
+
   return (
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
-        <AppText variant='heading'>{topic}</AppText>
-        {seeAll && <Button
-          variant='body'
-          textStyle={{
-            ...styles.button,
-            color: colors.secondary500,
-          }}
-          onPress={() => navigation.navigate('MovieListing', {category})}
-          flat>
-          {t('see all')}
-        </Button>}
+        <AppText variant="heading">{topic}</AppText>
+        {seeAll && category && (
+          <Button
+            variant="body"
+            textStyle={{
+              ...styles.button,
+              color: colors.secondary500,
+            }}
+            onPress={() =>
+              navigation.navigate('MovieListing', {category, time_window})
+            }
+            flat>
+            {t('see all')}
+          </Button>
+        )}
       </View>
+      {loading ?
+        <View style={{alignItems: 'center'}}>
+          <AppText variant='heading'>{t('Loading...')}</AppText>
+        </View>
+      :
       <FlatList
-        data={movies}
+        data={movies.slice(0, length)}
+        keyExtractor={movie => movie.id + ''}
         maxToRenderPerBatch={10}
         scrollEventThrottle={16}
         initialNumToRender={5}
@@ -55,7 +76,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({movies, topic, seeAll = false, l
       />
     </View>
   );
-}
+};
 
 export default MoviesSection;
 

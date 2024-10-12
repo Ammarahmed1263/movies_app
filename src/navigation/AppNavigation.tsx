@@ -5,16 +5,28 @@ import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {useTheme} from '@contexts/ThemeContext';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
+import { clearUserId, selectUser, setUserId } from '@redux/userSlice';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const dispatch = useAppDispatch();
+  const { id } = useAppSelector(selectUser);
   const {colors, fonts, theme} = useTheme();
-  console.log('theme in navigation: ', theme);
 
   const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
     console.log('active user data: ', user);
+    console.log('current user id in app navigation: ', id);
     setUser(user);
+
+    if (user) {
+      console.log('update')
+      dispatch(setUserId(user.uid));
+    } else {
+      console.log('cleared')
+      dispatch(clearUserId());
+    }
     if (initializing) setInitializing(false);
   }
 

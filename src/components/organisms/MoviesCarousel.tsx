@@ -1,12 +1,12 @@
-import {FC, useRef, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {ImageBackground, View, StyleSheet, StatusBar, I18nManager, useWindowDimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import Pagination from '@molecules/Pagination';
 import {useTheme} from '@contexts/ThemeContext';
-import {getImageUrl} from '@utils/index';
+import {getImageUrl} from '@utils';
 import {Movie, MovieArray} from 'types/movieTypes';
-import {hs, vs } from '@styles/metrics';
+import {height, hs, vs } from '@styles/metrics';
 import AppText from '@atoms/AppText';
 import MovieCard from '@molecules/MovieCard';
 import Animated, {
@@ -19,9 +19,12 @@ import { useTranslation } from 'react-i18next';
 
 interface MoviesCarouselProps {
   movies: MovieArray;
+  loading?: boolean;
+  time_window?: 'day' | 'week';
+  length?: number;
 }
 
-const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
+const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) => {
   const [activeMovieIndex, setActiveMovieIndex] = useState<number>(0);
   const carouselRef = useRef<ICarouselInstance>(null);
   const { width } = useWindowDimensions();
@@ -62,7 +65,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
     });
 
     return (
-      <Animated.View style={[styles.carouselItem, animatedStyle]}>
+      <Animated.View key={item.id.toString()} style={[styles.carouselItem, animatedStyle]}>
         <MovieCard
           titleVariant="subheading"
           movie={item}
@@ -77,13 +80,14 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
     );
   };
 
-  if (!movies || movies.length === 0) {
+  if (loading || movies.length === 0) {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <AppText>Loading...</AppText>
+      <View style={{height: height * 0.5,alignItems: 'center', justifyContent: 'center'}}>
+        <AppText variant="heading">Loading...</AppText>
       </View>
     );
   }
+
   return (
     <ImageBackground
       source={getImageUrl(movies[activeMovieIndex].poster_path)}
@@ -113,7 +117,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
 
         <Carousel
           ref={carouselRef}
-          data={movies}
+          data={movies.length > length ? movies.slice(0, length) : movies}
           renderItem={renderItem}
           width={width}
           defaultIndex={activeMovieIndex}
@@ -129,21 +133,23 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies}) => {
           }}
           onSnapToItem={handleSnapToItem}
           pagingEnabled
+          // loop
+          // autoPlay
         />
 
         <Pagination
-          containerStyle={{marginTop: -10}}
-          dotsLength={movies.length}
+          dotsLength={movies.length > length ? length : movies.length}
           activeDotIndex={activeMovieIndex}
           dotStyle={{
-            width: 15,
-            height: 15,
-            borderRadius: 8,
+            width: hs(12),
+            height: vs(8),
+            borderRadius: hs(6),
             backgroundColor: colors.secondary500,
+            marginHorizontal: hs(4)
           }}
+          activeDotStyle={{width: hs(36)}}
           inactiveDotStyle={{backgroundColor: colors.primary700}}
           inactiveDotOpacity={0.6}
-          inactiveDotScale={0.4}
           setActiveIndex={handleDotPress}
         />
       </LinearGradient>
@@ -170,8 +176,6 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   carouselItem: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flex: 1,
     paddingTop: 10,
     aspectRatio: 8.5 / 16,

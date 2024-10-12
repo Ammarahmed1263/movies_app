@@ -4,7 +4,6 @@ import {FormikHelpers} from 'formik';
 import {FC} from 'react';
 import {AuthFormValues} from 'types/authFormTypes';
 import {LoginScreenProps} from 'types/authStackTypes';
-import {User} from 'types/userTypes';
 
 const LoginScreen: FC<LoginScreenProps> = ({navigation}) => {
   const handleSubmit = async (

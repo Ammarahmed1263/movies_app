@@ -7,9 +7,10 @@ import LabelInput from './LabelInput';
 import {useTheme} from '@contexts/ThemeContext';
 import {Formik, FormikHelpers} from 'formik';
 import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
-import { loginSchema, signupSchema } from '@validation';
+import {loginSchema, signupSchema} from '@validation';
 import AppText from '@atoms/AppText';
-import { ms, vs } from '@styles/metrics';
+import {ms, vs} from '@styles/metrics';
+import AppLoading from '@atoms/AppLoading';
 
 const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
   const initialValues = isLogin
@@ -84,16 +85,29 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
             </LabelInput>
           )}
 
-          <View style={[styles.button, {opacity: isSubmitting ? 0.4 : 1}]}>
-            {status?.generalError &&
+          <View style={styles.button}>
+            {status?.generalError && (
               <AppText
                 variant="bold"
-                style={{textAlign: 'center', color: colors.error, fontSize: ms(14), marginBottom: vs(5)}}>
+                style={{
+                  textAlign: 'center',
+                  color: colors.error,
+                  fontSize: ms(14),
+                  marginBottom: vs(5),
+                }}>
                 {status?.generalError}
               </AppText>
-            }
-            <Button onPress={handleSubmit} disabled={isSubmitting}>
-              {isLogin ? 'Login' : 'Signup'}
+            )}
+            <Button onPress={handleSubmit} disabled={isSubmitting} style={{backgroundColor: isSubmitting ? 'transparent' : colors.secondary500}}>
+              {isSubmitting ? (
+                <AppLoading
+                  source={require('../../assets/lottie/loading_fade.json')}
+                  size={30}
+                  speed={1.5}
+                />
+              ) : (
+                isLogin ? 'Login' : 'Signup'
+              )}
             </Button>
           </View>
         </View>

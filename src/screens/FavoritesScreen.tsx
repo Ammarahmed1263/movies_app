@@ -2,12 +2,21 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {useEffect, useState} from 'react';
 import MoviesList from '@organisms/MoviesList';
+import {View} from 'react-native';
+import AppText from '@atoms/AppText';
+import AppButton from '@atoms/AppButton';
+import {HomeNavigationProp} from 'types/mainTabsTypes';
+import {useNavigation} from '@react-navigation/native';
+import {hs, vs, width} from '@styles/metrics';
+import AppImage from '@atoms/AppImage';
+import LottieView from 'lottie-react-native';
 import FavoriteCard from '@molecules/FavoriteCard';
-import {Movie} from 'types/movieTypes';
+import { Movie } from 'types/movieTypes';
 
 function FavoritesScreen() {
-  const [favorites, setFavorites] = useState([]);
-  console.log('favorite ids: ', favorites);
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const navigation = useNavigation<HomeNavigationProp>();
+  console.log('favorite ids: ', favoriteMovies);
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -16,7 +25,7 @@ function FavoritesScreen() {
       .onSnapshot(
         documentSnapshot => {
           const data = documentSnapshot.data();
-          setFavorites(data?.favoriteMovies.reverse() || []);
+          setFavoriteMovies(data?.favoriteMovies.reverse() || []);
         },
         error => {
           console.error('Failed to retrieve movies', error);
@@ -33,8 +42,41 @@ function FavoritesScreen() {
 
   return (
     <MoviesList
-      data={favorites}
+      data={favoriteMovies}
       renderItem={renderFavorite}
+      contentContainerStyle={{flexGrow: 1}}
+      ListEmptyComponent={
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: hs(15),
+          }}>
+          <LottieView
+            source={require('../assets/lottie/no_wifi.json')}
+            style={{width: '90%', aspectRatio: 1 / 1}}
+            autoPlay
+            loop
+          />
+          {/* <AppImage
+            source={require('../assets/images/no-favorites.png')}
+            viewStyle={{width: width * 0.5, aspectRatio: 1 / 1}}
+          /> */}
+          <AppText variant='heading' style={{textAlign: 'center', marginBottom: vs(8)}}>
+            No Favorites
+          </AppText>
+          <AppText variant='body' style={{textAlign: 'center', marginBottom: vs(8)}}>
+            You can favorite a movie by clicking on the heart that shows up when
+            you view a movie details (top right).
+          </AppText>
+          <AppButton
+            onPress={() => navigation.navigate('Home')}
+            style={{height: 50, width: '70%'}}>
+            Find Favorites
+          </AppButton>
+        </View>
+      }
     />
   );
 }

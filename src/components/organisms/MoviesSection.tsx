@@ -73,7 +73,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
         showsHorizontalScrollIndicator={false}
         horizontal={true}
         getItemLayout={(_, index) => ({length: 100, offset: 100 * index, index})}
-      />
+      />}
     </View>
   );
 };

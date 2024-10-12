@@ -115,7 +115,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
           style={{
             color: colors.paleShade,
           }}
-          text={details.biography.replace(/\n/g, ' ')}
+          text={details.biography.replace(/\n/g, ' ') || 'N/A'}
           maxChars={250}
         />
       </View>

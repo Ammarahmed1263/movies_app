@@ -16,7 +16,7 @@ export type Movie = {
 }
 export type MovieArray = Movie[];
 
-type Genre = {
+export type Genre = {
   id: number;
   name: string;
 };

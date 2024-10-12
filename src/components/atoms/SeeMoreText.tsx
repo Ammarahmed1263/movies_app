@@ -9,12 +9,12 @@ interface SeeMoreTextProps extends TextProps {
   text: string;
   maxChars?: number;
   style?: TextStyle;
-  variant: FontVariants;
+  variant?: FontVariants;
 }
 
 const SeeMoreText: FC<SeeMoreTextProps> = ({
   text,
-  variant,
+  variant = 'body',
   maxChars = 150,
   style,
   ...props
@@ -22,7 +22,6 @@ const SeeMoreText: FC<SeeMoreTextProps> = ({
   const [fullShown, setFullShown] = useState(false);
   const {colors} = useTheme();
 
-  console.log(fullShown);
   const toggleShowFull = () => {
     setFullShown(prev => !prev);
   };

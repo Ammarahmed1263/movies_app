@@ -15,7 +15,7 @@ const resources = {
 }
 
 const options: InitOptions = { 
-  lng: 'ar', 
+  lng: 'en', 
   fallbackLng: getDeviceLanguage(),
   resources,
   interpolation: { 

@@ -22,7 +22,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
     values: AuthFormValues,
     actions: FormikHelpers<AuthFormValues>,
   ) => {
-    onSubmit(values, actions);
+    await onSubmit(values, actions);
     actions.setSubmitting(false);
   };
 

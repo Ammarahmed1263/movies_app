@@ -1,7 +1,7 @@
-import {ActivityIndicator, SafeAreaView, StatusBar, View} from 'react-native';
+import {ActivityIndicator, SafeAreaView, StatusBar, TextInput, View} from 'react-native';
 import MoviesList from '../components/organisms/MoviesList';
 import SearchBar from '@molecules/SearchBar';
-import {useCallback, useEffect, useReducer, useState} from 'react';
+import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import {searchMovies} from '@services/movieService';
 import {SearchResult} from 'types/searchTypes';
 import {useTheme} from '@contexts/ThemeContext';
@@ -9,6 +9,7 @@ import LottieView from 'lottie-react-native';
 import {height, vs, width} from '@styles/metrics';
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
+import { useFocusEffect } from '@react-navigation/native';
 
 const initialState: SearchResult = {
   searchResults: [],
@@ -51,7 +52,6 @@ const reducer = (state: SearchResult, action: any) => {
 
 function SearchScreen() {
   const [keyword, setkeyword] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log('state here: ', state.loading)
 

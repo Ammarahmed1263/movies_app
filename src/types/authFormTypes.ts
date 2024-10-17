@@ -8,5 +8,5 @@ export type AuthFormValues = {
 
 export interface AuthFormProps {
   isLogin: boolean;
-  onSubmit: (values: AuthFormValues, actions: FormikHelpers<AuthFormValues>) => void;
+  onSubmit: (values: AuthFormValues, actions: FormikHelpers<AuthFormValues>) => Promise<void>;
 }

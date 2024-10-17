@@ -19,7 +19,7 @@ import { FormikHelpers } from 'formik';
 
 interface AuthContentProps {
   isLogin: boolean;
-  onSubmit: (values: AuthFormValues, actions: FormikHelpers<AuthFormValues>) => void;
+  onSubmit: (values: AuthFormValues, actions: FormikHelpers<AuthFormValues>) => Promise<void>;
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login' | 'Signup'>;
 }
 

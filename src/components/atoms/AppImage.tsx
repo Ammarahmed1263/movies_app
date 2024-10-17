@@ -64,7 +64,7 @@ const AppImage: FC<AppImageProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',

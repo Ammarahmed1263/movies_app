@@ -43,14 +43,14 @@ export const addFavoriteMovie = async (movie: Pick<Movie, 'id' | 'title' | 'over
     await firestore()
     .collection('users')
     .doc(userId)
-    .update({
+    .set({
         favoriteMovies: firestore.FieldValue.arrayUnion({
           id: movie?.id,
           title: movie?.title,
           overview: movie?.overview,
           poster_path: movie?.poster_path,
         }),
-      });
+      }, {merge: true});
 
     console.log('Movie added to favorites');
   } catch (e) {

@@ -53,16 +53,16 @@ function FavoritesScreen() {
             alignItems: 'center',
             marginHorizontal: hs(15),
           }}>
-          <LottieView
+          {/* <LottieView
             source={require('../assets/lottie/no_wifi.json')}
             style={{width: '90%', aspectRatio: 1 / 1}}
             autoPlay
             loop
-          />
-          {/* <AppImage
-            source={require('../assets/images/no-favorites.png')}
-            viewStyle={{width: width * 0.5, aspectRatio: 1 / 1}}
           /> */}
+          <AppImage
+            source={require('../assets/images/no-favorites.png')}
+            style={{height: 300, aspectRatio: 1 / 1}}
+          />
           <AppText variant='heading' style={{textAlign: 'center', marginBottom: vs(8)}}>
             No Favorites
           </AppText>
@@ -71,7 +71,7 @@ function FavoritesScreen() {
             you view a movie details (top right).
           </AppText>
           <AppButton
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Search')}
             style={{height: 50, width: '70%'}}>
             Find Favorites
           </AppButton>

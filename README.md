@@ -40,4 +40,28 @@ npm run ios
 yarn ios
 ```
 
-App not responsive yet for either different screen sizes or IOS
+// TODO:IN PROGRESS:
+
+- empty list animation
+- use app responsive size
+- animate pagination
+- support landscape mode "carousel, youtube modal"
+- introduce welcome screen
+
+// HIGH PRIORITY:
+- focus search bar, email in login and sign up when screens get active
+- youtube url validation
+- use redux with search
+- add social login
+- add profile and home user collections
+- find a way to set i18n language correctly 'from user firestore'
+- fix lag with arabic
+
+// LOWER PRIORITY:
+- create firebase user type
+- add home screen trailer section
+- fix native device theme switch not working
+- sync static day for trending movies
+- search custom suggestions screen
+- find fix for theme with navigation "works without bottom tabs borders"
+- add render views component for a dynamic home page

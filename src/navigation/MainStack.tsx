@@ -17,6 +17,7 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        headerBackTitleVisible: false
         // contentStyle: {backgroundColor: colors.primary500},
       }}>
       <Stack.Screen

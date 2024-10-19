@@ -16,6 +16,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
+import { imagePlaceHolder } from '../../constants';
 
 interface MoviesCarouselProps {
   movies: MovieArray;
@@ -74,7 +75,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
           ImageViewStyle={{
             height: '87%',
           }}
-          hideVote
+          // hideVote
         />
       </Animated.View>
     );
@@ -87,10 +88,10 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
       </View>
     );
   }
-
+  console.log('active movie index: ', getImageUrl(movies[activeMovieIndex].poster_path) ?? imagePlaceHolder.MOVIE);
   return (
     <ImageBackground
-      source={getImageUrl(movies[activeMovieIndex].poster_path)}
+      source={getImageUrl(movies[activeMovieIndex].poster_path) ?? imagePlaceHolder.MOVIE}
       blurRadius={45}
       style={styles.backgroundImage}
       resizeMode="cover">

@@ -68,11 +68,13 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden'
   },
   image: {
-    width: '102%',
-    height: '102%',
+    width: '100%',
+    height: '100%',
     resizeMode: 'cover',
+    overflow: 'hidden'
   },
 });
 

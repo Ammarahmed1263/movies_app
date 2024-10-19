@@ -11,6 +11,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {MainTabsParamList} from 'types/mainTabsTypes';
 import {MainTabsProps} from 'types/mainStackTypes';
+import { width } from '@styles/metrics';
 
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 
@@ -97,7 +98,10 @@ export default MainTabs;
 const styles = StyleSheet.create({
   tabBar: {
     borderRadius: 30,
-    marginHorizontal: 18,
+    // marginHorizontal: 18,
+    width: '90%',
+    left: '50%',
+    transform: [{ translateX: -width * 0.45 }],
     paddingVertical: 6,
     position: 'absolute',
     bottom: 10,
@@ -105,6 +109,8 @@ const styles = StyleSheet.create({
     height: 60,
     borderTopWidth: 1.6,
     borderBottomWidth: 1.6,
-    borderWidth: 0.9,
+    borderRightWidth: 0.9,
+    borderLeftWidth: 0.9,
+    paddingBottom: 0,
   },
 });

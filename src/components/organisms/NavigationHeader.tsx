@@ -27,7 +27,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({onGoBack, onToggleFavorite
           transform: [{rotate: I18nManager.isRTL ? '180deg' : '0deg'}],
         }}
         customView>
-        <Icon name="chevron-back" size={ms(28)} color={colors.paleShade} />
+        <Icon name="chevron-back" size={ms(25)} color={colors.paleShade} />
       </AppButton>
       {onToggleFavorite && <AppButton
         style={{
@@ -38,7 +38,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({onGoBack, onToggleFavorite
         customView>
         <Icon
           name={isFavorite ? 'heart' : 'heart-outline'}
-          size={ms(28)}
+          size={ms(25)}
           color={colors.paleShade}
         />
       </AppButton>}
@@ -50,7 +50,7 @@ export default NavigationHeader;
 
 const styles = StyleSheet.create({
   topButton: {
-    width: hs(45),
+    width: hs(50),
     aspectRatio: 1 / 1,
     alignItems: 'center',
     justifyContent: 'center',

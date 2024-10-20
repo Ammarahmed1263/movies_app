@@ -20,11 +20,13 @@ import { height, hs, vs } from '@styles/metrics';
 
 interface MoviesListProps extends Omit<FlatListProps<Movie>, 'renderItem'> {
   containerStyle?: ViewStyle;
+  snapStyle?:  ViewStyle;
   renderItem?: ({item}: {item: Movie}) => JSX.Element;
 }
 
 const MoviesList: FC<MoviesListProps> = ({
   containerStyle,
+  snapStyle,
   renderItem,
   ...props
 }) => {
@@ -86,7 +88,7 @@ const MoviesList: FC<MoviesListProps> = ({
       <Animated.View style={animatedStyle}>
         <AppButton
           onPress={handleSnapButton}
-          style={[styles.snapButton, {backgroundColor: colors.link}]}>
+          style={[styles.snapButton, snapStyle || {}, {backgroundColor: colors.link}]}>
           <Icon name="arrow-up" color={colors.paleShade} size={30} />
         </AppButton>
       </Animated.View>

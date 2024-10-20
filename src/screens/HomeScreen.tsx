@@ -1,5 +1,5 @@
-import {useCallback} from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {useCallback, useState} from 'react';
+import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
 import MoviesCarousel from '@organisms/MoviesCarousel';
 import MoviesSection from '@organisms/MoviesSection';
 import {useTranslation} from 'react-i18next';
@@ -7,14 +7,16 @@ import {useTheme} from '@contexts/ThemeContext';
 import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import {useAppSelector} from '@hooks/useRedux';
 import {RootState} from '@redux/types';
+import { vs } from '@styles/metrics';
 
 function HomeScreen() {
+  const [refreshing, setRefreshing] = useState(false);  
   const {t} = useTranslation();
-  const {theme} = useTheme();
+  const { theme, colors } = useTheme();
   const {movies: now_playingMovies, loading: now_playingLoading} =
     useMoviesByCategory('now_playing');
   const {movies: trendingMovies, loading: trendingLoading} =
-    useMoviesByCategory('trending', 'day');
+    useMoviesByCategory('trending', 'week');
   const {movies: upcomingMovies, loading: upcomingLoading} =
     useMoviesByCategory('upcoming');
   const {movies: top_ratedMovies, loading: top_ratedLoading} =
@@ -23,7 +25,8 @@ function HomeScreen() {
     useMoviesByCategory('popular');
 
   const onRefresh = useCallback(() => {
-    setTimeout(() => {}, 5000);
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 5000);
   }, []);
 
   return (
@@ -35,16 +38,17 @@ function HomeScreen() {
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        // refreshControl={
-        //   <RefreshControl
-        //     progressViewOffset={StatusBar.currentHeight}
-        //     refreshing={state.refreshing}
-        //     onRefresh={onRefresh}
-        //     colors={[colors.secondaryShadow, colors.secondary600]}
-        //     tintColor={colors.primary500}
-        //     progressBackgroundColor={colors.primary500}
-        //   />
-        // }
+        refreshControl={
+          <RefreshControl
+            progressViewOffset={StatusBar.currentHeight}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[colors.secondaryShadow, colors.secondary600]}
+            tintColor={colors.primary500}
+            progressBackgroundColor={colors.primary500}
+          />
+        }
+        contentContainerStyle={{paddingBottom: vs(70)}}
       >
         <View>
           <MoviesCarousel movies={trendingMovies} loading={trendingLoading}/>

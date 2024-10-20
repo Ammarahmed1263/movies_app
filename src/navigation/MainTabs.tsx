@@ -11,7 +11,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {MainTabsParamList} from 'types/mainTabsTypes';
 import {MainTabsProps} from 'types/mainStackTypes';
-import { width } from '@styles/metrics';
+import { hs, width } from '@styles/metrics';
 
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 
@@ -32,7 +32,7 @@ const MainTabs: FC<MainTabsProps> = ({route}) => {
   return (
     <Tab.Navigator
       sceneContainerStyle={{
-        paddingBottom: 65,
+        // paddingBottom: 65,
         // backgroundColor: colors.primary500,
       }}
       screenOptions={{
@@ -98,13 +98,11 @@ export default MainTabs;
 const styles = StyleSheet.create({
   tabBar: {
     borderRadius: 30,
-    // marginHorizontal: 18,
+    marginHorizontal: 18,
     width: '90%',
-    left: '50%',
-    transform: [{ translateX: -width * 0.45 }],
     paddingVertical: 6,
     position: 'absolute',
-    bottom: 10,
+    bottom: hs(25),
     overflow: 'hidden',
     height: 60,
     borderTopWidth: 1.6,

@@ -89,7 +89,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
           style={{paddingTop: (StatusBar.currentHeight ?? vs(50)) + vs(15)}}
         />
 
-        <CategoriesList categories={movieDetails.genres} />
+        <CategoriesList categories={movieDetails?.genres || []} />
 
         <View>
           <View
@@ -131,7 +131,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
           </View>
           <TextSeeMore
             variant="body"
-            text={movieDetails.overview}
+            text={movieDetails?.overview || 'No overview found'}
             style={{
               color: colors.paleShade,
               marginHorizontal: hs(10),

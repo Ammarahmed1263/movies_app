@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   topButton: {
     width: hs(50),
     aspectRatio: 1 / 1,
+    borderRadius: hs(50) / 2,
     alignItems: 'center',
     justifyContent: 'center',
   },

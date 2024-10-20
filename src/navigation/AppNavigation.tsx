@@ -1,8 +1,8 @@
-import {useEffect, useMemo, useState} from 'react';
-import {StatusBar} from 'react-native';
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
-import {useTheme} from '@contexts/ThemeContext';
+import { useEffect, useMemo, useState } from 'react';
+import { StatusBar } from 'react-native';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { useTheme } from '@contexts/ThemeContext';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
 import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
@@ -13,7 +13,7 @@ export default function AppNavigation() {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const dispatch = useAppDispatch();
   const { id } = useAppSelector(selectUser);
-  const {colors, fonts, theme} = useTheme();
+  const { colors, fonts, theme } = useTheme();
 
   const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
     console.log('active user data: ', user);

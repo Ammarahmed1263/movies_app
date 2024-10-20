@@ -44,7 +44,8 @@ function FavoritesScreen() {
     <MoviesList
       data={favoriteMovies}
       renderItem={renderFavorite}
-      contentContainerStyle={{flexGrow: 1}}
+      contentContainerStyle={{flexGrow: 1, paddingBottom: vs(70)}}
+      snapStyle={{bottom: vs(100)}}
       ListEmptyComponent={
         <View
           style={{

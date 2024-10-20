@@ -101,6 +101,8 @@ function SearchScreen() {
               onEndReached={handlePagination}
               columnWrapperStyle={{justifyContent: 'flex-start'}}
               numColumns={2}
+              contentContainerStyle={{paddingBottom: vs(80)}}
+              snapStyle={{bottom: vs(100)}}
               ListEmptyComponent={
                 keyword && state.searchResults.length === 0 ? (
                   <View

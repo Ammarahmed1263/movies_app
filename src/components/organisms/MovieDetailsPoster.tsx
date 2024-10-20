@@ -14,9 +14,10 @@ import AppText from '@atoms/AppText';
 import {hs, ms, vs} from '@styles/metrics';
 import {useTheme} from '@contexts/ThemeContext';
 import {MovieDetails} from 'types/movieTypes';
+import { imagePlaceHolder } from '../../constants';
 
 interface MovieDetailsPosterProps {
-  movieDetails: MovieDetails;
+  movieDetails: MovieDetails | undefined;
   isFavorite: boolean;
   onGoBack: () => void;
   onToggleFavorite: () => void;
@@ -38,7 +39,7 @@ const MovieDetailsPoster: FC<MovieDetailsPosterProps> = ({
 
   return (
     <ImageBackground
-      source={getImageUrl(movieDetails.poster_path)}
+      source={getImageUrl(movieDetails?.poster_path) ?? imagePlaceHolder.MOVIE}
       style={[
         styles.poster,
         {width: width, aspectRatio: isLandscape ? 4 / 3 : 3 / 4},
@@ -62,7 +63,7 @@ const MovieDetailsPoster: FC<MovieDetailsPosterProps> = ({
               ...styles.movieTitle,
               color: colors.paleShade,
             }}>
-            {movieDetails.title}
+            {movieDetails?.title}
           </AppText>
           <AppText
             variant="regular"
@@ -70,9 +71,9 @@ const MovieDetailsPoster: FC<MovieDetailsPosterProps> = ({
               color: colors.paleShade,
             }}>
             {`${formatVoteCount(
-              movieDetails.vote_average,
-            )} · ${durationToString(movieDetails.runtime)} · ${
-              movieDetails.release_date.split('-')[0]
+              movieDetails?.vote_average ?? 0,
+            )} · ${durationToString(movieDetails?.runtime ?? 0)} · ${
+              movieDetails?.release_date.split('-')[0]
             }`}
           </AppText>
         </View>

@@ -20,7 +20,6 @@ interface CastListProps {
 const CastList: FC<CastListProps> = ({ cast, title }) => {
   const { colors } = useTheme();
 
-  console.log('cast in list ', cast)
   return (
     <View>
       <AppText

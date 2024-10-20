@@ -14,6 +14,8 @@ import Animated, {
   interpolate,
   SharedValue,
   useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { imagePlaceHolder } from '../../constants';
@@ -52,6 +54,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
     index: number;
     animationValue: SharedValue<number>;
   }) => {
+
     const animatedStyle = useAnimatedStyle(() => {
       const opacity = interpolate(
         animationValue.value,
@@ -75,7 +78,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
           ImageViewStyle={{
             height: '87%',
           }}
-          // hideVote
+          hideVote
         />
       </Animated.View>
     );
@@ -88,7 +91,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
       </View>
     );
   }
-  console.log('active movie index: ', getImageUrl(movies[activeMovieIndex].poster_path) ?? imagePlaceHolder.MOVIE);
+
   return (
     <ImageBackground
       source={getImageUrl(movies[activeMovieIndex].poster_path) ?? imagePlaceHolder.MOVIE}
@@ -142,7 +145,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
           dotsLength={movies.length > length ? length : movies.length}
           activeDotIndex={activeMovieIndex}
           dotStyle={{
-            width: hs(12),
+            width: hs(36),
             height: vs(8),
             borderRadius: hs(6),
             backgroundColor: colors.secondary500,
@@ -151,6 +154,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
           activeDotStyle={{width: hs(36)}}
           inactiveDotStyle={{backgroundColor: colors.primary700}}
           inactiveDotOpacity={0.6}
+          inactiveDotScale={0.4}
           setActiveIndex={handleDotPress}
         />
       </LinearGradient>
@@ -164,6 +168,12 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     minHeight: vs(400),
+  },  
+  carouselItem: {
+    flex: 1,
+    paddingTop: 10,
+    aspectRatio: 8.5 / 16,
+    alignSelf: 'center',
   },
   gradientContainer: {
     marginTop: StatusBar?.currentHeight ?? 50,
@@ -176,10 +186,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'baseline',
   },
-  carouselItem: {
-    flex: 1,
-    paddingTop: 10,
-    aspectRatio: 8.5 / 16,
-    alignSelf: 'center',
-  },
+
 });

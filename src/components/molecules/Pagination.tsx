@@ -1,5 +1,7 @@
-import {hs, vs} from '@styles/metrics';
-import React, {Dispatch, FC, SetStateAction} from 'react';
+import { useTheme } from '@contexts/ThemeContext';
+import { isAction } from '@reduxjs/toolkit';
+import { hs, vs } from '@styles/metrics';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,8 +10,9 @@ import {
   ViewStyle,
   TouchableOpacityProps,
 } from 'react-native';
+import Animated, { Easing, Extrapolation, interpolate, interpolateColor, runOnJS, SharedValue, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-export interface PaginationProps extends TouchableOpacityProps{
+export interface PaginationProps extends TouchableOpacityProps {
   containerStyle?: StyleProp<ViewStyle>;
   dotsLength: number;
   activeDotIndex: number;
@@ -33,45 +36,52 @@ const Pagination: FC<PaginationProps> = ({
   setActiveIndex,
   ...props
 }) => {
+  const { colors } = useTheme();
+  const dotWidth = ((dotStyle as ViewStyle)?.width ?? 16) as number;
+
   return (
-    <View style={[styles.paginationContainer, containerStyle]}>
-      {Array.from({length: dotsLength}, (_, index) => (
-        <TouchableOpacity
+    <Animated.View style={[styles.paginationContainer, containerStyle]}>
+      {Array.from({ length: dotsLength }, (_, index) => {
+        const animatedStyle = useAnimatedStyle(() => {
+
+          const width = withTiming(index === activeDotIndex ? dotWidth : dotWidth * inactiveDotScale, { duration: 800 });
+
+          const backgroundColor = withTiming(index === activeDotIndex ? colors.secondary500 : colors.primary700, { duration: 1100 });
+
+          return {
+            width,
+            backgroundColor,
+            height: 8,
+            borderRadius: 4,
+            marginHorizontal: 4,
+          };
+        })
+
+        return <TouchableOpacity
           key={index}
           disabled={activeDotIndex === index}
           hitSlop={7}
           onPress={() => setActiveIndex(index)}
-          style={[
-            styles.dot,
-            dotStyle,
-            index !== activeDotIndex ? [
-              inactiveDotStyle,
-              {
-                opacity: inactiveDotOpacity,
-                transform:
-                  inactiveDotScale !== undefined
-                    ? [{scale: inactiveDotScale}]
-                    : undefined,
-              },
-            ]
-            : activeDotStyle,
-          ]}
           {...props}
-        />
-      ))}
-    </View>
+        >
+          <Animated.View style={[
+            { opacity: index === activeDotIndex ? 1 : inactiveDotOpacity },
+            dotStyle,
+            animatedStyle
+          ]} />
+        </TouchableOpacity>
+      })}
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   paginationContainer: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: vs(20),
-  },
-  dot: {
-    // marginHorizontal: hs(8),
   },
 });
 

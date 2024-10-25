@@ -53,7 +53,6 @@ const reducer = (state: SearchResult, action: any) => {
 function SearchScreen() {
   const [keyword, setkeyword] = useState('');
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log('state here: ', state.loading)
 
   const handleSearch = useCallback(async () => {
     // dispatch({type: 'SET_LOADING'});
@@ -111,7 +110,7 @@ function SearchScreen() {
                       paddingHorizontal: 30,
                     }}>
                     <LottieView
-                      source={require('../assets/lottie/no_search_results.json')}
+                      source={require('../assets/lottie/no_search_results(2).json')}
                       style={{width: width * 0.8, aspectRatio: 1 / 1}}
                       autoPlay
                       loop

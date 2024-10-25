@@ -1,4 +1,4 @@
-import {View, ScrollView, StatusBar, Share} from 'react-native';
+import {View, ScrollView, StatusBar, Share, I18nManager} from 'react-native';
 import {useCallback, useState, FC} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '@atoms/AppButton';
@@ -13,6 +13,7 @@ import useMovieDetails from '@hooks/useMovieDetails';
 import YoutubeModal from '@organisms/YoutubeModal';
 import CategoriesList from '@organisms/CategoriesList';
 import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
+import { createYouTubePlaylistUrl } from '@utils';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
@@ -31,12 +32,13 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   }, []);
 
   const handleShare = useCallback(async () => {
+    const playlist = createYouTubePlaylistUrl(videos);
     try {
       await Share.share(
         {
-          title: 'Look what I found!',
-          message: `Check out "${movieDetails?.title}" Trailer on YouTube: https://www.youtube.com/watch?v=${videos[0].key}`,
-          url: `https://www.youtube.com/watch?v=${videos[0].key}`,
+          title: 'Look what I have found!',
+          message: `Check out "${movieDetails?.title}" available Trailers on YouTube: ${playlist}`,
+          url: playlist,
         },
         {
           subject: 'Check out this video!',

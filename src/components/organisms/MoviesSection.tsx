@@ -1,15 +1,16 @@
-import {FlatList, View, StyleSheet, Text} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import { FlatList, View, StyleSheet, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import Button from '@atoms/AppButton';
 
 import MovieCard from '@molecules/MovieCard';
-import {useTheme} from '@contexts/ThemeContext';
-import {FC, useEffect, useState} from 'react';
-import {Movie, MovieArray} from 'types/movieTypes';
-import {MovieListingNavigationProp} from 'types/mainStackTypes';
+import { useTheme } from '@contexts/ThemeContext';
+import { FC, useEffect, useState } from 'react';
+import { Movie, MovieArray } from 'types/movieTypes';
+import { MovieListingNavigationProp } from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-import {MovieCategory} from 'types/categoryTypes';
+import { MovieCategory } from 'types/categoryTypes';
+import AppLoading from '@atoms/AppLoading';
 
 interface MoviesSectionProps {
   movies: MovieArray;
@@ -21,7 +22,7 @@ interface MoviesSectionProps {
   time_window?: 'day' | 'week';
 }
 
-const renderMovie = ({item}: {item: Movie}) => {
+const renderMovie = ({ item }: { item: Movie }) => {
   return <MovieCard movie={item} />;
 };
 const MoviesSection: FC<MoviesSectionProps> = ({
@@ -33,12 +34,12 @@ const MoviesSection: FC<MoviesSectionProps> = ({
   category,
   time_window,
 }) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const navigation = useNavigation<MovieListingNavigationProp>();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
-    <View style={{...styles.container, backgroundColor: colors.primary500}}>
+    <View style={{ ...styles.container, backgroundColor: colors.primary500 }}>
       <View style={styles.heading}>
         <AppText variant="heading">{topic}</AppText>
         {seeAll && category && (
@@ -49,7 +50,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
               color: colors.secondary500,
             }}
             onPress={() =>
-              navigation.navigate('MovieListing', {category, time_window})
+              navigation.navigate('MovieListing', { category, time_window })
             }
             flat>
             {t('see_all')}
@@ -57,23 +58,32 @@ const MoviesSection: FC<MoviesSectionProps> = ({
         )}
       </View>
       {loading ?
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <AppText variant='heading'>{t('Loading...')}</AppText>
         </View>
-      :
-      <FlatList
-        data={movies.slice(0, length)}
-        keyExtractor={movie => movie.id + ''}
-        maxToRenderPerBatch={10}
-        scrollEventThrottle={16}
-        initialNumToRender={5}
-        windowSize={5}
-        contentContainerStyle={{flexGrow: 1, gap: 15, paddingHorizontal: 20}}
-        renderItem={renderMovie}
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        getItemLayout={(_, index) => ({length: 100, offset: 100 * index, index})}
-      />}
+        :
+        <FlatList
+          data={[]}
+          keyExtractor={movie => movie.id + ''}
+          ListEmptyComponent={
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              {loading ? (
+                <AppLoading source={require('../../assets/lottie/loading_fade.json')}/>
+              ) : (
+                <AppText variant='subheading'>{t('Sorry, no movies found')}</AppText>
+              )}
+            </View>
+          }
+          maxToRenderPerBatch={10}
+          scrollEventThrottle={16}
+          initialNumToRender={5}
+          windowSize={5}
+          contentContainerStyle={{ flexGrow: 1, gap: 15, paddingHorizontal: 20 }}
+          renderItem={renderMovie}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          getItemLayout={(_, index) => ({ length: 100, offset: 100 * index, index })}
+        />}
     </View>
   );
 };

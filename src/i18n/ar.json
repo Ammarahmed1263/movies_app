@@ -15,7 +15,9 @@
   "trending_today": "رائج اليوم",
 
   "_COMMENT3": "others",
-  "see all": "عرض الكُل",
+  "see_all": "عرض الكُل",
   "search movies": "ابحث عن فيلم",
-  "not rated": "غ.م"
+  "not_rated": "غ.م",
+  "read_more": "عرض المزيد",
+  "read_less": "عرض اقل"
 }

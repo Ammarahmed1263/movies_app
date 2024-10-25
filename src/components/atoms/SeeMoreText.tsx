@@ -1,9 +1,10 @@
-import {FC} from 'react';
-import {useState} from 'react';
-import {Text, TextProps, TextStyle} from 'react-native';
-import {useTheme} from '@contexts/ThemeContext';
+import { FC } from 'react';
+import { useState } from 'react';
+import { Pressable, Text, TextProps, TextStyle, TouchableOpacity } from 'react-native';
+import { useTheme } from '@contexts/ThemeContext';
 import AppText from './AppText';
-import {FontVariants} from 'types/themeTypes';
+import { FontVariants } from 'types/themeTypes';
+import { useTranslation } from 'react-i18next';
 
 interface SeeMoreTextProps extends TextProps {
   text: string;
@@ -20,30 +21,36 @@ const SeeMoreText: FC<SeeMoreTextProps> = ({
   ...props
 }) => {
   const [fullShown, setFullShown] = useState(false);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const toggleShowFull = () => {
     setFullShown(prev => !prev);
   };
 
   return (
-    <AppText variant={variant} style={style} {...props} onPress={toggleShowFull} disabled={text.length < maxChars}>
-      {text.length <= maxChars ? (
-        text
-      ) : (
-        <>
-          {fullShown ? text : text.slice(0, maxChars) + '...'}
-          <AppText
-            variant="light"
-            style={{
-              color: colors.link,
-              textDecorationLine: 'underline',
-            }}>
-            {fullShown ? ' See Less' : ' See More'}
-          </AppText>
-        </>
-      )}
-    </AppText>
+    <Pressable onPress={toggleShowFull}>
+      <AppText variant={variant} style={style} {...props} disabled={text.length < maxChars}>
+        {text.length <= maxChars ? (
+          text
+        ) : (
+          <>
+            {fullShown ? text : text.slice(0, maxChars) + '...'}
+            <TouchableOpacity 
+              onPress={toggleShowFull}>
+              <AppText
+                variant="light"
+                style={{
+                  color: colors.link,
+                  textDecorationLine: 'underline',
+                }}>
+                {fullShown ? ' ' + t('read_less') : t('read_more')}
+              </AppText>
+            </TouchableOpacity>
+          </>
+        )}
+      </AppText>
+    </Pressable>
   );
 };
 

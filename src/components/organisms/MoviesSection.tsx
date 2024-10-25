@@ -52,7 +52,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
               navigation.navigate('MovieListing', {category, time_window})
             }
             flat>
-            {t('see all')}
+            {t('see_all')}
           </Button>
         )}
       </View>

@@ -15,7 +15,9 @@
   "trending_today": "Trending Today",
 
   "_COMMENT3": "others",
-  "see all": "See all",
+  "see_all": "See all",
   "search movies": "Search Movies",
-  "not rated": "NR"
+  "not_rated": "NR",
+  "read_more": "Read More",
+  "read_less": "Read Less"
 }

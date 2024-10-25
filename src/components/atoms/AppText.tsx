@@ -1,6 +1,6 @@
 import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode} from 'react';
-import {Platform, Text, TextProps, TextStyle} from 'react-native';
+import {I18nManager, Platform, Text, TextProps, TextStyle} from 'react-native';
 import { FontVariants } from 'types/themeTypes';
 
 interface AppTextProps extends TextProps {
@@ -24,6 +24,7 @@ const AppText: FC<AppTextProps> = ({
           color: colors.paleShade,
           fontFamily: fontStyles.fontFamily,
           fontSize: fontStyles.fontSize,
+          textAlign: I18nManager.isRTL ? 'right' : 'left',
           fontWeight:
             Platform.OS === 'android'
               ? 'normal'

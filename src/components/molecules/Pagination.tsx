@@ -13,47 +13,62 @@ import {
 import Animated, { Easing, Extrapolation, interpolate, interpolateColor, runOnJS, SharedValue, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 export interface PaginationProps extends TouchableOpacityProps {
-  containerStyle?: StyleProp<ViewStyle>;
   dotsLength: number;
+  scrollProgress: SharedValue<number>;
   activeDotIndex: number;
-  setActiveIndex: (index: number) => void;
+  inactiveDotOpacity?: number;
+  inactiveDotScale?: number;
   dotStyle: StyleProp<ViewStyle>;
   activeDotStyle?: StyleProp<ViewStyle>;
   inactiveDotStyle?: StyleProp<ViewStyle>;
-  inactiveDotOpacity?: number;
-  inactiveDotScale?: number;
+  containerStyle?: StyleProp<ViewStyle>;
+  setActiveIndex: (index: number) => void;
 }
 
 const Pagination: FC<PaginationProps> = ({
-  containerStyle,
   dotsLength,
+  scrollProgress,
   activeDotIndex,
-  activeDotStyle,
-  dotStyle,
-  inactiveDotStyle,
   inactiveDotOpacity = 1,
   inactiveDotScale = 1,
+  dotStyle,
+  activeDotStyle,
+  inactiveDotStyle,
+  containerStyle,
   setActiveIndex,
   ...props
 }) => {
   const { colors } = useTheme();
   const dotWidth = ((dotStyle as ViewStyle)?.width ?? 16) as number;
-
+  console.log('scroll: ', scrollProgress.value)
   return (
     <Animated.View style={[styles.paginationContainer, containerStyle]}>
       {Array.from({ length: dotsLength }, (_, index) => {
         const animatedStyle = useAnimatedStyle(() => {
+          const width = interpolate(
+            scrollProgress.value,
+            [index - 1, index, index + 1],
+            [dotWidth * inactiveDotScale, dotWidth, dotWidth * inactiveDotScale],
+            Extrapolation.CLAMP
+          )
 
-          const width = withTiming(index === activeDotIndex ? dotWidth : dotWidth * inactiveDotScale, { duration: 800 });
+          const opacity = interpolate(
+            scrollProgress.value,
+            [index - 1, index, index + 1],
+            [inactiveDotOpacity, 1, inactiveDotOpacity],
+            Extrapolation.CLAMP
+          )
 
-          const backgroundColor = withTiming(index === activeDotIndex ? colors.secondary500 : colors.primary700, { duration: 1100 });
+          const backgroundColor = interpolateColor(
+            scrollProgress.value,
+            [index - 1, index, index + 1],
+            [colors.primary700, colors.secondary500, colors.primary700],
+          )
 
           return {
             width,
             backgroundColor,
-            height: 8,
-            borderRadius: 4,
-            marginHorizontal: 4,
+            opacity,
           };
         })
 
@@ -65,7 +80,12 @@ const Pagination: FC<PaginationProps> = ({
           {...props}
         >
           <Animated.View style={[
-            { opacity: index === activeDotIndex ? 1 : inactiveDotOpacity },
+            // { opacity: index === activeDotIndex ? 1 : inactiveDotOpacity },
+            {            
+              height: 8,
+              borderRadius: 4,
+              marginHorizontal: 4
+            },
             dotStyle,
             animatedStyle
           ]} />

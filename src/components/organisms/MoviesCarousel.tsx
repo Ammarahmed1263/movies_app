@@ -30,6 +30,7 @@ interface MoviesCarouselProps {
 const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) => {
   const [activeMovieIndex, setActiveMovieIndex] = useState<number>(0);
   const carouselRef = useRef<ICarouselInstance>(null);
+  const scrollProgress = useSharedValue(0);
   const { width } = useWindowDimensions();
   const {colors} = useTheme();
   const { t } = useTranslation();
@@ -44,6 +45,9 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
       carouselRef?.current?.scrollTo({index});
     }
   };
+  const handleProgressChange = (_: number, absoluteProgress: number) => {
+    scrollProgress.value = absoluteProgress;
+  }
 
   const renderItem = ({
     item,
@@ -54,7 +58,6 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
     index: number;
     animationValue: SharedValue<number>;
   }) => {
-
     const animatedStyle = useAnimatedStyle(() => {
       const opacity = interpolate(
         animationValue.value,
@@ -136,6 +139,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
             parallaxAdjacentItemScale: 0.87,
           }}
           onSnapToItem={handleSnapToItem}
+          onProgressChange={handleProgressChange}
           pagingEnabled
           // loop
           // autoPlay
@@ -144,6 +148,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
         <Pagination
           dotsLength={movies.length > length ? length : movies.length}
           activeDotIndex={activeMovieIndex}
+          scrollProgress={scrollProgress}
           dotStyle={{
             width: hs(36),
             height: vs(8),
@@ -153,7 +158,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
           }}
           activeDotStyle={{width: hs(36)}}
           inactiveDotStyle={{backgroundColor: colors.primary700}}
-          inactiveDotOpacity={0.6}
+          inactiveDotOpacity={0.3}
           inactiveDotScale={0.4}
           setActiveIndex={handleDotPress}
         />

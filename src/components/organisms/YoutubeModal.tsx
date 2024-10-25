@@ -56,59 +56,66 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
           <Icon name="close-circle" size={33} color={colors.primary700} />
         </AppButton>
       </View>
-      <View
-        style={{
-          overflow: 'hidden',
-          borderRadius: 20,
-          marginVertical: 10,
-        }}>
-        {videos.length > 0 && 
-          <YoutubeIframe
-            height={(width * 0.9 - 40) * (9 / 16)}
-            width={width * 0.9 - 40}
-            // videoId={videos[0].key}
-            playList={videos.map(video => video.key)}
-            play={visible}
-            onChangeState={onStateChange}
-        />}
-      </View>
-      <View style={{ marginVertical: 5 }}>
-        <AppText
-          variant="bold"
-          style={{
-            color: colors.paleShade,
-          }}>
-          {videoMeta.title}
-        </AppText>
-        <AppText
-          variant="light"
-          style={{
-            color: colors.primary700,
-          }}>
-          By: {videoMeta.author}
-        </AppText>
-      </View>
-      <View style={{ justifyContent: 'flex-end' }}>
-        <AppButton
-          customView
-          customViewStyle={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          style={{ marginBottom: 12 }}
-          onPress={handleYoutubeRedirect}>
-          <Icon name="play" size={24} color={colors.paleShade} />
-          <AppText
-            variant="bold"
+      {videos.length > 0 ?
+        <>
+          <View
             style={{
-              color: colors.paleShade,
-              marginTop: 2,
+              overflow: 'hidden',
+              borderRadius: 20,
+              marginVertical: 10,
             }}>
-            Open On Youtube
-          </AppText>
-        </AppButton>
-      </View>
+            <YoutubeIframe
+              height={(width * 0.9 - 40) * (9 / 16)}
+              width={width * 0.9 - 40}
+              // videoId={videos[0].key}
+              playList={videos.map(video => video.key)}
+              play={visible}
+              onChangeState={onStateChange}
+            />
+          </View>
+          <View style={{ marginVertical: 5 }}>
+            <AppText
+              variant="bold"
+              style={{
+                color: colors.paleShade,
+              }}>
+              {videoMeta.title}
+            </AppText>
+            <AppText
+              variant="light"
+              style={{
+                color: colors.primary700,
+              }}>
+              By: {videoMeta.author}
+            </AppText>
+          </View>
+          <View style={{ justifyContent: 'flex-end' }}>
+            <AppButton
+              customView
+              customViewStyle={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              style={{ marginBottom: 12 }}
+              onPress={handleYoutubeRedirect}>
+              <Icon name="play" size={24} color={colors.paleShade} />
+              <AppText
+                variant="bold"
+                style={{
+                  color: colors.paleShade,
+                  marginTop: 2,
+                }}>
+                Open On Youtube
+              </AppText>
+            </AppButton>
+          </View>
+        </>
+        :
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <AppText variant="heading" style={{ textAlign: 'center' }}>Sorry, No Trailer Available</AppText>
+        </View>
+      }
     </AppModal>
   )
 }

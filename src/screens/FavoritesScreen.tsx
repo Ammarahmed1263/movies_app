@@ -62,19 +62,19 @@ function FavoritesScreen() {
           /> */}
           <AppImage
             source={require('../assets/images/no-favorites.png')}
-            style={{height: 300, aspectRatio: 1 / 1}}
+            style={{height: 250, aspectRatio: 1 / 1}}
           />
           <AppText variant='heading' style={{textAlign: 'center', marginBottom: vs(8)}}>
             No Favorites
           </AppText>
           <AppText variant='body' style={{textAlign: 'center', marginBottom: vs(8)}}>
             You can favorite a movie by clicking on the heart that shows up when
-            you view a movie details (top right).
+            you view movie details (top right).
           </AppText>
           <AppButton
             onPress={() => navigation.navigate('Search')}
             style={{height: 50, width: '70%'}}>
-            Find Favorites
+            Create Favorites
           </AppButton>
         </View>
       }

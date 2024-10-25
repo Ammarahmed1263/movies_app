@@ -140,6 +140,12 @@ const styles = StyleSheet.create({
     borderRadius: hs(110),
     borderWidth: hs(1),
     elevation: 50,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
   },
   shortDetails: {
     flexDirection: 'row',

@@ -1,10 +1,11 @@
-import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react';
+import {Dispatch, FC, SetStateAction, useEffect, useRef, useState} from 'react';
 import {
   View,
   TextInput,
   StyleSheet,
   TouchableOpacity,
   TextInputProps,
+  I18nManager,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Voice, {
@@ -16,6 +17,7 @@ import Voice, {
 import {useTheme} from '@contexts/ThemeContext';
 import {getDeviceLanguage} from '@utils';
 import {useTranslation} from 'react-i18next';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface SearchBarProps extends TextInputProps {
   keyword: string;
@@ -26,6 +28,14 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword, ...props}) => {
   const [recording, setRecording] = useState(false);
   const {colors, fonts} = useTheme();
   const {t} = useTranslation();
+  const inputRef = useRef<TextInput>(null);
+
+
+  useFocusEffect(() => {
+    if (inputRef.current && !keyword) {
+      inputRef.current?.focus();
+    }  
+  })
 
   useEffect(() => {
     Voice.onSpeechStart = onSpeechStartHandler;
@@ -81,6 +91,7 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword, ...props}) => {
         backgroundColor: colors.primary500,
       }}>
       <TextInput
+        ref={inputRef}
         placeholder={t('search movies')}
         placeholderTextColor={colors.primary700}
         cursorColor={colors.primary700}
@@ -123,6 +134,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 8,
     paddingHorizontal: 15,
+    textAlign: I18nManager.isRTL ? 'right' : 'left'
   },
   iconContainer: {
     flex: 1,

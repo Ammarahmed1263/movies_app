@@ -1,22 +1,24 @@
-import {FC} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {FC, useRef} from 'react';
+import {View, StyleSheet, TextInput} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '@atoms/AppButton';
 import LabelInput from './LabelInput';
 import {useTheme} from '@contexts/ThemeContext';
-import {Formik, FormikHelpers} from 'formik';
+import {Formik, FormikErrors, FormikHelpers} from 'formik';
 import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
 import {loginSchema, signupSchema} from '@validation';
 import AppText from '@atoms/AppText';
 import {ms, vs} from '@styles/metrics';
 import AppLoading from '@atoms/AppLoading';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
   const initialValues = isLogin
     ? {email: '', password: ''}
     : {email: '', password: '', confirmPassword: ''};
   const {colors} = useTheme();
+  const emailRef = useRef<TextInput>(null);
 
   const handleSubmit = async (
     values: AuthFormValues,
@@ -25,6 +27,12 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
     await onSubmit(values, actions);
     actions.setSubmitting(false);
   };
+
+  useFocusEffect(() => {
+    if (emailRef.current) {
+      emailRef.current.focus();
+    }
+  })
 
   return (
     <Formik
@@ -43,6 +51,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
       }) => (
         <View style={styles.container}>
           <LabelInput
+            ref={emailRef}
             value={values.email}
             onChangeText={handleChange('email')}
             onBlur={handleBlur('email')}
@@ -62,7 +71,6 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
             touched={touched.password}
             label="Password"
             autoComplete="new-password"
-            // placeholder="********"
             secureTextEntry>
             <MaterialIcons name="lock" size={22} color={colors.secondary500} />
           </LabelInput>
@@ -73,7 +81,6 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
               onBlur={handleBlur('confirmPassword')}
               error={errors.confirmPassword}
               touched={touched.confirmPassword}
-              // placeholder="********"
               label="Confirm Password"
               autoComplete="new-password"
               secureTextEntry>

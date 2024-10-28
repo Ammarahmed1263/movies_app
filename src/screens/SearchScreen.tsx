@@ -1,94 +1,23 @@
-import {ActivityIndicator, SafeAreaView, StatusBar, TextInput, View} from 'react-native';
+import {SafeAreaView, StatusBar, View} from 'react-native';
 import MoviesList from '../components/organisms/MoviesList';
 import SearchBar from '@molecules/SearchBar';
-import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
-import {searchMovies} from '@services/movieService';
-import {SearchResult} from 'types/searchTypes';
-import {useTheme} from '@contexts/ThemeContext';
+import {useState} from 'react';
 import LottieView from 'lottie-react-native';
-import {height, vs, width} from '@styles/metrics';
+import {vs, width} from '@styles/metrics';
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
-import { useFocusEffect } from '@react-navigation/native';
+import useMovieSearch from '@hooks/useMovieSearch';
 
-const initialState: SearchResult = {
-  searchResults: [],
-  loading: false,
-  page: 1,
-  total_pages: 1,
-};
-
-const reducer = (state: SearchResult, action: any) => {
-  switch (action.type) {
-    case 'RESET_SEARCH':
-      return {
-        ...state,
-        searchResults: [],
-        page: 1,
-        total_pages: 1,
-      };
-    case 'SET_RESULTS':
-      return {
-        ...state,
-        searchResults: [...state.searchResults, ...action?.payload?.results],
-        page: action?.payload?.page,
-        total_pages: action?.payload?.total_pages,
-        loading: false,
-      };
-    case 'SET_LOADING':
-      return {
-        ...state,
-        loading: true,
-      };
-    case 'STOP_LOADING':
-      return {
-        ...state,
-        loading: false,
-      };
-    default:
-      return state;
-  }
-};
 
 function SearchScreen() {
   const [keyword, setkeyword] = useState('');
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const {results, page, total_pages, handlePagination, loading} = useMovieSearch(keyword);
 
-  const handleSearch = useCallback(async () => {
-    // dispatch({type: 'SET_LOADING'});
-    dispatch({type: 'RESET_SEARCH'});
-    const response = await searchMovies({query: keyword, page: state.page});
-    dispatch({type: 'SET_RESULTS', payload: response});
-  }, [keyword]);
-
-  useEffect(() => {
-    if (keyword === '') {
-      dispatch({type: 'RESET_SEARCH'});
-      dispatch({type: 'STOP_LOADING'});
-      return;
-    }
-
-    dispatch({type: 'SET_LOADING'});
-    const id = setTimeout(() => handleSearch(), 500);
-    // dispatch({type: 'STOP_LOADING'});
-    return () => clearTimeout(id);
-  }, [keyword]);
-
-  const handlePagination = async () => {
-    if (state.page < state.total_pages && !state.loading) {
-      dispatch({type: 'SET_LOADING'});
-      const response = await searchMovies({
-        query: keyword,
-        page: state.page + 1,
-      });
-      dispatch({type: 'SET_RESULTS', payload: response});
-    }
-  };
 
   return (
     <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
       <SearchBar keyword={keyword} setKeyword={setkeyword} />
-      {state.loading && state.searchResults.length === 0 ? (
+      {loading && results.length === 0 ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <AppLoading source={require('../assets/lottie/loading_fade.json')} size={70} speed={1.8}/>
         </View>
@@ -96,14 +25,14 @@ function SearchScreen() {
         <View style={{flex: 1}}>
           {keyword ? (
             <MoviesList
-              data={state.searchResults}
+              data={results}
               onEndReached={handlePagination}
               columnWrapperStyle={{justifyContent: 'flex-start'}}
               numColumns={2}
               contentContainerStyle={{paddingBottom: vs(80)}}
               snapStyle={{bottom: vs(100)}}
               ListEmptyComponent={
-                keyword && state.searchResults.length === 0 ? (
+                keyword && results.length === 0 ? (
                   <View
                     style={{
                       alignItems: 'center',
@@ -122,8 +51,8 @@ function SearchScreen() {
                 ) : null
               }
               ListFooterComponent={
-                state.page < state.total_pages &&
-                state.searchResults.length !== 0 ? (
+                page < total_pages &&
+                results.length !== 0 ? (
                   <View style={{alignItems: 'center', paddingBottom: vs(20)}}>
                     <AppLoading
                       size={35}

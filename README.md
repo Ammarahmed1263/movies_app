@@ -42,20 +42,17 @@ yarn ios
 
 // TODO:IN PROGRESS:
 
-- empty list animation
-- use app responsive size
-- animate pagination
-- support landscape mode "carousel, youtube modal"
-- introduce welcome screen
+- use redux with search
+- add profile and home user collections "favorites, collections, gmail"
+- fix text alignment with arabic
+- fix landscape mode
+- use app responsive size "in progress"
 
 // HIGH PRIORITY:
-- focus search bar, email in login and sign up when screens get active
-- youtube url validation
-- use redux with search
 - add social login
-- add profile and home user collections
+- introduce welcome screen![alt text](image.png)
 - find a way to set i18n language correctly 'from user firestore'
-- fix lag with arabic
+- fix lag with arabic "deffered"
 
 // LOWER PRIORITY:
 - create firebase user type

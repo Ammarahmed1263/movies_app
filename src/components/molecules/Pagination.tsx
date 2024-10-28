@@ -40,7 +40,6 @@ const Pagination: FC<PaginationProps> = ({
 }) => {
   const { colors } = useTheme();
   const dotWidth = ((dotStyle as ViewStyle)?.width ?? 16) as number;
-  console.log('scroll: ', scrollProgress.value)
   return (
     <Animated.View style={[styles.paginationContainer, containerStyle]}>
       {Array.from({ length: dotsLength }, (_, index) => {

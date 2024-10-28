@@ -39,8 +39,9 @@ const moviesSlice = createSlice({
     })
     builder.addCase(getMoviesByCategory.fulfilled, (state, action) => {
       const {category, movies, page, total_pages} = action.payload;
+      const activeCategory = state[category];
 
-      if (!state[category]) {
+      if (!activeCategory) {
         state[category] = {
           movies: [],
           page: 0,
@@ -50,11 +51,11 @@ const moviesSlice = createSlice({
         };
       }
 
-      state[category].movies = removeDuplicateMovies([...state[category].movies, ...movies]);
-      state[category].page = page;
-      state[category].total_pages = total_pages;
-      state[category].loading = false;
-      state[category].error = null;
+      activeCategory.movies = removeDuplicateMovies([...activeCategory.movies, ...movies]);
+      activeCategory.page = page;
+      activeCategory.total_pages = total_pages;
+      activeCategory.loading = false;
+      activeCategory.error = null;
     })
     builder.addCase(getMoviesByCategory.rejected, (state, action) => {
       const { category } = action.meta.arg;

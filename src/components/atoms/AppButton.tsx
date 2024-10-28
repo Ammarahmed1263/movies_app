@@ -14,6 +14,7 @@ import {FontVariants} from 'types/themeTypes';
 
 interface AppButtonProps extends PressableProps{
   flat?: boolean;
+  disableRipple?: boolean;
   variant?: FontVariants;
   textStyle?: TextStyle;
   style?: ViewStyle | ViewStyle[];
@@ -26,6 +27,7 @@ interface AppButtonProps extends PressableProps{
 const AppButton: FC<AppButtonProps> = ({
   flat = false,
   variant = 'bold',
+  disableRipple,
   textStyle,
   style,
   children,
@@ -51,8 +53,8 @@ const AppButton: FC<AppButtonProps> = ({
         flat && {backgroundColor: '', elevation: 0},
       ]}>
       <Pressable
-        android_ripple={flat ? null : {color: colors.secondary600}}
-        style={[
+          android_ripple={!disableRipple && !flat ? {color: colors.secondary600} : null}
+          style={[
           !flat && styles.innerButton,
           flat && clicked && {opacity: 0.5},
           {justifyContent: 'center', flex: 1},

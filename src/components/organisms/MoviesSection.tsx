@@ -11,6 +11,7 @@ import { MovieListingNavigationProp } from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
 import { MovieCategory } from 'types/categoryTypes';
 import AppLoading from '@atoms/AppLoading';
+import { vs } from '@styles/metrics';
 
 interface MoviesSectionProps {
   movies: MovieArray;
@@ -57,33 +58,28 @@ const MoviesSection: FC<MoviesSectionProps> = ({
           </Button>
         )}
       </View>
-      {loading ?
-        <View style={{ alignItems: 'center' }}>
-          <AppText variant='heading'>{t('Loading...')}</AppText>
-        </View>
-        :
-        <FlatList
-          data={movies.slice(0, length)}
-          keyExtractor={movie => movie.id + ''}
-          ListEmptyComponent={
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              {loading ? (
-                <AppLoading source={require('../../assets/lottie/loading_fade.json')}/>
-              ) : (
-                <AppText variant='subheading'>{t('Sorry, no movies found')}</AppText>
-              )}
+      <FlatList
+        data={movies.slice(0, length)}
+        keyExtractor={movie => movie.id + ''}
+        ListEmptyComponent={
+          loading ? (
+            <AppLoading source={require('../../assets/lottie/loading_fade.json')} speed={1.8} style={{ flex: 1, height: undefined }} />
+          ) : (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: vs(10) }}>
+              <AppText variant='subheading'>{t('Sorry, no movies found')}</AppText>
             </View>
-          }
-          maxToRenderPerBatch={10}
-          scrollEventThrottle={16}
-          initialNumToRender={5}
-          windowSize={5}
-          contentContainerStyle={{ flexGrow: 1, gap: 15, paddingHorizontal: 20 }}
-          renderItem={renderMovie}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          getItemLayout={(_, index) => ({ length: 100, offset: 100 * index, index })}
-        />}
+          )
+        }
+        maxToRenderPerBatch={10}
+        scrollEventThrottle={16}
+        initialNumToRender={5}
+        windowSize={5}
+        contentContainerStyle={{ flexGrow: 1, gap: 15, paddingHorizontal: 20 }}
+        renderItem={renderMovie}
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        getItemLayout={(_, index) => ({ length: 100, offset: 100 * index, index })}
+      />
     </View>
   );
 };

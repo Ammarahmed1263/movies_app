@@ -1,27 +1,22 @@
 import {
-  ActivityIndicator,
-  FlatList,
-  FlatListProps,
-  Keyboard,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StyleSheet,
+  Keyboard, StyleSheet,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
-import {FC, useRef, useState} from 'react';
+import { FC, useRef, useState } from 'react';
 import MovieCard from '@molecules/MovieCard';
-import {Movie} from 'types/movieTypes';
-import {useTheme} from '@contexts/ThemeContext';
+import { Movie } from 'types/movieTypes';
+import { useTheme } from '@contexts/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
+import Animated, { FlatListPropsWithLayout, runOnJS, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import AppButton from '@atoms/AppButton';
 import { height, hs, vs } from '@styles/metrics';
+import { ReanimatedScrollEvent } from 'react-native-reanimated/lib/typescript/hook/commonTypes';
 
-interface MoviesListProps extends Omit<FlatListProps<Movie>, 'renderItem'> {
+interface MoviesListProps extends Omit<FlatListPropsWithLayout<Movie>, 'renderItem'> {
   containerStyle?: ViewStyle;
-  snapStyle?:  ViewStyle;
-  renderItem?: ({item}: {item: Movie}) => JSX.Element;
+  snapStyle?: ViewStyle;
+  renderItem?: ({ item }: { item: Movie }) => JSX.Element;
 }
 
 const MoviesList: FC<MoviesListProps> = ({
@@ -30,16 +25,42 @@ const MoviesList: FC<MoviesListProps> = ({
   renderItem,
   ...props
 }) => {
-  const {colors} = useTheme();
-  const flatListRef = useRef<FlatList>(null);
+  const [showSnapButton, setShowSnapButton] = useState(false);
+  const { colors } = useTheme();
+  const flatListRef = useRef<Animated.FlatList<Movie>>(null);
   const snapButtonOpacity = useSharedValue(0);
   const scrollY = useSharedValue(0);
 
   const handleSnapButton = () => {
-    flatListRef.current?.scrollToOffset({offset: 0, animated: true});  
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+    scrollY.value = 0;
+    snapButtonOpacity.value = 0;
+    setShowSnapButton(false);
   }
 
-  const defaultRenderItem = ({item}: {item: Movie}) => (
+  const handleOnScrollBeginDrag = () => {
+    Keyboard.dismiss();
+  };
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: snapButtonOpacity.value
+    };
+  })
+
+  const scrollHandler = useAnimatedScrollHandler((event: ReanimatedScrollEvent) => {
+    scrollY.value = event.contentOffset.y;
+
+    if (scrollY.value > height * 0.5 && !showSnapButton) {
+      runOnJS(setShowSnapButton)(true);
+      snapButtonOpacity.value = withTiming(1, { duration: 1000 });
+    } else if (scrollY.value <= height * 0.5 && showSnapButton) {
+      snapButtonOpacity.value = withTiming(0, { duration: 500 });
+      runOnJS(setShowSnapButton)(false);
+    }
+  });
+
+  const defaultRenderItem = ({ item }: { item: Movie }) => (
     <MovieCard
       movie={item}
       style={{
@@ -48,30 +69,9 @@ const MoviesList: FC<MoviesListProps> = ({
     />
   );
 
-  const handleOnScrollBeginDrag = () => {
-    Keyboard.dismiss();
-  };
-  
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(snapButtonOpacity.value, {duration: 500}),
-    };
-  })
-
-  const scrollHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    scrollY.value = event.nativeEvent.contentOffset.y;
-
-    if (scrollY.value > height * 0.5) {
-      snapButtonOpacity.value = 1;
-    } else {
-      snapButtonOpacity.value = 0;
-    }
-  };
-
-
   return (
     <View style={[styles.container, containerStyle]}>
-      <FlatList
+      <Animated.FlatList
         ref={flatListRef}
         renderItem={renderItem ?? defaultRenderItem}
         showsVerticalScrollIndicator={false}
@@ -82,16 +82,17 @@ const MoviesList: FC<MoviesListProps> = ({
         windowSize={15}
         onScrollBeginDrag={handleOnScrollBeginDrag}
         onEndReachedThreshold={0.4}
-        contentContainerStyle={{marginBottom: 10}}
+        contentContainerStyle={{ marginBottom: 10 }}
         {...props}
       />
-      <Animated.View style={animatedStyle}>
+      {showSnapButton && <Animated.View style={animatedStyle}>
         <AppButton
           onPress={handleSnapButton}
-          style={[styles.snapButton, snapStyle || {}, {backgroundColor: colors.link}]}>
+          disableRipple
+          style={[styles.snapButton, snapStyle || {}, { backgroundColor: colors.link }]}>
           <Icon name="arrow-up" color={colors.paleShade} size={30} />
         </AppButton>
-      </Animated.View>
+      </Animated.View>}
     </View>
   );
 };

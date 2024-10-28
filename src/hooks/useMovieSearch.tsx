@@ -6,10 +6,16 @@ import { resetSearch, setLoading } from "@redux/search/searchSlice";
 
 const useMovieSearch = (keyword: string) => {
     const { results, page, total_pages, loading } = useAppSelector((state: RootState) => state.search)
-    console.log('current state: ', keyword, results.length, page, total_pages, loading)
+    // console.log('current state: ', keyword, results.length, page, total_pages, loading)
     const dispatch = useAppDispatch();
 
-    const handleSearch = useCallback(async () => {
+    const handlePagination = useCallback(() => {
+        if (page < total_pages && !loading) {
+            dispatch(searchMoviesByKeyword({ query: keyword, page: page + 1 }));
+        }
+    }, [dispatch, keyword, page, total_pages, loading]);
+
+    useEffect(() => {
         dispatch(resetSearch());
         
         if (keyword === '') {
@@ -20,18 +26,9 @@ const useMovieSearch = (keyword: string) => {
 
         dispatch(setLoading(true));
         const id = setTimeout(() => dispatch(searchMoviesByKeyword({ query: keyword, page: 1 })), 500);
-        console.log('body called')
+        
+        
         return () => clearTimeout(id);
-    }, [dispatch, keyword]);
-
-    const handlePagination = useCallback(() => {
-        if (page < total_pages && !loading) {
-            dispatch(searchMoviesByKeyword({ query: keyword, page: page + 1 }));
-        }
-    }, [dispatch, keyword, page, total_pages, loading]);
-
-    useEffect(() => {
-        handleSearch();
     }, [keyword, dispatch]);
 
     return {

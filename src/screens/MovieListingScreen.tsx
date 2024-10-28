@@ -7,6 +7,7 @@ import {MovieListingScreenProps} from 'types/mainStackTypes';
 import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import AppLoading from '@atoms/AppLoading';
 import { vs } from '@styles/metrics';
+import { Movie } from 'types/movieTypes';
 
 const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category, time_window} = route.params;
@@ -24,12 +25,12 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
     <MoviesList
       data={movies}
       onEndReached={handlePagination}
-      keyExtractor={movie => movie.id.toString() + category}
+      keyExtractor={(movie: Movie) => movie.id.toString() + category}
       numColumns={2}
       columnWrapperStyle={{justifyContent: 'flex-start'}}
       ListFooterComponent={
         page < total_pages && movies.length !== 0 ? (
-          <View style={{alignItems: 'center', paddingBottom: vs(20)}}>
+          <View style={{flex: 1, alignItems: 'center', paddingBottom: vs(30)}}>
             <AppLoading
               size={35}
               speed={2.5}

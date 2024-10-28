@@ -8,7 +8,6 @@ const apiClient = async (endpoint: string, params = {}, method = 'GET', data = n
       data,
       params: {...axios.defaults.params, ...params}
     });
-    console.log('inner response: ', response.data);
     return response.data;
   } catch (error: any) {
     console.error('API Error:', endpoint, error);

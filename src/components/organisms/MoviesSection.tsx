@@ -63,7 +63,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
         </View>
         :
         <FlatList
-          data={[]}
+          data={movies.slice(0, length)}
           keyExtractor={movie => movie.id + ''}
           ListEmptyComponent={
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>

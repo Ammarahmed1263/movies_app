@@ -42,11 +42,10 @@ yarn ios
 
 // TODO:IN PROGRESS:
 
-- empty list animation
-- use app responsive size
-- animate pagination
+- details screen(s) loading
+- use app responsive size "in progress"
 - support landscape mode "carousel, youtube modal"
-- introduce welcome screen
+- introduce welcome screen + handle language and theme there
 
 // HIGH PRIORITY:
 - focus search bar, email in login and sign up when screens get active

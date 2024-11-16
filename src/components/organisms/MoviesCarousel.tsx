@@ -135,8 +135,8 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
           mode="parallax"
           modeConfig={{
             parallaxScrollingScale: 1,
-            parallaxScrollingOffset: width / 2 - hs(5),
-            parallaxAdjacentItemScale: 0.87,
+            parallaxScrollingOffset: width * 0.47,
+            parallaxAdjacentItemScale: 0.88,
           }}
           onSnapToItem={handleSnapToItem}
           onProgressChange={handleProgressChange}
@@ -154,7 +154,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({movies, loading, length = 8}) 
             height: vs(8),
             borderRadius: hs(6),
             backgroundColor: colors.secondary500,
-            marginHorizontal: hs(4)
+            marginHorizontal: hs(6)
           }}
           activeDotStyle={{width: hs(36)}}
           inactiveDotStyle={{backgroundColor: colors.primary700}}

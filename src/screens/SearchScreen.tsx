@@ -1,4 +1,4 @@
-import {ActivityIndicator, SafeAreaView, StatusBar, TextInput, View} from 'react-native';
+import {ActivityIndicator, Platform, SafeAreaView, StatusBar, TextInput, View} from 'react-native';
 import MoviesList from '../components/organisms/MoviesList';
 import SearchBar from '@molecules/SearchBar';
 import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
@@ -84,6 +84,7 @@ function SearchScreen() {
       dispatch({type: 'SET_RESULTS', payload: response});
     }
   };
+  console.log(`../assets/lottie/no_search_results${Platform.OS === 'android' ? '(2)' : ''}.json`)
 
   return (
     <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
@@ -100,18 +101,21 @@ function SearchScreen() {
               onEndReached={handlePagination}
               columnWrapperStyle={{justifyContent: 'flex-start'}}
               numColumns={2}
-              contentContainerStyle={{paddingBottom: vs(80)}}
+              contentContainerStyle={{paddingBottom: vs(80), flexGrow: 1}}
               snapStyle={{bottom: vs(100)}}
               ListEmptyComponent={
                 keyword && state.searchResults.length === 0 ? (
                   <View
                     style={{
+                      flex: 1,
                       alignItems: 'center',
+                      justifyContent: 'center',
                       paddingHorizontal: 30,
+                      marginBottom: 100
                     }}>
                     <LottieView
-                      source={require('../assets/lottie/no_search_results(2).json')}
-                      style={{width: width * 0.8, aspectRatio: 1 / 1}}
+                      source={Platform.OS === 'ios' ? require('../assets/lottie/no_search_results(2).json') : require('../assets/lottie/no_search_results.json')}
+                      style={{width: Platform.OS === 'ios' ? width * 0.7 : width * 0.8, aspectRatio: 1 / 1}}
                       autoPlay
                       loop
                     />

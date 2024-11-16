@@ -84,7 +84,6 @@ function SearchScreen() {
       dispatch({type: 'SET_RESULTS', payload: response});
     }
   };
-  console.log(`../assets/lottie/no_search_results${Platform.OS === 'android' ? '(2)' : ''}.json`)
 
   return (
     <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>

@@ -13,9 +13,10 @@ import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
 import {CastMemberScreenProps} from 'types/mainStackTypes';
 import {MemberCreditArray, MemberDetails} from 'types/castTypes';
 import AppText from '@atoms/AppText';
-import {hs, ms, vs} from '@styles/metrics';
+import {hs, ms, vs, width} from '@styles/metrics';
 import DetailPillItem from '@molecules/DetailPillItem';
 import NavigationHeader from '@organisms/NavigationHeader';
+import AppLoading from '@atoms/AppLoading';
 
 const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const {id} = route.params;
@@ -40,9 +41,13 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   }, []);
 
   if (!details) {
-    return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <AppText variant='heading'>Loading...</AppText>
-    </View>
+    return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <AppLoading
+        size={width}
+        speed={1.25}
+        source={require('../assets/lottie/loading_cast.json')}
+      />
+    </View> ; 
   }
 
   return (

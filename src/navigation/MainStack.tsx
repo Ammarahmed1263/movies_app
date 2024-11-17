@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTabs from './MainTabs';
-import { MovieDetailsScreen, MovieListingScreen, CastMemberScreen } from '@screens/index';
+import { MovieDetailsScreen, MovieListingScreen, CastMemberScreen } from '@screens';
 import { ColorsType, FontsType } from 'types/themeTypes';
 import { FC } from 'react';
 import { MainStackParamList } from 'types/mainStackTypes';

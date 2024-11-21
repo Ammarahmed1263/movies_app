@@ -42,9 +42,6 @@ const MoviesList: FC<MoviesListProps> = ({
   const defaultRenderItem = ({item}: {item: Movie}) => (
     <MovieCard
       movie={item}
-      style={{
-        margin: hs(10),
-      }}
     />
   );
 

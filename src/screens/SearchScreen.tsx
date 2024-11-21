@@ -1,15 +1,13 @@
-import {ActivityIndicator, Platform, SafeAreaView, StatusBar, TextInput, View} from 'react-native';
+import {Platform, SafeAreaView, StatusBar, TextInput, View} from 'react-native';
 import MoviesList from '../components/organisms/MoviesList';
 import SearchBar from '@molecules/SearchBar';
-import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
+import {useCallback, useEffect, useReducer, useState} from 'react';
 import {searchMovies} from '@services/movieService';
 import {SearchResult} from 'types/searchTypes';
-import {useTheme} from '@contexts/ThemeContext';
 import LottieView from 'lottie-react-native';
-import {height, vs, width} from '@styles/metrics';
+import {hs, vs, width} from '@styles/metrics';
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
-import { useFocusEffect } from '@react-navigation/native';
 
 const initialState: SearchResult = {
   searchResults: [],
@@ -98,9 +96,9 @@ function SearchScreen() {
             <MoviesList
               data={state.searchResults}
               onEndReached={handlePagination}
-              columnWrapperStyle={{justifyContent: 'flex-start'}}
+              columnWrapperStyle={{justifyContent: 'flex-start', gap: hs(10), marginVertical: vs(12)}}
+              contentContainerStyle={{flexGrow: 1, paddingBottom: vs(80), marginHorizontal: hs(10)}}
               numColumns={2}
-              contentContainerStyle={{paddingBottom: vs(80), flexGrow: 1}}
               snapStyle={{bottom: vs(100)}}
               ListEmptyComponent={
                 keyword && state.searchResults.length === 0 ? (

@@ -6,16 +6,19 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Switch,
+  // Switch,
   I18nManager,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import { Switch, SwitchProps } from 'react-native-switch';
+import { vs } from '@styles/metrics';
 
 interface SettingsItemProps {
   icon: string;
   label: string;
   value?: string;
   type?: 'toggle' | 'select' | 'button';
+  switchProps?: SwitchProps
   isToggled?: boolean;
   onPress: () => void;
 }
@@ -27,6 +30,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
   type = 'button',
   isToggled,
   onPress,
+  switchProps
 }) => {
   const {colors} = useTheme();
 
@@ -45,10 +49,16 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
         {type === 'toggle' ? (
           <Switch
             value={isToggled}
-            onValueChange={onPress}
-            trackColor={{false: colors.primary700, true: colors.secondary500}}
-            thumbColor={isToggled ? colors.primary700 : colors.secondary500}
-            style={{transform: [{scaleX: I18nManager.isRTL ? -1 : 1}]}}
+            activeText=''
+            inActiveText=''
+            onValueChange= {onPress}
+            circleBorderWidth={0}
+            circleSize={25}
+            switchWidthMultiplier={2.4}
+            barHeight={vs(34)}
+            switchLeftPx={2.5}
+            switchRightPx={2.5}
+            {...switchProps}
           />
         ) : (
           <>

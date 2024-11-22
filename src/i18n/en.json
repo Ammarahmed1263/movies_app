@@ -14,7 +14,16 @@
   "popular": "Popular",
   "trending_today": "Trending Today",
 
-  "_COMMENT3": "others",
+  "_COMMENT3": "Profile",
+  "preferences": "preferences",
+  "dark_mode": "Dark Mode",
+  "language": "Language",
+  "notifications": "Notifications",
+  "collections": "Collections",
+  "sign_out": "Sign Out",
+  "delete_account": "Delete Account",
+
+  "_COMMENT4": "General",
   "see_all": "See all",
   "search movies": "Search Movies",
   "not_rated": "NR",

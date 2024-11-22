@@ -14,7 +14,16 @@
   "popular": "شائع",
   "trending_today": "رائج اليوم",
 
-  "_COMMENT3": "others",
+  "_COMMENT3": "Profile",
+  "preferences": "التفضيلات",
+  "dark_mode": "الوضع الليلي",
+  "language": "اللغة",
+  "notifications": "الإشعارات",
+  "collections": "المجموعات",
+  "sign_out": "تسجيل الخروج",
+  "delete_account": "حذف الحساب",
+
+  "_COMMENT4": "General",
   "see_all": "عرض الكُل",
   "search movies": "ابحث عن فيلم",
   "not_rated": "غ.م",

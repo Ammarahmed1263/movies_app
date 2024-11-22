@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Switch, SwitchProps } from 'react-native-switch';
-import { vs } from '@styles/metrics';
+import { hs, vs } from '@styles/metrics';
 
 interface SettingsItemProps {
   icon: string;
@@ -32,7 +32,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
   onPress,
   switchProps
 }) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   return (
     <TouchableOpacity
@@ -53,11 +53,11 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
             inActiveText=''
             onValueChange= {onPress}
             circleBorderWidth={0}
-            circleSize={25}
-            switchWidthMultiplier={2.4}
-            barHeight={vs(34)}
-            switchLeftPx={2.5}
-            switchRightPx={2.5}
+            circleSize={20}
+            switchWidthMultiplier={2.5}
+            barHeight={28}
+            switchLeftPx={2.8}
+            switchRightPx={2.8}
             {...switchProps}
           />
         ) : (
@@ -89,9 +89,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#eee',
+    padding: hs(12),
+    // borderBottomWidth: StyleSheet.hairlineWidth,
+    // borderBottomColor: '#eee',
   },
   settingsItemLeft: {
     flexDirection: 'row',

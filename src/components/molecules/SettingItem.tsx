@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Switch, SwitchProps } from 'react-native-switch';
-import { hs, vs } from '@styles/metrics';
+import { hs, ms, vs } from '@styles/metrics';
 
 interface SettingsItemProps {
   icon: string;
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: hs(12),
+    paddingVertical: vs(12),
+    paddingHorizontal: hs(10),
     // borderBottomWidth: StyleSheet.hairlineWidth,
     // borderBottomColor: '#eee',
   },
@@ -98,23 +99,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    width: 32,
-    height: 32,
+    width: hs(32),
+    height: vs(32),
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginEnd: hs(12),
     transform: [{scaleX: I18nManager.isRTL ? -1 : 1}],
   },
   settingsItemLabel: {
-    fontSize: 16,
+    fontSize: ms(16),
   },
   settingsItemRight: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   settingsItemValue: {
-    marginRight: 8,
+    marginRight: hs(8),
     color: '#666',
   },
 });

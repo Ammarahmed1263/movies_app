@@ -15,13 +15,14 @@
   "trending_today": "Trending Today",
 
   "_COMMENT3": "Profile",
-  "preferences": "preferences",
+  "preferences": "Preferences",
   "dark_mode": "Dark Mode",
   "language": "Language",
   "notifications": "Notifications",
   "collections": "Collections",
   "sign_out": "Sign Out",
   "delete_account": "Delete Account",
+  "joined": "Joined",
 
   "_COMMENT4": "General",
   "see_all": "See all",

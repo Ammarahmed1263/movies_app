@@ -34,7 +34,7 @@ export default function AppNavigation() {
     const navTheme = {
       dark: theme === 'dark',
       colors: {
-        ...DefaultTheme.colors,
+        primary: colors.primary500,
         background: colors.primary500,
         card: colors.primary500,
         text: colors.paleShade,

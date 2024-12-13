@@ -26,7 +26,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
       onEndReached={handlePagination}
       keyExtractor={movie => movie.id.toString() + category}
       numColumns={2}
-      columnWrapperStyle={{justifyContent: 'flex-start', gap: hs(10), marginVertical: vs(10)}}
+      columnWrapperStyle={{justifyContent: 'flex-start', gap: hs(12), marginVertical: vs(10)}}
       contentContainerStyle={{flexGrow: 1, marginHorizontal: hs(10)}}
       ListFooterComponent={
         page < total_pages && movies.length !== 0 ? (

@@ -78,7 +78,6 @@ const MoviesSection: FC<MoviesSectionProps> = ({
           maxToRenderPerBatch={10}
           scrollEventThrottle={16}
           initialNumToRender={5}
-          windowSize={5}
           contentContainerStyle={{ flexGrow: 1, gap: hs(10), paddingHorizontal: hs(15) }}
           renderItem={renderMovie}
           showsHorizontalScrollIndicator={false}

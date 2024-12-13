@@ -5,12 +5,14 @@ import {useEffect, useState} from 'react';
 import {
   Alert,
   I18nManager,
+  Modal,
   Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Switch,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
@@ -28,6 +30,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import CollectionsList from '@organisms/CollectionsList';
 import {useTranslation} from 'react-i18next';
 import ProfileHeader from '@organisms/ProfileHeader';
+import AppModal from '@atoms/AppModal';
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
@@ -88,8 +91,11 @@ function ProfileScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, paddingTop: StatusBar.currentHeight ?? 0}}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentInsetAdjustmentBehavior="never"
+        contentContainerStyle={{flexGrow: 1}}>
         <ProfileHeader />
         <View>
           <View
@@ -101,11 +107,11 @@ function ProfileScreen() {
             }}>
             <Icon
               name="settings"
-              size={20}
+              size={25}
               style={{paddingEnd: hs(10)}}
               color={colors.paleShade}
             />
-            <AppText variant="bold">{t('preferences')}</AppText>
+            <AppText variant="heading">{t('preferences')}</AppText>
           </View>
           <SettingItem
             icon="bell"
@@ -150,11 +156,7 @@ function ProfileScreen() {
 
         <CollectionsList title={t('collections')} seeAll />
 
-        <View
-          style={{
-            flex: 1,
-            paddingBottom: vs(Platform.OS === 'ios' ? 80 : 120),
-          }}>
+        <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>
             <AppButton
               variant="regular"
@@ -184,13 +186,23 @@ function ProfileScreen() {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+    marginTop: vs(-12),
+  },
   flatButton: {
     minHeight: 30,
     alignSelf: 'flex-start',
+  },
+  footer: {
+    flex: 1,
+    paddingBottom: vs(Platform.OS === 'ios' ? 80 : 120),
   },
   copyrights: {
     maxWidth: width / 2,
     textAlign: 'center',
     alignSelf: 'center',
+    marginTop: vs(10),
   },
 });

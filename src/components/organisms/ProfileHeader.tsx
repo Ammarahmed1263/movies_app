@@ -12,7 +12,7 @@ const ProfileHeader: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <View style={{alignItems: 'center', paddingTop: vs(20)}}>
+    <View style={{alignItems: 'center'}}>
       <View
         style={{
           borderRadius: width / 6,

@@ -12,11 +12,12 @@ import {useTranslation} from 'react-i18next';
 import {MainTabsParamList} from 'types/mainTabsTypes';
 import {MainTabsProps} from 'types/mainStackTypes';
 import { hs, width } from '@styles/metrics';
+import { useTheme } from '@contexts/ThemeContext';
 
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 
-const MainTabs: FC<MainTabsProps> = ({route}) => {
-  const {colors, fonts} = route.params;
+const MainTabs: FC<MainTabsProps> = () => {
+  const { colors, fonts } = useTheme();
   const {t} = useTranslation();
 
   function getTabBarIcon(
@@ -31,10 +32,6 @@ const MainTabs: FC<MainTabsProps> = ({route}) => {
 
   return (
     <Tab.Navigator
-      sceneContainerStyle={{
-        // paddingBottom: 65,
-        // backgroundColor: colors.primary500,
-      }}
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
@@ -57,7 +54,6 @@ const MainTabs: FC<MainTabsProps> = ({route}) => {
           tabBarIcon: iconState =>
             getTabBarIcon(iconState, 'home', 'home-outline'),
         }}
-        initialParams={{colors}}
       />
       <Tab.Screen
         name="Search"
@@ -98,13 +94,14 @@ export default MainTabs;
 const styles = StyleSheet.create({
   tabBar: {
     borderRadius: 30,
-    marginHorizontal: 18,
     width: '90%',
     paddingVertical: 6,
     position: 'absolute',
     bottom: hs(25),
+    left: width / 2 - width * 0.45,
     overflow: 'hidden',
     height: 60,
+    borderWidth: 1,
     borderTopWidth: 1.6,
     borderBottomWidth: 1.6,
     borderRightWidth: 0.9,

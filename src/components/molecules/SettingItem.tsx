@@ -43,7 +43,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
         <View style={styles.iconContainer}>
           <Icon name={icon} size={20} color={colors.primary700} />
         </View>
-        <AppText style={styles.settingsItemLabel}>{label}</AppText>
+        <AppText>{label}</AppText>
       </View>
       <View style={styles.settingsItemRight}>
         {type === 'toggle' ? (
@@ -107,15 +107,11 @@ const styles = StyleSheet.create({
     marginEnd: hs(12),
     transform: [{scaleX: I18nManager.isRTL ? -1 : 1}],
   },
-  settingsItemLabel: {
-    fontSize: ms(16),
-  },
   settingsItemRight: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   settingsItemValue: {
     marginRight: hs(8),
-    color: '#666',
   },
 });

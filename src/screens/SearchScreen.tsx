@@ -84,7 +84,7 @@ function SearchScreen() {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
+    <SafeAreaView style={{flex: 1, marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight}}>
       <SearchBar keyword={keyword} setKeyword={setkeyword} />
       {state.loading && state.searchResults.length === 0 ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

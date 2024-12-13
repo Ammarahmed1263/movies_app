@@ -26,13 +26,16 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
 
   useEffect(() => {
     (async () => {
-      if (videos) {
-        await getYoutubeMeta(videos[0]?.key).then(meta =>
-          setVideoMeta({ title: meta.title, author: meta.author_name }),
-        ).catch(e => console.log('unable to get video meta data: ', e));
+      if (videos.length > 0) {
+        try {
+          const response = await getYoutubeMeta(videos[0]?.key);
+          setVideoMeta({ title: response.title, author: response.author_name });
+        } catch (e) {
+          console.log('unable to get video meta data: ', e);
+        }
       }
     })()
-  }, [videos])
+  }, [videos, visible])
 
   const handleYoutubeRedirect = useCallback(async () => {
     try {

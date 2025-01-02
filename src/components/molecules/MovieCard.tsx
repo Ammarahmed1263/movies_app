@@ -41,7 +41,7 @@ const MovieCard: FC<MovieCardProps> = ({
       <View
         style={[
           styles.imageContainer,
-          { borderColor: colors.secondary600 },
+          { borderColor: colors.secondary500 },
           ImageViewStyle,
         ]}>
         {!hideVote && (

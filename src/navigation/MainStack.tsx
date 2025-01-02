@@ -1,47 +1,50 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTabs from './MainTabs';
-import { MovieDetailsScreen, MovieListingScreen, CastMemberScreen } from '@screens/index';
-import { ColorsType, FontsType } from 'types/themeTypes';
-import { FC } from 'react';
-import { MainStackParamList } from 'types/mainStackTypes';
+import {
+  MovieDetailsScreen,
+  MovieListingScreen,
+  CastMemberScreen,
+} from '@screens';
+import {ColorsType, FontsType} from 'types/themeTypes';
+import {FC} from 'react';
+import {MainStackParamList} from 'types/mainStackTypes';
+import {useTranslation} from 'react-i18next';
+import CollectionStack from './CollectionStack';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 interface MainStackProps {
-  colors: ColorsType
-  fonts: FontsType
+  colors: ColorsType;
+  fonts: FontsType;
 }
 
 const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
+  const {t} = useTranslation();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        headerBackTitleVisible: false
-        // contentStyle: {backgroundColor: colors.primary500},
+        headerBackTitleVisible: false,
       }}>
-      <Stack.Screen
-        name="BottomTabs"
-        component={MainTabs}
-        initialParams={{colors, fonts}}
-      />
-      <Stack.Screen name="MovieDetails" component={MovieDetailsScreen}/>
+      <Stack.Screen name="BottomTabs" component={MainTabs} />
+      <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
       <Stack.Screen name="CastMemberDetails" component={CastMemberScreen} />
       <Stack.Screen
         name="MovieListing"
         component={MovieListingScreen}
-        initialParams={{colors}}
         options={{
           headerShown: true,
-          title: 'All Movies',
+          title: t('all_movies'),
           headerTintColor: colors.paleShade,
           headerShadowVisible: false,
           headerTitleAlign: 'center',
-          headerTitleStyle: {fontFamily: fonts.regular.fontFamily}
+          headerTitleStyle: {fontFamily: fonts.regular.fontFamily},
         }}
       />
+      <Stack.Screen name="CollectionStack" component={CollectionStack} />
     </Stack.Navigator>
   );
-}
+};
 
 export default MainStack;

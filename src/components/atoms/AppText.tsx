@@ -24,11 +24,12 @@ const AppText: FC<AppTextProps> = ({
           color: colors.paleShade,
           fontFamily: fontStyles.fontFamily,
           fontSize: fontStyles.fontSize,
-          textAlign: I18nManager.isRTL ? 'right' : 'left',
+          // textAlign: I18nManager.isRTL ? 'right' : 'left',
           fontWeight:
             Platform.OS === 'android'
               ? 'normal'
               : (fontStyles.fontWeight as TextStyle['fontWeight']),
+          writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'
         },
         style,
       ]}

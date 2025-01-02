@@ -11,6 +11,7 @@ import { MovieListingNavigationProp } from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
 import { MovieCategory } from 'types/categoryTypes';
 import AppLoading from '@atoms/AppLoading';
+import { hs, vs } from '@styles/metrics';
 
 interface MoviesSectionProps {
   movies: MovieArray;
@@ -77,8 +78,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
           maxToRenderPerBatch={10}
           scrollEventThrottle={16}
           initialNumToRender={5}
-          windowSize={5}
-          contentContainerStyle={{ flexGrow: 1, gap: 15, paddingHorizontal: 20 }}
+          contentContainerStyle={{ flexGrow: 1, gap: hs(10), paddingHorizontal: hs(15) }}
           renderItem={renderMovie}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
@@ -92,14 +92,14 @@ export default MoviesSection;
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 20,
+    paddingBottom: vs(20),
   },
   heading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginStart: 20,
-    marginEnd: 10,
+    marginStart: hs(20),
+    marginEnd: hs(10),
   },
   button: {
     textTransform: 'none',

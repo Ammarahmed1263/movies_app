@@ -1,4 +1,5 @@
 import i18n from "../i18n";
+import { ms } from "./metrics";
 
 const arabicFontFamily = {
   light: 'Cairo-Light',
@@ -19,37 +20,37 @@ const getFonts = () => {
   return {
     light: {
       fontFamily: activeFamily.light,
-      fontSize: 14,
+      fontSize: ms(14),
       fontWeight: '300',
     },
     regular: {
       fontFamily: activeFamily.regular,
-      fontSize: 16,
+      fontSize: ms(16),
       fontWeight: '400',
     },
     bold: {
       fontFamily: activeFamily.bold,
-      fontSize: 18,
+      fontSize: ms(18),
       fontWeight: '700',
     },
     heading: {
       fontFamily: activeFamily.bold,
-      fontSize: 24,
+      fontSize: ms(22),
       fontWeight: '700',
     },
     subheading: {
       fontFamily: activeFamily.regular,
-      fontSize: 20,
+      fontSize: ms(18),
       fontWeight: '400',
     },
     body: {
       fontFamily: activeFamily.regular,
-      fontSize: 16,
+      fontSize: ms(16),
       fontWeight: '400',
     },
     caption: {
       fontFamily: activeFamily.light,
-      fontSize: 12,
+      fontSize: ms(12),
       fontWeight: '300',
     },
   }

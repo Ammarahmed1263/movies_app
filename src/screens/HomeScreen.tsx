@@ -1,13 +1,11 @@
-import {useCallback, useState} from 'react';
-import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
+import { useTheme } from '@contexts/ThemeContext';
+import { useMoviesByCategory } from '@hooks/useMoviesByCategory';
 import MoviesCarousel from '@organisms/MoviesCarousel';
 import MoviesSection from '@organisms/MoviesSection';
-import {useTranslation} from 'react-i18next';
-import {useTheme} from '@contexts/ThemeContext';
-import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
-import {useAppSelector} from '@hooks/useRedux';
-import {RootState} from '@redux/types';
 import { vs } from '@styles/metrics';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
 
 function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);  

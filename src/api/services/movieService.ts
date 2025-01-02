@@ -4,13 +4,6 @@ import { ENDPOINTS } from "../endpoints";
 
 const MOVIES_BASE = ENDPOINTS.movies;
 
-export const getNowPlaying = (page: number = 1) => apiClient(MOVIES_BASE.now_playing, { page });
-export const getPopular = (page: number = 1) => apiClient(MOVIES_BASE.popular, { page });
-export const getTopRated = (page: number = 1) => apiClient(MOVIES_BASE.top_rated, { page });
-export const getUpcoming = (page: number = 1) => apiClient(MOVIES_BASE.upcoming, { page });
-export const getTrending = (time_window: "day" | "week" = "day", page: number = 1) => apiClient(MOVIES_BASE.trending + time_window, { page });
-
-
 export function getMovies(category: 'trending', options: TrendingFetchOptions): Promise<any>;
 export function getMovies(category: Exclude<MovieCategory, 'trending'>, options?: getMoviesByCategoryOptions): Promise<any>;
 

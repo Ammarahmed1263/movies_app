@@ -1,14 +1,14 @@
 const COLORS = {
   light: {
-    primary500: '#edede2',
-    primary600: '#f8f4f4',
-    primary700: '#8c8d87',
-    secondary500: '#ffaa00',
-    secondary600: '#fec34c',
-    secondaryShadow: 'rgba(255, 170, 0, 0.8)',
-    paleShade: '#252729',
-    link: '#9494eb',
-    error: '#F44336'
+    primary500: '#fcfaf8',
+    primary600: '#989898',
+    primary700: '#6c6f70',
+    secondary500: '#ffb74d',
+    secondary600: '#f6c73b',
+    secondaryShadow: 'rgba(255, 170, 0, 0.5)',
+    paleShade: '#252525',
+    link: '#3a57e8',
+    error: '#ff5722'
   },
   dark: {
     primary500: '#303030',

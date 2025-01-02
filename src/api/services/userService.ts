@@ -17,6 +17,15 @@ export const getUserProfile = async () => {
   }
 }
 
+export const deleteUser = async () => {
+  try {
+    await auth().currentUser?.delete();
+    console.log('User delete successfully!');
+  } catch (e) {
+    throw e;
+  }
+}
+
 export const updateUserPreferences = async (preferences: any) => {
   const userId = getCurrentUserId();
 

@@ -47,14 +47,17 @@ yarn ios
 - create search layout "trending movies, top genres, popular actors"
 - add profile and home user collections "favorites, collections, gmail"
 - notification for "want to watch movies, genres from past search"
-- introduce welcome screen![alt text](image.png) + handle language and theme there
+- introduce welcome screen + handle language and theme there
+- report problem - FAQ - contact us
+- fix ios voice search "delete search then clicking mic restores the search key - problem with voice start and end'
 
 // HIGH PRIORITY:
 - fix text alignment with arabic
+- getUserProfile function is called in app.tsx and themecontext before user is authenticated
 - support landscape mode "carousel, youtube modal"
 - add social login
 - find a way to set i18n language correctly 'from user firestore'
-- fix lag with arabic "deffered"
+- fix lag with arabic in android "deffered"
 - add home screen trailer section
 
 // LOWER PRIORITY:

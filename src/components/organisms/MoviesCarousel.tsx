@@ -20,6 +20,17 @@ import Animated, {
 import { useTranslation } from 'react-i18next';
 import { imagePlaceHolder } from '../../constants';
 
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
+
+// This is the default configuration
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
+
 interface MoviesCarouselProps {
   movies: MovieArray;
   loading?: boolean;

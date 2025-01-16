@@ -1,7 +1,7 @@
 import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import { useTheme } from '@contexts/ThemeContext';
-import CollectionCard from '@molecules/CollectionCard';
+import UserListCard from '@molecules/UserListCard';
 import { useNavigation } from '@react-navigation/native';
 import { hs, vs } from '@styles/metrics';
 import { FC, useEffect } from 'react';
@@ -12,26 +12,26 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { CollectionStackNavigationProp } from 'types/mainStackTypes';
+import { UserListStackNavigationProp } from 'types/mainStackTypes';
 
-interface CollectionsListProps {
+interface UserListsListProps {
   title: string;
   seeAll?: boolean;
 }
 
-const CollectionsList: FC<CollectionsListProps> = ({title, seeAll = false}) => {
+const UserListsList: FC<UserListsListProps> = ({title, seeAll = false}) => {
   const data = [
-    {id: 'add', label: 'Create a collection'},
+    {id: 'add', label: 'Create a UserList'},
     {id: '3', label: 'watch later', movies: ['/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
     {id: '5', label: 'romantic movies', movies: []},
     {id: '1', label: 'action', movies: ['/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
     {id: '2', label: 'drama and sci-fi', movies: ['', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
     {id: '4', label: 'marvel and DC', movies: ['/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', 'aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
-    // {id: '6', label: 'collection 6', movies: [1,2,3,4,5]},
+    // {id: '6', label: 'UserList 6', movies: [1,2,3,4,5]},
   ];
   const {colors} = useTheme();
   const {t} = useTranslation();
-  const navigation = useNavigation<CollectionStackNavigationProp>();
+  const navigation = useNavigation<UserListStackNavigationProp>();
 
   useEffect(() => {
     (async () => {
@@ -41,14 +41,14 @@ const CollectionsList: FC<CollectionsListProps> = ({title, seeAll = false}) => {
 
   const handleItemPress = (item: {id: string; label: string}) => {
     if (item.id === 'add') {
-      navigation.navigate('CollectionStack', {screen: 'CreateCollection'});
+      navigation.navigate('UserListStack', {screen: 'CreateUserList'});
     } else {
-      navigation.navigate('CollectionStack', {screen: 'CollectionDetails'});
+      navigation.navigate('UserListStack', {screen: 'UserListDetails'});
     }
   };
 
   const handleSeeAllPress = () => {
-    navigation.navigate('CollectionStack', {screen: 'ListCollections'});
+    navigation.navigate('UserListStack', {screen: 'ListUserLists'});
   }
  
   const handleRender = ({
@@ -58,7 +58,7 @@ const CollectionsList: FC<CollectionsListProps> = ({title, seeAll = false}) => {
     item: {id: string; label: string; movies?: string[] | undefined};
     index: number;
   }) => {
-    return <CollectionCard key={index} data={item} onPress={handleItemPress} />;
+    return <UserListCard key={index} data={item} onPress={handleItemPress} />;
   };
 
   return (
@@ -98,7 +98,7 @@ const CollectionsList: FC<CollectionsListProps> = ({title, seeAll = false}) => {
   );
 };
 
-export default CollectionsList;
+export default UserListsList;
 
 const styles = StyleSheet.create({
   container: {

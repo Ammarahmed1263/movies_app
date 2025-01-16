@@ -1,11 +1,11 @@
 import { Text, View } from "react-native"
 
-const CollectionListingScreen = () => {
+const UserListsListingScreen = () => {
   return (
     <View style={{backgroundColor: 'chocolate'}}>
-      <Text>CollectionListingScreen</Text>
+      <Text>UserListsListingScreen</Text>
     </View>
   )
 }
 
-export default CollectionListingScreen;
+export default UserListsListingScreen;

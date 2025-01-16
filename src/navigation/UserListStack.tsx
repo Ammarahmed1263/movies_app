@@ -1,18 +1,18 @@
 import { useTheme } from '@contexts/ThemeContext';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
-  CollectionDetailsScreen,
-  CollectionListingScreen,
-  CreateCollectionScreen
+  CreateUserListScreen,
+  UserListDetailsScreen,
+  UserListsListingScreen
 } from '@screens';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CollectionStackParamList } from 'types/CollectionStackTypes';
-import { CollectionStackProps } from 'types/mainStackTypes';
+import { UserListStackParamList } from 'types/userListsStackTypes';
+import { UserListStackProps } from 'types/mainStackTypes';
 
-const Stack = createNativeStackNavigator<CollectionStackParamList>();
+const Stack = createNativeStackNavigator<UserListStackParamList>();
 
-const CollectionStack: FC<CollectionStackProps> = () => {
+const UserListStack: FC<UserListStackProps> = () => {
   const {t} = useTranslation();
   const { colors, fonts } = useTheme();
 
@@ -23,8 +23,8 @@ const CollectionStack: FC<CollectionStackProps> = () => {
         headerBackTitleVisible: false,
       }}>
       <Stack.Screen
-        name="CreateCollection"
-        component={CreateCollectionScreen}
+        name="CreateUserList"
+        component={CreateUserListScreen}
         options={{
           headerShown: true,
           title: 'Add New Collection',
@@ -36,8 +36,8 @@ const CollectionStack: FC<CollectionStackProps> = () => {
       />
 
       <Stack.Screen
-        name="ListCollections"
-        component={CollectionListingScreen}
+        name="ListUserLists"
+        component={UserListsListingScreen}
         options={{
           headerShown: true,
           title: 'My Collections',
@@ -49,8 +49,8 @@ const CollectionStack: FC<CollectionStackProps> = () => {
       />
 
       <Stack.Screen
-        name="CollectionDetails"
-        component={CollectionDetailsScreen}
+        name="UserListDetails"
+        component={UserListDetailsScreen}
         options={{
           headerShown: true,
           title: 'Collection Details',
@@ -64,4 +64,4 @@ const CollectionStack: FC<CollectionStackProps> = () => {
   );
 };
 
-export default CollectionStack;
+export default UserListStack;

@@ -9,7 +9,7 @@ import {ColorsType, FontsType} from 'types/themeTypes';
 import {FC} from 'react';
 import {MainStackParamList} from 'types/mainStackTypes';
 import {useTranslation} from 'react-i18next';
-import CollectionStack from './CollectionStack';
+import UserListStack from './UserListStack';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -42,7 +42,7 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
           headerTitleStyle: {fontFamily: fonts.regular.fontFamily},
         }}
       />
-      <Stack.Screen name="CollectionStack" component={CollectionStack} />
+      <Stack.Screen name="UserListStack" component={UserListStack} />
     </Stack.Navigator>
   );
 };

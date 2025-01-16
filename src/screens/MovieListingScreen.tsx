@@ -1,12 +1,11 @@
-import {FC, useEffect} from 'react';
-import {ActivityIndicator, View} from 'react-native';
-import AppText from '@atoms/AppText';
-import {useTheme} from '@contexts/ThemeContext';
-import MoviesList from '@organisms/MoviesList';
-import {MovieListingScreenProps} from 'types/mainStackTypes';
-import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import AppLoading from '@atoms/AppLoading';
+import AppText from '@atoms/AppText';
+import { useMoviesByCategory } from '@hooks/useMoviesByCategory';
+import MoviesList from '@organisms/MoviesList';
 import { hs, vs } from '@styles/metrics';
+import { FC } from 'react';
+import { View } from 'react-native';
+import { MovieListingScreenProps } from 'types/mainStackTypes';
 
 const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category, time_window} = route.params;

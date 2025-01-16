@@ -1,20 +1,17 @@
 import AppText from '@atoms/AppText';
-import {useTheme} from '@contexts/ThemeContext';
-import {hs, ms, vs, width} from '@styles/metrics';
-import {imagePlaceHolder} from '../../constants';
-import {FC} from 'react';
+import { useTheme } from '@contexts/ThemeContext';
+import { hs, ms, vs, width } from '@styles/metrics';
+import { FC } from 'react';
 import {
-  Image,
-  ImageBackground,
-  View,
   StyleSheet,
   TouchableOpacity,
+  View
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MovieGrid from './MovieGrid';
 
-interface CollectionCardProps {
+interface UserListProps {
   data: {
     id: string;
     label: string;
@@ -23,7 +20,7 @@ interface CollectionCardProps {
   onPress: (item: {id: string; label: string}) => void;
 }
 
-const CollectionCard: FC<CollectionCardProps> = ({data, onPress, ...props}) => {
+const UserListCard: FC<UserListProps> = ({data, onPress, ...props}) => {
   const {colors} = useTheme();
   const isAdd = data.id === 'add';
 
@@ -56,14 +53,14 @@ const CollectionCard: FC<CollectionCardProps> = ({data, onPress, ...props}) => {
           </View>
         )}
       </View>
-      <AppText style={[styles.collectionName, {color: colors.primary700}]}>
+      <AppText style={[styles.listName, {color: colors.primary700}]}>
         {data.label}
       </AppText>
     </TouchableOpacity>
   );
 };
 
-export default CollectionCard;
+export default UserListCard;
 
 const styles = StyleSheet.create({
   button: {
@@ -88,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  collectionName: {
+  listName: {
     paddingHorizontal: hs(10),
     marginTop: vs(8),
   },

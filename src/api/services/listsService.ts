@@ -2,14 +2,14 @@ import firestore from '@react-native-firebase/firestore';
 import {UserListType} from 'types/userTypes';
 import {getCurrentUserId, getUserProfile} from './userService';
 
-const getUserLists = (callback: (lists: UserListType[]) => void) => {
+const getLists = (callback: (lists: UserListType[]) => void) => {
   const userId = getCurrentUserId();
 
   const unsubscribe = firestore()
     .collection('users')
     .doc(userId)
     .onSnapshot(snapshot => {
-      const lists = snapshot.data()?.userLists || [];
+      const lists = snapshot.data()?.Lists || [];
       callback(lists);
     });
 
@@ -28,7 +28,7 @@ const addUserList = async (list: UserListType) => {
       .doc(userId)
       .set(
         {
-          userLists: firestore.FieldValue.arrayUnion({
+          Lists: firestore.FieldValue.arrayUnion({
             id: list?.id,
             title: list?.title,
             poster_path: list?.poster_path,
@@ -52,14 +52,14 @@ const removeUserList = async (listId: string) => {
 
   try {
     const user = await getUserProfile();
-    const userLists = user?.userLists || [];
+    const Lists = user?.Lists || [];
 
-    const updatedUserLists = userLists.filter(
+    const updatedLists = Lists.filter(
       (list: UserListType) => list.id !== listId,
     );
 
     await firestore().collection('users').doc(userId).update({
-      userLists: updatedUserLists,
+      Lists: updatedLists,
     });
 
     console.log('user list removed');
@@ -69,4 +69,4 @@ const removeUserList = async (listId: string) => {
   }
 };
 
-export {getUserLists, addUserList, removeUserList};
+export {getLists, addUserList, removeUserList};

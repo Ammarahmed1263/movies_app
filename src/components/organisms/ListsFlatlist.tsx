@@ -1,7 +1,7 @@
 import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
-import useUserLists from '@hooks/useUserlists';
+import useLists from '@hooks/useLists';
 import UserListCard from '@molecules/UserListCard';
 import {useNavigation} from '@react-navigation/native';
 import {hs, vs} from '@styles/metrics';
@@ -9,30 +9,30 @@ import {FC, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {UserListStackNavigationProp} from 'types/mainStackTypes';
+import {ListstackNavigationProp} from 'types/mainStackTypes';
 import {UserListType} from 'types/userTypes';
 
-interface UserListsListProps {
+interface ListsListProps {
   title: string;
   seeAll?: boolean;
 }
 
-const UserListsList: FC<UserListsListProps> = ({title, seeAll = false}) => {
-  const {lists} = useUserLists();
+const ListsList: FC<ListsListProps> = ({title, seeAll = false}) => {
+  const {lists} = useLists();
   const {colors} = useTheme();
   const {t} = useTranslation();
-  const navigation = useNavigation<UserListStackNavigationProp>();
+  const navigation = useNavigation<ListstackNavigationProp>();
 
   const handleItemPress = (item: UserListType) => {
     if (item.id === 'add') {
-      navigation.navigate('UserListStack', {screen: 'CreateUserList'});
+      navigation.navigate('Liststack', {screen: 'CreateUserList'});
     } else {
-      navigation.navigate('UserListStack', {screen: 'UserListDetails', params: {listTitle: item.title}});
+      navigation.navigate('Liststack', {screen: 'UserListDetails', params: {listTitle: item.title}});
     }
   };
 
   const handleSeeAllPress = () => {
-    navigation.navigate('UserListStack', {screen: 'ListUserLists'});
+    navigation.navigate('Liststack', {screen: 'ListLists'});
   };
 
   const handleRender = ({item, index}: {item: UserListType; index: number}) => {
@@ -76,7 +76,7 @@ const UserListsList: FC<UserListsListProps> = ({title, seeAll = false}) => {
   );
 };
 
-export default UserListsList;
+export default ListsList;
 
 const styles = StyleSheet.create({
   container: {

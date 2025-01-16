@@ -9,7 +9,7 @@ import {ColorsType, FontsType} from 'types/themeTypes';
 import {FC} from 'react';
 import {MainStackParamList} from 'types/mainStackTypes';
 import {useTranslation} from 'react-i18next';
-import UserListStack from './UserListStack';
+import Liststack from './ListsStack';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -31,8 +31,8 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
       <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
       <Stack.Screen name="CastMemberDetails" component={CastMemberScreen} />
       <Stack.Screen
-        name="UserListStack"
-        component={UserListStack}
+        name="Liststack"
+        component={Liststack}
       />
       <Stack.Screen
         name="MovieListing"

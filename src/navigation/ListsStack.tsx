@@ -1,18 +1,18 @@
 import {useTheme} from '@contexts/ThemeContext';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
-  CreateUserListScreen,
+  CreateListscreen,
   UserListDetailsScreen,
-  UserListsListingScreen,
+  ListsListingScreen,
 } from '@screens';
 import {FC} from 'react';
 import {Button, Touchable} from 'react-native';
-import {UserListStackProps} from 'types/mainStackTypes';
-import {UserListStackParamList} from 'types/userListsStackTypes';
+import {ListstackProps} from 'types/mainStackTypes';
+import {ListstackParamList} from 'types/listsStackTypes';
 
-const Stack = createNativeStackNavigator<UserListStackParamList>();
+const Stack = createNativeStackNavigator<ListstackParamList>();
 
-const UserListStack: FC<UserListStackProps> = ({navigation}) => {
+const Liststack: FC<ListstackProps> = ({navigation}) => {
   const {colors, fonts} = useTheme();
 
   return (
@@ -26,7 +26,7 @@ const UserListStack: FC<UserListStackProps> = ({navigation}) => {
       }}>
       <Stack.Screen
         name="CreateUserList"
-        component={CreateUserListScreen}
+        component={CreateListscreen}
         options={{
           title: 'Add New List',
           headerTintColor: colors.paleShade,
@@ -37,8 +37,8 @@ const UserListStack: FC<UserListStackProps> = ({navigation}) => {
       />
 
       <Stack.Screen
-        name="ListUserLists"
-        component={UserListsListingScreen}
+        name="ListLists"
+        component={ListsListingScreen}
         options={{
           title: 'My Lists',
           headerTintColor: colors.paleShade,
@@ -63,4 +63,4 @@ const UserListStack: FC<UserListStackProps> = ({navigation}) => {
   );
 };
 
-export default UserListStack;
+export default Liststack;

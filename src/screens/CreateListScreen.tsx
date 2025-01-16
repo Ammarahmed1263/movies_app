@@ -1,13 +1,13 @@
-import useUserLists from '@hooks/useUserlists';
+import useLists from '@hooks/useLists';
 import LabelInput from '@molecules/LabelInput';
 import {FC, useLayoutEffect} from 'react';
 import {Button, Text, View} from 'react-native';
-import {UserListNavigationProp} from 'types/userListsStackTypes';
+import {UserListNavigationProp} from 'types/listsStackTypes';
 
-const CreateUserListScreen: FC<{navigation: UserListNavigationProp}> = ({
+const CreateListscreen: FC<{navigation: UserListNavigationProp}> = ({
   navigation,
 }) => {
-  const {lists} = useUserLists();
+  const {lists} = useLists();
 
   const handleSaveButton = () => {
     console.log('item has been saved successfully');
@@ -21,10 +21,10 @@ const CreateUserListScreen: FC<{navigation: UserListNavigationProp}> = ({
 
   return (
     <View>
-      <Text>CreateUserListScreen</Text>
+      <Text>CreateListscreen</Text>
       <LabelInput label="List Title"/>
     </View>
   );
 };
 
-export default CreateUserListScreen;
+export default CreateListscreen;

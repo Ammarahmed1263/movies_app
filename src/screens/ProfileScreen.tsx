@@ -1,32 +1,36 @@
-import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
-import { useTheme } from '@contexts/ThemeContext';
-import SettingItem from '@molecules/SettingItem';
-import ProfileHeader from '@organisms/ProfileHeader';
-import UserListsList from '@organisms/UserListsList';
-import auth from '@react-native-firebase/auth';
-import { userLogout } from '@services/authService';
-import {
-  deleteUser,
-  getCurrentUserId,
-  updateUserPreferences,
-} from '@services/userService';
-import { hs, vs, width } from '@styles/metrics';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTheme} from '@contexts/ThemeContext';
+import i18n from '../i18n';
+import {useEffect, useState} from 'react';
 import {
   Alert,
   I18nManager,
+  Modal,
   Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  View
+  Switch,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import AppButton from '@atoms/AppButton';
+import {userLogout} from '@services/authService';
 import RNRestart from 'react-native-restart';
+import {
+  deleteUser,
+  getCurrentUserId,
+  updateUserPreferences,
+} from '@services/userService';
+import {hs, vs, width} from '@styles/metrics';
+import SettingItem from '@molecules/SettingItem';
 import Icon from 'react-native-vector-icons/Feather';
-import i18n from '../i18n';
+import ListsList from '@organisms/ListsFlatlist';
+import {useTranslation} from 'react-i18next';
+import ProfileHeader from '@organisms/ProfileHeader';
+import AppModal from '@atoms/AppModal';
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
@@ -150,7 +154,7 @@ function ProfileScreen() {
           />
         </View>
 
-        <UserListsList title={t('collections')} seeAll />
+        <ListsList title={t('collections')} seeAll />
 
         <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>

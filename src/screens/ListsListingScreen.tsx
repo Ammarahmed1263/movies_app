@@ -1,5 +1,5 @@
 import AppText from '@atoms/AppText';
-import useUserLists from '@hooks/useUserlists';
+import useLists from '@hooks/useLists';
 import MovieGrid from '@molecules/MovieGrid';
 import UserListCard from '@molecules/UserListCard';
 import { useNavigation } from '@react-navigation/native';
@@ -7,8 +7,8 @@ import { hs, vs, width } from '@styles/metrics';
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import {UserListType} from 'types/userTypes';
 
-const UserListsListingScreen = () => {
-  const {lists} = useUserLists();
+const ListsListingScreen = () => {
+  const {lists} = useLists();
   const navigation = useNavigation();
   const handleRender = ({item, index}: {item: UserListType; index: number}) => {
     return (
@@ -41,4 +41,4 @@ const UserListsListingScreen = () => {
   );
 };
 
-export default UserListsListingScreen;
+export default ListsListingScreen;

@@ -1,18 +1,16 @@
 import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
-import { useTheme } from '@contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
+import useUserLists from '@hooks/useUserlists';
 import UserListCard from '@molecules/UserListCard';
-import { useNavigation } from '@react-navigation/native';
-import { hs, vs } from '@styles/metrics';
-import { FC, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  FlatList,
-  StyleSheet,
-  View
-} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {hs, vs} from '@styles/metrics';
+import {FC, useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
+import {FlatList, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { UserListStackNavigationProp } from 'types/mainStackTypes';
+import {UserListStackNavigationProp} from 'types/mainStackTypes';
+import {UserListType} from 'types/userTypes';
 
 interface UserListsListProps {
   title: string;
@@ -20,44 +18,24 @@ interface UserListsListProps {
 }
 
 const UserListsList: FC<UserListsListProps> = ({title, seeAll = false}) => {
-  const data = [
-    {id: 'add', label: 'Create a UserList'},
-    {id: '3', label: 'watch later', movies: ['/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
-    {id: '5', label: 'romantic movies', movies: []},
-    {id: '1', label: 'action', movies: ['/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
-    {id: '2', label: 'drama and sci-fi', movies: ['', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
-    {id: '4', label: 'marvel and DC', movies: ['/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', '/aosm8NMQ3UyoBVpSxyimorCQykC.jpg', 'aosm8NMQ3UyoBVpSxyimorCQykC.jpg']},
-    // {id: '6', label: 'UserList 6', movies: [1,2,3,4,5]},
-  ];
+  const {lists} = useUserLists();
   const {colors} = useTheme();
   const {t} = useTranslation();
   const navigation = useNavigation<UserListStackNavigationProp>();
 
-  useEffect(() => {
-    (async () => {
-      
-    })()
-  }, [])
-
-  const handleItemPress = (item: {id: string; label: string}) => {
+  const handleItemPress = (item: UserListType) => {
     if (item.id === 'add') {
       navigation.navigate('UserListStack', {screen: 'CreateUserList'});
     } else {
-      navigation.navigate('UserListStack', {screen: 'UserListDetails'});
+      navigation.navigate('UserListStack', {screen: 'UserListDetails', params: {listTitle: item.title}});
     }
   };
 
   const handleSeeAllPress = () => {
     navigation.navigate('UserListStack', {screen: 'ListUserLists'});
-  }
- 
-  const handleRender = ({
-    item,
-    index,
-  }: {
-    item: {id: string; label: string; movies?: string[] | undefined};
-    index: number;
-  }) => {
+  };
+
+  const handleRender = ({item, index}: {item: UserListType; index: number}) => {
     return <UserListCard key={index} data={item} onPress={handleItemPress} />;
   };
 
@@ -87,8 +65,8 @@ const UserListsList: FC<UserListsListProps> = ({title, seeAll = false}) => {
         )}
       </View>
       <FlatList
-        data={data}
-        keyExtractor={item => item.id}
+        data={lists.slice(0, 6)}
+        keyExtractor={item => item.id.toString()}
         renderItem={handleRender}
         horizontal
         contentContainerStyle={styles.listContainer}
@@ -103,7 +81,7 @@ export default UserListsList;
 const styles = StyleSheet.create({
   container: {
     marginTop: vs(10),
-    marginBottom: vs(30)
+    marginBottom: vs(30),
   },
   header: {
     flexDirection: 'row',
@@ -116,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    paddingEnd: hs(10)
+    paddingEnd: hs(10),
   },
   button: {
     textTransform: 'none',

@@ -1,43 +1,45 @@
 import AppText from '@atoms/AppText';
-import { useTheme } from '@contexts/ThemeContext';
-import { hs, ms, vs, width } from '@styles/metrics';
-import { FC } from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import {useTheme} from '@contexts/ThemeContext';
+import {hs, ms, vs, width} from '@styles/metrics';
+import {FC} from 'react';
+import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MovieGrid from './MovieGrid';
+import {UserListType} from 'types/userTypes';
 
 interface UserListProps {
-  data: {
-    id: string;
-    label: string;
-    movies?: string[] | undefined;
-  };
-  onPress: (item: {id: string; label: string}) => void;
+  data: UserListType;
+  hasTitle?: boolean;
+  style?: ViewStyle;
+  onPress: (item: UserListType) => void;
 }
 
-const UserListCard: FC<UserListProps> = ({data, onPress, ...props}) => {
+const UserListCard: FC<UserListProps> = ({
+  data,
+  hasTitle = true,
+  style,
+  onPress,
+  ...props
+}) => {
   const {colors} = useTheme();
   const isAdd = data.id === 'add';
 
   return (
-    <TouchableOpacity onPress={() => onPress(data)} style={styles.button}>
+    <TouchableOpacity onPress={() => onPress(data)} style={[styles.button, style]} {...props}>
       <View
         style={[
           {...styles.container, backgroundColor: colors.primary600},
+          style,
           isAdd && {...styles.addButton, borderColor: colors.secondary500},
         ]}>
         {isAdd ? (
           <View style={styles.addContent}>
             <Feather
               name="folder-plus"
-              size={60}
+              size={hasTitle ? 60 : 30}
               color={colors.primary700}
-              style={{marginBottom: vs(8)}}
+              // style={{marginBottom: vs(8)}}
             />
           </View>
         ) : data.movies && data.movies.length > 0 ? (
@@ -53,9 +55,11 @@ const UserListCard: FC<UserListProps> = ({data, onPress, ...props}) => {
           </View>
         )}
       </View>
-      <AppText style={[styles.listName, {color: colors.primary700}]}>
-        {data.label}
-      </AppText>
+      {hasTitle && (
+        <AppText style={[styles.listName, {color: colors.primary700}]}>
+          {data.title}
+        </AppText>
+      )}
     </TouchableOpacity>
   );
 };
@@ -84,6 +88,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   listName: {
     paddingHorizontal: hs(10),

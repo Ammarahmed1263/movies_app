@@ -31,6 +31,10 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
       <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
       <Stack.Screen name="CastMemberDetails" component={CastMemberScreen} />
       <Stack.Screen
+        name="UserListStack"
+        component={UserListStack}
+      />
+      <Stack.Screen
         name="MovieListing"
         component={MovieListingScreen}
         options={{
@@ -42,7 +46,6 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
           headerTitleStyle: {fontFamily: fonts.regular.fontFamily},
         }}
       />
-      <Stack.Screen name="UserListStack" component={UserListStack} />
     </Stack.Navigator>
   );
 };

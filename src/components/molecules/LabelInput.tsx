@@ -19,7 +19,7 @@ interface LabelInputProps extends TextInputProps {
   label: string;
   error?: string;
   touched?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const LabelInput = forwardRef<TextInput, LabelInputProps>(

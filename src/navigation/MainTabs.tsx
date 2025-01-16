@@ -36,7 +36,6 @@ const MainTabs: FC<MainTabsProps> = () => {
         headerShown: false,
         tabBarStyle: {
           ...styles.tabBar,
-          // backgroundColor: colors.primary500,
           borderColor: colors.secondary600,
         },
         tabBarLabelStyle: {

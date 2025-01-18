@@ -1,10 +1,13 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ListType } from './userTypes';
 
 export type ListstackParamList = {
-  CreateUserList: undefined
+  CreateList: undefined
   ListsFlatlist: undefined
-  ListDetailsScreen: {listTitle: string}
+  ListDetailsScreen: {listData: ListType}
 };
 
-export type UserListNavigationProp = NativeStackNavigationProp<ListstackParamList>;
-export type ListDetailsScreenScreenProps = NativeStackScreenProps<ListstackParamList, 'ListDetailsScreen'>
+export type ListNavigationProp = NativeStackNavigationProp<ListstackParamList>;
+export type ListDetailsScreenProps = NativeStackScreenProps<ListstackParamList, 'ListDetailsScreen'>
+export type CreateListScreenProps = NativeStackScreenProps<ListstackParamList, 'CreateList'>
+export type ListsFlatlistScreenProps = NativeStackScreenProps<ListstackParamList, 'ListsFlatlist'>

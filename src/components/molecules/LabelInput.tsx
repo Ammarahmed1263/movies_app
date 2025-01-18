@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     marginHorizontal: hs(5),
   },
   label: {
-    fontSize: 16,
+    fontSize: ms(16),
   },
   input: {
     borderRadius: 15,

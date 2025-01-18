@@ -2,16 +2,24 @@ import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, ms, vs, width} from '@styles/metrics';
 import {FC} from 'react';
-import {Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MovieGrid from './MovieGrid';
 import {ListType} from 'types/userTypes';
-import { getImageUrl } from '@utils';
+import {getImageUrl} from '@utils';
 
 interface UserListProps {
   data: ListType;
   hasTitle?: boolean;
+  disabled?: boolean;
   style?: ViewStyle;
   onPress: (item: ListType) => void;
 }
@@ -19,6 +27,7 @@ interface UserListProps {
 const ListCard: FC<UserListProps> = ({
   data,
   hasTitle = true,
+  disabled = false,
   style,
   onPress,
   ...props
@@ -27,7 +36,11 @@ const ListCard: FC<UserListProps> = ({
   const isAdd = data.id === 'add';
 
   return (
-    <TouchableOpacity onPress={() => onPress(data)} style={[styles.button, style]} {...props}>
+    <TouchableOpacity
+      onPress={() => onPress(data)}
+      style={[styles.button, style]}
+      disabled={disabled}
+      {...props}>
       <View
         style={[
           {...styles.container, backgroundColor: colors.primary600},
@@ -43,9 +56,12 @@ const ListCard: FC<UserListProps> = ({
             />
           </View>
         ) : data.poster_path && data.poster_path.length > 0 ? (
-          <Image source={getImageUrl(data.poster_path)} style={styles.image} resizeMode='cover'/>
-        )
-        : data.movies && data.movies.length > 0 ? (
+          <Image
+            source={getImageUrl(data.poster_path)}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        ) : data.movies && data.movies.length > 0 ? (
           <MovieGrid movies={data.movies} />
         ) : (
           <View style={styles.addContent}>

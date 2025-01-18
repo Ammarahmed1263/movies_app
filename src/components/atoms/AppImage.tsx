@@ -15,10 +15,11 @@ import {imagePlaceHolder} from '../../constants';
 import LottieView from 'lottie-react-native';
 import AppLoading from './AppLoading';
 import { hs } from '@styles/metrics';
+import Animated from 'react-native-reanimated';
 
 interface AppImageProps extends ImageProps {
-  source?: ImageSourcePropType | undefined;
-  placeholder?: string;
+  source?: ImageSourcePropType;
+  placeholder?: 'movie' | 'person';
   viewStyle?: ViewStyle;
   style?: ImageStyle;
   loadingSize?: 'small' | 'large';
@@ -36,7 +37,6 @@ const AppImage: FC<AppImageProps> = ({
     placeholder === 'movie' ? imagePlaceHolder.MOVIE : imagePlaceHolder.PERSON;
   const [isLoading, setIsLoading] = useState(true);
 
-
   const handleLoadEnd = () => {
     setIsLoading(false);
   };
@@ -52,7 +52,7 @@ const AppImage: FC<AppImageProps> = ({
         />
       )}
 
-      <Image
+      <Animated.Image
         source={source || imageHolder}
         style={[styles.image, style, {opacity: isLoading ? 0 : 1}]}
         onLoadEnd={handleLoadEnd}

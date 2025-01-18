@@ -21,7 +21,7 @@ interface AppButtonProps extends PressableProps{
   onPress: () => void;
   customView?: ReactNode;
   customViewStyle?: ViewStyle;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const AppButton: FC<AppButtonProps> = ({

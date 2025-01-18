@@ -2,9 +2,9 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 
 export type ListstackParamList = {
   CreateUserList: undefined
-  ListLists: undefined
-  UserListDetails: {listTitle: string}
+  ListsFlatlist: undefined
+  ListDetailsScreen: {listTitle: string}
 };
 
 export type UserListNavigationProp = NativeStackNavigationProp<ListstackParamList>;
-export type UserListDetailsScreenProps = NativeStackScreenProps<ListstackParamList, 'UserListDetails'>
+export type ListDetailsScreenScreenProps = NativeStackScreenProps<ListstackParamList, 'ListDetailsScreen'>

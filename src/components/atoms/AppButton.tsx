@@ -11,6 +11,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode, useState} from 'react';
 import AppText from './AppText';
 import {FontVariants} from 'types/themeTypes';
+import { hs } from '@styles/metrics';
 
 interface AppButtonProps extends PressableProps{
   flat?: boolean;
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: 25,
     margin: 2,
-    minHeight: 50,
+    minHeight: hs(30),
     overflow: 'hidden',
   },
   innerButton: {

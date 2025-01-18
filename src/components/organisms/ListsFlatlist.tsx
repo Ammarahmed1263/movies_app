@@ -2,7 +2,7 @@ import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import useLists from '@hooks/useLists';
-import UserListCard from '@molecules/UserListCard';
+import ListCard from '@molecules/ListCard';
 import {useNavigation} from '@react-navigation/native';
 import {hs, vs} from '@styles/metrics';
 import {FC, useEffect} from 'react';
@@ -10,7 +10,7 @@ import {useTranslation} from 'react-i18next';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ListstackNavigationProp} from 'types/mainStackTypes';
-import {UserListType} from 'types/userTypes';
+import {ListType} from 'types/userTypes';
 
 interface ListsListProps {
   title: string;
@@ -23,20 +23,23 @@ const ListsList: FC<ListsListProps> = ({title, seeAll = false}) => {
   const {t} = useTranslation();
   const navigation = useNavigation<ListstackNavigationProp>();
 
-  const handleItemPress = (item: UserListType) => {
+  const handleItemPress = (item: ListType) => {
     if (item.id === 'add') {
       navigation.navigate('Liststack', {screen: 'CreateUserList'});
     } else {
-      navigation.navigate('Liststack', {screen: 'UserListDetails', params: {listTitle: item.title}});
+      navigation.navigate('Liststack', {
+        screen: 'ListDetailsScreen',
+        params: {listTitle: item.title},
+      });
     }
   };
 
   const handleSeeAllPress = () => {
-    navigation.navigate('Liststack', {screen: 'ListLists'});
+    navigation.navigate('Liststack', {screen: 'ListsFlatlist'});
   };
 
-  const handleRender = ({item, index}: {item: UserListType; index: number}) => {
-    return <UserListCard key={index} data={item} onPress={handleItemPress} />;
+  const handleRender = ({item, index}: {item: ListType; index: number}) => {
+    return <ListCard key={index} data={item} onPress={handleItemPress} />;
   };
 
   return (

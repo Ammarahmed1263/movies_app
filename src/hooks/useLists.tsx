@@ -1,9 +1,10 @@
-import {useEffect, useState} from 'react';
 import { getLists } from '@services/listsService';
-import { UserListType } from 'types/userTypes';
+import { useEffect, useState } from 'react';
+import { ListType } from 'types/userTypes';
 
 const useLists = () => {
-  const [lists, setLists] = useState<UserListType[]>([]);
+  const [lists, setLists] = useState<ListType[]>([]);
+  console.log(lists);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -11,9 +11,9 @@ export type preferencesType = {
   theme: 'light' | 'dark';
 };
 
-export type UserListType = {
+export type ListType = {
   id: number | 'add';
   title: string;
-  poster_path?: ImageSourcePropType;
+  poster_path?: string | null;
   movies: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[];
 }

@@ -1,50 +1,46 @@
 import firestore from '@react-native-firebase/firestore';
-import {UserListType} from 'types/userTypes';
+import {ListType} from 'types/userTypes';
 import {getCurrentUserId, getUserProfile} from './userService';
 
-const getLists = (callback: (lists: UserListType[]) => void) => {
+const getLists = (callback: (lists: ListType[]) => void) => {
   const userId = getCurrentUserId();
 
   const unsubscribe = firestore()
     .collection('users')
     .doc(userId)
     .onSnapshot(snapshot => {
-      const lists = snapshot.data()?.Lists || [];
+      const lists = snapshot.data()?.lists || [];
       callback(lists);
     });
 
   return unsubscribe;
 };
 
-const addUserList = async (list: UserListType) => {
+const addList = async (list: ListType) => {
   const userId = getCurrentUserId();
   if (!userId) {
     throw new Error('User is not authenticated');
   }
-
+  console.log('inside service list is: ', list)
   try {
     await firestore()
       .collection('users')
       .doc(userId)
       .set(
         {
-          Lists: firestore.FieldValue.arrayUnion({
-            id: list?.id,
-            title: list?.title,
-            poster_path: list?.poster_path,
-          }),
+          lists: firestore.FieldValue.arrayUnion(list),
         },
         {merge: true},
       );
 
     console.log('user list created');
   } catch (e) {
-    console.error('Error adding favorite movie: ', e);
+    console.error('Error creating list: ', e);
     throw e;
   }
 };
 
-const removeUserList = async (listId: string) => {
+const removeList = async (listId: string) => {
   const userId = getCurrentUserId();
   if (!userId) {
     throw new Error('User is not authenticated');
@@ -52,14 +48,14 @@ const removeUserList = async (listId: string) => {
 
   try {
     const user = await getUserProfile();
-    const Lists = user?.Lists || [];
+    const lists = user?.lists || [];
 
-    const updatedLists = Lists.filter(
-      (list: UserListType) => list.id !== listId,
+    const updatedLists = lists.filter(
+      (list: ListType) => list.id !== listId,
     );
 
     await firestore().collection('users').doc(userId).update({
-      Lists: updatedLists,
+      lists: updatedLists,
     });
 
     console.log('user list removed');
@@ -69,4 +65,4 @@ const removeUserList = async (listId: string) => {
   }
 };
 
-export {getLists, addUserList, removeUserList};
+export {getLists, addList, removeList};

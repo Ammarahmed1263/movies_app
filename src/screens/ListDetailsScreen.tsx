@@ -1,8 +1,8 @@
 import { FC, useLayoutEffect } from "react";
 import { Text, View } from "react-native";
-import { UserListDetailsScreenProps } from "types/listsStackTypes";
+import { ListDetailsScreenScreenProps } from "types/listsStackTypes";
 
-const UserListDetailsScreen: FC<UserListDetailsScreenProps> = ({ route, navigation }) => {
+const ListDetailsScreenScreen: FC<ListDetailsScreenScreenProps> = ({ route, navigation }) => {
   const { listTitle } = route.params;
 
   useLayoutEffect(() => {
@@ -13,9 +13,9 @@ const UserListDetailsScreen: FC<UserListDetailsScreenProps> = ({ route, navigati
 
   return (
     <View>
-      <Text>UserListDetailsScreen</Text>
+      <Text>ListDetailsScreenScreen</Text>
     </View>
   )
 }
 
-export default UserListDetailsScreen;
+export default ListDetailsScreenScreen;

@@ -154,7 +154,7 @@ function ProfileScreen() {
           />
         </View>
 
-        <ListsList title={t('collections')} seeAll />
+        <ListsList title={t('lists')} seeAll />
 
         <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>

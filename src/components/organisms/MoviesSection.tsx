@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     marginStart: hs(20),
     marginEnd: hs(10),
+    marginBottom: vs(10),
   },
   button: {
     textTransform: 'none',

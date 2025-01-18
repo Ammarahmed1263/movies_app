@@ -2,20 +2,21 @@ import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, ms, vs, width} from '@styles/metrics';
 import {FC} from 'react';
-import {StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MovieGrid from './MovieGrid';
-import {UserListType} from 'types/userTypes';
+import {ListType} from 'types/userTypes';
+import { getImageUrl } from '@utils';
 
 interface UserListProps {
-  data: UserListType;
+  data: ListType;
   hasTitle?: boolean;
   style?: ViewStyle;
-  onPress: (item: UserListType) => void;
+  onPress: (item: ListType) => void;
 }
 
-const UserListCard: FC<UserListProps> = ({
+const ListCard: FC<UserListProps> = ({
   data,
   hasTitle = true,
   style,
@@ -39,16 +40,18 @@ const UserListCard: FC<UserListProps> = ({
               name="folder-plus"
               size={hasTitle ? 60 : 30}
               color={colors.primary700}
-              // style={{marginBottom: vs(8)}}
             />
           </View>
-        ) : data.movies && data.movies.length > 0 ? (
+        ) : data.poster_path && data.poster_path.length > 0 ? (
+          <Image source={getImageUrl(data.poster_path)} style={styles.image} resizeMode='cover'/>
+        )
+        : data.movies && data.movies.length > 0 ? (
           <MovieGrid movies={data.movies} />
         ) : (
           <View style={styles.addContent}>
             <MaterialIcons
               name="video-collection"
-              size={60}
+              size={hasTitle ? 60 : 35}
               color={colors.primary500}
               style={{marginBottom: vs(8)}}
             />
@@ -64,7 +67,7 @@ const UserListCard: FC<UserListProps> = ({
   );
 };
 
-export default UserListCard;
+export default ListCard;
 
 const styles = StyleSheet.create({
   button: {
@@ -88,6 +91,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  image: {
     width: '100%',
     height: '100%',
   },

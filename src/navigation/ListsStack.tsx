@@ -2,13 +2,17 @@ import {useTheme} from '@contexts/ThemeContext';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   CreateListscreen,
-  UserListDetailsScreen,
+  ListDetailsScreenScreen,
   ListsListingScreen,
 } from '@screens';
 import {FC} from 'react';
-import {Button, Touchable} from 'react-native';
+import {Button, Touchable, TouchableOpacity} from 'react-native';
 import {ListstackProps} from 'types/mainStackTypes';
 import {ListstackParamList} from 'types/listsStackTypes';
+import Icon from "react-native-vector-icons/Ionicons";
+import { ms } from '@styles/metrics';
+import AppButton from '@atoms/AppButton';
+
 
 const Stack = createNativeStackNavigator<ListstackParamList>();
 
@@ -21,7 +25,9 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
         headerShown: true,
         headerLeft: ({canGoBack}) =>
           canGoBack ? (
-            <Button title="Back" onPress={() => navigation.goBack()} />
+            <AppButton onPress={() => navigation.goBack()} flat>
+              <Icon name="chevron-back" size={ms(23)} color={colors.paleShade} />
+            </AppButton>
           ) : null,
       }}>
       <Stack.Screen
@@ -37,7 +43,7 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
       />
 
       <Stack.Screen
-        name="ListLists"
+        name="ListsFlatlist"
         component={ListsListingScreen}
         options={{
           title: 'My Lists',
@@ -49,8 +55,8 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
       />
 
       <Stack.Screen
-        name="UserListDetails"
-        component={UserListDetailsScreen}
+        name="ListDetailsScreen"
+        component={ListDetailsScreenScreen}
         options={{
           title: 'List Details',
           headerTintColor: colors.paleShade,

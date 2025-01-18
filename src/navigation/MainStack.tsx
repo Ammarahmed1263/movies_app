@@ -1,4 +1,7 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import MainTabs from './MainTabs';
 import {
   MovieDetailsScreen,
@@ -10,6 +13,10 @@ import {FC} from 'react';
 import {MainStackParamList} from 'types/mainStackTypes';
 import {useTranslation} from 'react-i18next';
 import Liststack from './ListsStack';
+import AppButton from '@atoms/AppButton';
+import {ms} from '@styles/metrics';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -20,12 +27,25 @@ interface MainStackProps {
 
 const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
   const {t} = useTranslation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<MainStackParamList>>();
 
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         headerBackTitleVisible: false,
+        headerShadowVisible: false,
+        headerLeft: ({canGoBack}) =>
+          canGoBack ? (
+            <AppButton onPress={() => navigation.goBack()} flat>
+              <Icon
+                name="chevron-back"
+                size={ms(23)}
+                color={colors.paleShade}
+              />
+            </AppButton>
+          ) : null,
       }}>
       <Stack.Screen name="BottomTabs" component={MainTabs} />
       <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
@@ -33,6 +53,9 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
       <Stack.Screen
         name="Liststack"
         component={Liststack}
+        options={{
+          animation: 'slide_from_bottom',
+        }}
       />
       <Stack.Screen
         name="MovieListing"

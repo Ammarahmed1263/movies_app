@@ -4,7 +4,6 @@ import { ListType } from 'types/userTypes';
 
 const useLists = () => {
   const [lists, setLists] = useState<ListType[]>([]);
-  console.log(lists);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

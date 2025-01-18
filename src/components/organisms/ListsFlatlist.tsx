@@ -9,15 +9,16 @@ import {FC, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { ListsFlatlistScreenProps } from 'types/listsStackTypes';
 import {ListstackNavigationProp} from 'types/mainStackTypes';
 import {ListType} from 'types/userTypes';
 
-interface ListsListProps {
+interface ListsFlatlistProps {
   title: string;
   seeAll?: boolean;
 }
 
-const ListsList: FC<ListsListProps> = ({title, seeAll = false}) => {
+const ListsFlatlist: FC<ListsFlatlistProps> = ({title, seeAll = false}) => {
   const {lists} = useLists();
   const {colors} = useTheme();
   const {t} = useTranslation();
@@ -25,11 +26,11 @@ const ListsList: FC<ListsListProps> = ({title, seeAll = false}) => {
 
   const handleItemPress = (item: ListType) => {
     if (item.id === 'add') {
-      navigation.navigate('Liststack', {screen: 'CreateUserList'});
+      navigation.navigate('Liststack', {screen: 'CreateList'});
     } else {
       navigation.navigate('Liststack', {
         screen: 'ListDetailsScreen',
-        params: {listTitle: item.title},
+        params: {listData: item},
       });
     }
   };
@@ -79,7 +80,7 @@ const ListsList: FC<ListsListProps> = ({title, seeAll = false}) => {
   );
 };
 
-export default ListsList;
+export default ListsFlatlist;
 
 const styles = StyleSheet.create({
   container: {
@@ -103,6 +104,7 @@ const styles = StyleSheet.create({
     textTransform: 'none',
   },
   listContainer: {
+    flexGrow: 1,
     paddingHorizontal: hs(12),
     gap: hs(8),
   },

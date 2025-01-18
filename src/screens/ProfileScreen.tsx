@@ -95,7 +95,7 @@ function ProfileScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="never"
-        contentContainerStyle={{flexGrow: 1}}>
+        contentContainerStyle={{flexGrow: 1, paddingTop: vs(10)}}>
         <ProfileHeader />
         <View>
           <View
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
-    marginTop: vs(-12),
+    marginTop: Platform.OS === 'ios' ? vs(-10) : 0,
   },
   flatButton: {
     minHeight: 30,

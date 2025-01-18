@@ -1,20 +1,20 @@
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import {StyleSheet, Text, View, ViewStyle} from 'react-native';
 import MovieCardButton from '@atoms/MovieCardButton';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '@contexts/ThemeContext';
+import {useNavigation} from '@react-navigation/native';
+import {useTheme} from '@contexts/ThemeContext';
 import {
   convertToArabicNumerals,
   formatVoteCount,
   getImageUrl,
-  getDeviceLanguage
+  getDeviceLanguage,
 } from '@utils';
 import Image from '@atoms/AppImage';
-import { FC } from 'react';
-import { Movie } from 'types/movieTypes';
-import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
+import {FC} from 'react';
+import {Movie} from 'types/movieTypes';
+import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-import { hs, ms } from '@styles/metrics';
-import { FontVariants } from 'types/themeTypes';
+import {hs, ms} from '@styles/metrics';
+import {FontVariants} from 'types/themeTypes';
 
 interface MovieCardProps {
   movie: Movie;
@@ -32,16 +32,16 @@ const MovieCard: FC<MovieCardProps> = ({
   ImageViewStyle,
 }) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
     <MovieCardButton
       style={[styles.cardContainer, style ?? {}]}
-      onPress={() => navigation.push('MovieDetails', { id: movie.id })}>
+      onPress={() => navigation.push('MovieDetails', {id: movie.id})}>
       <View
         style={[
           styles.imageContainer,
-          { borderColor: colors.secondary500 },
+          {borderColor: colors.secondary500},
           ImageViewStyle,
         ]}>
         {!hideVote && (
@@ -59,7 +59,10 @@ const MovieCard: FC<MovieCardProps> = ({
             </AppText>
           </View>
         )}
-        <Image source={getImageUrl(movie.poster_path)} viewStyle={{ overflow: 'hidden', borderRadius: ms(18) }} />
+        <Image
+          source={getImageUrl(movie.poster_path)}
+          viewStyle={{overflow: 'hidden', borderRadius: ms(18)}}
+        />
       </View>
       <AppText
         variant={titleVariant}
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
     right: 0,
     borderBottomStartRadius: hs(7),
     borderTopEndRadius: hs(18),
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   ratingText: {
     fontSize: 12,

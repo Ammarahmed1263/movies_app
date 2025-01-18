@@ -1,28 +1,93 @@
+import AppButton from '@atoms/AppButton';
+import ImagePicker from '@atoms/ImagePicker';
+import {useTheme} from '@contexts/ThemeContext';
 import useLists from '@hooks/useLists';
 import LabelInput from '@molecules/LabelInput';
-import {FC, useLayoutEffect} from 'react';
-import {Button, Text, View} from 'react-native';
-import {UserListNavigationProp} from 'types/listsStackTypes';
+import {addList} from '@services/listsService';
+import {hs, ms, vs} from '@styles/metrics';
+import {FC, useLayoutEffect, useRef, useState} from 'react';
+import {Button, Keyboard, Text, TextInput, View} from 'react-native';
+import {CreateListScreenProps, ListNavigationProp} from 'types/listsStackTypes';
+import {ListType} from 'types/userTypes';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {useFocusEffect} from '@react-navigation/native';
 
-const CreateListscreen: FC<{navigation: UserListNavigationProp}> = ({
-  navigation,
-}) => {
-  const {lists} = useLists();
-
-  const handleSaveButton = () => {
-    console.log('item has been saved successfully');
-  };
+const CreateListscreen: FC<CreateListScreenProps> = ({navigation}) => {
+  const inputRef = useRef<TextInput>(null);
+  const [listData, setListData] = useState<ListType>({
+    id: Math.ceil(Math.random() * 10000),
+    title: '',
+    movies: [],
+    poster_path: null,
+  });
+  const [error, setError] = useState<string | undefined>(undefined);
+  const {colors} = useTheme();
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Button title="Save" onPress={handleSaveButton} />,
+      headerLeft: ({canGoBack}) =>
+        canGoBack ? (
+          <AppButton onPress={() => navigation.goBack()} flat>
+            <Icon name="chevron-back" size={ms(23)} color={colors.paleShade} />
+          </AppButton>
+        ) : null,
     });
   }, [navigation]);
 
+  const handleSaveButton = (item: ListType) => {
+    if (item.title.length === 0) {
+      setError("List title can't be empty");
+      return;
+    }
+
+    addList(item);
+    navigation.replace('ListDetailsScreen', {listData: item});
+  };
+
+  const handleTitleChange = (value: string) => {
+    if (value.length !== 0) {
+      setError(undefined);
+    }
+    setListData({...listData, title: value});
+  };
+
+  useFocusEffect(() => {
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 800);
+  });
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <AppButton
+          variant="body"
+          onPress={() => handleSaveButton(listData)}
+          flat>
+          Create
+        </AppButton>
+      ),
+    });
+  }, [navigation, listData]);
+
   return (
-    <View>
-      <Text>CreateListscreen</Text>
-      <LabelInput label="List Title"/>
+    <View style={{marginTop: vs(40)}}>
+      <ImagePicker
+        selectedImage={listData?.poster_path}
+        onImageSelected={uri => setListData({...listData, poster_path: uri})}
+        placeholder="movie"
+      />
+      <LabelInput
+        ref={inputRef}
+        label="List Title"
+        value={listData?.title}
+        error={error}
+        touched={true}
+        onChangeText={handleTitleChange}
+        containerStyle={{marginHorizontal: hs(20), marginTop: vs(30)}}
+      />
     </View>
   );
 };

@@ -40,7 +40,7 @@ const addList = async (list: ListType) => {
   }
 };
 
-const removeList = async (listId: string) => {
+const removeList = async (listId: number) => {
   const userId = getCurrentUserId();
   if (!userId) {
     throw new Error('User is not authenticated');

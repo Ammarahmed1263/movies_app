@@ -90,9 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: vs(12),
-    paddingHorizontal: hs(10),
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderBottomColor: '#eee',
+    paddingHorizontal: hs(15),
   },
   settingsItemLeft: {
     flexDirection: 'row',
@@ -104,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginEnd: hs(12),
+    marginEnd: hs(8),
     transform: [{scaleX: I18nManager.isRTL ? -1 : 1}],
   },
   settingsItemRight: {

@@ -27,7 +27,7 @@ import {
 import {hs, vs, width} from '@styles/metrics';
 import SettingItem from '@molecules/SettingItem';
 import Icon from 'react-native-vector-icons/Feather';
-import ListsList from '@organisms/ListsFlatlist';
+import ListsFlatlist from '@organisms/ListsFlatlist';
 import {useTranslation} from 'react-i18next';
 import ProfileHeader from '@organisms/ProfileHeader';
 import AppModal from '@atoms/AppModal';
@@ -95,7 +95,7 @@ function ProfileScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="never"
-        contentContainerStyle={{flexGrow: 1, paddingTop: vs(10)}}>
+        contentContainerStyle={{flexGrow: 1, paddingTop: vs(25)}}>
         <ProfileHeader />
         <View>
           <View
@@ -154,7 +154,7 @@ function ProfileScreen() {
           />
         </View>
 
-        <ListsList title={t('lists')} seeAll />
+        <ListsFlatlist title={t('lists')} seeAll />
 
         <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>
@@ -188,7 +188,6 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     marginTop: Platform.OS === 'ios' ? vs(-10) : 0,
   },
   flatButton: {

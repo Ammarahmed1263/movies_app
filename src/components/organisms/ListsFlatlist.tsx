@@ -85,7 +85,7 @@ export default ListsFlatlist;
 const styles = StyleSheet.create({
   container: {
     marginTop: vs(10),
-    marginBottom: vs(30),
+    marginBottom: vs(20),
   },
   header: {
     flexDirection: 'row',

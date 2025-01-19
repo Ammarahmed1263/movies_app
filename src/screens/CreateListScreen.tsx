@@ -1,16 +1,15 @@
 import AppButton from '@atoms/AppButton';
 import ImagePicker from '@atoms/ImagePicker';
-import {useTheme} from '@contexts/ThemeContext';
-import useLists from '@hooks/useLists';
+import { useTheme } from '@contexts/ThemeContext';
 import LabelInput from '@molecules/LabelInput';
-import {addList} from '@services/listsService';
-import {hs, ms, vs} from '@styles/metrics';
-import {FC, useLayoutEffect, useRef, useState} from 'react';
-import {Button, Keyboard, Text, TextInput, View} from 'react-native';
-import {CreateListScreenProps, ListNavigationProp} from 'types/listsStackTypes';
-import {ListType} from 'types/userTypes';
+import { useFocusEffect } from '@react-navigation/native';
+import { addList } from '@services/listsService';
+import { hs, ms, vs } from '@styles/metrics';
+import { FC, useLayoutEffect, useRef, useState } from 'react';
+import { TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useFocusEffect} from '@react-navigation/native';
+import { CreateListScreenProps } from 'types/listsStackTypes';
+import { ListType } from 'types/userTypes';
 
 const CreateListscreen: FC<CreateListScreenProps> = ({navigation}) => {
   const inputRef = useRef<TextInput>(null);

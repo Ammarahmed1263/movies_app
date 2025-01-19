@@ -21,7 +21,7 @@ interface UserListProps {
   hasTitle?: boolean;
   disabled?: boolean;
   style?: ViewStyle;
-  onPress: (item: ListType) => void;
+  onPress?: (item: ListType) => void;
 }
 
 const ListCard: FC<UserListProps> = ({
@@ -37,7 +37,7 @@ const ListCard: FC<UserListProps> = ({
 
   return (
     <TouchableOpacity
-      onPress={() => onPress(data)}
+      onPress={() => onPress && onPress(data)}
       style={[styles.button, style]}
       disabled={disabled}
       {...props}>
@@ -51,7 +51,7 @@ const ListCard: FC<UserListProps> = ({
           <View style={styles.addContent}>
             <Feather
               name="folder-plus"
-              size={hasTitle ? 60 : 30}
+              size={50}
               color={colors.primary700}
             />
           </View>
@@ -67,7 +67,7 @@ const ListCard: FC<UserListProps> = ({
           <View style={styles.addContent}>
             <MaterialIcons
               name="video-collection"
-              size={hasTitle ? 60 : 35}
+              size={50}
               color={colors.primary500}
               style={{marginBottom: vs(8)}}
             />
@@ -87,7 +87,7 @@ export default ListCard;
 
 const styles = StyleSheet.create({
   button: {
-    width: width / 2.1 - hs(16),
+    width: width / 2.5,
   },
   container: {
     width: '100%',

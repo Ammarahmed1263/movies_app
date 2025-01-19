@@ -25,7 +25,7 @@ export default MovieGrid;
 const styles = (movies: number) => StyleSheet.create({
   gridView: {
     width: '100%',
-    height: '100%',
+    height: '104%',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },

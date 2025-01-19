@@ -12,28 +12,24 @@ import {
 } from 'types/listsStackTypes';
 import {ListType} from 'types/userTypes';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useTheme } from '@contexts/ThemeContext';
-
+import {useTheme} from '@contexts/ThemeContext';
+import MoviesList from '@organisms/MoviesList';
 
 const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
   const {lists} = useLists();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: ({canGoBack}) =>
         canGoBack ? (
           <AppButton onPress={() => navigation.goBack()} flat>
-            <Icon
-              name="chevron-back"
-              size={ms(23)}
-              color={colors.paleShade}
-            />
+            <Icon name="chevron-back" size={ms(23)} color={colors.paleShade} />
           </AppButton>
         ) : null,
-    })
-  }, [navigation])
-  
+    });
+  }, [navigation]);
+
   const handleItemPress = (item: ListType) => {
     if (item.id === 'add') {
       navigation.push('CreateList');
@@ -46,8 +42,8 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
     return (
       <TouchableOpacity
         key={index}
-        style={styles.row}
-        onPress={() => handleItemPress(item)}>
+        onPress={() => handleItemPress(item)}
+        >
         <View>
           <ListCard
             data={item}
@@ -69,7 +65,16 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
       data={lists}
       keyExtractor={item => item.id.toString()}
       renderItem={handleRender}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      numColumns={2}
+      columnWrapperStyle={{
+        gap: hs(12),
+        marginBottom: vs(10),
+        paddingHorizontal: hs(10)
+      }}
+      contentContainerStyle={{
+        flexGrow: 1,
+      }}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
@@ -77,23 +82,13 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
 export default ListsListingScreen;
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    paddingHorizontal: hs(10),
-  },
   listImage: {
-    width: width / 4,
-    borderRadius: hs(12),
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#959595',
-    marginTop: vs(15),
-    marginBottom: vs(5),
+    width: width / 2.2,
+    borderRadius: hs(20),
   },
   text: {
     flex: 1,
-    justifyContent: 'center',
-    padding: hs(10),
+    alignItems: 'center',
+    paddingTop: vs(10),
   },
 });

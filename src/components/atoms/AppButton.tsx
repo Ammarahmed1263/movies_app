@@ -56,7 +56,7 @@ const AppButton: FC<AppButtonProps> = ({
         style={[
           !flat && styles.innerButton,
           flat && clicked && {opacity: 0.5},
-          {justifyContent: 'center', flex: 1},
+          styles.general,
         ]}
         onPress={pressAction}
         {...props}
@@ -88,18 +88,17 @@ const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: 25,
     margin: 2,
-    minHeight: hs(30),
     overflow: 'hidden',
   },
+  general: {
+    justifyContent: 'center',
+    padding: hs(5)
+  },
   innerButton: {
-    flex: 1,
     paddingVertical: 10,
     paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 50,
-    width: '100%',
-    height: '100%',
   },
   text: {
     textTransform: 'capitalize',

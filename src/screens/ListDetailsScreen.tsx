@@ -4,7 +4,7 @@ import FavoriteCard from '@molecules/FavoriteCard';
 import ListCard from '@molecules/ListCard';
 import MoviesList from '@organisms/MoviesList';
 import {removeList} from '@services/listsService';
-import {ms, vs, width} from '@styles/metrics';
+import {height, hs, ms, vs, width} from '@styles/metrics';
 import {FC, useLayoutEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
@@ -26,7 +26,7 @@ const ListDetailsScreenScreen: FC<ListDetailsScreenProps> = ({
   const scrollY = useRef(new Animated.Value(0)).current;
   const [isLocked, setIsLocked] = useState(false);
 
-  const HEADER_MAX_HEIGHT = width - ms(40);
+  const HEADER_MAX_HEIGHT = width;
   const HEADER_MIN_HEIGHT = 0;
 
   const headerHeight = scrollY.interpolate({
@@ -55,12 +55,6 @@ const ListDetailsScreenScreen: FC<ListDetailsScreenProps> = ({
         },
       ],
     );
-  };
-
-  const handleScroll = (event: {nativeEvent: {contentOffset: {y: number}}}) => {
-    if (!isLocked && event.nativeEvent.contentOffset.y > HEADER_MAX_HEIGHT) {
-      setIsLocked(true);
-    }
   };
 
   const handleRenderItem = ({item}: {item: Movie}) => {
@@ -92,26 +86,15 @@ const ListDetailsScreenScreen: FC<ListDetailsScreenProps> = ({
   return (
     <View style={{flex: 1}}>
       {!isLocked && (
-        <Animated.ScrollView
-          style={{...styles.addContent, height: headerHeight}}
-          contentContainerStyle={{alignItems: 'center'}}
-          scrollEnabled={!!listData.movies.length}
-          showsVerticalScrollIndicator={false}
-          bounces={headerHeight}
-          onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {y: scrollY}}}],
-            {
-              useNativeDriver: false,
-              listener: handleScroll,
-            },
-          )}>
+        <Animated.View
+          style={{...styles.addContent, height: headerHeight}}>
           <ListCard
             data={listData}
-            style={{...styles.listImage, width: HEADER_MAX_HEIGHT}}
+            style={{...styles.listImage}}
             disabled
             hasTitle={false}
           />
-        </Animated.ScrollView>
+        </Animated.View>
       )}
 
       <MoviesList
@@ -119,7 +102,15 @@ const ListDetailsScreenScreen: FC<ListDetailsScreenProps> = ({
         renderItem={handleRenderItem}
         contentContainerStyle={{
           paddingTop: vs(20),
+          paddingBottom: listData?.movies?.length <= 4 ? vs(450) : 0,
         }}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {
+            useNativeDriver: false,
+            // listener: handleScroll,
+          },
+        )}
       />
     </View>
   );
@@ -129,14 +120,14 @@ export default ListDetailsScreenScreen;
 
 const styles = StyleSheet.create({
   addContent: {
+    width: width,
     overflow: 'hidden',
-    flexGrow: 0,
-    flexShrink: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   listImage: {
-    flex: 1,
+    width: width,
     aspectRatio: 1 / 1,
-    alignItems: 'center',
     marginTop: 0,
   }
 });

@@ -1,24 +1,26 @@
 import {FC, ReactNode} from 'react'
-import {Pressable, View, StyleSheet, TextStyle, ViewStyle} from 'react-native';
+import {Pressable, View, StyleSheet, TextStyle, ViewStyle, PressableProps, GestureResponderEvent, StyleProp, PressableStateCallbackType} from 'react-native';
 import { useTheme } from '@contexts/ThemeContext';
 
-interface MovieCardButtonProps {
-  style?: ViewStyle | ViewStyle[],
+interface MovieCardButtonProps extends PressableProps{
+  style?:  StyleProp<ViewStyle> | ((state: PressableStateCallbackType) => StyleProp<ViewStyle>),
   children: ReactNode,
-  onPress: () => void
+  onPress: ((event: GestureResponderEvent) => void) | null
 }
 
-const MovieCardButton: FC<MovieCardButtonProps> = ({children, style, onPress}) => {
+const MovieCardButton: FC<MovieCardButtonProps> = ({children, style, onPress, ...props}) => {
   const { colors } = useTheme();
   return (
     <Pressable
       onPress={onPress}
-      style={({pressed}) => [
+      style={(state) => [
         styles.pressableContainer,
-        {borderColor: colors.secondary600},
-        style,
-        pressed && {opacity: 0.5},
-      ]}>
+        { borderColor: colors.secondary600 },
+        typeof style === 'function' ? style(state) : style,
+        { opacity: state.pressed ? 0.5 : 1 },
+      ]}
+      {...props}
+      >
       {children}
     </Pressable>
   );

@@ -14,7 +14,7 @@ const MovieGrid: FC<MovieGridprops> = ({movies}) => (
         key={index}
         source={getImageUrl(movie.poster_path) ?? imagePlaceHolder.MOVIE}
         style={styles(movies.length).gridImage}
-        // resizeMode="center"
+        resizeMode="stretch"
       />
     ))}
   </View>

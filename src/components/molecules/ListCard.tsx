@@ -3,6 +3,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {hs, ms, vs, width} from '@styles/metrics';
 import {FC} from 'react';
 import {
+  Animated,
   Image,
   StyleProp,
   StyleSheet,
@@ -41,7 +42,7 @@ const ListCard: FC<UserListProps> = ({
       style={[styles.button, style]}
       disabled={disabled}
       {...props}>
-      <View
+      <Animated.View
         style={[
           {...styles.container, backgroundColor: colors.primary600},
           style,
@@ -73,7 +74,7 @@ const ListCard: FC<UserListProps> = ({
             />
           </View>
         )}
-      </View>
+      </Animated.View>
       {hasTitle && (
         <AppText style={[styles.listName, {color: colors.primary700}]}>
           {data.title}

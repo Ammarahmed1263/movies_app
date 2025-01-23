@@ -1,5 +1,5 @@
 import AppButton from '@atoms/AppButton';
-import ImagePicker from '@atoms/ImagePicker';
+import ImagePicker from '@molecules/ImagePicker';
 import { useTheme } from '@contexts/ThemeContext';
 import LabelInput from '@molecules/LabelInput';
 import { useFocusEffect } from '@react-navigation/native';

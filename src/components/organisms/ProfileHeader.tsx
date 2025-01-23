@@ -6,7 +6,7 @@ import auth from '@react-native-firebase/auth';
 import i18n from 'i18n';
 import {useTheme} from '@contexts/ThemeContext';
 import {useTranslation} from 'react-i18next';
-import ImagePicker from '@atoms/ImagePicker';
+import ImagePicker from '@molecules/ImagePicker';
 
 const ProfileHeader: FC = () => {
   const {colors} = useTheme();

@@ -68,7 +68,8 @@ const MoviesList: FC<MoviesListProps> = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <FlatList
+      {/* @ts-ignore */}
+      <Animated.FlatList
         ref={flatListRef}
         renderItem={renderItem ?? defaultRenderItem}
         showsVerticalScrollIndicator={false}

@@ -1,36 +1,29 @@
-import {Text, StyleSheet, View, Pressable} from 'react-native';
 import Image from '@atoms/AppImage';
-import {useTheme} from '@contexts/ThemeContext';
-import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MovieButton from '@atoms/MovieCardButton';
-import { getImageUrl } from '@utils';
-import { Movie } from 'types/movieTypes';
-import { FC, useCallback } from 'react';
-import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-import { removeFavoriteMovie } from '@services/userService';
+import MovieButton from '@atoms/MovieCardButton';
+import { useTheme } from '@contexts/ThemeContext';
+import { useNavigation } from '@react-navigation/native';
+import { getImageUrl } from '@utils';
+import { FC, ReactNode } from 'react';
+import { PressableProps, StyleSheet, View } from 'react-native';
+import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
+import { Movie } from 'types/movieTypes';
 
-interface FavoriteCardProps {
-  movie: Movie
+interface FavoriteCardProps extends PressableProps{
+  movie: Movie;
+  children: ReactNode
 }
 
-const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
+const FavoriteCard: FC<FavoriteCardProps> = ({movie, children, ...props}) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MovieDetailsNavigationProp>();
-
-  const handleDelete = useCallback(async () => {
-    try {
-        await removeFavoriteMovie(movie.id);
-    } catch (error) {
-      console.log('movie error occurred: ', error);
-    }
-  }, [movie]);
 
   return (
     <MovieButton
       style={styles.container}
-      onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}>
+      onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}
+      {...props}
+      >
       <Image
         source={getImageUrl(movie.poster_path)}
         viewStyle={styles.image}
@@ -48,11 +41,7 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie}) => {
             }}>
             {movie.title}
           </AppText>
-          <Pressable
-            style={styles.trash}
-            onPress={handleDelete}>
-            <Icon name="trash-outline" size={26} color={colors.primary700} />
-          </Pressable>
+          {children}
         </View>
         <AppText
           variant='body'
@@ -96,12 +85,6 @@ const styles = StyleSheet.create({
   },
   title: {
     width: '80%'
-  },
-  trash: {
-    borderRadius: 5,
-    alignItems: 'center',
-    marginHorizontal: 5,
-    width: '20%'
   },
   overview: {
     marginBottom: 8,

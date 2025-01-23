@@ -1,17 +1,16 @@
-import {useTheme} from '@contexts/ThemeContext';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import AppButton from '@atoms/AppButton';
+import { useTheme } from '@contexts/ThemeContext';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   CreateListscreen,
   ListDetailsScreenScreen,
   ListsListingScreen,
 } from '@screens';
-import {FC} from 'react';
-import {Button, Touchable, TouchableOpacity} from 'react-native';
-import {ListstackProps} from 'types/mainStackTypes';
-import {ListstackParamList} from 'types/listsStackTypes';
+import { ms } from '@styles/metrics';
+import { FC } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {ms} from '@styles/metrics';
-import AppButton from '@atoms/AppButton';
+import { ListstackParamList } from 'types/listsStackTypes';
+import { ListstackProps } from 'types/mainStackTypes';
 
 const Stack = createNativeStackNavigator<ListstackParamList>();
 

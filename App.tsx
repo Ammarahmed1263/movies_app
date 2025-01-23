@@ -1,14 +1,14 @@
-import ThemeProvider from './src/contexts/ThemeContext';
-import AppNavigation from './src/navigation/AppNavigation';
-import {I18nManager} from 'react-native';
-import {useEffect, useState} from 'react';
-import RNRestart from 'react-native-restart';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import i18n from './src/i18n';
 import useNetworkStatus from '@hooks/useNetworkStatus';
 import {getUserProfile} from '@services/userService';
+import {useEffect} from 'react';
+import {I18nManager} from 'react-native';
+import {SheetProvider} from 'react-native-actions-sheet';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
+import ThemeProvider from './src/contexts/ThemeContext';
+import i18n from './src/i18n';
 import {store} from './src/redux/store';
+import AppNavigation from '@navigation/AppNavigation';
 
 export default function App() {
   const isNetworkConnected = useNetworkStatus();

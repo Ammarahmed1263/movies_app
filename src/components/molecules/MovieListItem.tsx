@@ -3,6 +3,7 @@ import AppText from '@atoms/AppText';
 import MovieButton from '@atoms/MovieCardButton';
 import { useTheme } from '@contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
+import { hs, vs } from '@styles/metrics';
 import { getImageUrl } from '@utils';
 import { FC, ReactNode } from 'react';
 import { PressableProps, StyleSheet, View } from 'react-native';
@@ -63,30 +64,31 @@ export default FavoriteCard;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    minHeight: 140,
-    marginHorizontal: 10,
-    marginBottom: 25,
+    minHeight: vs(140),
+    marginHorizontal: hs(10),
+    marginBottom: vs(25),
   },
   image: {
     flex: 1.2,
-    borderRadius: 8,
+    borderRadius: hs(8),
     resizeMode: 'cover',
     overflow: 'hidden'
   },
   description: {
     flex: 3,
-    marginLeft: 20,
-    marginVertical: 4,
+    marginLeft: vs(20),
+    marginVertical: vs(4),
     justifyContent: 'space-between',
   },
   headingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
-    width: '80%'
+    flex: 1,
   },
   overview: {
-    marginBottom: 8,
+    marginBottom: vs(8),
   },
 });

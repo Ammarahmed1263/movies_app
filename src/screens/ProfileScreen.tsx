@@ -1,36 +1,31 @@
-import AppText from '@atoms/AppText';
-import {useTheme} from '@contexts/ThemeContext';
-import i18n from '../i18n';
-import {useEffect, useState} from 'react';
-import {
-  Alert,
-  I18nManager,
-  Modal,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Switch,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import auth from '@react-native-firebase/auth';
 import AppButton from '@atoms/AppButton';
-import {userLogout} from '@services/authService';
-import RNRestart from 'react-native-restart';
+import AppText from '@atoms/AppText';
+import { useTheme } from '@contexts/ThemeContext';
+import SettingItem from '@molecules/SettingItem';
+import ListsFlatlist from '@organisms/ListsFlatlist';
+import ProfileHeader from '@organisms/ProfileHeader';
+import auth from '@react-native-firebase/auth';
+import { userLogout } from '@services/authService';
 import {
   deleteUser,
   getCurrentUserId,
   updateUserPreferences,
 } from '@services/userService';
-import {hs, vs, width} from '@styles/metrics';
-import SettingItem from '@molecules/SettingItem';
+import { hs, vs, width } from '@styles/metrics';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  I18nManager,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View
+} from 'react-native';
+import { SheetManager } from 'react-native-actions-sheet';
+import RNRestart from 'react-native-restart';
 import Icon from 'react-native-vector-icons/Feather';
-import ListsFlatlist from '@organisms/ListsFlatlist';
-import {useTranslation} from 'react-i18next';
-import ProfileHeader from '@organisms/ProfileHeader';
-import AppModal from '@atoms/AppModal';
+import i18n from '../i18n';
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
@@ -95,16 +90,11 @@ function ProfileScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="never"
-        contentContainerStyle={{flexGrow: 1, paddingTop: vs(25)}}>
+        contentContainerStyle={styles.scrollContainer}>
         <ProfileHeader />
         <View>
           <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingTop: vs(10),
-              paddingHorizontal: hs(10),
-            }}>
+            style={styles.sectionHeader}>
             <Icon
               name="settings"
               size={25}
@@ -161,13 +151,17 @@ function ProfileScreen() {
             <AppButton
               variant="regular"
               onPress={handleSignOut}
-              flat
-              style={styles.flatButton}>
+              style={styles.flatButton}
+              flat>
               {t('sign_out')}
             </AppButton>
             <AppButton
               variant="body"
-              onPress={() => Alert.alert('i was clicked')}
+              onPress={() => SheetManager.show('delete-account', {
+                payload: {
+                  onDelete: handleDeleteAccount
+                }
+              })}
               style={styles.flatButton}
               textStyle={{color: colors.error}}
               flat>
@@ -190,8 +184,19 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Platform.OS === 'ios' ? vs(-10) : 0,
   },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingTop: vs(25)
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: vs(10),
+    paddingHorizontal: hs(10),
+  },
   flatButton: {
     minHeight: 30,
+    // borderWidth: 1,
     alignSelf: 'flex-start',
   },
   footer: {

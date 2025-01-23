@@ -49,14 +49,15 @@ const AppButton: FC<AppButtonProps> = ({
         styles.buttonContainer,
         {backgroundColor: colors.secondary500},
         style,
+        !flat && clicked && {opacity: 0.5},
         flat && {backgroundColor: '', elevation: 0},
       ]}>
       <Pressable
         android_ripple={flat ? null : {color: colors.secondary600}}
         style={[
+          styles.general,
           !flat && styles.innerButton,
           flat && clicked && {opacity: 0.5},
-          styles.general,
         ]}
         onPress={pressAction}
         {...props}
@@ -86,19 +87,16 @@ export default AppButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    borderRadius: 25,
-    margin: 2,
+    borderRadius: hs(8),
+    margin: hs(2),
     overflow: 'hidden',
   },
   general: {
-    justifyContent: 'center',
-    padding: hs(5)
-  },
-  innerButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  innerButton: {
+    padding: hs(10),
   },
   text: {
     textTransform: 'capitalize',

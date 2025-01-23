@@ -7,6 +7,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { StatusBar } from 'react-native';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
+import '../sheets';
+import { SheetProvider } from 'react-native-actions-sheet';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
@@ -49,8 +51,10 @@ export default function AppNavigation() {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <StatusBar backgroundColor={colors.primary500} />
-      {user ? <MainStack colors={colors} fonts={fonts} /> : <AuthStack />}
+      <SheetProvider>
+        <StatusBar backgroundColor={colors.primary500} />
+        {user ? <MainStack colors={colors} fonts={fonts} /> : <AuthStack />}
+      </SheetProvider>
     </NavigationContainer>
   );
 }

@@ -10,9 +10,10 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
-import AppButton from './AppButton';
-import AppImage from './AppImage';
-import AppText from './AppText';
+import AppButton from '../atoms/AppButton';
+import AppImage from '../atoms/AppImage';
+import AppText from '../atoms/AppText';
+import PickerOption from '@atoms/PickerOption';
 
 const options: CameraOptions = {
   mediaType: 'photo',
@@ -72,48 +73,28 @@ const ImagePicker: FC<ImagePickerProps> = ({
           />
         </View>
         <View style={[styles.icon, {backgroundColor: colors.secondary500}]}>
-          <Icon name="edit" size={20} color="white" />
+          <Icon name="edit" size={22} color="white" />
         </View>
       </TouchableOpacity>
 
       <ActionSheet
         ref={actionSheetRef}
-        containerStyle={{backgroundColor: colors.primary500, height: '20%'}}
+        containerStyle={{backgroundColor: colors.primary500}}
         indicatorStyle={{backgroundColor: colors.primary700}}>
         <View style={styles.sheetContent}>
-          <AppButton
+          <PickerOption
+            label="Camera"
+            iconName="camerao"
+            iconSize={70}
             onPress={handleCameraLaunch}
-            customViewStyle={styles.optionContainer}
-            flat
-            customView>
-            <Icon
-              name="camerao"
-              size={70}
-              color={colors.secondary500}
-            />
-            <AppText
-              style={{color: colors.primary700}}
-              variant="body">
-              Camera
-            </AppText>
-          </AppButton>
+          />
 
-          <AppButton
+          <PickerOption
+            label="Gallery"
+            iconName="folder1"
+            iconSize={60}
             onPress={openImagePicker}
-            customViewStyle={styles.optionContainer}
-            flat
-            customView>
-            <Icon
-              name="folder1"
-              size={60}
-              color={colors.secondary500}
-            />
-            <AppText
-              style={{color: colors.primary700}}
-              variant="body">
-              Gallery
-            </AppText>
-          </AppButton>
+          />
         </View>
       </ActionSheet>
     </>
@@ -131,9 +112,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    end: 0,
-    bottom: 0,
-    padding: hs(8),
+    end: 2,
+    bottom: 2,
+    padding: hs(6),
     borderRadius: hs(20),
     justifyContent: 'center',
     alignItems: 'center',
@@ -145,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingBottom: vs(30),
+    paddingBottom: vs(40),
     paddingTop: vs(10),
   },
   optionContainer: {

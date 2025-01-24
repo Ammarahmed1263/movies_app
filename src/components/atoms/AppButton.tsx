@@ -11,7 +11,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode, useState} from 'react';
 import AppText from './AppText';
 import {FontVariants} from 'types/themeTypes';
-import { hs } from '@styles/metrics';
+import { hs, ms } from '@styles/metrics';
 
 interface AppButtonProps extends PressableProps{
   flat?: boolean;
@@ -20,7 +20,7 @@ interface AppButtonProps extends PressableProps{
   style?: ViewStyle | ViewStyle[];
   onPress: () => void;
   customView?: ReactNode;
-  customViewStyle?: ViewStyle;
+  customViewStyle?: ViewStyle | ViewStyle[];
   children?: ReactNode;
 }
 
@@ -54,10 +54,11 @@ const AppButton: FC<AppButtonProps> = ({
       ]}>
       <Pressable
         android_ripple={flat ? null : {color: colors.secondary600}}
+        hitSlop={ms(15)}
         style={[
           styles.general,
           !flat && styles.innerButton,
-          flat && clicked && {opacity: 0.5},
+          flat && clicked && {opacity: 0.7},
         ]}
         onPress={pressAction}
         {...props}

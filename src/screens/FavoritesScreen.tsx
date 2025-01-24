@@ -1,34 +1,33 @@
 import AppButton from '@atoms/AppButton';
 import AppImage from '@atoms/AppImage';
 import AppText from '@atoms/AppText';
-import { useTheme } from '@contexts/ThemeContext';
-import FavoriteCard from '@molecules/MovieListItem';
+import {useTheme} from '@contexts/ThemeContext';
+import MovieListItem from '@molecules/MovieListItem';
 import MoviesList from '@organisms/MoviesList';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { useNavigation } from '@react-navigation/native';
-import { removeFavoriteMovie } from '@services/userService';
-import { hs, vs } from '@styles/metrics';
-import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {removeFavoriteMovie} from '@services/userService';
+import {hs, vs} from '@styles/metrics';
+import {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { HomeNavigationProp } from 'types/mainTabsTypes';
-import { Movie } from 'types/movieTypes';
-
+import {HomeNavigationProp} from 'types/mainTabsTypes';
+import {Movie} from 'types/movieTypes';
 
 function FavoritesScreen() {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const navigation = useNavigation<HomeNavigationProp>();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   const handleDelete = useCallback(async (id: number) => {
     try {
-        await removeFavoriteMovie(id);
+      await removeFavoriteMovie(id);
     } catch (error) {
       console.log('movie error occurred: ', error);
     }
   }, []);
-  
+
   useEffect(() => {
     const unsubscribe = firestore()
       .collection('users')
@@ -49,11 +48,16 @@ function FavoritesScreen() {
 
   function renderFavorite({item}: {item: Movie}) {
     return (
-      <FavoriteCard movie={item}>
-        <TouchableOpacity style={styles.trash} onPress={() => handleDelete(item.id)}>
-          <Icon name="trash-outline" size={26} color={colors.primary700} />
-        </TouchableOpacity>
-      </FavoriteCard>
+      <MovieListItem movie={item}>
+        <AppButton
+          customViewStyle={styles.trash}
+          style={{marginStart: hs(5)}}
+          onPress={() => handleDelete(item.id)}
+          customView
+          flat>
+          <Icon name="trash-outline" size={25} color={colors.primary700} />
+        </AppButton>
+      </MovieListItem>
     );
   }
 
@@ -64,15 +68,12 @@ function FavoritesScreen() {
       contentContainerStyle={styles.listContent}
       snapStyle={{bottom: vs(100)}}
       ListEmptyComponent={
-        <View
-          style={styles.noFavorite}>
+        <View style={styles.noFavorite}>
           <AppImage
             source={require('../assets/images/no-favorites.png')}
             style={{height: 250, aspectRatio: 1 / 1}}
           />
-          <AppText
-            variant="heading"
-            style={styles.text}>
+          <AppText variant="heading" style={styles.text}>
             No Favorites
           </AppText>
           <AppText
@@ -96,10 +97,9 @@ export default FavoritesScreen;
 
 const styles = StyleSheet.create({
   trash: {
-    borderRadius: 5,
-    alignItems: 'center',
-    marginHorizontal: 5,
-    width: '20%'
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    padding: hs(4),
+    borderRadius: hs(8),
   },
   noFavorite: {
     flex: 1,
@@ -109,10 +109,10 @@ const styles = StyleSheet.create({
   },
   listContent: {
     flexGrow: 1,
-    paddingBottom: vs(70)
+    paddingBottom: vs(70),
   },
-  text:{
+  text: {
     textAlign: 'center',
-    marginBottom: vs(8)
-  }
-})
+    marginBottom: vs(8),
+  },
+});

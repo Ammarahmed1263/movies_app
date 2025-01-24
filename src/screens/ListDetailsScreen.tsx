@@ -1,21 +1,24 @@
 import AppButton from '@atoms/AppButton';
+import AppImage from '@atoms/AppImage';
 import AppText from '@atoms/AppText';
-import { useTheme } from '@contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
 import ListCard from '@molecules/ListCard';
 import MovieListItem from '@molecules/MovieListItem';
-import { removeList } from '@services/listsService';
-import { height, hs, ms } from '@styles/metrics';
-import { capitalizeInput } from '@utils';
-import { FC, useLayoutEffect, useRef } from 'react';
-import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {removeList, removeMovieFromlist} from '@services/listsService';
+import { addFavoriteMovie, getFavoriteMovies, removeFavoriteMovie } from '@services/userService';
+import {height, hs, ms, vs} from '@styles/metrics';
+import {capitalizeInput} from '@utils';
+import LottieView from 'lottie-react-native';
+import {FC, useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {
-  ActionSheetRef,
-  SheetManager,
-} from 'react-native-actions-sheet';
-import {
-  Gesture,
-  GestureDetector
-} from 'react-native-gesture-handler';
+  Alert,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {ActionSheetRef, SheetManager} from 'react-native-actions-sheet';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -23,15 +26,16 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { ListDetailsScreenProps } from 'types/listsStackTypes';
-import { Movie } from 'types/movieTypes';
+import {ListDetailsScreenProps} from 'types/listsStackTypes';
+import {Movie} from 'types/movieTypes';
 
-const HEADER_HEIGHT = height / 1.8;
+const HEADER_HEIGHT = height / 1.9;
 const SNAP_POINTS = [0, -HEADER_HEIGHT];
 
 const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
   const {title, movies, id} = route.params.listData;
   const {colors} = useTheme();
+  const [favorites, setFavorites] = useState<Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]>([]);
   const translateY = useSharedValue(0);
   const context = useSharedValue({y: 0});
 
@@ -57,6 +61,14 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     );
   };
 
+  useEffect(() => {
+    const unsubscribe = getFavoriteMovies(favoriteMovies => {
+      setFavorites(favoriteMovies);
+    })
+
+    return () => unsubscribe();
+  }, []);
+  
   useLayoutEffect(() => {
     navigation.setOptions({
       title: capitalizeInput(title),
@@ -115,14 +127,58 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     opacity: interpolate(translateY.value, [SNAP_POINTS[1], 0], [0, 1]),
   }));
 
-  const renderItem = ({item}: {item: Movie}) => (
-    <MovieListItem movie={item} disabled>
-      <View style={{flexDirection: 'row'}}>
-        <Icon name="heart-outline" size={25} color={colors.paleShade} />
-        <Icon name="trash" size={25} color={colors.paleShade} />
+  const handleToggleFavorite = useCallback(async (item: Movie) => {
+    try {
+      const wasFavorite = favorites.some(fav => fav.id === item.id);
+      
+      // Immediately update UI
+      setFavorites(prev => 
+        wasFavorite 
+          ? prev.filter(fav => fav.id !== item.id) // Remove
+          : [...prev, item] // Add
+      );
+  
+      // Sync with Firebase
+      if (wasFavorite) {
+        await removeFavoriteMovie(item.id);
+      } else {
+        await addFavoriteMovie(item);
+      }
+    } catch (error) {
+      // Revert on error
+      setFavorites(prev => 
+        prev.filter(fav => fav.id !== item.id)
+      );
+    }
+  }, [favorites]);
+
+  const renderItem = ({item}: {item: Movie}) => {
+    const isFavorite = favorites.some(fav => fav.id === item.id);
+
+    return <MovieListItem movie={item}>
+      <View style={styles.actionsSection}>
+        <AppButton
+          onPress={() => handleToggleFavorite(item)}
+          customViewStyle={styles.icon}
+          customView
+          flat>
+          <Icon
+            name={isFavorite ? 'heart' : 'heart-outline'}
+            size={25}
+            color={isFavorite ? colors.error : colors.primary700}
+          />
+        </AppButton>
+
+        <AppButton
+          onPress={() => removeMovieFromlist(item.id, Number(id))}
+          customViewStyle={styles.icon}
+          customView
+          flat>
+          <Icon name="trash-outline" size={25} color={colors.primary700} />
+        </AppButton>
       </View>
     </MovieListItem>
-  );
+  };
 
   return (
     <>
@@ -133,6 +189,28 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
           style={contentContainerStyle}
+          ListEmptyComponent={
+            <View style={styles.noMovies}>
+              <LottieView
+                source={
+                  Platform.OS === 'ios'
+                    ? require('../assets/lottie/no_search_results(2).json')
+                    : require('../assets/lottie/no_search_results.json')
+                }
+                autoPlay
+                loop
+                style={{height: vs(160), aspectRatio: 1 / 1}}
+              />
+              <AppText variant="heading" style={styles.text}>
+                No Movies Added
+              </AppText>
+              <AppText
+                variant="body"
+                style={{textAlign: 'center', marginBottom: vs(8)}}>
+                You can add a movie by clicking on + icon (top right).
+              </AppText>
+            </View>
+          }
         />
 
         <GestureDetector gesture={gesture}>
@@ -165,6 +243,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  actionsSection: {
+    flexDirection: 'row',
+  },
+  icon: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    marginHorizontal: hs(4),
+    padding: hs(4),
+    borderRadius: hs(8),
+  },
   header: {
     position: 'absolute',
     top: 0,
@@ -179,14 +266,24 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    aspectRatio: 1,
-    borderRadius: 0,
+    aspectRatio: 1 / 0.95,
+    borderRadius: hs(10),
   },
   titleSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: hs(20),
+  },
+  noMovies: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: hs(20),
+  },
+  text: {
+    textAlign: 'center',
+    marginBottom: vs(8),
   },
 });
 

@@ -10,12 +10,12 @@ import { PressableProps, StyleSheet, View } from 'react-native';
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 import { Movie } from 'types/movieTypes';
 
-interface FavoriteCardProps extends PressableProps{
+interface MovieListItemProps extends PressableProps{
   movie: Movie;
   children: ReactNode
 }
 
-const FavoriteCard: FC<FavoriteCardProps> = ({movie, children, ...props}) => {
+const MovieListItem: FC<MovieListItemProps> = ({movie, children, ...props}) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MovieDetailsNavigationProp>();
 
@@ -59,13 +59,13 @@ const FavoriteCard: FC<FavoriteCardProps> = ({movie, children, ...props}) => {
   );
 }
 
-export default FavoriteCard;
+export default MovieListItem;
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     minHeight: vs(140),
-    marginHorizontal: hs(10),
+    marginHorizontal: hs(12),
     marginBottom: vs(25),
   },
   image: {

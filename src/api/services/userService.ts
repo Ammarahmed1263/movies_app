@@ -42,6 +42,27 @@ export const updateUserPreferences = async (preferences: any) => {
   }
 }
 
+export const getFavoriteMovies = (callback: (movies: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]) => void) => {
+  const userId = getCurrentUserId();
+
+  const unsubscribe = firestore()
+    .collection('users')
+    .doc(userId)
+    .onSnapshot(
+      snapshot => {
+        const movies = snapshot.data()?.favoriteMovies || [];
+
+        callback(movies);
+        console.log('Real-time movies:', movies);
+      },
+      error => {
+        console.error('Error in Firestore snapshot listener:', error);
+      },
+    );
+
+  return unsubscribe;
+};
+
 export const addFavoriteMovie = async (movie: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>) => {
   const userId = getCurrentUserId();
   if (!userId) {

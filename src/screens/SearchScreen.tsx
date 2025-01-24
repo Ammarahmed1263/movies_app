@@ -8,56 +8,13 @@ import LottieView from 'lottie-react-native';
 import {hs, vs, width} from '@styles/metrics';
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
+import { useMovieSearch } from '@hooks/useMovieSearch';
 
-const initialState: SearchResult = {
-  searchResults: [],
-  loading: false,
-  page: 1,
-  total_pages: 1,
-};
-
-const reducer = (state: SearchResult, action: any) => {
-  switch (action.type) {
-    case 'RESET_SEARCH':
-      return {
-        ...state,
-        searchResults: [],
-        page: 1,
-        total_pages: 1,
-      };
-    case 'SET_RESULTS':
-      return {
-        ...state,
-        searchResults: [...state.searchResults, ...action?.payload?.results],
-        page: action?.payload?.page,
-        total_pages: action?.payload?.total_pages,
-        loading: false,
-      };
-    case 'SET_LOADING':
-      return {
-        ...state,
-        loading: true,
-      };
-    case 'STOP_LOADING':
-      return {
-        ...state,
-        loading: false,
-      };
-    default:
-      return state;
-  }
-};
 
 function SearchScreen() {
   const [keyword, setkeyword] = useState('');
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { searchResults, page, total_pages, loading , handleSearch, dispatch } = useMovieSearch();
 
-  const handleSearch = useCallback(async () => {
-    // dispatch({type: 'SET_LOADING'});
-    dispatch({type: 'RESET_SEARCH'});
-    const response = await searchMovies({query: keyword, page: state.page});
-    dispatch({type: 'SET_RESULTS', payload: response});
-  }, [keyword]);
 
   useEffect(() => {
     if (keyword === '') {
@@ -67,17 +24,17 @@ function SearchScreen() {
     }
 
     dispatch({type: 'SET_LOADING'});
-    const id = setTimeout(() => handleSearch(), 500);
+    const id = setTimeout(() => handleSearch(keyword, page), 500);
     // dispatch({type: 'STOP_LOADING'});
     return () => clearTimeout(id);
   }, [keyword]);
 
   const handlePagination = async () => {
-    if (state.page < state.total_pages && !state.loading) {
+    if (page < total_pages && !loading) {
       dispatch({type: 'SET_LOADING'});
       const response = await searchMovies({
         query: keyword,
-        page: state.page + 1,
+        page: page + 1,
       });
       dispatch({type: 'SET_RESULTS', payload: response});
     }
@@ -86,7 +43,7 @@ function SearchScreen() {
   return (
     <SafeAreaView style={{flex: 1, marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight}}>
       <SearchBar keyword={keyword} setKeyword={setkeyword} />
-      {state.loading && state.searchResults.length === 0 ? (
+      {loading && searchResults.length === 0 ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <AppLoading source={require('../assets/lottie/loading_fade.json')} size={70} speed={1.8}/>
         </View>
@@ -94,14 +51,14 @@ function SearchScreen() {
         <View style={{flex: 1}}>
           {keyword ? (
             <MoviesList
-              data={state.searchResults}
+              data={searchResults}
               onEndReached={handlePagination}
               columnWrapperStyle={{justifyContent: 'flex-start', gap: hs(10), marginVertical: vs(12)}}
               contentContainerStyle={{flexGrow: 1, paddingBottom: vs(80), marginHorizontal: hs(10)}}
               numColumns={2}
               snapStyle={{bottom: vs(100)}}
               ListEmptyComponent={
-                keyword && state.searchResults.length === 0 ? (
+                keyword && searchResults.length === 0 ? (
                   <View
                     style={{
                       flex: 1,
@@ -123,8 +80,8 @@ function SearchScreen() {
                 ) : null
               }
               ListFooterComponent={
-                state.page < state.total_pages &&
-                state.searchResults.length !== 0 ? (
+                page < total_pages &&
+                searchResults.length !== 0 ? (
                   <View style={{alignItems: 'center', paddingBottom: vs(20)}}>
                     <AppLoading
                       size={35}

@@ -10,8 +10,10 @@ import {height, hs, vs } from '@styles/metrics';
 import AppText from '@atoms/AppText';
 import MovieCard from '@molecules/MovieCard';
 import Animated, {
+  configureReanimatedLogger,
   Extrapolation,
   interpolate,
+  ReanimatedLogLevel,
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
@@ -19,6 +21,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { imagePlaceHolder } from '../../constants';
+
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
 
 interface MoviesCarouselProps {
   movies: MovieArray;

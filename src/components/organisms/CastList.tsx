@@ -1,24 +1,23 @@
-import { FC } from "react";
-import { FlatList, View } from "react-native";
-import Member from "@molecules/CastMember";
-import { CastMember, CastMemberArray } from "types/castTypes";
-import AppText from "@atoms/AppText";
-import { useTheme } from "@contexts/ThemeContext";
-import AppLoading from "@atoms/AppLoading";
-import { vs } from "@styles/metrics";
+import {FC} from 'react';
+import {FlatList, View} from 'react-native';
+import Member from '@molecules/CastMember';
+import {CastMember, CastMemberArray} from 'types/castTypes';
+import AppText from '@atoms/AppText';
+import {useTheme} from '@contexts/ThemeContext';
+import AppLoading from '@atoms/AppLoading';
+import {vs} from '@styles/metrics';
 
-
-const renderItem = ({ item }: { item: CastMember }) => {
-  return <Member details={item} />
-}
+const renderItem = ({item}: {item: CastMember}) => {
+  return <Member details={item} />;
+};
 
 interface CastListProps {
-  cast: CastMemberArray
-  title: string
+  cast: CastMemberArray;
+  title: string;
 }
 
-const CastList: FC<CastListProps> = ({ cast, title }) => {
-  const { colors } = useTheme();
+const CastList: FC<CastListProps> = ({cast, title}) => {
+  const {colors} = useTheme();
 
   return (
     <View>
@@ -34,21 +33,30 @@ const CastList: FC<CastListProps> = ({ cast, title }) => {
         data={cast}
         renderItem={renderItem}
         ListEmptyComponent={
-          cast.length > 0 ?
-            <View style={{ flex: 1, alignItems: 'center' }}>
-              <AppLoading source={require('../../assets/lottie/loading_fade.json')} />
+          cast.length > 0 ? (
+            <AppLoading
+              source={require('../../assets/lottie/loading_fade.json')}
+            />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: vs(20),
+              }}>
+              <AppText variant="body" style={{color: colors.paleShade}}>
+                No Cast Available
+              </AppText>
             </View>
-            :
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: vs(20)}}>
-              <AppText variant="body" style={{ color: colors.paleShade}}>No Cast Available</AppText>
-            </View>
+          )
         }
-        contentContainerStyle={{ paddingHorizontal: 10, flexGrow: 1 }}
+        contentContainerStyle={{paddingHorizontal: 10, flexGrow: 1}}
         showsHorizontalScrollIndicator={false}
         horizontal
       />
     </View>
   );
-}
+};
 
 export default CastList;

@@ -41,13 +41,13 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   }, []);
 
   if (!details) {
-    return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    return (
       <AppLoading
         size={width}
         speed={1.25}
         source={require('../assets/lottie/loading_cast.json')}
       />
-    </View> ; 
+    );
   }
 
   return (

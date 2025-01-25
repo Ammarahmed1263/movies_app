@@ -1,5 +1,5 @@
 import { ImageSourcePropType } from "react-native";
-import { Movie, MovieArray } from "./movieTypes";
+import { Movie, MovieArray, MovieSummary } from "./movieTypes";
 
 export type User = {
   email: string;
@@ -15,5 +15,5 @@ export type ListType = {
   id: number | 'add';
   title: string;
   poster_path?: string | null;
-  movies: Movie[];
+  movies: MovieSummary[];
 }

@@ -13,12 +13,12 @@ import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {HomeNavigationProp} from 'types/mainTabsTypes';
-import {Movie} from 'types/movieTypes';
+import {Movie, MovieSummary} from 'types/movieTypes';
 
 function FavoritesScreen() {
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [favoriteMovies, setFavoriteMovies] = useState<MovieSummary[]>([]);
   const navigation = useNavigation<HomeNavigationProp>();
-  const {colors} = useTheme();
+  const {colors, theme} = useTheme();
 
   const handleDelete = useCallback(async (id: number) => {
     try {
@@ -46,11 +46,16 @@ function FavoritesScreen() {
     return () => unsubscribe();
   }, []);
 
-  function renderFavorite({item}: {item: Movie}) {
+  function renderFavorite({item}: {item: MovieSummary}) {
     return (
       <MovieListItem movie={item}>
         <AppButton
-          customViewStyle={styles.trash}
+          customViewStyle={[
+            styles.trash,
+            {
+              backgroundColor: colors.transparent,
+            },
+          ]}
           style={{marginStart: hs(5)}}
           onPress={() => handleDelete(item.id)}
           customView
@@ -97,7 +102,6 @@ export default FavoritesScreen;
 
 const styles = StyleSheet.create({
   trash: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     padding: hs(4),
     borderRadius: hs(8),
   },

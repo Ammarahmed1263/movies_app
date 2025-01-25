@@ -14,6 +14,14 @@ export type Movie = {
   vote_average: number;
   vote_count: number;
 }
+
+export type MovieSummary = {
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string | null;
+}
+
 export type MovieArray = Movie[];
 
 export type Genre = {

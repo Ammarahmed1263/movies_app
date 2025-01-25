@@ -4,7 +4,7 @@ import { ListType } from './userTypes';
 export type ListstackParamList = {
   CreateList: undefined
   ListsFlatlist: undefined
-  ListDetailsScreen: {listData: ListType}
+  ListDetailsScreen: {listId: number}
 };
 
 export type ListNavigationProp = NativeStackNavigationProp<ListstackParamList>;

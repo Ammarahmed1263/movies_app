@@ -30,7 +30,7 @@ const ListsFlatlist: FC<ListsFlatlistProps> = ({title, seeAll = false}) => {
     } else {
       navigation.navigate('Liststack', {
         screen: 'ListDetailsScreen',
-        params: {listData: item},
+        params: {listId: item.id},
       });
     }
   };

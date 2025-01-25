@@ -8,21 +8,27 @@ import { getImageUrl } from '@utils';
 import { FC, ReactNode } from 'react';
 import { PressableProps, StyleSheet, View } from 'react-native';
 import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
-import { Movie } from 'types/movieTypes';
+import { Movie, MovieSummary } from 'types/movieTypes';
 
 interface MovieListItemProps extends PressableProps{
-  movie: Movie;
-  children: ReactNode
+  movie: MovieSummary;
+  onPress?: () => void;
+  children: ReactNode;
 }
 
-const MovieListItem: FC<MovieListItemProps> = ({movie, children, ...props}) => {
+const MovieListItem: FC<MovieListItemProps> = ({movie, onPress , children, ...props}) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MovieDetailsNavigationProp>();
+
+  const handlePress = () => {
+    navigation.navigate('MovieDetails', {id: movie.id});
+    onPress && onPress();
+  }
 
   return (
     <MovieButton
       style={styles.container}
-      onPress={() => navigation.navigate('MovieDetails', {id: movie.id})}
+      onPress={handlePress}
       {...props}
       >
       <Image

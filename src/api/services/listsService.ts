@@ -28,6 +28,29 @@ const getLists = (callback: (lists: ListType[]) => void) => {
   return unsubscribe;
 };
 
+const getListById = (listId: number, callback: (list: ListType) => void) => {
+  const userId = getCurrentUserId();
+
+  const unsubscribe = firestore()
+    .collection('users')
+    .doc(userId)
+    .collection('lists')
+    .doc(listId.toString())
+    .onSnapshot(
+      snapshot => {
+        const lists = snapshot.data() as ListType;
+
+        callback(lists);
+        console.log('current list:', listId, lists);
+      },
+      error => {
+        console.error('Error in Firestore snapshot listener:', error);
+      },
+    );
+
+  return unsubscribe;
+};
+
 const addList = async (list: ListType) => {
   const userId = getCurrentUserId();
   if (!userId) {
@@ -124,4 +147,11 @@ const removeMovieFromlist = async (movieId: number, listId: number) => {
   }
 };
 
-export {getLists, addList, removeList, addMovieToList, removeMovieFromlist};
+export {
+  getLists,
+  getListById,
+  addList,
+  removeList,
+  addMovieToList,
+  removeMovieFromlist,
+};

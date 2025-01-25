@@ -34,16 +34,13 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
     if (item.id === 'add') {
       navigation.push('CreateList');
     } else {
-      navigation.push('ListDetailsScreen', {listData: item});
+      navigation.push('ListDetailsScreen', {listId: item.id});
     }
   };
 
   const handleRender = ({item, index}: {item: ListType; index: number}) => {
     return (
-      <TouchableOpacity
-        key={index}
-        onPress={() => handleItemPress(item)}
-        >
+      <TouchableOpacity key={index} onPress={() => handleItemPress(item)}>
         <View>
           <ListCard
             data={item}
@@ -69,7 +66,7 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
       columnWrapperStyle={{
         gap: hs(12),
         marginBottom: vs(10),
-        paddingHorizontal: hs(10)
+        paddingHorizontal: hs(10),
       }}
       contentContainerStyle={{
         flexGrow: 1,

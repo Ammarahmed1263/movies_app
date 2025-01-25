@@ -1,20 +1,20 @@
 import AppButton from '@atoms/AppButton';
 import ImagePicker from '@molecules/ImagePicker';
-import { useTheme } from '@contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
 import LabelInput from '@molecules/LabelInput';
-import { useFocusEffect } from '@react-navigation/native';
-import { addList } from '@services/listsService';
-import { hs, ms, vs } from '@styles/metrics';
-import { FC, useLayoutEffect, useRef, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import {addList} from '@services/listsService';
+import {hs, ms, vs} from '@styles/metrics';
+import {FC, useLayoutEffect, useRef, useState} from 'react';
+import {TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { CreateListScreenProps } from 'types/listsStackTypes';
-import { ListType } from 'types/userTypes';
+import {CreateListScreenProps} from 'types/listsStackTypes';
+import {ListType} from 'types/userTypes';
 
 const CreateListscreen: FC<CreateListScreenProps> = ({navigation}) => {
   const inputRef = useRef<TextInput>(null);
   const [listData, setListData] = useState<ListType>({
-    id: Math.ceil(Math.random() * 10000),
+    id: Math.ceil(Math.random() * 10000) as number,
     title: '',
     movies: [],
     poster_path: null,
@@ -40,7 +40,7 @@ const CreateListscreen: FC<CreateListScreenProps> = ({navigation}) => {
     }
 
     addList(item);
-    navigation.replace('ListDetailsScreen', {listData: item});
+    navigation.replace('ListDetailsScreen', {listId: Number(item.id)});
   };
 
   const handleTitleChange = (value: string) => {

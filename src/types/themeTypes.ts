@@ -8,6 +8,8 @@ export type ColorsType = {
   paleShade: string;
   link: string;
   error: string;
+  success: string;
+  transparent: string;
 };
 
 interface FontStyle {

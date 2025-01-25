@@ -1,28 +1,28 @@
 import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
-import { useTheme } from '@contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
 import SettingItem from '@molecules/SettingItem';
 import ListsFlatlist from '@organisms/ListsFlatlist';
 import ProfileHeader from '@organisms/ProfileHeader';
 import auth from '@react-native-firebase/auth';
-import { userLogout } from '@services/authService';
+import {userLogout} from '@services/authService';
 import {
   deleteUser,
   getCurrentUserId,
   updateUserPreferences,
 } from '@services/userService';
-import { hs, vs, width } from '@styles/metrics';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import {hs, vs, width} from '@styles/metrics';
+import {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   I18nManager,
   Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
-import { SheetManager } from 'react-native-actions-sheet';
+import {SheetManager} from 'react-native-actions-sheet';
 import RNRestart from 'react-native-restart';
 import Icon from 'react-native-vector-icons/Feather';
 import i18n from '../i18n';
@@ -93,8 +93,7 @@ function ProfileScreen() {
         contentContainerStyle={styles.scrollContainer}>
         <ProfileHeader />
         <View>
-          <View
-            style={styles.sectionHeader}>
+          <View style={styles.sectionHeader}>
             <Icon
               name="settings"
               size={25}
@@ -157,11 +156,13 @@ function ProfileScreen() {
             </AppButton>
             <AppButton
               variant="body"
-              onPress={() => SheetManager.show('delete-account', {
-                payload: {
-                  onDelete: handleDeleteAccount
-                }
-              })}
+              onPress={() =>
+                SheetManager.show('delete-account', {
+                  payload: {
+                    onDelete: handleDeleteAccount,
+                  },
+                })
+              }
               style={styles.flatButton}
               textStyle={{color: colors.error}}
               flat>
@@ -183,10 +184,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Platform.OS === 'ios' ? vs(-10) : 0,
+    paddingTop: Platform.OS === 'ios' ? 0 : vs(30),
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingTop: vs(25)
+    paddingTop: vs(25),
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -196,7 +198,6 @@ const styles = StyleSheet.create({
   },
   flatButton: {
     minHeight: 30,
-    // borderWidth: 1,
     alignSelf: 'flex-start',
   },
   footer: {

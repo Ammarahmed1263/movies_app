@@ -1,16 +1,12 @@
 import AppButton from '@atoms/AppButton';
-import { useTheme } from '@contexts/ThemeContext';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-  CreateListscreen,
-  ListDetailsScreenScreen,
-  ListsListingScreen,
-} from '@screens';
-import { ms } from '@styles/metrics';
-import { FC } from 'react';
+import {useTheme} from '@contexts/ThemeContext';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {ListDetailsScreenScreen, ListsListingScreen} from '@screens';
+import {ms} from '@styles/metrics';
+import {FC} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { ListstackParamList } from 'types/listsStackTypes';
-import { ListstackProps } from 'types/mainStackTypes';
+import {ListstackParamList} from 'types/listsStackTypes';
+import {ListstackProps} from 'types/mainStackTypes';
 
 const Stack = createNativeStackNavigator<ListstackParamList>();
 
@@ -33,18 +29,6 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
             </AppButton>
           ) : null,
       }}>
-      <Stack.Screen
-        name="CreateList"
-        component={CreateListscreen}
-        options={{
-          title: 'New List',
-          headerTintColor: colors.paleShade,
-          headerShadowVisible: false,
-          headerTitleAlign: 'center',
-          headerTitleStyle: {fontFamily: fonts.regular.fontFamily},
-        }}
-      />
-
       <Stack.Screen
         name="ListsFlatlist"
         component={ListsListingScreen}

@@ -8,8 +8,9 @@ import {hs, vs} from '@styles/metrics';
 import {FC, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, StyleSheet, View} from 'react-native';
+import {SheetManager} from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ListsFlatlistScreenProps } from 'types/listsStackTypes';
+import {ListsFlatlistScreenProps} from 'types/listsStackTypes';
 import {ListstackNavigationProp} from 'types/mainStackTypes';
 import {ListType} from 'types/userTypes';
 
@@ -24,9 +25,17 @@ const ListsFlatlist: FC<ListsFlatlistProps> = ({title, seeAll = false}) => {
   const {t} = useTranslation();
   const navigation = useNavigation<ListstackNavigationProp>();
 
+  const onListCreated = (listId: number) => {
+    navigation.navigate('Liststack', {
+      screen: 'ListDetailsScreen',
+      params: {listId},
+    });
+  };
+
   const handleItemPress = (item: ListType) => {
     if (item.id === 'add') {
-      navigation.navigate('Liststack', {screen: 'CreateList'});
+      // navigation.navigate('Liststack', {screen: 'CreateList'});
+      SheetManager.show('create-list', {payload: {onListCreated}});
     } else {
       navigation.navigate('Liststack', {
         screen: 'ListDetailsScreen',

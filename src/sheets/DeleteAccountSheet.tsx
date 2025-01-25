@@ -3,7 +3,10 @@ import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, vs} from '@styles/metrics';
 import {StyleSheet, View} from 'react-native';
-import ActionSheet, {SheetManager, SheetProps} from 'react-native-actions-sheet';
+import ActionSheet, {
+  SheetManager,
+  SheetProps,
+} from 'react-native-actions-sheet';
 
 const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
   const {colors} = useTheme();
@@ -13,12 +16,7 @@ const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
     <ActionSheet
       id={props.sheetId}
       containerStyle={{backgroundColor: colors.primary500}}
-      indicatorStyle={{backgroundColor: colors.primary700}}
-      CustomHeaderComponent={
-        <AppText style={{height: 30}} variant="heading">
-          Danger Zone
-        </AppText>
-      }>
+      indicatorStyle={{backgroundColor: colors.primary700}}>
       <View style={[styles.header, {borderBottomColor: colors.paleShade}]}>
         <AppText variant="heading">Danger Zone</AppText>
       </View>

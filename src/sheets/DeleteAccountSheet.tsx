@@ -2,6 +2,7 @@ import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, vs} from '@styles/metrics';
+import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import ActionSheet, {
   SheetManager,
@@ -10,6 +11,7 @@ import ActionSheet, {
 
 const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
   const {colors} = useTheme();
+  const {t} = useTranslation();
   console.log('delete sheet is active');
 
   return (
@@ -18,26 +20,24 @@ const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
       containerStyle={{backgroundColor: colors.primary500}}
       indicatorStyle={{backgroundColor: colors.primary700}}>
       <View style={[styles.header, {borderBottomColor: colors.paleShade}]}>
-        <AppText variant="heading">Danger Zone</AppText>
+        <AppText variant="heading">{t('danger_zone')}</AppText>
       </View>
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <AppText style={styles.text}>
-            Are you sure you want to{' '}
+            {t('warn_question')}
             <AppText style={[styles.text, {fontWeight: 'bold'}]}>
-              delete your account?
+              {t('warn_question2')}
             </AppText>
           </AppText>
-          <AppText style={styles.text}>
-            You won't be able to revert this action.
-          </AppText>
+          <AppText style={styles.text}>{t('warn')}</AppText>
         </View>
 
         <View>
           <AppButton
             onPress={props.payload.onDelete}
             style={{backgroundColor: colors.error, marginBottom: vs(8)}}>
-            Delete Anyway
+            {t('delete_anyway')}
           </AppButton>
           <AppButton
             onPress={() => SheetManager.hide('delete-account')}
@@ -48,7 +48,7 @@ const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
             }}
             textStyle={{color: colors.paleShade}}
             flat>
-            Cancel
+            {t('cancel')}
           </AppButton>
         </View>
       </View>

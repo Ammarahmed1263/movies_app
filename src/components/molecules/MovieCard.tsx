@@ -1,19 +1,14 @@
-import {StyleSheet, Text, View, ViewStyle} from 'react-native';
-import MovieCardButton from '@atoms/MovieCardButton';
-import {useNavigation} from '@react-navigation/native';
-import {useTheme} from '@contexts/ThemeContext';
-import {
-  convertToArabicNumerals,
-  formatVoteCount,
-  getImageUrl,
-  getDeviceLanguage,
-} from '@utils';
 import Image from '@atoms/AppImage';
-import {FC} from 'react';
-import {Movie} from 'types/movieTypes';
-import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
+import MovieCardButton from '@atoms/MovieCardButton';
+import {useTheme} from '@contexts/ThemeContext';
+import {useNavigation} from '@react-navigation/native';
 import {hs, ms} from '@styles/metrics';
+import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils';
+import {FC} from 'react';
+import {I18nManager, StyleSheet, View, ViewStyle} from 'react-native';
+import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
+import {Movie} from 'types/movieTypes';
 import {FontVariants} from 'types/themeTypes';
 
 interface MovieCardProps {
@@ -53,7 +48,7 @@ const MovieCard: FC<MovieCardProps> = ({
                 color: colors.primary500,
                 backgroundColor: colors.secondary500,
               }}>
-              {getDeviceLanguage() === 'ar'
+              {I18nManager.isRTL
                 ? convertToArabicNumerals(formatVoteCount(movie.vote_average))
                 : formatVoteCount(movie.vote_average)}
             </AppText>

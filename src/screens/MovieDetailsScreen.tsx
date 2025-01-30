@@ -13,7 +13,7 @@ import useMovieDetails from '@hooks/useMovieDetails';
 import YoutubeModal from '@organisms/YoutubeModal';
 import CategoriesList from '@organisms/CategoriesList';
 import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
-import { createYouTubePlaylistUrl } from '@utils';
+import {createYouTubePlaylistUrl} from '@utils';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,

@@ -6,13 +6,10 @@ import LabelInput from '@molecules/LabelInput';
 import {useFocusEffect} from '@react-navigation/native';
 import {addList} from '@services/listsService';
 import {height, hs, vs} from '@styles/metrics';
-import {FC, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {StyleSheet, TextInput, View} from 'react-native';
-import ActionSheet, {
-  ActionSheetProps,
-  SheetManager,
-  SheetProps,
-} from 'react-native-actions-sheet';
+import ActionSheet, {SheetManager} from 'react-native-actions-sheet';
 import {ListType} from 'types/userTypes';
 
 const CreateListSheet = (props: {
@@ -23,6 +20,7 @@ const CreateListSheet = (props: {
 }) => {
   const inputRef = useRef<TextInput>(null);
   const {onListCreated} = props.payload;
+  const {t} = useTranslation();
   const [listData, setListData] = useState<ListType>({
     id: Math.ceil(Math.random() * 10000) as number,
     title: '',
@@ -31,25 +29,6 @@ const CreateListSheet = (props: {
   });
   const [error, setError] = useState<string | undefined>(undefined);
   const {colors} = useTheme();
-
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerLeft: ({canGoBack}) =>
-  //       canGoBack ? (
-  //         <AppButton onPress={() => navigation.goBack()} flat>
-  //           <Icon name="chevron-back" size={ms(23)} color={colors.paleShade} />
-  //         </AppButton>
-  //       ) : null,
-  //     headerRight: () => (
-  //       <AppButton
-  //         variant="body"
-  //         onPress={() => handleSaveButton(listData)}
-  //         flat>
-  //         Create
-  //       </AppButton>
-  //     ),
-  //   });
-  // }, [navigation]);
 
   const handleSaveButton = async (item: ListType) => {
     if (item.title.length === 0) {
@@ -89,7 +68,7 @@ const CreateListSheet = (props: {
       <View style={styles.header}>
         <View style={styles.spacer} />
         <AppText variant="heading" style={styles.headerText}>
-          Create List
+          {t('create_new_list')}
         </AppText>
         <AppButton
           variant="body"
@@ -97,7 +76,7 @@ const CreateListSheet = (props: {
           hitSlop={20}
           onPress={() => handleSaveButton(listData)}
           flat>
-          Create
+          {t('create')}
         </AppButton>
       </View>
       <View style={styles.container}>
@@ -108,7 +87,7 @@ const CreateListSheet = (props: {
         />
         <LabelInput
           ref={inputRef}
-          label="List Title"
+          label={t('list_name')}
           value={listData?.title}
           error={error}
           touched={true}

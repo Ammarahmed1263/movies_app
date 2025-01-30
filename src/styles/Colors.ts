@@ -13,7 +13,7 @@ const COLORS = {
     transparent: 'rgba(0, 0, 0, 0.2)',
   },
   dark: {
-    primary500: '#303030',
+    primary500: '#343333',
     primary600: '#616264',
     primary700: '#c1bcbc',
     secondary500: '#ffaa00',

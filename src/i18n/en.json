@@ -1,13 +1,23 @@
 {
   "movie": "Movie",
   "corn": "Corn",
+
   "_COMMENT1": "navigation menu",
   "home": "Home",
   "search": "Search",
   "favorite": "Favorites",
   "profile": "Account",
 
-  "_COMMENT2": "Main Topics",
+  "COMMENT2": "actions",
+  "save": "Save",
+  "edit": "Edit",
+  "delete": "Delete",
+  "done": "Done",
+  "create": "Create",
+  "cancel": "Cancel",
+  "delete_anyway": "Delete Anyway",
+
+  "_COMMENT3": "Main Topics",
   "now_playing": "Now Playing",
   "top_rated": "Top Rated",
   "upcoming": "UpComing",
@@ -15,20 +25,42 @@
   "trending_today": "Trending Today",
   "all_movies": "All Movies",
 
-  "_COMMENT3": "Profile",
+  "_COMMENT4": "Profile",
   "preferences": "My Preferences",
   "dark_mode": "Dark Mode",
   "language": "Language",
+  "arabic": "Arabic",
+  "english": "English",
   "notifications": "Notifications",
   "lists": "My Lists",
   "sign_out": "Sign Out",
   "delete_account": "Delete Account",
   "joined": "Joined",
+  "danger_zone": "Danger Zone",
+  "warn_question": "Are you sure you want to ",
+  "warn_question2": "delete your account?",
+  "warn": "You won't be able to revert this action.",
 
-  "_COMMENT4": "General",
+  "_COMMENT5": "General",
   "see_all": "See all",
   "search movies": "Search Movies",
   "not_rated": "NR",
   "read_more": "Read More",
-  "read_less": "Read Less"
+  "read_less": "Read Less",
+
+  "_COMMENT6": "lists",
+  "list_name": "List Name",
+  "add_to_list": "Let's Add Movies!",
+  "add_advice": "You can add a movie by clicking on + icon (top right).",
+  "create_new_list": "Create New List",
+  "my_lists": "My Lists",
+  "List_details": "List Details",
+
+  "_COMMENT7": "empty holders",
+  "no_favorites": "No Favorites",
+  "empty_search": "Ooops...No movie found with {{keyword}}!",
+  "create_favorite_list": "Create Favorite List",
+  "favorite_action": "You can favorite a movie by clicking on the heart that shows up when you view movie details (top right).",
+
+  "copyrights": "Copyright © 2023-2024 Ammar Ahmed, All rights reserved"
 }

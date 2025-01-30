@@ -5,12 +5,11 @@ import useLists from '@hooks/useLists';
 import ListCard from '@molecules/ListCard';
 import {useNavigation} from '@react-navigation/native';
 import {hs, vs} from '@styles/metrics';
-import {FC, useEffect} from 'react';
+import {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {ListsFlatlistScreenProps} from 'types/listsStackTypes';
 import {ListstackNavigationProp} from 'types/mainStackTypes';
 import {ListType} from 'types/userTypes';
 
@@ -34,7 +33,6 @@ const ListsFlatlist: FC<ListsFlatlistProps> = ({title, seeAll = false}) => {
 
   const handleItemPress = (item: ListType) => {
     if (item.id === 'add') {
-      // navigation.navigate('Liststack', {screen: 'CreateList'});
       SheetManager.show('create-list', {payload: {onListCreated}});
     } else {
       navigation.navigate('Liststack', {
@@ -101,6 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: hs(12),
+    marginBottom: vs(10),
   },
   title: {
     flexDirection: 'row',

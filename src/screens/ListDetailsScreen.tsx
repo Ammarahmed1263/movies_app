@@ -18,8 +18,10 @@ import {HEADER_HEIGHT, hs, ms, vs} from '@styles/metrics';
 import {capitalizeInput} from '@utils';
 import LottieView from 'lottie-react-native';
 import {FC, useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Alert,
+  I18nManager,
   Platform,
   StyleSheet,
   TouchableOpacity,
@@ -36,6 +38,7 @@ import {ListType} from 'types/userTypes';
 const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
   const {listId} = route.params;
   const {colors} = useTheme();
+  const {t} = useTranslation();
   const [favorites, setFavorites] = useState<
     Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]
   >([]);
@@ -86,13 +89,17 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
       title: capitalizeInput(list?.title ?? ''),
       headerRight: () => (
         <AppButton variant="body" onPress={handleRemoveList} flat>
-          delete
+          {t('delete')}
         </AppButton>
       ),
       headerLeft: ({canGoBack}) =>
         canGoBack ? (
           <AppButton onPress={() => navigation.goBack()} flat>
-            <Icon name="chevron-back" size={ms(23)} color={colors.paleShade} />
+            <Icon
+              name={I18nManager.isRTL ? 'chevron-forward' : 'chevron-back'}
+              size={ms(23)}
+              color={colors.paleShade}
+            />
           </AppButton>
         ) : null,
     });
@@ -186,12 +193,12 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
               style={{height: vs(160), aspectRatio: 1 / 1}}
             />
             <AppText variant="heading" style={styles.text}>
-              Let's Add Movies!
+              {t('add_to_list')}
             </AppText>
             <AppText
               variant="body"
               style={{textAlign: 'center', marginBottom: vs(8)}}>
-              You can add a movie by clicking on + icon (top right).
+              {t('add_advice')}
             </AppText>
           </View>
         }

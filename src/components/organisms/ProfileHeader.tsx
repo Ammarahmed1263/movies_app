@@ -21,7 +21,9 @@ const ProfileHeader: FC = () => {
         selectedImage={profileImage}
         onImageSelected={uri => setProfileImage(uri)}
       />
-      <AppText variant="heading">{auth().currentUser?.email}</AppText>
+      <AppText variant="heading">
+        {auth().currentUser?.email?.split('@')[0]}
+      </AppText>
       <AppText variant="body" style={{color: colors.primary700}}>
         {t('joined')}:{' '}
         {new Date(

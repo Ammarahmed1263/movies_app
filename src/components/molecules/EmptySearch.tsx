@@ -2,6 +2,7 @@ import AppText from '@atoms/AppText';
 import {hs, vs, width} from '@styles/metrics';
 import LottieView from 'lottie-react-native';
 import {FC} from 'react';
+import {useTranslation} from 'react-i18next';
 import {Platform, View} from 'react-native';
 
 interface EmptySearchProps {
@@ -9,6 +10,8 @@ interface EmptySearchProps {
 }
 
 const EmptySearch: FC<EmptySearchProps> = ({keyword}) => {
+  const {t} = useTranslation();
+
   return (
     <View
       style={{
@@ -32,7 +35,7 @@ const EmptySearch: FC<EmptySearchProps> = ({keyword}) => {
         loop
       />
       <AppText variant="heading" style={{textAlign: 'center'}}>
-        Ooops...No movie found with {keyword}!
+        {t('empty_search', {keyword})}
       </AppText>
     </View>
   );

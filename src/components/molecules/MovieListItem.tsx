@@ -1,45 +1,49 @@
 import Image from '@atoms/AppImage';
 import AppText from '@atoms/AppText';
 import MovieButton from '@atoms/MovieCardButton';
-import { useTheme } from '@contexts/ThemeContext';
-import { useNavigation } from '@react-navigation/native';
-import { hs, vs } from '@styles/metrics';
-import { getImageUrl } from '@utils';
-import { FC, ReactNode } from 'react';
-import { PressableProps, StyleSheet, View } from 'react-native';
-import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
-import { Movie, MovieSummary } from 'types/movieTypes';
+import {useTheme} from '@contexts/ThemeContext';
+import {useNavigation} from '@react-navigation/native';
+import {hs, vs} from '@styles/metrics';
+import {getImageUrl} from '@utils';
+import {FC, ReactNode} from 'react';
+import {PressableProps, StyleSheet, View} from 'react-native';
+import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
+import {Movie, MovieSummary} from 'types/movieTypes';
 
-interface MovieListItemProps extends PressableProps{
+interface MovieListItemProps extends PressableProps {
   movie: MovieSummary;
   onPress?: () => void;
   children: ReactNode;
 }
 
-const MovieListItem: FC<MovieListItemProps> = ({movie, onPress , children, ...props}) => {
+const MovieListItem: FC<MovieListItemProps> = ({
+  movie,
+  onPress,
+  children,
+  ...props
+}) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MovieDetailsNavigationProp>();
 
   const handlePress = () => {
     navigation.navigate('MovieDetails', {id: movie.id});
     onPress && onPress();
-  }
+  };
 
   return (
     <MovieButton
       style={styles.container}
-      onPress={handlePress}
-      {...props}
-      >
+      onPress={onPress ? onPress : handlePress}
+      {...props}>
       <Image
         source={getImageUrl(movie.poster_path)}
         viewStyle={styles.image}
-        loadingSize='small'
+        loadingSize="small"
       />
       <View style={styles.description}>
         <View style={styles.headingContainer}>
           <AppText
-            variant='heading'
+            variant="heading"
             numberOfLines={1}
             ellipsizeMode="tail"
             style={{
@@ -51,7 +55,7 @@ const MovieListItem: FC<MovieListItemProps> = ({movie, onPress , children, ...pr
           {children}
         </View>
         <AppText
-          variant='body'
+          variant="body"
           numberOfLines={3}
           ellipsizeMode="tail"
           style={{
@@ -63,7 +67,7 @@ const MovieListItem: FC<MovieListItemProps> = ({movie, onPress , children, ...pr
       </View>
     </MovieButton>
   );
-}
+};
 
 export default MovieListItem;
 
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1.2,
     borderRadius: hs(8),
     resizeMode: 'cover',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   description: {
     flex: 3,

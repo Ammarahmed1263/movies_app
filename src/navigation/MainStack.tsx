@@ -17,6 +17,7 @@ import AppButton from '@atoms/AppButton';
 import {ms} from '@styles/metrics';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import {I18nManager} from 'react-native';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -40,7 +41,7 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
           canGoBack ? (
             <AppButton onPress={() => navigation.goBack()} flat>
               <Icon
-                name="chevron-back"
+                name={I18nManager.isRTL ? 'chevron-forward' : 'chevron-back'}
                 size={ms(23)}
                 color={colors.paleShade}
               />

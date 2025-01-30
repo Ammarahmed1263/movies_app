@@ -1,19 +1,21 @@
 import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
+import {useTheme} from '@contexts/ThemeContext';
 import useLists from '@hooks/useLists';
 import ListCard from '@molecules/ListCard';
-import {useNavigation} from '@react-navigation/native';
 import {hs, ms, vs, width} from '@styles/metrics';
 import {FC, useLayoutEffect} from 'react';
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
-  ListNavigationProp,
-  ListsFlatlistScreenProps,
-} from 'types/listsStackTypes';
-import {ListType} from 'types/userTypes';
+  FlatList,
+  I18nManager,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {SheetManager} from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '@contexts/ThemeContext';
-import MoviesList from '@organisms/MoviesList';
+import {ListsFlatlistScreenProps} from 'types/listsStackTypes';
+import {ListType} from 'types/userTypes';
 
 const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
   const {lists} = useLists();
@@ -24,15 +26,23 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
       headerLeft: ({canGoBack}) =>
         canGoBack ? (
           <AppButton onPress={() => navigation.goBack()} flat>
-            <Icon name="chevron-back" size={ms(23)} color={colors.paleShade} />
+            <Icon
+              name={I18nManager.isRTL ? 'chevron-forward' : 'chevron-back'}
+              size={ms(23)}
+              color={colors.paleShade}
+            />
           </AppButton>
         ) : null,
     });
   }, [navigation]);
 
+  const onListCreated = (listId: number) => {
+    navigation.navigate('ListDetailsScreen', {listId});
+  };
+
   const handleItemPress = (item: ListType) => {
     if (item.id === 'add') {
-      navigation.push('CreateList');
+      SheetManager.show('create-list', {payload: {onListCreated}});
     } else {
       navigation.push('ListDetailsScreen', {listId: item.id});
     }

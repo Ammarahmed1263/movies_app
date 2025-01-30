@@ -10,15 +10,17 @@ import {useNavigation} from '@react-navigation/native';
 import {removeFavoriteMovie} from '@services/userService';
 import {hs, vs} from '@styles/metrics';
 import {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {HomeNavigationProp} from 'types/mainTabsTypes';
-import {Movie, MovieSummary} from 'types/movieTypes';
+import {MovieSummary} from 'types/movieTypes';
 
 function FavoritesScreen() {
-  const [favoriteMovies, setFavoriteMovies] = useState<MovieSummary[]>([]);
+  const [favorites, setFavorites] = useState<MovieSummary[]>([]);
   const navigation = useNavigation<HomeNavigationProp>();
-  const {colors, theme} = useTheme();
+  const {colors} = useTheme();
+  const {t} = useTranslation();
 
   const handleDelete = useCallback(async (id: number) => {
     try {
@@ -35,7 +37,7 @@ function FavoritesScreen() {
       .onSnapshot(
         documentSnapshot => {
           const data = documentSnapshot.data();
-          setFavoriteMovies(data?.favoriteMovies.reverse() || []);
+          setFavorites(data?.favoriteMovies.reverse() || []);
         },
         error => {
           console.error('Failed to retrieve movies', error);
@@ -68,29 +70,28 @@ function FavoritesScreen() {
 
   return (
     <MoviesList
-      data={favoriteMovies}
+      data={favorites}
       renderItem={renderFavorite}
       contentContainerStyle={styles.listContent}
       snapStyle={{bottom: vs(100)}}
       ListEmptyComponent={
         <View style={styles.noFavorite}>
           <AppImage
-            source={require('../assets/images/no-favorites.png')}
-            style={{height: 250, aspectRatio: 1 / 1}}
+            source={require('../assets/images/no_favorites.png')}
+            viewStyle={styles.image}
           />
           <AppText variant="heading" style={styles.text}>
-            No Favorites
+            {t('no_favorites')}
           </AppText>
           <AppText
             variant="body"
             style={{textAlign: 'center', marginBottom: vs(8)}}>
-            You can favorite a movie by clicking on the heart that shows up when
-            you view movie details (top right).
+            {t('favorite_action')}
           </AppText>
           <AppButton
             onPress={() => navigation.navigate('Search')}
-            style={{height: 50, width: '70%'}}>
-            Create Favorites
+            style={{width: '70%', marginTop: vs(10)}}>
+            {t('create_favorite_list')}
           </AppButton>
         </View>
       }
@@ -118,5 +119,10 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     marginBottom: vs(8),
+  },
+  image: {
+    flex: 0,
+    height: hs(250),
+    aspectRatio: 1 / 1,
   },
 });

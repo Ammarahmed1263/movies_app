@@ -1,24 +1,23 @@
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
+import {hs, vs} from '@styles/metrics';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   // Switch,
   I18nManager,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import {Switch, SwitchProps} from 'react-native-switch';
 import Icon from 'react-native-vector-icons/Feather';
-import { Switch, SwitchProps } from 'react-native-switch';
-import { hs, ms, vs } from '@styles/metrics';
 
 interface SettingsItemProps {
   icon: string;
   label: string;
   value?: string;
   type?: 'toggle' | 'select' | 'button';
-  switchProps?: SwitchProps
+  switchProps?: SwitchProps;
   isToggled?: boolean;
   onPress: () => void;
 }
@@ -30,9 +29,9 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
   type = 'button',
   isToggled,
   onPress,
-  switchProps
+  switchProps,
 }) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
     <TouchableOpacity
@@ -49,22 +48,22 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
         {type === 'toggle' ? (
           <Switch
             value={isToggled}
-            activeText=''
-            inActiveText=''
-            onValueChange= {onPress}
+            activeText=""
+            inActiveText=""
+            onValueChange={onPress}
             circleBorderWidth={0}
-            circleSize={20}
-            switchWidthMultiplier={2.5}
+            circleSize={22}
+            switchWidthMultiplier={2.3}
             barHeight={28}
-            switchLeftPx={2.8}
-            switchRightPx={2.8}
+            switchLeftPx={3.2}
+            switchRightPx={3.2}
             {...switchProps}
           />
         ) : (
           <>
             {value && (
               <AppText
-                style={[styles.settingsItemValue, {color: colors.primary600}]}>
+                style={[styles.settingsItemValue, {color: colors.primary700}]}>
                 {value}
               </AppText>
             )}

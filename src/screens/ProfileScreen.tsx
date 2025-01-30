@@ -116,17 +116,17 @@ function ProfileScreen() {
             type="toggle"
             isToggled={themeActive}
             switchProps={{
-              backgroundActive: colors.primary600,
+              backgroundActive: colors.primary700,
               backgroundInactive: colors.secondary500,
-              circleActiveColor: '#fefefe',
-              circleInActiveColor: '#fefefe',
+              circleActiveColor: colors.primary500,
+              circleInActiveColor: colors.primary500,
               circleBorderActiveColor: colors.secondary500,
               circleBorderInactiveColor: colors.primary700,
               renderInsideCircle: () => {
                 return (
                   <Icon
                     name={themeActive ? 'moon' : 'sun'}
-                    color="#333333"
+                    color={colors.paleShade}
                     size={15}
                   />
                 );
@@ -138,7 +138,7 @@ function ProfileScreen() {
             label={t('language')}
             onPress={toggleAppLanguage}
             type="select"
-            value={i18n.language === 'ar' ? 'Arabic' : 'English'}
+            value={i18n.language === 'ar' ? t('arabic') : t('english')}
             isToggled={languageArabic}
           />
         </View>
@@ -170,7 +170,7 @@ function ProfileScreen() {
             </AppButton>
           </View>
           <AppText variant="caption" style={styles.copyrights}>
-            Copyright©2023-2024 Ammar Ahmed, All rights reserved
+            {t('copyrights')}
           </AppText>
         </View>
       </ScrollView>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'baseline',
     paddingTop: vs(10),
     paddingHorizontal: hs(10),
   },

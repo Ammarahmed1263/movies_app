@@ -1,9 +1,13 @@
 import AppButton from '@atoms/AppButton';
+import AppLoading from '@atoms/AppLoading';
+import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
-import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import useDebouncedSearch from '@hooks/useDebouncedSearch';
+import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
+import EmptySearch from '@molecules/EmptySearch';
 import MovieListItem from '@molecules/MovieListItem';
 import SearchBar from '@molecules/SearchBar';
+import MoviesList from '@organisms/MoviesList';
 import {
   addMovieToList,
   getListById,
@@ -11,23 +15,19 @@ import {
 } from '@services/listsService';
 import {height, hs, vs} from '@styles/metrics';
 import {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {Platform, StyleSheet, View} from 'react-native';
 import ActionSheet, {
-  FlatList,
   SheetManager,
   SheetProps,
 } from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {MovieSummary} from 'types/movieTypes';
-import EmptySearch from '@molecules/EmptySearch';
-import AppLoading from '@atoms/AppLoading';
-import AppText from '@atoms/AppText';
-import MoviesList from '@organisms/MoviesList';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
   const {colors} = useTheme();
   const {id} = props.payload;
+  const {t} = useTranslation();
   const [keyword, setKeyword] = useState('');
   const [movies, setMovies] = useState<MovieSummary[]>([]);
   const [disableGesture, setDisableGesture] = useState(false);
@@ -55,22 +55,17 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
     console.log('item here', movie);
 
     return (
-      <MovieListItem movie={movie} key={movie.id} disabled>
-        <AppButton
-          customViewStyle={[
-            styles.addIcon,
-            {backgroundColor: colors.transparent},
-          ]}
-          style={{marginStart: hs(5)}}
-          onPress={() => toggleItem(movie, exists)}
-          customView
-          flat>
+      <MovieListItem
+        movie={movie}
+        onPress={() => toggleItem(movie, exists)}
+        key={movie.id}>
+        <View style={[styles.addIcon, {backgroundColor: colors.transparent}]}>
           <Icon
             name={exists ? 'movie-check' : 'movie-open-plus'}
             size={30}
             color={exists ? colors.success : colors.primary700}
           />
-        </AppButton>
+        </View>
       </MovieListItem>
     );
   };
@@ -116,16 +111,7 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={0.7}
-        contentContainerStyle={[
-          styles.contentContainer,
-          // {
-          //   paddingBottom:
-          //     Platform.OS === 'android'
-          //       ? vs(45) + insets.bottom + vs(85)
-          //       : vs(85),
-          // },
-        ]}
-        // numColumns={2}
+        contentContainerStyle={[styles.contentContainer]}
         snapStyle={{bottom: vs(70)}}
         ListFooterComponent={
           status === 'paginating' ? showLoading(35, 2.5) : null
@@ -155,7 +141,7 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
             style={{flex: 1}}
             onPress={() => SheetManager.hide(props.sheetId)}
             flat>
-            Done
+            {t('done')}
           </AppButton>
         </View>
 

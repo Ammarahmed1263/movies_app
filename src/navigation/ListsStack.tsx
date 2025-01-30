@@ -4,6 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ListDetailsScreenScreen, ListsListingScreen} from '@screens';
 import {ms} from '@styles/metrics';
 import {FC} from 'react';
+import {useTranslation} from 'react-i18next';
+import {I18nManager} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ListstackParamList} from 'types/listsStackTypes';
 import {ListstackProps} from 'types/mainStackTypes';
@@ -12,6 +14,7 @@ const Stack = createNativeStackNavigator<ListstackParamList>();
 
 const Liststack: FC<ListstackProps> = ({navigation}) => {
   const {colors, fonts} = useTheme();
+  const {t} = useTranslation();
 
   return (
     <Stack.Navigator
@@ -22,7 +25,7 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
           canGoBack ? (
             <AppButton onPress={() => navigation.goBack()} flat>
               <Icon
-                name="chevron-back"
+                name={I18nManager.isRTL ? 'chevron-forward' : 'chevron-back'}
                 size={ms(23)}
                 color={colors.paleShade}
               />
@@ -33,7 +36,7 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
         name="ListsFlatlist"
         component={ListsListingScreen}
         options={{
-          title: 'My Lists',
+          title: t('my_lists'),
           headerTintColor: colors.paleShade,
           headerShadowVisible: false,
           headerTitleAlign: 'center',
@@ -50,6 +53,7 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
           headerShadowVisible: false,
           headerTitleAlign: 'center',
           headerTitleStyle: {fontFamily: fonts.regular.fontFamily},
+          animation: 'slide_from_bottom',
         }}
       />
     </Stack.Navigator>

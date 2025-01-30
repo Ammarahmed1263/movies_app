@@ -17,6 +17,7 @@ import {hs, ms, vs, width} from '@styles/metrics';
 import DetailPillItem from '@molecules/DetailPillItem';
 import NavigationHeader from '@organisms/NavigationHeader';
 import AppLoading from '@atoms/AppLoading';
+import {useTranslation} from 'react-i18next';
 
 const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const {id} = route.params;
@@ -24,6 +25,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const [credits, setCredits] = useState<MemberCreditArray>([]);
   const navigation = useNavigation();
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   console.log('member id', id);
   useEffect(() => {
@@ -98,29 +100,29 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
       <View
         style={{...styles.shortDetails, backgroundColor: colors.primary700}}>
         <DetailPillItem
-          label="Gender"
+          label={t('gender')}
           value={getGenderString(details.gender)}
         />
-        <DetailPillItem label="Birthday" value={details.birthday} />
+        <DetailPillItem label={t('birthday')} value={details.birthday} />
         <DetailPillItem
-          label="Known for"
+          label={t('known_for')}
           value={details.known_for_department}
         />
         <DetailPillItem
-          label="Popularity"
+          label={t('popularity')}
           value={Math.round(details.popularity * 10) / 10}
           border={false}
         />
       </View>
 
-      <View style={{marginHorizontal: hs(10), marginVertical: vs(8)}}>
-        <AppText variant="heading">Biography</AppText>
+      <View style={{marginHorizontal: hs(15), marginVertical: vs(8)}}>
+        <AppText variant="heading">{t('biography')}</AppText>
         <TextSeeMore
           variant="regular"
           style={{
             color: colors.paleShade,
           }}
-          text={details.biography.replace(/\n/g, ' ') || 'N/A'}
+          text={details.biography.replace(/\n/g, ' ') || t('N/A')}
           maxChars={250}
         />
       </View>
@@ -129,7 +131,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
           (a, b) => Number(b.vote_average) - Number(a.vote_average),
         )}
         length={15}
-        topic="Known For"
+        topic={t('popular_for')}
       />
     </ScrollView>
   );
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1 / 1,
     borderRadius: hs(110),
     borderWidth: hs(1),
-    elevation: 50,
+    elevation: 10,
     shadowOffset: {
       width: 0,
       height: 6,

@@ -3,8 +3,8 @@ import {useTheme} from '@contexts/ThemeContext';
 import {hs, vs} from '@styles/metrics';
 import React from 'react';
 import {
-  // Switch,
   I18nManager,
+  Platform,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginEnd: hs(8),
+    marginEnd: hs(4),
     transform: [{scaleX: I18nManager.isRTL ? -1 : 1}],
   },
   settingsItemRight: {
@@ -110,5 +110,6 @@ const styles = StyleSheet.create({
   },
   settingsItemValue: {
     marginRight: hs(8),
+    marginTop: Platform.OS === 'ios' ? 0 : vs(2),
   },
 });

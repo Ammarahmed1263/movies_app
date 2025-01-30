@@ -11,9 +11,9 @@ import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode, useState} from 'react';
 import AppText from './AppText';
 import {FontVariants} from 'types/themeTypes';
-import { hs, ms } from '@styles/metrics';
+import {hs, ms} from '@styles/metrics';
 
-interface AppButtonProps extends PressableProps{
+interface AppButtonProps extends PressableProps {
   flat?: boolean;
   variant?: FontVariants;
   textStyle?: TextStyle;
@@ -21,6 +21,7 @@ interface AppButtonProps extends PressableProps{
   onPress: () => void;
   customView?: ReactNode;
   customViewStyle?: ViewStyle | ViewStyle[];
+  pressableStyle?: ViewStyle;
   children?: ReactNode;
 }
 
@@ -33,6 +34,7 @@ const AppButton: FC<AppButtonProps> = ({
   onPress,
   customView,
   customViewStyle,
+  pressableStyle,
   ...props
 }) => {
   const {colors} = useTheme();
@@ -59,10 +61,10 @@ const AppButton: FC<AppButtonProps> = ({
           styles.general,
           !flat && styles.innerButton,
           flat && clicked && {opacity: 0.7},
+          pressableStyle,
         ]}
         onPress={pressAction}
-        {...props}
-        >
+        {...props}>
         {customView ? (
           <View style={customViewStyle}>{children}</View>
         ) : (

@@ -14,7 +14,7 @@ import AppText from '@atoms/AppText';
 import {hs, ms, vs} from '@styles/metrics';
 import {useTheme} from '@contexts/ThemeContext';
 import {MovieDetails} from 'types/movieTypes';
-import { imagePlaceHolder } from '../../constants';
+import {imagePlaceHolder} from '../../constants';
 
 interface MovieDetailsPosterProps {
   movieDetails: MovieDetails | undefined;
@@ -69,6 +69,7 @@ const MovieDetailsPoster: FC<MovieDetailsPosterProps> = ({
             variant="regular"
             style={{
               color: colors.paleShade,
+              alignSelf: 'flex-start',
             }}>
             {`${formatVoteCount(
               movieDetails?.vote_average ?? 0,

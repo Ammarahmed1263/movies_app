@@ -1,6 +1,13 @@
-import {View, ScrollView, StatusBar, Share, I18nManager} from 'react-native';
+import {
+  View,
+  ScrollView,
+  StatusBar,
+  Share,
+  I18nManager,
+  StyleSheet,
+} from 'react-native';
 import {useCallback, useState, FC} from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Feather';
 import Button from '@atoms/AppButton';
 import {useTheme} from '@contexts/ThemeContext';
 import CastList from '@organisms/CastList';
@@ -14,6 +21,7 @@ import YoutubeModal from '@organisms/YoutubeModal';
 import CategoriesList from '@organisms/CategoriesList';
 import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
 import {createYouTubePlaylistUrl} from '@utils';
+import {useTranslation} from 'react-i18next';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
@@ -24,6 +32,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
     useMovieDetails(movieId);
   const [playing, setPlaying] = useState(false);
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   const onStateChange = useCallback((state: string) => {
     if (state === 'ended') {
@@ -94,41 +103,28 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
         <CategoriesList categories={movieDetails?.genres || []} />
 
         <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginVertical: vs(20),
-              marginHorizontal: hs(10),
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.buttonsContainer}>
             <Button
               customView
+              pressableStyle={{flex: 1}}
               customViewStyle={{flexDirection: 'row', alignItems: 'center'}}
-              style={{flex: 4, marginRight: hs(10), borderRadius: ms(18)}}
+              style={[styles.button, {flex: 4}]}
               onPress={() => setPlaying(true)}>
               <Icon name="play" size={ms(23)} color={colors.paleShade} />
               <AppText
                 variant="bold"
                 style={{
                   color: colors.paleShade,
-                  lineHeight: hs(35),
                 }}>
-                Watch Trailer
+                {t('watch_trailer')}
               </AppText>
             </Button>
             <Button
               customView
               onPress={handleShare}
-              style={{
-                flex: 1,
-                borderRadius: ms(18),
-                backgroundColor: colors.primary600,
-              }}>
-              <Icon
-                name="share-social-outline"
-                size={30}
-                color={colors.secondary600}
-              />
+              pressableStyle={{flex: 1}}
+              style={[styles.button, {flex: 1}]}>
+              <Icon name="share" size={28} color={colors.secondary600} />
             </Button>
           </View>
           <TextSeeMore
@@ -140,7 +136,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             }}
           />
 
-          <CastList cast={castMembers} title="Top Billed Cast" />
+          <CastList cast={castMembers} title={t('top_billed_cast')} />
         </View>
       </ScrollView>
 
@@ -155,3 +151,17 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 };
 
 export default MovieDetailsScreen;
+
+const styles = StyleSheet.create({
+  buttonsContainer: {
+    flexDirection: 'row',
+    marginVertical: vs(20),
+    marginHorizontal: hs(10),
+    minHeight: vs(60),
+    justifyContent: 'space-between',
+  },
+  button: {
+    marginRight: hs(10),
+    borderRadius: ms(10),
+  },
+});

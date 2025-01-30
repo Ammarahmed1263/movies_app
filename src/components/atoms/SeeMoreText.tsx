@@ -1,10 +1,17 @@
-import { FC } from 'react';
-import { useState } from 'react';
-import { Pressable, Text, TextProps, TextStyle, TouchableOpacity } from 'react-native';
-import { useTheme } from '@contexts/ThemeContext';
+import {FC} from 'react';
+import {useState} from 'react';
+import {
+  Platform,
+  Pressable,
+  Text,
+  TextProps,
+  TextStyle,
+  TouchableOpacity,
+} from 'react-native';
+import {useTheme} from '@contexts/ThemeContext';
 import AppText from './AppText';
-import { FontVariants } from 'types/themeTypes';
-import { useTranslation } from 'react-i18next';
+import {FontVariants} from 'types/themeTypes';
+import {useTranslation} from 'react-i18next';
 
 interface SeeMoreTextProps extends TextProps {
   text: string;
@@ -21,8 +28,8 @@ const SeeMoreText: FC<SeeMoreTextProps> = ({
   ...props
 }) => {
   const [fullShown, setFullShown] = useState(false);
-  const { colors } = useTheme();
-  const { t } = useTranslation();
+  const {colors} = useTheme();
+  const {t} = useTranslation();
 
   const toggleShowFull = () => {
     setFullShown(prev => !prev);
@@ -30,19 +37,23 @@ const SeeMoreText: FC<SeeMoreTextProps> = ({
 
   return (
     <Pressable onPress={toggleShowFull}>
-      <AppText variant={variant} style={style} {...props} disabled={text.length < maxChars}>
+      <AppText
+        variant={variant}
+        style={style}
+        {...props}
+        disabled={text.length < maxChars}>
         {text.length <= maxChars ? (
           text
         ) : (
           <>
             {fullShown ? text : text.slice(0, maxChars) + '...'}
-            <TouchableOpacity 
-              onPress={toggleShowFull}>
+            <TouchableOpacity onPress={toggleShowFull}>
               <AppText
                 variant="light"
                 style={{
                   color: colors.link,
                   textDecorationLine: 'underline',
+                  marginBottom: Platform.OS === 'ios' ? 0 : -5,
                 }}>
                 {fullShown ? ' ' + t('read_less') : t('read_more')}
               </AppText>

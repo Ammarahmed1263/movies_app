@@ -61,6 +61,21 @@
   "empty_search": "Ooops...No movie found with {{keyword}}!",
   "create_favorite_list": "Create Favorite List",
   "favorite_action": "You can favorite a movie by clicking on the heart that shows up when you view movie details (top right).",
+  "N/A": "N/A",
+
+  "_COMMENT8": "movie Details",
+  "top_billed_cast": "Top Billed Cast",
+  "watch_trailer": "Watch Trailer",
+  "watch_youtube": "Watch on YouTube",
+  "no_trailer": "Sorry, No Trailer Available For This Movie",
+
+  "_COMMENT9": "cast Details",
+  "popularity": "Popularity",
+  "known_for": "Known For",
+  "popular_for": "Popular For",
+  "biography": "Biography",
+  "birthday": "Birthday",
+  "gender": "Gender",
 
   "copyrights": "Copyright © 2023-2024 Ammar Ahmed, All rights reserved"
 }

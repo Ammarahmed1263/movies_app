@@ -3,13 +3,14 @@ import AppText from '@atoms/AppText';
 import MovieCardButton from '@atoms/MovieCardButton';
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import {hs, ms} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils';
 import {FC} from 'react';
 import {I18nManager, StyleSheet, View, ViewStyle} from 'react-native';
 import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
 import {Movie} from 'types/movieTypes';
 import {FontVariants} from 'types/themeTypes';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 interface MovieCardProps {
   movie: Movie;
@@ -40,18 +41,23 @@ const MovieCard: FC<MovieCardProps> = ({
           ImageViewStyle,
         ]}>
         {!hideVote && (
-          <View style={styles.rating}>
+          <View style={[styles.rating, {backgroundColor: colors.secondary500}]}>
             <AppText
               variant="regular"
               style={{
                 ...styles.ratingText,
                 color: colors.primary500,
-                backgroundColor: colors.secondary500,
               }}>
               {I18nManager.isRTL
                 ? convertToArabicNumerals(formatVoteCount(movie.vote_average))
                 : formatVoteCount(movie.vote_average)}
             </AppText>
+            <Icon
+              name="star"
+              size={12}
+              color={colors.primary500}
+              // style={{paddingBottom: vs(2)}}
+            />
           </View>
         )}
         <Image
@@ -92,17 +98,21 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   rating: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
     position: 'absolute',
     zIndex: 1,
     top: 0,
     right: 0,
+    paddingHorizontal: hs(10),
+    paddingVertical: hs(2),
     borderBottomStartRadius: hs(7),
     borderTopEndRadius: hs(18),
     overflow: 'hidden',
   },
   ratingText: {
     fontSize: 12,
-    paddingHorizontal: 10,
+    paddingHorizontal: hs(2),
   },
   title: {
     textAlign: 'center',

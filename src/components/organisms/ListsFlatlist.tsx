@@ -57,14 +57,17 @@ const ListsFlatlist: FC<ListsFlatlistProps> = ({title, seeAll = false}) => {
           <Icon
             name="movie"
             size={30}
-            style={styles.icon}
             color={colors.paleShade}
+            style={{marginTop: vs(2)}}
           />
-          <AppText variant="heading">{title}</AppText>
+          <AppText variant="heading" style={{marginStart: hs(8)}}>
+            {title}
+          </AppText>
         </View>
         {seeAll && (
           <AppButton
             variant="body"
+            style={{justifyContent: 'center'}}
             textStyle={{
               ...styles.button,
               color: colors.secondary500,
@@ -97,16 +100,11 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: hs(12),
+    paddingHorizontal: hs(15),
     marginBottom: vs(10),
   },
   title: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
-    paddingEnd: hs(10),
   },
   button: {
     textTransform: 'none',

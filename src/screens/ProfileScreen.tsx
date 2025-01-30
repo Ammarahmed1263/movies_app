@@ -94,13 +94,10 @@ function ProfileScreen() {
         <ProfileHeader />
         <View>
           <View style={styles.sectionHeader}>
-            <Icon
-              name="settings"
-              size={25}
-              style={{paddingEnd: hs(10)}}
-              color={colors.paleShade}
-            />
-            <AppText variant="heading">{t('preferences')}</AppText>
+            <Icon name="settings" size={25} color={colors.paleShade} />
+            <AppText variant="heading" style={{marginStart: hs(8)}}>
+              {t('preferences')}
+            </AppText>
           </View>
           <SettingItem
             icon="bell"
@@ -194,7 +191,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'baseline',
     paddingTop: vs(10),
-    paddingHorizontal: hs(10),
+    paddingHorizontal: hs(15),
   },
   flatButton: {
     minHeight: 30,

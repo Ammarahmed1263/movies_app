@@ -1,7 +1,7 @@
 import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode} from 'react';
 import {I18nManager, Platform, Text, TextProps, TextStyle} from 'react-native';
-import { FontVariants } from 'types/themeTypes';
+import {FontVariants} from 'types/themeTypes';
 
 interface AppTextProps extends TextProps {
   variant?: FontVariants;
@@ -14,9 +14,9 @@ const AppText: FC<AppTextProps> = ({
   variant = 'regular',
   ...props
 }) => {
-  const { colors, fonts} = useTheme();
+  const {colors, fonts} = useTheme();
   const fontStyles = fonts[variant];
-  
+
   return (
     <Text
       style={[
@@ -24,12 +24,11 @@ const AppText: FC<AppTextProps> = ({
           color: colors.paleShade,
           fontFamily: fontStyles.fontFamily,
           fontSize: fontStyles.fontSize,
-          // textAlign: I18nManager.isRTL ? 'right' : 'left',
+          writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',
           fontWeight:
             Platform.OS === 'android'
               ? 'normal'
               : (fontStyles.fontWeight as TextStyle['fontWeight']),
-          writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'
         },
         style,
       ]}

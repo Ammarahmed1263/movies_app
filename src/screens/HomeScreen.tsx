@@ -1,16 +1,16 @@
-import { useTheme } from '@contexts/ThemeContext';
-import { useMoviesByCategory } from '@hooks/useMoviesByCategory';
+import {useTheme} from '@contexts/ThemeContext';
+import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import MoviesCarousel from '@organisms/MoviesCarousel';
 import MoviesSection from '@organisms/MoviesSection';
-import { vs } from '@styles/metrics';
-import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
+import {vs} from '@styles/metrics';
+import {useCallback, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
 
 function HomeScreen() {
-  const [refreshing, setRefreshing] = useState(false);  
+  const [refreshing, setRefreshing] = useState(false);
   const {t} = useTranslation();
-  const { theme, colors } = useTheme();
+  const {theme, colors} = useTheme();
   const {movies: now_playingMovies, loading: now_playingLoading} =
     useMoviesByCategory('now_playing');
   const {movies: trendingMovies, loading: trendingLoading} =
@@ -46,10 +46,9 @@ function HomeScreen() {
             progressBackgroundColor={colors.primary500}
           />
         }
-        contentContainerStyle={{paddingBottom: vs(70)}}
-      >
+        contentContainerStyle={{paddingBottom: vs(70)}}>
         <View>
-          <MoviesCarousel movies={trendingMovies} loading={trendingLoading}/>
+          <MoviesCarousel movies={trendingMovies} loading={trendingLoading} />
         </View>
         <View>
           <MoviesSection

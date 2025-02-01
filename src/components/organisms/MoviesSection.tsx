@@ -1,17 +1,17 @@
-import {FlatList, View, StyleSheet, Text} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
 import Button from '@atoms/AppButton';
+import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import {FlatList, I18nManager, StyleSheet, View} from 'react-native';
 
-import MovieCard from '@molecules/MovieCard';
-import {useTheme} from '@contexts/ThemeContext';
-import {FC, useEffect, useState} from 'react';
-import {Movie, MovieArray} from 'types/movieTypes';
-import {MovieListingNavigationProp} from 'types/mainStackTypes';
-import AppText from '@atoms/AppText';
-import {MovieCategory} from 'types/categoryTypes';
 import AppLoading from '@atoms/AppLoading';
+import AppText from '@atoms/AppText';
+import {useTheme} from '@contexts/ThemeContext';
+import MovieCard from '@molecules/MovieCard';
 import {hs, vs} from '@styles/metrics';
+import {FC} from 'react';
+import {MovieCategory} from 'types/categoryTypes';
+import {MovieListingNavigationProp} from 'types/mainStackTypes';
+import {Movie, MovieArray} from 'types/movieTypes';
 
 interface MoviesSectionProps {
   movies: MovieArray;
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginStart: hs(20),
+    marginStart: hs(15),
     marginEnd: hs(10),
     marginBottom: vs(10),
   },

@@ -1,27 +1,22 @@
-import {
-  View,
-  ScrollView,
-  StatusBar,
-  Share,
-  I18nManager,
-  StyleSheet,
-} from 'react-native';
-import {useCallback, useState, FC} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
 import Button from '@atoms/AppButton';
-import {useTheme} from '@contexts/ThemeContext';
-import CastList from '@organisms/CastList';
-import TextSeeMore from '@atoms/SeeMoreText';
-import {MovieDetailsScreenProps} from 'types/mainStackTypes';
-import {hs, ms, vs} from '@styles/metrics';
+import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
-import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
+import TextSeeMore from '@atoms/SeeMoreText';
+import {useTheme} from '@contexts/ThemeContext';
 import useMovieDetails from '@hooks/useMovieDetails';
-import YoutubeModal from '@organisms/YoutubeModal';
+import CastList from '@organisms/CastList';
 import CategoriesList from '@organisms/CategoriesList';
 import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
+import YoutubeModal from '@organisms/YoutubeModal';
+import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
+import {hs, ms, vs} from '@styles/metrics';
 import {createYouTubePlaylistUrl} from '@utils';
+import {FC, useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {ScrollView, Share, StatusBar, StyleSheet, View} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {MovieDetailsScreenProps} from 'types/mainStackTypes';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
@@ -82,9 +77,14 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 
   if (!movieDetails) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <AppText variant="heading">loading...</AppText>
-      </View>
+      <AppLoading
+        source={require('../assets/lottie/loading_details.json')}
+        speed={3.5}
+        size={ms(300)}
+        style={{
+          transform: [{rotate: '-5deg'}],
+        }}
+      />
     );
   }
 
@@ -110,7 +110,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
               customViewStyle={{flexDirection: 'row', alignItems: 'center'}}
               style={[styles.button, {flex: 4}]}
               onPress={() => setPlaying(true)}>
-              <Icon name="play" size={ms(23)} color={colors.paleShade} />
+              <Ionicons name="play" size={ms(23)} color={colors.paleShade} />
               <AppText
                 variant="bold"
                 style={{
@@ -123,8 +123,11 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
               customView
               onPress={handleShare}
               pressableStyle={{flex: 1}}
-              style={[styles.button, {flex: 1}]}>
-              <Icon name="share" size={28} color={colors.secondary600} />
+              style={[
+                styles.button,
+                {flex: 1, backgroundColor: colors.primary600},
+              ]}>
+              <Feather name="share" size={28} color={colors.secondary500} />
             </Button>
           </View>
           <TextSeeMore

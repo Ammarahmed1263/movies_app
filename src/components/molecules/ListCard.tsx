@@ -50,15 +50,11 @@ const ListCard: FC<UserListProps> = ({
         ]}>
         {isAdd ? (
           <View style={styles.addContent}>
-            <Feather
-              name="folder-plus"
-              size={50}
-              color={colors.primary700}
-            />
+            <Feather name="folder-plus" size={50} color={colors.primary700} />
           </View>
         ) : data.poster_path && data.poster_path.length > 0 ? (
           <Image
-            source={getImageUrl(data.poster_path)}
+            source={{uri: data.poster_path}}
             style={styles.image}
             resizeMode="cover"
           />

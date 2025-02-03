@@ -20,6 +20,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {getDeviceLanguage} from '@utils';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
+import {ms} from '@styles/metrics';
 
 interface SearchBarProps extends TextInputProps {
   keyword: string;
@@ -101,7 +102,7 @@ const SearchBar: FC<SearchBarProps> = ({
         ref={inputRef}
         placeholder={t('search movies')}
         placeholderTextColor={colors.primary700}
-        cursorColor={colors.primary700}
+        cursorColor={colors.secondaryShadow}
         value={keyword}
         onChangeText={text => setKeyword(text)}
         style={{
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1.6,
     borderBottomWidth: 1.6,
     borderWidth: 0.9,
-    borderRadius: 50,
+    borderRadius: ms(12),
     marginHorizontal: 15,
   },
   input: {

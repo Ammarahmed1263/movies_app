@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginBottom: vs(25),
   },
   image: {
-    flex: 1.2,
+    flex: 1.4,
     borderRadius: hs(8),
     resizeMode: 'cover',
     overflow: 'hidden',

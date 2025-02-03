@@ -1,12 +1,17 @@
-import axios from './axios'
+import axios from './axios';
 
-const apiClient = async (endpoint: string, params = {}, method = 'GET', data = null) => {
+const apiClient = async (
+  endpoint: string,
+  params = {},
+  method = 'GET',
+  data = null,
+) => {
   try {
     const response = await axios.request({
       method,
       url: endpoint,
       data,
-      params: {...axios.defaults.params, ...params}
+      params: {...axios.defaults.params, ...params},
     });
     return response.data;
   } catch (error: any) {

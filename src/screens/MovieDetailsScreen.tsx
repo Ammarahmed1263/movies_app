@@ -127,7 +127,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 styles.button,
                 {flex: 1, backgroundColor: colors.primary600},
               ]}>
-              <Feather name="share" size={28} color={colors.secondary500} />
+              <Feather name="share" size={30} color={colors.secondary500} />
             </Button>
           </View>
           <TextSeeMore

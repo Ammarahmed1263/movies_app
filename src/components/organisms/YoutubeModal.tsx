@@ -123,7 +123,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({
       ) : (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <AppText variant="heading" style={{textAlign: 'center'}}>
-            {'no_trailer'}
+            {t('no_trailer')}
           </AppText>
         </View>
       )}

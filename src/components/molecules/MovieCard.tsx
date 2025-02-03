@@ -3,7 +3,7 @@ import AppText from '@atoms/AppText';
 import MovieCardButton from '@atoms/MovieCardButton';
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import {hs, ms, vs} from '@styles/metrics';
+import {hs, ms, vs, width} from '@styles/metrics';
 import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils';
 import {FC} from 'react';
 import {I18nManager, StyleSheet, View, ViewStyle} from 'react-native';
@@ -62,7 +62,7 @@ const MovieCard: FC<MovieCardProps> = ({
         )}
         <Image
           source={getImageUrl(movie.poster_path)}
-          viewStyle={{overflow: 'hidden', borderRadius: ms(18)}}
+          viewStyle={{overflow: 'hidden', borderRadius: ms(13)}}
         />
       </View>
       <AppText
@@ -86,15 +86,15 @@ const styles = StyleSheet.create({
     flex: 1 / 2,
     justifyContent: 'center',
     alignItems: 'center',
-    width: hs(150),
+    width: width / 2.5,
   },
   imageContainer: {
     width: '100%',
-    height: hs(150) * (3 / 2),
-    borderTopWidth: 2.6,
-    borderBottomWidth: 2.6,
-    borderWidth: 1.2,
-    borderRadius: ms(20),
+    height: (width / 2.5) * (3 / 2),
+    borderTopWidth: vs(3),
+    borderBottomWidth: vs(3),
+    borderWidth: hs(1),
+    borderRadius: ms(15),
     overflow: 'hidden',
   },
   rating: {
@@ -102,12 +102,12 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     position: 'absolute',
     zIndex: 1,
-    top: 0,
-    right: 0,
+    top: -2,
+    right: -2,
     paddingHorizontal: hs(10),
     paddingVertical: hs(2),
     borderBottomStartRadius: hs(7),
-    borderTopEndRadius: hs(18),
+    // // borderTopEndRadius: hs(18),
     overflow: 'hidden',
   },
   ratingText: {

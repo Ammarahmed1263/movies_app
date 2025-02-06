@@ -142,6 +142,31 @@ function ProfileScreen() {
 
         <ListsFlatlist title={t('lists')} seeAll />
 
+        <View>
+          <View style={styles.sectionHeader}>
+            <Icon name="help-circle" size={25} color={colors.paleShade} />
+            <AppText variant="heading" style={{marginStart: hs(8)}}>
+              Support
+            </AppText>
+          </View>
+
+          <SettingItem
+            icon="headphones"
+            label="Contact Us"
+            onPress={() => {}}
+            type="select"
+            isToggled={languageArabic}
+          />
+
+          <SettingItem
+            icon="info"
+            label="About MovieCorn"
+            onPress={() => {}}
+            type="select"
+            isToggled={languageArabic}
+          />
+        </View>
+
         <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>
             <AppButton

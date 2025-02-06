@@ -150,6 +150,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
               name={isFavorite ? 'heart' : 'heart-outline'}
               size={25}
               color={isFavorite ? colors.error : colors.primary700}
+              style={{marginEnd: -1}}
             />
           </AppButton>
 
@@ -161,7 +162,12 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
             ]}
             customView
             flat>
-            <Icon name="trash-outline" size={25} color={colors.primary700} />
+            <Icon
+              name="trash-outline"
+              size={25}
+              color={colors.primary700}
+              style={{marginEnd: -1}}
+            />
           </AppButton>
         </View>
       </MovieListItem>
@@ -248,6 +254,8 @@ const styles = StyleSheet.create({
     marginHorizontal: hs(4),
     padding: hs(4),
     borderRadius: hs(8),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
     position: 'absolute',

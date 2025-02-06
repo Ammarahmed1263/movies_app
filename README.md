@@ -42,23 +42,23 @@ yarn ios
 
 // TODO:IN PROGRESS:
 
-- details screen(s) loading
-- use app responsive size "in progress"
-- create search layout "trending movies, top genres, popular actors"
-- add profile and home user collections "favorites, collections, gmail"
+- create search layout "trending movies, top genres, popular actors" + add home screen trailer section
 - notification for "want to watch movies, genres from past search"
-- introduce welcome screen![alt text](image.png) + handle language and theme there
+- image storage "imgur - cloudinary"
+- react native shared animation element
+- introduce welcome screen + handle language and theme there
+- use app responsive size "in progress"
+- check what happens in redux
+- fix mic recording with search screen and add to list action sheet
 
 // HIGH PRIORITY:
-- fix text alignment with arabic
-- support landscape mode "carousel, youtube modal"
+
+- support landscape mode "youtube modal"
 - add social login
 - find a way to set i18n language correctly 'from user firestore'
 - fix lag with arabic "deffered"
-- add home screen trailer section
 
 // LOWER PRIORITY:
-- create firebase types "user, collections, etc..."
+
 - fix native device theme switch not working
-- find fix for theme with navigation "works without bottom tabs borders"
-- add render views component for a dynamic home page
+- add admin account "change home layout"

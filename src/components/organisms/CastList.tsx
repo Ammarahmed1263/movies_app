@@ -5,7 +5,7 @@ import {CastMember, CastMemberArray} from 'types/castTypes';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import AppLoading from '@atoms/AppLoading';
-import {vs} from '@styles/metrics';
+import {hs, vs, width} from '@styles/metrics';
 
 const renderItem = ({item}: {item: CastMember}) => {
   return <Member details={item} />;
@@ -25,7 +25,7 @@ const CastList: FC<CastListProps> = ({cast, title}) => {
         variant="heading"
         style={{
           color: colors.paleShade,
-          marginHorizontal: 10,
+          marginHorizontal: hs(12),
         }}>
         {title}
       </AppText>
@@ -41,6 +41,7 @@ const CastList: FC<CastListProps> = ({cast, title}) => {
             <View
               style={{
                 flex: 1,
+                width: width,
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingVertical: vs(20),
@@ -51,7 +52,10 @@ const CastList: FC<CastListProps> = ({cast, title}) => {
             </View>
           )
         }
-        contentContainerStyle={{paddingHorizontal: 10, flexGrow: 1}}
+        contentContainerStyle={{paddingHorizontal: hs(10), flexGrow: 1}}
+        style={{
+          flexGrow: 0,
+        }}
         showsHorizontalScrollIndicator={false}
         horizontal
       />

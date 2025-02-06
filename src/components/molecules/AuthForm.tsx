@@ -11,7 +11,7 @@ import {loginSchema, signupSchema} from '@validation';
 import AppText from '@atoms/AppText';
 import {ms, vs} from '@styles/metrics';
 import AppLoading from '@atoms/AppLoading';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
   const initialValues = isLogin
@@ -32,7 +32,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
     if (emailRef.current) {
       emailRef.current.focus();
     }
-  })
+  });
 
   return (
     <Formik
@@ -105,15 +105,24 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
                 {status?.generalError}
               </AppText>
             )}
-            <Button onPress={handleSubmit} disabled={isSubmitting} style={{backgroundColor: isSubmitting ? 'transparent' : colors.secondary500}}>
+            <Button
+              onPress={handleSubmit}
+              disabled={isSubmitting}
+              style={{
+                backgroundColor: isSubmitting
+                  ? colors.transparent
+                  : colors.secondary500,
+              }}>
               {isSubmitting ? (
                 <AppLoading
                   source={require('../../assets/lottie/loading_fade.json')}
                   size={30}
                   speed={1.5}
                 />
+              ) : isLogin ? (
+                'Login'
               ) : (
-                isLogin ? 'Login' : 'Signup'
+                'Signup'
               )}
             </Button>
           </View>

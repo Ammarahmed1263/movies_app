@@ -24,6 +24,7 @@ const AppText: FC<AppTextProps> = ({
           color: colors.paleShade,
           fontFamily: fontStyles.fontFamily,
           fontSize: fontStyles.fontSize,
+          includeFontPadding: false,
           writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',
           fontWeight:
             Platform.OS === 'android'

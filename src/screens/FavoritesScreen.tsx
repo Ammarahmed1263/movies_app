@@ -1,5 +1,6 @@
 import AppButton from '@atoms/AppButton';
 import AppImage from '@atoms/AppImage';
+import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import MovieListItem from '@molecules/MovieListItem';
@@ -8,7 +9,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
 import {removeFavoriteMovie} from '@services/userService';
-import {hs, vs} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 import {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
@@ -18,6 +19,7 @@ import {MovieSummary} from 'types/movieTypes';
 
 function FavoritesScreen() {
   const [favorites, setFavorites] = useState<MovieSummary[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation<HomeNavigationProp>();
   const {colors} = useTheme();
   const {t} = useTranslation();
@@ -31,6 +33,7 @@ function FavoritesScreen() {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     const unsubscribe = firestore()
       .collection('users')
       .doc(auth().currentUser?.uid)
@@ -38,6 +41,7 @@ function FavoritesScreen() {
         documentSnapshot => {
           const data = documentSnapshot.data();
           setFavorites(data?.favoriteMovies.reverse() || []);
+          setLoading(false);
         },
         error => {
           console.error('Failed to retrieve movies', error);
@@ -65,6 +69,17 @@ function FavoritesScreen() {
           <Icon name="trash-outline" size={25} color={colors.primary700} />
         </AppButton>
       </MovieListItem>
+    );
+  }
+
+  if (loading) {
+    return (
+      <AppLoading
+        size={ms(80)}
+        speed={1.6}
+        style={{marginBottom: vs(80)}}
+        source={require('../assets/lottie/loading_fade.json')}
+      />
     );
   }
 
@@ -122,7 +137,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 0,
-    height: hs(250),
+    height: hs(220),
     aspectRatio: 1 / 1,
   },
 });

@@ -1,12 +1,14 @@
+import { useTheme } from '@contexts/ThemeContext';
+import { useAppDispatch } from '@hooks/useRedux';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { NavigationContainer } from '@react-navigation/native';
+import { clearUserId, setUserId } from '@redux/userSlice';
 import { useEffect, useMemo, useState } from 'react';
 import { StatusBar } from 'react-native';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { useTheme } from '@contexts/ThemeContext';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
-import { useAppDispatch, useAppSelector } from '@hooks/useRedux';
-import { clearUserId, selectUser, setUserId } from '@redux/userSlice';
+import '../sheets';
+import { SheetProvider } from 'react-native-actions-sheet';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
@@ -49,8 +51,10 @@ export default function AppNavigation() {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <StatusBar backgroundColor={colors.primary500} />
-      {user ? <MainStack colors={colors} fonts={fonts} /> : <AuthStack />}
+      <SheetProvider>
+        <StatusBar backgroundColor={colors.primary500} />
+        {user ? <MainStack colors={colors} fonts={fonts} /> : <AuthStack />}
+      </SheetProvider>
     </NavigationContainer>
   );
 }

@@ -1,24 +1,23 @@
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
+import {hs, vs} from '@styles/metrics';
 import React from 'react';
 import {
-  View,
-  Text,
+  I18nManager,
+  Platform,
   StyleSheet,
   TouchableOpacity,
-  // Switch,
-  I18nManager,
+  View,
 } from 'react-native';
+import {Switch, SwitchProps} from 'react-native-switch';
 import Icon from 'react-native-vector-icons/Feather';
-import { Switch, SwitchProps } from 'react-native-switch';
-import { hs, ms, vs } from '@styles/metrics';
 
 interface SettingsItemProps {
   icon: string;
   label: string;
   value?: string;
   type?: 'toggle' | 'select' | 'button';
-  switchProps?: SwitchProps
+  switchProps?: SwitchProps;
   isToggled?: boolean;
   onPress: () => void;
 }
@@ -30,9 +29,9 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
   type = 'button',
   isToggled,
   onPress,
-  switchProps
+  switchProps,
 }) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
     <TouchableOpacity
@@ -49,22 +48,22 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
         {type === 'toggle' ? (
           <Switch
             value={isToggled}
-            activeText=''
-            inActiveText=''
-            onValueChange= {onPress}
+            activeText=""
+            inActiveText=""
+            onValueChange={onPress}
             circleBorderWidth={0}
-            circleSize={20}
-            switchWidthMultiplier={2.5}
+            circleSize={22}
+            switchWidthMultiplier={2.3}
             barHeight={28}
-            switchLeftPx={2.8}
-            switchRightPx={2.8}
+            switchLeftPx={3.2}
+            switchRightPx={3.2}
             {...switchProps}
           />
         ) : (
           <>
             {value && (
               <AppText
-                style={[styles.settingsItemValue, {color: colors.primary600}]}>
+                style={[styles.settingsItemValue, {color: colors.primary700}]}>
                 {value}
               </AppText>
             )}
@@ -90,9 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: vs(12),
-    paddingHorizontal: hs(10),
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderBottomColor: '#eee',
+    paddingHorizontal: hs(15),
   },
   settingsItemLeft: {
     flexDirection: 'row',
@@ -104,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginEnd: hs(12),
+    marginEnd: hs(4),
     transform: [{scaleX: I18nManager.isRTL ? -1 : 1}],
   },
   settingsItemRight: {
@@ -113,5 +110,6 @@ const styles = StyleSheet.create({
   },
   settingsItemValue: {
     marginRight: hs(8),
+    marginTop: Platform.OS === 'ios' ? 0 : vs(2),
   },
 });

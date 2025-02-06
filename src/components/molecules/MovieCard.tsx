@@ -1,20 +1,16 @@
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import MovieCardButton from '@atoms/MovieCardButton';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '@contexts/ThemeContext';
-import {
-  convertToArabicNumerals,
-  formatVoteCount,
-  getImageUrl,
-  getDeviceLanguage
-} from '@utils';
 import Image from '@atoms/AppImage';
-import { FC } from 'react';
-import { Movie } from 'types/movieTypes';
-import { MovieDetailsNavigationProp } from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-import { hs, ms } from '@styles/metrics';
-import { FontVariants } from 'types/themeTypes';
+import MovieCardButton from '@atoms/MovieCardButton';
+import {useTheme} from '@contexts/ThemeContext';
+import {useNavigation} from '@react-navigation/native';
+import {hs, ms, vs, width} from '@styles/metrics';
+import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils';
+import {FC} from 'react';
+import {I18nManager, StyleSheet, View, ViewStyle} from 'react-native';
+import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
+import {Movie} from 'types/movieTypes';
+import {FontVariants} from 'types/themeTypes';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 interface MovieCardProps {
   movie: Movie;
@@ -32,34 +28,42 @@ const MovieCard: FC<MovieCardProps> = ({
   ImageViewStyle,
 }) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
     <MovieCardButton
       style={[styles.cardContainer, style ?? {}]}
-      onPress={() => navigation.push('MovieDetails', { id: movie.id })}>
+      onPress={() => navigation.push('MovieDetails', {id: movie.id})}>
       <View
         style={[
           styles.imageContainer,
-          { borderColor: colors.secondary500 },
+          {borderColor: colors.secondary500},
           ImageViewStyle,
         ]}>
         {!hideVote && (
-          <View style={styles.rating}>
+          <View style={[styles.rating, {backgroundColor: colors.secondary500}]}>
             <AppText
               variant="regular"
               style={{
                 ...styles.ratingText,
                 color: colors.primary500,
-                backgroundColor: colors.secondary500,
               }}>
-              {getDeviceLanguage() === 'ar'
+              {I18nManager.isRTL
                 ? convertToArabicNumerals(formatVoteCount(movie.vote_average))
                 : formatVoteCount(movie.vote_average)}
             </AppText>
+            <Icon
+              name="star"
+              size={12}
+              color={colors.primary500}
+              // style={{paddingBottom: vs(2)}}
+            />
           </View>
         )}
-        <Image source={getImageUrl(movie.poster_path)} viewStyle={{ overflow: 'hidden', borderRadius: ms(18) }} />
+        <Image
+          source={getImageUrl(movie.poster_path)}
+          viewStyle={{overflow: 'hidden', borderRadius: ms(13)}}
+        />
       </View>
       <AppText
         variant={titleVariant}
@@ -82,29 +86,32 @@ const styles = StyleSheet.create({
     flex: 1 / 2,
     justifyContent: 'center',
     alignItems: 'center',
-    width: hs(150),
+    width: width / 2.5,
   },
   imageContainer: {
     width: '100%',
-    height: hs(150) * (3 / 2),
-    borderTopWidth: 2.6,
-    borderBottomWidth: 2.6,
-    borderWidth: 1.2,
-    borderRadius: ms(20),
+    height: (width / 2.5) * (3 / 2),
+    borderTopWidth: vs(3),
+    borderBottomWidth: vs(3),
+    borderWidth: hs(1),
+    borderRadius: ms(15),
     overflow: 'hidden',
   },
   rating: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
     position: 'absolute',
     zIndex: 1,
-    top: 0,
-    right: 0,
+    top: -3,
+    right: -2,
+    paddingHorizontal: hs(10),
+    paddingVertical: hs(2),
     borderBottomStartRadius: hs(7),
-    borderTopEndRadius: hs(18),
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   ratingText: {
     fontSize: 12,
-    paddingHorizontal: 10,
+    paddingHorizontal: hs(2),
   },
   title: {
     textAlign: 'center',

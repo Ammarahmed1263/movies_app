@@ -1,41 +1,42 @@
-import { FC, useCallback, useEffect, useState } from "react"
-import { Alert, Linking, View } from "react-native";
-import AppButton from "@atoms/AppButton";
-import AppModal from "@atoms/AppModal";
-import Icon from 'react-native-vector-icons/Ionicons'
-import YoutubeIframe, { getYoutubeMeta } from "react-native-youtube-iframe";
-import { width } from "@styles/metrics";
-import AppText from "@atoms/AppText";
-import { useTheme } from "@contexts/ThemeContext";
-import { Trailer } from "types/movieTypes";
-import { createYouTubePlaylistUrl } from "@utils";
+import {FC, useCallback, useEffect, useState} from 'react';
+import {Alert, Linking, View} from 'react-native';
+import AppButton from '@atoms/AppButton';
+import AppModal from '@atoms/AppModal';
+import Icon from 'react-native-vector-icons/Ionicons';
+import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
+import {width} from '@styles/metrics';
+import AppText from '@atoms/AppText';
+import {useTheme} from '@contexts/ThemeContext';
+import {Trailer} from 'types/movieTypes';
+import {createYouTubePlaylistUrl} from '@utils';
+import {useTranslation} from 'react-i18next';
 
 interface YotubeModalProps {
   videos: Trailer[];
   visible: boolean;
   handleClose: () => void;
-  onStateChange: (state: string) => void;
 }
 
-const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onStateChange }) => {
-  const { colors } = useTheme();
+const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
+  const {colors} = useTheme();
+  const {t} = useTranslation();
   const [videoMeta, setVideoMeta] = useState<{
     title: string | null;
     author: string | null;
-  }>({ title: null, author: null });
+  }>({title: null, author: null});
 
   useEffect(() => {
     (async () => {
       if (videos.length > 0) {
         try {
           const response = await getYoutubeMeta(videos[0]?.key);
-          setVideoMeta({ title: response.title, author: response.author_name });
+          setVideoMeta({title: response.title, author: response.author_name});
         } catch (e) {
           console.log('unable to get video meta data: ', e);
         }
       }
-    })()
-  }, [videos, visible])
+    })();
+  }, [videos, visible]);
 
   const handleYoutubeRedirect = useCallback(async () => {
     try {
@@ -45,7 +46,6 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
       Alert.alert('error redirecting:', e.request.data);
     }
   }, [videos]);
-
 
   return (
     <AppModal visible={visible} handleClose={handleClose}>
@@ -59,7 +59,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
           <Icon name="close-circle" size={33} color={colors.primary700} />
         </AppButton>
       </View>
-      {videos.length > 0 ?
+      {videos.length > 0 ? (
         <>
           <View
             style={{
@@ -73,10 +73,9 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
               // videoId={videos[0].key}
               playList={videos.map(video => video.key)}
               play={visible}
-              onChangeState={onStateChange}
             />
           </View>
-          <View style={{ marginVertical: 5 }}>
+          <View style={{marginVertical: 5}}>
             <AppText
               variant="bold"
               style={{
@@ -92,7 +91,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
               By: {videoMeta.author}
             </AppText>
           </View>
-          <View style={{ justifyContent: 'flex-end' }}>
+          <View style={{justifyContent: 'flex-end'}}>
             <AppButton
               customView
               customViewStyle={{
@@ -100,7 +99,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              style={{ marginBottom: 12 }}
+              style={{marginBottom: 12}}
               onPress={handleYoutubeRedirect}>
               <Icon name="play" size={24} color={colors.paleShade} />
               <AppText
@@ -109,18 +108,20 @@ const YoutubeModal: FC<YotubeModalProps> = ({ videos, visible, handleClose, onSt
                   color: colors.paleShade,
                   marginTop: 2,
                 }}>
-                Open On Youtube
+                {t('watch_youtube')}
               </AppText>
             </AppButton>
           </View>
         </>
-        :
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <AppText variant="heading" style={{ textAlign: 'center' }}>Sorry, No Trailer Available</AppText>
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <AppText variant="heading" style={{textAlign: 'center'}}>
+            {t('no_trailer')}
+          </AppText>
         </View>
-      }
+      )}
     </AppModal>
-  )
-}
+  );
+};
 
 export default YoutubeModal;

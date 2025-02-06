@@ -1,19 +1,22 @@
-import {View, ScrollView, StatusBar, Share, I18nManager} from 'react-native';
-import {useCallback, useState, FC} from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '@atoms/AppButton';
-import {useTheme} from '@contexts/ThemeContext';
-import CastList from '@organisms/CastList';
-import TextSeeMore from '@atoms/SeeMoreText';
-import {MovieDetailsScreenProps} from 'types/mainStackTypes';
-import {hs, ms, vs} from '@styles/metrics';
+import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
-import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
+import TextSeeMore from '@atoms/SeeMoreText';
+import {useTheme} from '@contexts/ThemeContext';
 import useMovieDetails from '@hooks/useMovieDetails';
-import YoutubeModal from '@organisms/YoutubeModal';
+import CastList from '@organisms/CastList';
 import CategoriesList from '@organisms/CategoriesList';
 import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
-import { createYouTubePlaylistUrl } from '@utils';
+import YoutubeModal from '@organisms/YoutubeModal';
+import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
+import {hs, ms, vs} from '@styles/metrics';
+import {createYouTubePlaylistUrl} from '@utils';
+import {FC, useCallback, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {ScrollView, Share, StatusBar, StyleSheet, View} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {MovieDetailsScreenProps} from 'types/mainStackTypes';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
@@ -22,14 +25,9 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   const movieId = route.params.id;
   const {movieDetails, castMembers, videos, isFavorite, setIsFavorite} =
     useMovieDetails(movieId);
-  const [playing, setPlaying] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const {colors} = useTheme();
-
-  const onStateChange = useCallback((state: string) => {
-    if (state === 'ended') {
-      setPlaying(false);
-    }
-  }, []);
+  const {t} = useTranslation();
 
   const handleShare = useCallback(async () => {
     const playlist = createYouTubePlaylistUrl(videos);
@@ -73,15 +71,20 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 
   if (!movieDetails) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <AppText variant="heading">loading...</AppText>
-      </View>
+      <AppLoading
+        source={require('../assets/lottie/loading_details.json')}
+        speed={3.5}
+        size={ms(300)}
+        style={{
+          transform: [{rotate: '-5deg'}],
+        }}
+      />
     );
   }
 
   return (
     <>
-      {playing && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
+      {modalVisible && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <MovieDetailsPoster
           movieDetails={movieDetails}
@@ -94,41 +97,31 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
         <CategoriesList categories={movieDetails?.genres || []} />
 
         <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginVertical: vs(20),
-              marginHorizontal: hs(10),
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.buttonsContainer}>
             <Button
               customView
+              pressableStyle={{flex: 1}}
               customViewStyle={{flexDirection: 'row', alignItems: 'center'}}
-              style={{flex: 4, marginRight: hs(10), borderRadius: ms(18)}}
-              onPress={() => setPlaying(true)}>
-              <Icon name="play" size={ms(23)} color={colors.paleShade} />
+              style={[styles.button, {flex: 4}]}
+              onPress={() => setModalVisible(true)}>
+              <Ionicons name="play" size={ms(23)} color={colors.paleShade} />
               <AppText
                 variant="bold"
                 style={{
                   color: colors.paleShade,
-                  lineHeight: hs(35),
                 }}>
-                Watch Trailer
+                {t('watch_trailer')}
               </AppText>
             </Button>
             <Button
               customView
               onPress={handleShare}
-              style={{
-                flex: 1,
-                borderRadius: ms(18),
-                backgroundColor: colors.primary600,
-              }}>
-              <Icon
-                name="share-social-outline"
-                size={30}
-                color={colors.secondary600}
-              />
+              pressableStyle={{flex: 1}}
+              style={[
+                styles.button,
+                {flex: 1, backgroundColor: colors.primary600},
+              ]}>
+              <Feather name="share" size={30} color={colors.secondary500} />
             </Button>
           </View>
           <TextSeeMore
@@ -140,18 +133,31 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             }}
           />
 
-          <CastList cast={castMembers} title="Top Billed Cast" />
+          <CastList cast={castMembers} title={t('top_billed_cast')} />
         </View>
       </ScrollView>
 
       <YoutubeModal
         videos={videos}
-        visible={playing}
-        handleClose={() => setPlaying(false)}
-        onStateChange={onStateChange}
+        visible={modalVisible}
+        handleClose={() => setModalVisible(false)}
       />
     </>
   );
 };
 
 export default MovieDetailsScreen;
+
+const styles = StyleSheet.create({
+  buttonsContainer: {
+    flexDirection: 'row',
+    marginVertical: vs(20),
+    marginHorizontal: hs(10),
+    minHeight: vs(60),
+    justifyContent: 'space-between',
+  },
+  button: {
+    marginRight: hs(10),
+    borderRadius: ms(10),
+  },
+});

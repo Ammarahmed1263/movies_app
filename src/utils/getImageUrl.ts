@@ -8,6 +8,6 @@ export enum ImageSize {
   ORIGINAL = 'original',
 }
 
-export default function getImageUrl(path: string | undefined, size: ImageSize = ImageSize.ORIGINAL) {
+export default function getImageUrl(path: string | undefined | null, size: ImageSize = ImageSize.ORIGINAL) {
   return (path ? {uri: `${IMAGE_BASE_URL}${size}${path}`} : undefined);
 };

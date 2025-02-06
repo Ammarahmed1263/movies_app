@@ -1,24 +1,20 @@
-import {useState, FC, useEffect} from 'react';
+import {hs} from '@styles/metrics';
+import {FC, useState} from 'react';
 import {
   Image,
+  ImageProps,
+  ImageSourcePropType,
+  ImageStyle,
   StyleSheet,
   View,
-  ActivityIndicator,
-  ImageProps,
   ViewStyle,
-  ImageStyle,
-  ImageURISource,
-  ImageSourcePropType,
 } from 'react-native';
-import {useTheme} from '@contexts/ThemeContext';
 import {imagePlaceHolder} from '../../constants';
-import LottieView from 'lottie-react-native';
 import AppLoading from './AppLoading';
-import { hs } from '@styles/metrics';
 
 interface AppImageProps extends ImageProps {
-  source?: ImageSourcePropType | undefined;
-  placeholder?: string;
+  source?: ImageSourcePropType;
+  placeholder?: 'movie' | 'person';
   viewStyle?: ViewStyle;
   style?: ImageStyle;
   loadingSize?: 'small' | 'large';
@@ -36,7 +32,6 @@ const AppImage: FC<AppImageProps> = ({
     placeholder === 'movie' ? imagePlaceHolder.MOVIE : imagePlaceHolder.PERSON;
   const [isLoading, setIsLoading] = useState(true);
 
-
   const handleLoadEnd = () => {
     setIsLoading(false);
   };
@@ -47,7 +42,7 @@ const AppImage: FC<AppImageProps> = ({
         <AppLoading
           size={loadingSize === 'small' ? hs(20) : hs(35)}
           speed={2.5}
-          style={{position: 'absolute'}}
+          // containerStyle={{backgroundColor: 'red'}}
           source={require('../../assets/lottie/loading_fade.json')}
         />
       )}
@@ -64,17 +59,18 @@ const AppImage: FC<AppImageProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   image: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    position: 'absolute',
   },
 });
 

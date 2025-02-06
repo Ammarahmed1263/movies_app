@@ -1,22 +1,34 @@
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-import {useEffect, useState} from 'react';
-import MoviesList from '@organisms/MoviesList';
-import {View} from 'react-native';
-import AppText from '@atoms/AppText';
 import AppButton from '@atoms/AppButton';
-import {HomeNavigationProp} from 'types/mainTabsTypes';
-import {useNavigation} from '@react-navigation/native';
-import {hs, vs, width} from '@styles/metrics';
 import AppImage from '@atoms/AppImage';
-import LottieView from 'lottie-react-native';
-import FavoriteCard from '@molecules/FavoriteCard';
-import { Movie } from 'types/movieTypes';
+import AppText from '@atoms/AppText';
+import {useTheme} from '@contexts/ThemeContext';
+import MovieListItem from '@molecules/MovieListItem';
+import MoviesList from '@organisms/MoviesList';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
+import {removeFavoriteMovie} from '@services/userService';
+import {hs, vs} from '@styles/metrics';
+import {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {StyleSheet, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {HomeNavigationProp} from 'types/mainTabsTypes';
+import {MovieSummary} from 'types/movieTypes';
 
 function FavoritesScreen() {
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [favorites, setFavorites] = useState<MovieSummary[]>([]);
   const navigation = useNavigation<HomeNavigationProp>();
-  console.log('favorite ids: ', favoriteMovies);
+  const {colors} = useTheme();
+  const {t} = useTranslation();
+
+  const handleDelete = useCallback(async (id: number) => {
+    try {
+      await removeFavoriteMovie(id);
+    } catch (error) {
+      console.log('movie error occurred: ', error);
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -25,7 +37,7 @@ function FavoritesScreen() {
       .onSnapshot(
         documentSnapshot => {
           const data = documentSnapshot.data();
-          setFavoriteMovies(data?.favoriteMovies.reverse() || []);
+          setFavorites(data?.favoriteMovies.reverse() || []);
         },
         error => {
           console.error('Failed to retrieve movies', error);
@@ -36,45 +48,50 @@ function FavoritesScreen() {
     return () => unsubscribe();
   }, []);
 
-  function renderFavorite({item}: {item: Movie}) {
-    return <FavoriteCard movie={item} />;
+  function renderFavorite({item}: {item: MovieSummary}) {
+    return (
+      <MovieListItem movie={item}>
+        <AppButton
+          customViewStyle={[
+            styles.trash,
+            {
+              backgroundColor: colors.transparent,
+            },
+          ]}
+          style={{marginStart: hs(5)}}
+          onPress={() => handleDelete(item.id)}
+          customView
+          flat>
+          <Icon name="trash-outline" size={25} color={colors.primary700} />
+        </AppButton>
+      </MovieListItem>
+    );
   }
 
   return (
     <MoviesList
-      data={favoriteMovies}
+      data={favorites}
       renderItem={renderFavorite}
-      contentContainerStyle={{flexGrow: 1, paddingBottom: vs(70)}}
+      contentContainerStyle={styles.listContent}
       snapStyle={{bottom: vs(100)}}
       ListEmptyComponent={
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: hs(15),
-          }}>
-          {/* <LottieView
-            source={require('../assets/lottie/no_wifi.json')}
-            style={{width: '90%', aspectRatio: 1 / 1}}
-            autoPlay
-            loop
-          /> */}
+        <View style={styles.noFavorite}>
           <AppImage
-            source={require('../assets/images/no-favorites.png')}
-            style={{height: 250, aspectRatio: 1 / 1}}
+            source={require('../assets/images/no_favorites.png')}
+            viewStyle={styles.image}
           />
-          <AppText variant='heading' style={{textAlign: 'center', marginBottom: vs(8)}}>
-            No Favorites
+          <AppText variant="heading" style={styles.text}>
+            {t('no_favorites')}
           </AppText>
-          <AppText variant='body' style={{textAlign: 'center', marginBottom: vs(8)}}>
-            You can favorite a movie by clicking on the heart that shows up when
-            you view movie details (top right).
+          <AppText
+            variant="body"
+            style={{textAlign: 'center', marginBottom: vs(8)}}>
+            {t('favorite_action')}
           </AppText>
           <AppButton
             onPress={() => navigation.navigate('Search')}
-            style={{height: 50, width: '70%'}}>
-            Create Favorites
+            style={{width: '70%', marginTop: vs(10)}}>
+            {t('create_favorite_list')}
           </AppButton>
         </View>
       }
@@ -83,3 +100,29 @@ function FavoritesScreen() {
 }
 
 export default FavoritesScreen;
+
+const styles = StyleSheet.create({
+  trash: {
+    padding: hs(4),
+    borderRadius: hs(8),
+  },
+  noFavorite: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: hs(15),
+  },
+  listContent: {
+    flexGrow: 1,
+    paddingBottom: vs(70),
+  },
+  text: {
+    textAlign: 'center',
+    marginBottom: vs(8),
+  },
+  image: {
+    flex: 0,
+    height: hs(250),
+    aspectRatio: 1 / 1,
+  },
+});

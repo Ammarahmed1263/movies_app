@@ -1,16 +1,23 @@
-import { useTheme } from '@contexts/ThemeContext';
-import { useMoviesByCategory } from '@hooks/useMoviesByCategory';
+import {useTheme} from '@contexts/ThemeContext';
+import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import MoviesCarousel from '@organisms/MoviesCarousel';
 import MoviesSection from '@organisms/MoviesSection';
-import { vs } from '@styles/metrics';
-import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
+import MovieVideoSection from '@organisms/MovieVideoSection';
+import {vs} from '@styles/metrics';
+import {useCallback, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native';
 
 function HomeScreen() {
-  const [refreshing, setRefreshing] = useState(false);  
+  const [refreshing, setRefreshing] = useState(false);
   const {t} = useTranslation();
-  const { theme, colors } = useTheme();
+  const {theme, colors} = useTheme();
   const {movies: now_playingMovies, loading: now_playingLoading} =
     useMoviesByCategory('now_playing');
   const {movies: trendingMovies, loading: trendingLoading} =
@@ -46,25 +53,16 @@ function HomeScreen() {
             progressBackgroundColor={colors.primary500}
           />
         }
-        contentContainerStyle={{paddingBottom: vs(70)}}
-      >
+        contentContainerStyle={{paddingBottom: vs(70)}}>
         <View>
-          <MoviesCarousel movies={trendingMovies} loading={trendingLoading}/>
+          <MoviesCarousel movies={trendingMovies} loading={trendingLoading} />
         </View>
         <View>
           <MoviesSection
             movies={now_playingMovies}
             loading={now_playingLoading}
             category="now_playing"
-            // time_window="day"
             topic={t('now_playing')}
-            seeAll
-          />
-          <MoviesSection
-            movies={upcomingMovies}
-            loading={upcomingLoading}
-            category="upcoming"
-            topic={t('upcoming')}
             seeAll
           />
           <MoviesSection
@@ -72,6 +70,12 @@ function HomeScreen() {
             loading={top_ratedLoading}
             category="top_rated"
             topic={t('top_rated')}
+            seeAll
+          />
+          <MovieVideoSection
+            data={upcomingMovies}
+            category="upcoming"
+            topic={t('upcoming')}
             seeAll
           />
           <MoviesSection

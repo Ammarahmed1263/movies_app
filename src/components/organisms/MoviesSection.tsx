@@ -1,17 +1,17 @@
-import { FlatList, View, StyleSheet, Text } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 import Button from '@atoms/AppButton';
+import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import {FlatList, I18nManager, StyleSheet, View} from 'react-native';
 
-import MovieCard from '@molecules/MovieCard';
-import { useTheme } from '@contexts/ThemeContext';
-import { FC, useEffect, useState } from 'react';
-import { Movie, MovieArray } from 'types/movieTypes';
-import { MovieListingNavigationProp } from 'types/mainStackTypes';
-import AppText from '@atoms/AppText';
-import { MovieCategory } from 'types/categoryTypes';
 import AppLoading from '@atoms/AppLoading';
-import { hs, vs } from '@styles/metrics';
+import AppText from '@atoms/AppText';
+import {useTheme} from '@contexts/ThemeContext';
+import MovieCard from '@molecules/MovieCard';
+import {hs, vs} from '@styles/metrics';
+import {FC} from 'react';
+import {MovieCategory} from 'types/categoryTypes';
+import {MovieListingNavigationProp} from 'types/mainStackTypes';
+import {Movie, MovieArray} from 'types/movieTypes';
 
 interface MoviesSectionProps {
   movies: MovieArray;
@@ -23,7 +23,7 @@ interface MoviesSectionProps {
   time_window?: 'day' | 'week';
 }
 
-const renderMovie = ({ item }: { item: Movie }) => {
+const renderMovie = ({item}: {item: Movie}) => {
   return <MovieCard movie={item} />;
 };
 const MoviesSection: FC<MoviesSectionProps> = ({
@@ -32,18 +32,18 @@ const MoviesSection: FC<MoviesSectionProps> = ({
   topic,
   seeAll = false,
   length = 20,
-  category,
+  category = 'now_playing',
   time_window,
 }) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation<MovieListingNavigationProp>();
-  const { t } = useTranslation();
+  const {t} = useTranslation();
 
   return (
-    <View style={{ ...styles.container, backgroundColor: colors.primary500 }}>
+    <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
         <AppText variant="heading">{topic}</AppText>
-        {seeAll && category && (
+        {seeAll && (
           <Button
             variant="body"
             textStyle={{
@@ -51,39 +51,57 @@ const MoviesSection: FC<MoviesSectionProps> = ({
               color: colors.secondary500,
             }}
             onPress={() =>
-              navigation.navigate('MovieListing', { category, time_window })
+              navigation.navigate('MovieListing', {category, time_window})
             }
             flat>
             {t('see_all')}
           </Button>
         )}
       </View>
-      {loading ?
-        <View style={{ alignItems: 'center' }}>
-          <AppText variant='heading'>{t('Loading...')}</AppText>
+      {loading ? (
+        <View style={{alignItems: 'center'}}>
+          <AppText variant="heading">{t('Loading...')}</AppText>
         </View>
-        :
+      ) : (
         <FlatList
           data={movies.slice(0, length)}
           keyExtractor={movie => movie.id + ''}
           ListEmptyComponent={
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              {loading ? (
-                <AppLoading source={require('../../assets/lottie/loading_fade.json')}/>
-              ) : (
-                <AppText variant='subheading'>{t('Sorry, no movies found')}</AppText>
-              )}
-            </View>
+            loading ? (
+              <AppLoading
+                source={require('../../assets/lottie/loading_fade.json')}
+              />
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <AppText variant="subheading">
+                  {t('Sorry, no movies found')}
+                </AppText>
+              </View>
+            )
           }
           maxToRenderPerBatch={10}
           scrollEventThrottle={16}
           initialNumToRender={5}
-          contentContainerStyle={{ flexGrow: 1, gap: hs(10), paddingHorizontal: hs(15) }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            gap: hs(10),
+            paddingHorizontal: hs(15),
+          }}
           renderItem={renderMovie}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          getItemLayout={(_, index) => ({ length: 100, offset: 100 * index, index })}
-        />}
+          getItemLayout={(_, index) => ({
+            length: 100,
+            offset: 100 * index,
+            index,
+          })}
+        />
+      )}
     </View>
   );
 };
@@ -98,8 +116,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginStart: hs(20),
+    marginStart: hs(15),
     marginEnd: hs(10),
+    marginBottom: vs(10),
   },
   button: {
     textTransform: 'none',

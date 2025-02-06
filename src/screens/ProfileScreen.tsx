@@ -1,36 +1,31 @@
+import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
-import i18n from '../i18n';
-import {useEffect, useState} from 'react';
-import {
-  Alert,
-  I18nManager,
-  Modal,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Switch,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import SettingItem from '@molecules/SettingItem';
+import ListsFlatlist from '@organisms/ListsFlatlist';
+import ProfileHeader from '@organisms/ProfileHeader';
 import auth from '@react-native-firebase/auth';
-import AppButton from '@atoms/AppButton';
 import {userLogout} from '@services/authService';
-import RNRestart from 'react-native-restart';
 import {
   deleteUser,
   getCurrentUserId,
   updateUserPreferences,
 } from '@services/userService';
 import {hs, vs, width} from '@styles/metrics';
-import SettingItem from '@molecules/SettingItem';
-import Icon from 'react-native-vector-icons/Feather';
-import CollectionsList from '@organisms/CollectionsList';
+import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import ProfileHeader from '@organisms/ProfileHeader';
-import AppModal from '@atoms/AppModal';
+import {
+  I18nManager,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {SheetManager} from 'react-native-actions-sheet';
+import RNRestart from 'react-native-restart';
+import Icon from 'react-native-vector-icons/Feather';
+import i18n from '../i18n';
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
@@ -95,23 +90,14 @@ function ProfileScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="never"
-        contentContainerStyle={{flexGrow: 1}}>
+        contentContainerStyle={styles.scrollContainer}>
         <ProfileHeader />
         <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingTop: vs(10),
-              paddingHorizontal: hs(10),
-            }}>
-            <Icon
-              name="settings"
-              size={25}
-              style={{paddingEnd: hs(10)}}
-              color={colors.paleShade}
-            />
-            <AppText variant="heading">{t('preferences')}</AppText>
+          <View style={styles.sectionHeader}>
+            <Icon name="settings" size={25} color={colors.paleShade} />
+            <AppText variant="heading" style={{marginStart: hs(8)}}>
+              {t('preferences')}
+            </AppText>
           </View>
           <SettingItem
             icon="bell"
@@ -127,17 +113,17 @@ function ProfileScreen() {
             type="toggle"
             isToggled={themeActive}
             switchProps={{
-              backgroundActive: colors.primary600,
+              backgroundActive: colors.primary700,
               backgroundInactive: colors.secondary500,
-              circleActiveColor: '#fefefe',
-              circleInActiveColor: '#fefefe',
+              circleActiveColor: colors.primary500,
+              circleInActiveColor: colors.primary500,
               circleBorderActiveColor: colors.secondary500,
               circleBorderInactiveColor: colors.primary700,
               renderInsideCircle: () => {
                 return (
                   <Icon
                     name={themeActive ? 'moon' : 'sun'}
-                    color="#333333"
+                    color={colors.paleShade}
                     size={15}
                   />
                 );
@@ -149,25 +135,56 @@ function ProfileScreen() {
             label={t('language')}
             onPress={toggleAppLanguage}
             type="select"
-            value={i18n.language === 'ar' ? 'Arabic' : 'English'}
+            value={i18n.language === 'ar' ? t('arabic') : t('english')}
             isToggled={languageArabic}
           />
         </View>
 
-        <CollectionsList title={t('collections')} seeAll />
+        <ListsFlatlist title={t('lists')} seeAll />
+
+        <View>
+          <View style={styles.sectionHeader}>
+            <Icon name="help-circle" size={25} color={colors.paleShade} />
+            <AppText variant="heading" style={{marginStart: hs(8)}}>
+              Support
+            </AppText>
+          </View>
+
+          <SettingItem
+            icon="headphones"
+            label="Contact Us"
+            onPress={() => {}}
+            type="select"
+            isToggled={languageArabic}
+          />
+
+          <SettingItem
+            icon="info"
+            label="About MovieCorn"
+            onPress={() => {}}
+            type="select"
+            isToggled={languageArabic}
+          />
+        </View>
 
         <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>
             <AppButton
               variant="regular"
               onPress={handleSignOut}
-              flat
-              style={styles.flatButton}>
+              style={styles.flatButton}
+              flat>
               {t('sign_out')}
             </AppButton>
             <AppButton
               variant="body"
-              onPress={() => Alert.alert('i was clicked')}
+              onPress={() =>
+                SheetManager.show('delete-account', {
+                  payload: {
+                    onDelete: handleDeleteAccount,
+                  },
+                })
+              }
               style={styles.flatButton}
               textStyle={{color: colors.error}}
               flat>
@@ -175,7 +192,7 @@ function ProfileScreen() {
             </AppButton>
           </View>
           <AppText variant="caption" style={styles.copyrights}>
-            Copyright©2023-2024 Ammar Ahmed, All rights reserved
+            {t('copyrights')}
           </AppText>
         </View>
       </ScrollView>
@@ -188,8 +205,18 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
-    marginTop: vs(-12),
+    marginTop: Platform.OS === 'ios' ? vs(-10) : 0,
+    paddingTop: Platform.OS === 'ios' ? 0 : vs(30),
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingTop: vs(25),
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    paddingTop: vs(10),
+    paddingHorizontal: hs(15),
   },
   flatButton: {
     minHeight: 30,

@@ -1,15 +1,16 @@
 import AppText from '@atoms/AppText';
-import { useTheme } from '@contexts/ThemeContext';
+import {useTheme} from '@contexts/ThemeContext';
+import {ms} from '@styles/metrics';
 import {FC} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import { Genre } from 'types/movieTypes';
+import {Genre} from 'types/movieTypes';
 
 interface CategoriesListProps {
   categories: Genre[];
 }
 
 const CategoriesList: FC<CategoriesListProps> = ({categories}) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
     <ScrollView
@@ -44,8 +45,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     paddingHorizontal: 10,
     paddingVertical: 3,
-    borderRadius: 15,
+    borderRadius: ms(6),
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});

@@ -75,10 +75,11 @@
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow access to the photo library for selecting images</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We need access to your microphone to enable voice search functionality for finding movies quickly and easily.</string>
-
+	<string>This app requires microphone access to enable voice search for movies.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>We need access to speech recognition to allow you to search for movies using your voice.</string>
+	<string>This app requires speech recognition access to understand movie titles and search for them using voice commands.</string>
 </dict>
 </plist>

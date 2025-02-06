@@ -11,13 +11,13 @@ import {
 import {useTranslation} from 'react-i18next';
 import {MainTabsParamList} from 'types/mainTabsTypes';
 import {MainTabsProps} from 'types/mainStackTypes';
-import { hs, width } from '@styles/metrics';
-import { useTheme } from '@contexts/ThemeContext';
+import {hs, ms, width} from '@styles/metrics';
+import {useTheme} from '@contexts/ThemeContext';
 
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 
 const MainTabs: FC<MainTabsProps> = () => {
-  const { colors, fonts } = useTheme();
+  const {colors, fonts} = useTheme();
   const {t} = useTranslation();
 
   function getTabBarIcon(
@@ -36,7 +36,6 @@ const MainTabs: FC<MainTabsProps> = () => {
         headerShown: false,
         tabBarStyle: {
           ...styles.tabBar,
-          // backgroundColor: colors.primary500,
           borderColor: colors.secondary600,
         },
         tabBarLabelStyle: {
@@ -93,19 +92,19 @@ export default MainTabs;
 
 const styles = StyleSheet.create({
   tabBar: {
-    borderRadius: 30,
     width: '90%',
-    paddingVertical: 6,
+    height: hs(60),
     position: 'absolute',
     bottom: hs(25),
     left: width / 2 - width * 0.45,
     overflow: 'hidden',
-    height: 60,
+    borderRadius: ms(30),
     borderWidth: 1,
     borderTopWidth: 1.6,
     borderBottomWidth: 1.6,
     borderRightWidth: 0.9,
     borderLeftWidth: 0.9,
     paddingBottom: 0,
+    paddingVertical: 6,
   },
 });

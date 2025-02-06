@@ -1,16 +1,19 @@
-import {FC, useEffect} from 'react';
-import {ActivityIndicator, View} from 'react-native';
-import AppText from '@atoms/AppText';
-import {useTheme} from '@contexts/ThemeContext';
-import MoviesList from '@organisms/MoviesList';
-import {MovieListingScreenProps} from 'types/mainStackTypes';
-import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import AppLoading from '@atoms/AppLoading';
-import { hs, vs } from '@styles/metrics';
+import AppText from '@atoms/AppText';
+import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
+import MoviesList from '@organisms/MoviesList';
+import {hs, vs} from '@styles/metrics';
+import {FC} from 'react';
+import {View} from 'react-native';
+import {MovieListingScreenProps} from 'types/mainStackTypes';
+import {MovieSummary} from 'types/movieTypes';
 
 const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
   const {category, time_window} = route.params;
-  const {movies, page, total_pages, handlePagination} = useMoviesByCategory(category, time_window);
+  const {movies, page, total_pages, handlePagination} = useMoviesByCategory(
+    category,
+    time_window,
+  );
 
   if (movies.length === 0) {
     return (
@@ -22,21 +25,23 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
 
   return (
     <MoviesList
-      data={movies}
+      data={movies as MovieSummary[]}
       onEndReached={handlePagination}
       keyExtractor={movie => movie.id.toString() + category}
       numColumns={2}
-      columnWrapperStyle={{justifyContent: 'flex-start', gap: hs(12), marginVertical: vs(10)}}
+      columnWrapperStyle={{
+        justifyContent: 'flex-start',
+        gap: hs(12),
+        marginVertical: vs(10),
+      }}
       contentContainerStyle={{flexGrow: 1, marginHorizontal: hs(10)}}
       ListFooterComponent={
         page < total_pages && movies.length !== 0 ? (
-          <View style={{alignItems: 'center', paddingBottom: vs(20)}}>
-            <AppLoading
-              size={35}
-              speed={2.5}
-              source={require('../assets/lottie/loading_fade.json')}
-            />
-          </View>
+          <AppLoading
+            size={35}
+            speed={2.5}
+            source={require('../assets/lottie/loading_fade.json')}
+          />
         ) : null
       }
     />

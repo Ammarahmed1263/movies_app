@@ -11,16 +11,18 @@ import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode, useState} from 'react';
 import AppText from './AppText';
 import {FontVariants} from 'types/themeTypes';
+import {hs, ms} from '@styles/metrics';
 
-interface AppButtonProps extends PressableProps{
+interface AppButtonProps extends PressableProps {
   flat?: boolean;
   variant?: FontVariants;
   textStyle?: TextStyle;
   style?: ViewStyle | ViewStyle[];
   onPress: () => void;
   customView?: ReactNode;
-  customViewStyle?: ViewStyle;
-  children: ReactNode;
+  customViewStyle?: ViewStyle | ViewStyle[];
+  pressableStyle?: ViewStyle;
+  children?: ReactNode;
 }
 
 const AppButton: FC<AppButtonProps> = ({
@@ -32,6 +34,7 @@ const AppButton: FC<AppButtonProps> = ({
   onPress,
   customView,
   customViewStyle,
+  pressableStyle,
   ...props
 }) => {
   const {colors} = useTheme();
@@ -48,18 +51,20 @@ const AppButton: FC<AppButtonProps> = ({
         styles.buttonContainer,
         {backgroundColor: colors.secondary500},
         style,
+        !flat && clicked && {opacity: 0.5},
         flat && {backgroundColor: '', elevation: 0},
       ]}>
       <Pressable
         android_ripple={flat ? null : {color: colors.secondary600}}
+        hitSlop={ms(15)}
         style={[
+          styles.general,
           !flat && styles.innerButton,
-          flat && clicked && {opacity: 0.5},
-          {justifyContent: 'center', flex: 1},
+          flat && clicked && {opacity: 0.7},
+          pressableStyle,
         ]}
         onPress={pressAction}
-        {...props}
-        >
+        {...props}>
         {customView ? (
           <View style={customViewStyle}>{children}</View>
         ) : (
@@ -85,20 +90,16 @@ export default AppButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    borderRadius: 25,
-    margin: 2,
-    minHeight: 50,
+    borderRadius: hs(8),
+    margin: hs(2),
     overflow: 'hidden',
   },
-  innerButton: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+  general: {
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 50,
-    width: '100%',
-    height: '100%',
+  },
+  innerButton: {
+    padding: hs(10),
   },
   text: {
     textTransform: 'capitalize',

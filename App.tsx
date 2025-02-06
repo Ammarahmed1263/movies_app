@@ -2,7 +2,6 @@ import ThemeProvider from './src/contexts/ThemeContext';
 import AppNavigation from './src/navigation/AppNavigation';
 import {Alert, I18nManager, Platform} from 'react-native';
 import {useEffect, useState} from 'react';
-import RNRestart from 'react-native-restart';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import i18n from './src/i18n';
 import useNetworkStatus from '@hooks/useNetworkStatus';

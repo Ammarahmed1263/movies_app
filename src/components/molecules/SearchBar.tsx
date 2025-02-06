@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInputProps,
   I18nManager,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Voice, {
@@ -17,25 +19,31 @@ import Voice, {
 import {useTheme} from '@contexts/ThemeContext';
 import {getDeviceLanguage} from '@utils';
 import {useTranslation} from 'react-i18next';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+import {hs, ms} from '@styles/metrics';
 
 interface SearchBarProps extends TextInputProps {
   keyword: string;
   setKeyword: Dispatch<SetStateAction<string>>;
+  viewStyle?: ViewStyle;
 }
 
-const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword, ...props}) => {
+const SearchBar: FC<SearchBarProps> = ({
+  setKeyword,
+  keyword,
+  viewStyle,
+  ...props
+}) => {
   const [recording, setRecording] = useState(false);
   const {colors, fonts} = useTheme();
   const {t} = useTranslation();
   const inputRef = useRef<TextInput>(null);
 
-
   useFocusEffect(() => {
     if (inputRef.current && !keyword) {
       inputRef.current?.focus();
-    }  
-  })
+    }
+  });
 
   useEffect(() => {
     Voice.onSpeechStart = onSpeechStartHandler;
@@ -51,15 +59,15 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword, ...props}) => {
     function onSpeechEndHandler(e: SpeechEndEvent) {
       console.log('onSpeechEnd: ', e);
     }
-    
+
     function onSpeechResultsHandler(e: SpeechResultsEvent) {
       setKeyword(e?.value?.[0] ?? '');
       setRecording(false);
       console.log('onSpeechResult: ', e);
     }
-    
+
     function onSpeechErrorHandler(e: SpeechErrorEvent) {
-      setRecording(false)
+      setRecording(false);
       console.log('onSpeechError: ', e);
     }
 
@@ -85,16 +93,16 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword, ...props}) => {
 
   return (
     <View
-      style={{
-        ...styles.searchBar,
-        borderColor: colors.secondary600,
-        backgroundColor: colors.primary500,
-      }}>
+      style={[
+        styles.searchBar,
+        {borderColor: colors.secondary600, backgroundColor: colors.primary500},
+        viewStyle,
+      ]}>
       <TextInput
         ref={inputRef}
         placeholder={t('search movies')}
         placeholderTextColor={colors.primary700}
-        cursorColor={colors.primary700}
+        cursorColor={colors.secondaryShadow}
         value={keyword}
         onChangeText={text => setKeyword(text)}
         style={{
@@ -105,7 +113,15 @@ const SearchBar: FC<SearchBarProps> = ({setKeyword, keyword, ...props}) => {
         {...props}
       />
       <TouchableOpacity
-        style={[styles.iconContainer, recording && {backgroundColor: colors.link}]}
+        style={[
+          styles.iconContainer,
+          !recording && {
+            borderRadius: 0,
+            borderStartWidth: 1,
+            borderColor: colors.primary700,
+          },
+          recording && {backgroundColor: colors.link},
+        ]}
         onPress={onStartButtonPress}>
         <Icon
           name={recording ? 'mic-off' : 'mic-outline'}
@@ -127,21 +143,20 @@ const styles = StyleSheet.create({
     borderTopWidth: 1.6,
     borderBottomWidth: 1.6,
     borderWidth: 0.9,
-    borderRadius: 50,
+    borderRadius: ms(12),
     marginHorizontal: 15,
   },
   input: {
     flex: 8,
-    paddingHorizontal: 15,
-    textAlign: I18nManager.isRTL ? 'right' : 'left'
+    textAlign: I18nManager.isRTL ? 'right' : 'left',
+    paddingStart: hs(15),
   },
   iconContainer: {
     flex: 1,
     margin: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 30,
-    padding: 7,
-    paddingLeft: 10,
+    borderRadius: hs(10),
+    padding: hs(4),
   },
 });

@@ -25,15 +25,9 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   const movieId = route.params.id;
   const {movieDetails, castMembers, videos, isFavorite, setIsFavorite} =
     useMovieDetails(movieId);
-  const [playing, setPlaying] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const {colors} = useTheme();
   const {t} = useTranslation();
-
-  const onStateChange = useCallback((state: string) => {
-    if (state === 'ended') {
-      setPlaying(false);
-    }
-  }, []);
 
   const handleShare = useCallback(async () => {
     const playlist = createYouTubePlaylistUrl(videos);
@@ -90,7 +84,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 
   return (
     <>
-      {playing && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
+      {modalVisible && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <MovieDetailsPoster
           movieDetails={movieDetails}
@@ -109,7 +103,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
               pressableStyle={{flex: 1}}
               customViewStyle={{flexDirection: 'row', alignItems: 'center'}}
               style={[styles.button, {flex: 4}]}
-              onPress={() => setPlaying(true)}>
+              onPress={() => setModalVisible(true)}>
               <Ionicons name="play" size={ms(23)} color={colors.paleShade} />
               <AppText
                 variant="bold"
@@ -145,9 +139,8 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 
       <YoutubeModal
         videos={videos}
-        visible={playing}
-        handleClose={() => setPlaying(false)}
-        onStateChange={onStateChange}
+        visible={modalVisible}
+        handleClose={() => setModalVisible(false)}
       />
     </>
   );

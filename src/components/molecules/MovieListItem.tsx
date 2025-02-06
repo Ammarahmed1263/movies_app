@@ -13,7 +13,7 @@ import {Movie, MovieSummary} from 'types/movieTypes';
 interface MovieListItemProps extends PressableProps {
   movie: MovieSummary;
   onPress?: () => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const MovieListItem: FC<MovieListItemProps> = ({

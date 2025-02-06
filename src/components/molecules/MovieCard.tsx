@@ -102,12 +102,11 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     position: 'absolute',
     zIndex: 1,
-    top: -2,
+    top: -3,
     right: -2,
     paddingHorizontal: hs(10),
     paddingVertical: hs(2),
     borderBottomStartRadius: hs(7),
-    // // borderTopEndRadius: hs(18),
     overflow: 'hidden',
   },
   ratingText: {

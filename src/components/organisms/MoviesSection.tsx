@@ -32,7 +32,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
   topic,
   seeAll = false,
   length = 20,
-  category,
+  category = 'now_playing',
   time_window,
 }) => {
   const {colors} = useTheme();
@@ -43,7 +43,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
     <View style={{...styles.container, backgroundColor: colors.primary500}}>
       <View style={styles.heading}>
         <AppText variant="heading">{topic}</AppText>
-        {seeAll && category && (
+        {seeAll && (
           <Button
             variant="body"
             textStyle={{

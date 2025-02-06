@@ -20,7 +20,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {getDeviceLanguage} from '@utils';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
-import {ms} from '@styles/metrics';
+import {hs, ms} from '@styles/metrics';
 
 interface SearchBarProps extends TextInputProps {
   keyword: string;
@@ -115,6 +115,11 @@ const SearchBar: FC<SearchBarProps> = ({
       <TouchableOpacity
         style={[
           styles.iconContainer,
+          !recording && {
+            borderRadius: 0,
+            borderStartWidth: 1,
+            borderColor: colors.primary700,
+          },
           recording && {backgroundColor: colors.link},
         ]}
         onPress={onStartButtonPress}>
@@ -143,16 +148,15 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 8,
-    paddingHorizontal: 15,
     textAlign: I18nManager.isRTL ? 'right' : 'left',
+    paddingStart: hs(15),
   },
   iconContainer: {
     flex: 1,
     margin: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 30,
-    padding: 7,
-    paddingLeft: 10,
+    borderRadius: hs(10),
+    padding: hs(4),
   },
 });

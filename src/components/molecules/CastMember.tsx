@@ -33,7 +33,7 @@ const Member: FC<MemberProps> = ({details}) => {
           source={getImageUrl(details.profile_path)}
           placeholder="person"
           viewStyle={styles.image}
-          resizeMode="stretch"
+          resizeMode="cover"
         />
       </View>
       <View style={{...styles.details, borderColor: colors.secondary600}}>
@@ -41,12 +41,13 @@ const Member: FC<MemberProps> = ({details}) => {
           variant="bold"
           numberOfLines={1}
           style={{
+            width: '80%',
             fontSize: ms(16),
             color: colors.paleShade,
           }}>
-          {details.original_name.length >= 14
-            ? details.original_name.split(' ')[0]
-            : details.original_name}
+          {details.name.length >= 14
+            ? details.name.split(' ')[0]
+            : details.name}
         </AppText>
         {details.character && (
           <AppText

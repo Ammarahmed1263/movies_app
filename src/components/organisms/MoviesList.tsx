@@ -55,16 +55,6 @@ const MoviesList: FC<MoviesListProps> = ({
     };
   });
 
-  // const scrollHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-  //   scrollY.value = event.nativeEvent.contentOffset.y;
-
-  //   if (scrollY.value > height * 0.5) {
-  //     snapButtonOpacity.value = 1;
-  //   } else {
-  //     snapButtonOpacity.value = 0;
-  //   }
-  // };
-
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: event => {
       scrollY.value = event.contentOffset.y;

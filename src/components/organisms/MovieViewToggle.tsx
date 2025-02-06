@@ -85,10 +85,11 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({movies, ...props}) => {
           styles.listContent,
           props.contentContainerStyle,
         ]}
-        // style={{marginBottom: Platform.OS === 'ios' ? vs(20) : vs(50)}}
         ListEmptyComponent={
           <AppLoading
             source={require('../../assets/lottie/loading_fade.json')}
+            size={60}
+            containerStyle={styles.loadingContainer}
           />
         }
         {...props}
@@ -112,6 +113,11 @@ const styles = StyleSheet.create({
     columnGap: hs(6),
   },
   listContent: {
+    flex: 1,
     flexGrow: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    minHeight: '100%',
   },
 });

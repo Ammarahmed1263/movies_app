@@ -7,13 +7,15 @@ export const ENDPOINTS = {
     trending: 'trending/movie/',
     search: 'search/movie',
     videos: (movieId: number) => `movie/${movieId}/videos`,
+    discover: 'discover/movie',
   },
   movieDetails: {
     details: (movieId: number) => `movie/${movieId}`,
     credits: (movieId: number) => `movie/${movieId}/credits`,
   },
-  castMember: {
+  person: {
+    popular: 'person/popular',
     details: (personId: number) => `person/${personId}`,
     movieCredits: (personId: number) => `person/${personId}/movie_credits`,
-  }
+  },
 };

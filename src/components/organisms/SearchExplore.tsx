@@ -15,6 +15,9 @@ import axios from 'axios';
 import apiClient from 'api/apiClient';
 import {useTranslation} from 'react-i18next';
 import MovieViewToggle from './MovieViewToggle';
+import {discoverMovies} from '@services/movieService';
+import {getPopularPerson} from '@services/castMemberService';
+import {handlePromiseResult} from '@utils';
 
 type SearchExploreProps = {
   style?: ViewStyle;
@@ -29,28 +32,32 @@ const SearchExplore: FC<SearchExploreProps> = ({style, listContainerStyle}) => {
   useEffect(() => {
     (async () => {
       try {
-        const {results} = await apiClient(
-          'https://api.themoviedb.org/3/person/popular',
-          {
-            language: I18nManager.isRTL ? 'ar-EG' : 'en-US',
-          },
-        );
-        const {results: movies} = await apiClient(
-          'https://api.themoviedb.org/3/discover/movie',
-          {
-            language: I18nManager.isRTL ? 'ar-EG' : 'en-US',
+        const [actors, movies] = await Promise.allSettled([
+          getPopularPerson(),
+          discoverMovies({
             sort_by: 'popularity.desc',
             primary_release_year: new Date().getFullYear(),
             'vote_average.lte': 9,
             'vote_average.gte': 5,
-          },
+          }),
+        ]);
+
+        handlePromiseResult(
+          actors,
+          response =>
+            setActors(
+              response.results.filter(
+                (person: any) => person.gender === 2 && person.profile_path,
+              ),
+            ),
+          'failed to fetch popular actors',
         );
-        setActors(
-          results.filter(
-            (person: any) => person.gender === 2 && person.profile_path,
-          ),
+
+        handlePromiseResult(
+          movies,
+          response => setDiscover(response.results),
+          'failed to fetch popular actors',
         );
-        setDiscover(movies);
       } catch (err: any) {
         console.log("sorry can't get actors: ", err);
       }

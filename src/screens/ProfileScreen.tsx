@@ -2,6 +2,7 @@ import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import SettingItem from '@molecules/SettingItem';
+import notifee from '@notifee/react-native';
 import ListsFlatlist from '@organisms/ListsFlatlist';
 import ProfileHeader from '@organisms/ProfileHeader';
 import auth from '@react-native-firebase/auth';
@@ -12,10 +13,13 @@ import {
   updateUserPreferences,
 } from '@services/userService';
 import {hs, vs, width} from '@styles/metrics';
+import {ContactUsMessage} from '../constants';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
+  Alert,
   I18nManager,
+  Linking,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -23,9 +27,11 @@ import {
   View,
 } from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
+import Config from 'react-native-config';
 import RNRestart from 'react-native-restart';
-import Icon from 'react-native-vector-icons/Feather';
+import Feather from 'react-native-vector-icons/Feather';
 import i18n from '../i18n';
+const Icon = Feather as any;
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
@@ -58,6 +64,31 @@ function ProfileScreen() {
     RNRestart.restart();
   };
 
+  const handleNotification = async () => {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Notification Title',
+      body: 'Main body content of the notification',
+      android: {
+        channelId,
+        smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  };
+
   const handleSignOut = async () => {
     try {
       await userLogout();
@@ -72,6 +103,28 @@ function ProfileScreen() {
     } catch (error) {
       console.log('oops user failed to delete', error);
     }
+  };
+
+  const handleSendMail = async () => {
+    const email = Config.SUPPORT_MAIL;
+    const subject = 'Support Request - Movies Corn';
+    const body = encodeURIComponent(
+      ContactUsMessage(auth().currentUser?.email),
+    );
+
+    const mailtoURL = `mailto:${email}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${body}`;
+
+    Linking.canOpenURL(mailtoURL)
+      .then(supported => {
+        if (!supported) {
+          Alert.alert('Error', 'Unable to open email client.');
+        } else {
+          Linking.openURL(mailtoURL);
+        }
+      })
+      .catch(err => console.error('Error opening email client:', err));
   };
 
   useEffect(() => {
@@ -153,9 +206,8 @@ function ProfileScreen() {
           <SettingItem
             icon="headphones"
             label="Contact Us"
-            onPress={() => {}}
+            onPress={handleSendMail}
             type="select"
-            isToggled={languageArabic}
           />
 
           <SettingItem
@@ -190,6 +242,14 @@ function ProfileScreen() {
               flat>
               {t('delete_account')}
             </AppButton>
+            {/* <AppButton
+              variant="body"
+              onPress={handleSendMail}
+              style={styles.flatButton}
+              textStyle={{color: colors.success}}
+              flat>
+              send mail
+            </AppButton> */}
           </View>
           <AppText variant="caption" style={styles.copyrights}>
             {t('copyrights')}

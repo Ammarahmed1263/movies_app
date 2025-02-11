@@ -10,13 +10,20 @@ import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
 import YoutubeModal from '@organisms/YoutubeModal';
 import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
 import {hs, ms, vs} from '@styles/metrics';
-import {createYouTubePlaylistUrl} from '@utils';
+import {
+  cancelScheduledReminder,
+  createYouTubePlaylistUrl,
+  scheduleFavoriteReminder,
+} from '@utils';
 import {FC, useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, Share, StatusBar, StyleSheet, View} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Feather';
+const Feather = Icon as any;
+import Icon2 from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon2 as any;
 import {MovieDetailsScreenProps} from 'types/mainStackTypes';
+import {movieDetailsFilter} from '../constants';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
@@ -54,8 +61,15 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
       if (movieDetails) {
         if (isFavorite) {
           await removeFavoriteMovie(movieDetails.id);
+          cancelScheduledReminder(movieDetails.id);
         } else {
           await addFavoriteMovie({
+            id: movieDetails.id,
+            title: movieDetails.title,
+            overview: movieDetails.overview,
+            poster_path: movieDetails.poster_path,
+          });
+          scheduleFavoriteReminder({
             id: movieDetails.id,
             title: movieDetails.title,
             overview: movieDetails.overview,
@@ -78,6 +92,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
         style={{
           transform: [{rotate: '-5deg'}],
         }}
+        colorFilters={movieDetailsFilter(colors)}
       />
     );
   }

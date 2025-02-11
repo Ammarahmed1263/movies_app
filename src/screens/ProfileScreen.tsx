@@ -10,6 +10,7 @@ import {userLogout} from '@services/authService';
 import {
   deleteUser,
   getCurrentUserId,
+  getUserProfile,
   updateUserPreferences,
 } from '@services/userService';
 import {hs, vs, width} from '@styles/metrics';
@@ -31,12 +32,17 @@ import Config from 'react-native-config';
 import RNRestart from 'react-native-restart';
 import Feather from 'react-native-vector-icons/Feather';
 import i18n from '../i18n';
+import {use} from 'i18next';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 const Icon = Feather as any;
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
   const [languageArabic, setLanguageArabic] = useState(false);
-  const [user, setUser] = useState<string | undefined>(undefined);
+  const [notification, setNotification] = useState(false);
+  const [user, setUser] = useState<
+    FirebaseFirestoreTypes.DocumentData | undefined
+  >(undefined);
   const {toggleTheme, theme, colors} = useTheme();
   const {t} = useTranslation();
 
@@ -64,28 +70,11 @@ function ProfileScreen() {
     RNRestart.restart();
   };
 
-  const handleNotification = async () => {
-    // Request permissions (required for iOS)
-    await notifee.requestPermission();
-
-    // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-    });
-
-    // Display a notification
-    await notifee.displayNotification({
-      title: 'Notification Title',
-      body: 'Main body content of the notification',
-      android: {
-        channelId,
-        smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
-        // pressAction is needed if you want the notification to open the app when pressed
-        pressAction: {
-          id: 'default',
-        },
-      },
+  const toggleNotification = async () => {
+    let newNotification = !notification;
+    setNotification(prev => !prev);
+    await updateUserPreferences({
+      notification: newNotification,
     });
   };
 
@@ -129,7 +118,7 @@ function ProfileScreen() {
 
   useEffect(() => {
     (async () => {
-      const userData = getCurrentUserId();
+      const userData = await getUserProfile();
       console.log('user profile: ', auth().currentUser?.email);
       setThemeActive(theme === 'dark' ? true : false);
       setLanguageArabic(i18n.language === 'ar' ? true : false);
@@ -155,9 +144,9 @@ function ProfileScreen() {
           <SettingItem
             icon="bell"
             label={t('notifications')}
-            onPress={() => console.log('notification sent')}
+            onPress={toggleNotification}
             type="toggle"
-            isToggled={false}
+            isToggled={notification}
           />
           <SettingItem
             icon="moon"
@@ -242,14 +231,6 @@ function ProfileScreen() {
               flat>
               {t('delete_account')}
             </AppButton>
-            {/* <AppButton
-              variant="body"
-              onPress={handleSendMail}
-              style={styles.flatButton}
-              textStyle={{color: colors.success}}
-              flat>
-              send mail
-            </AppButton> */}
           </View>
           <AppText variant="caption" style={styles.copyrights}>
             {t('copyrights')}

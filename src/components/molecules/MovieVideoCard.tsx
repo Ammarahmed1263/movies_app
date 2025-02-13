@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {I18nManager, StyleSheet, Text, View} from 'react-native';
 import React, {FC, useEffect, useState} from 'react';
 import MovieCardButton from '@atoms/MovieCardButton';
 import AppImage from '@atoms/AppImage';
@@ -76,7 +76,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{translateX: -ms(32)}, {translateY: -ms(32)}],
+    transform: [
+      {translateX: I18nManager.isRTL ? ms(32) : -ms(32)},
+      {translateY: -ms(32)},
+    ],
     padding: hs(10),
     borderRadius: hs(35),
   },

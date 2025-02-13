@@ -32,6 +32,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   const movieId = route.params.id;
   const {movieDetails, castMembers, videos, isFavorite, setIsFavorite} =
     useMovieDetails(movieId);
+  console.log('movie is favorite: ', isFavorite);
   const [modalVisible, setModalVisible] = useState(false);
   const {colors} = useTheme();
   const {t} = useTranslation();

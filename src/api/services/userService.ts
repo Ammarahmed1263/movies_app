@@ -1,10 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import { Movie } from 'types/movieTypes';
+import {Movie, MovieSummary} from 'types/movieTypes';
 
 export const getCurrentUserId = () => {
   return auth().currentUser?.uid;
-}
+};
 
 export const getUserProfile = async () => {
   const userId = getCurrentUserId();
@@ -15,7 +15,7 @@ export const getUserProfile = async () => {
     console.log('firestore: error fetching user profile', e);
     throw e;
   }
-}
+};
 
 export const deleteUser = async () => {
   try {
@@ -24,25 +24,33 @@ export const deleteUser = async () => {
   } catch (e) {
     throw e;
   }
-}
+};
 
 export const updateUserPreferences = async (preferences: any) => {
   const userId = getCurrentUserId();
 
   try {
-    await firestore().collection('users').doc(userId).update({
-      ...Object.keys(preferences).reduce((acc: Record<string, string> , key) => {
-        acc[`userPreferences.${key}`] = preferences[key];
-        return acc;
-      }, {})
-    });
+    await firestore()
+      .collection('users')
+      .doc(userId)
+      .update({
+        ...Object.keys(preferences).reduce(
+          (acc: Record<string, string>, key) => {
+            acc[`userPreferences.${key}`] = preferences[key];
+            return acc;
+          },
+          {},
+        ),
+      });
   } catch (e) {
     console.log('firestore: error updating user profile', e);
     throw e;
   }
-}
+};
 
-export const getFavoriteMovies = (callback: (movies: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]) => void) => {
+export const getFavoriteMovies = (
+  callback: (movies: MovieSummary[]) => void,
+) => {
   const userId = getCurrentUserId();
 
   const unsubscribe = firestore()
@@ -63,7 +71,9 @@ export const getFavoriteMovies = (callback: (movies: Pick<Movie, 'id' | 'title' 
   return unsubscribe;
 };
 
-export const addFavoriteMovie = async (movie: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>) => {
+export const addFavoriteMovie = async (
+  movie: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>,
+) => {
   const userId = getCurrentUserId();
   if (!userId) {
     throw new Error('User is not authenticated');
@@ -71,23 +81,26 @@ export const addFavoriteMovie = async (movie: Pick<Movie, 'id' | 'title' | 'over
 
   try {
     await firestore()
-    .collection('users')
-    .doc(userId)
-    .set({
-        favoriteMovies: firestore.FieldValue.arrayUnion({
-          id: movie?.id,
-          title: movie?.title,
-          overview: movie?.overview,
-          poster_path: movie?.poster_path,
-        }),
-      }, {merge: true});
+      .collection('users')
+      .doc(userId)
+      .set(
+        {
+          favoriteMovies: firestore.FieldValue.arrayUnion({
+            id: movie?.id,
+            title: movie?.title,
+            overview: movie?.overview,
+            poster_path: movie?.poster_path,
+          }),
+        },
+        {merge: true},
+      );
 
     console.log('Movie added to favorites');
   } catch (e) {
     console.error('Error adding favorite movie: ', e);
     throw e;
   }
-}
+};
 
 export const removeFavoriteMovie = async (movieId: number) => {
   const userId = getCurrentUserId();
@@ -117,7 +130,7 @@ export const removeFavoriteMovie = async (movieId: number) => {
 export const isFavoriteMovie = async (movieId: number) => {
   try {
     const user = await getUserProfile();
-    
+
     const favoriteMovies = user?.favoriteMovies || [];
     return favoriteMovies.some((movie: Movie) => movie.id === movieId);
   } catch (error) {

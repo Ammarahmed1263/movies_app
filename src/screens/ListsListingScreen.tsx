@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ListsFlatlistScreenProps} from 'types/listsStackTypes';
 import {ListType} from 'types/userTypes';
 
@@ -26,7 +26,7 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
       headerLeft: ({canGoBack}) =>
         canGoBack ? (
           <AppButton onPress={() => navigation.goBack()} flat>
-            <Icon
+            <Ionicons
               name={I18nManager.isRTL ? 'chevron-forward' : 'chevron-back'}
               size={ms(23)}
               color={colors.paleShade}

@@ -44,21 +44,24 @@ yarn ios
 
 - create search layout "trending movies, top genres, popular actors" + add home screen trailer section
 - notification for "want to watch movies, genres from past search"
-- image storage "imgur - cloudinary"
 - react native shared animation element
 - introduce welcome screen + handle language and theme there
-- use app responsive size "in progress"
 - check what happens in redux
-- fix mic recording with search screen and add to list action sheet
 
 // HIGH PRIORITY:
 
 - support landscape mode "youtube modal"
+- introduce welcome screen + handle language and theme there
+- report problem - FAQ - contact us
+- fix ios voice search "delete search then clicking mic restores the search key - problem with voice start and end'
+  // HIGH PRIORITY:
+- fix text alignment with arabic
+- getUserProfile function is called in app.tsx and themecontext before user is authenticated
 - add social login
 - find a way to set i18n language correctly 'from user firestore'
-- fix lag with arabic "deffered"
 
 // LOWER PRIORITY:
 
 - fix native device theme switch not working
-- add admin account "change home layout"
+- fix lag with arabic in android "deffered"
+- use app responsive size "in progress"

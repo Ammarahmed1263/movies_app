@@ -4,6 +4,7 @@ import LottieView, {
   AnimationObject,
   LottieViewProps,
 } from 'lottie-react-native';
+import {useTheme} from '@contexts/ThemeContext';
 
 interface AppLoadingProps extends LottieViewProps {
   size?: number;
@@ -16,11 +17,13 @@ interface AppLoadingProps extends LottieViewProps {
 const AppLoading: FC<AppLoadingProps> = ({
   size = 40,
   source,
-  speed = 1,
+  speed = 1.5,
   style,
   containerStyle,
   ...props
 }) => {
+  const {colors} = useTheme();
+
   return (
     <View style={[styles.container, containerStyle]}>
       <LottieView
@@ -29,6 +32,24 @@ const AppLoading: FC<AppLoadingProps> = ({
         speed={speed}
         autoPlay
         loop
+        colorFilters={[
+          {
+            keypath: 'Layer 4',
+            color: colors.secondary500,
+          },
+          {
+            keypath: 'Layer 3',
+            color: colors.secondary500,
+          },
+          {
+            keypath: 'Layer 2',
+            color: colors.secondary500,
+          },
+          {
+            keypath: 'Layer 1',
+            color: colors.secondary500,
+          },
+        ]}
         {...props}
       />
     </View>

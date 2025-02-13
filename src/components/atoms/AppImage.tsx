@@ -40,7 +40,7 @@ const AppImage: FC<AppImageProps> = ({
     <View style={[styles.container, viewStyle]}>
       {isLoading && (
         <AppLoading
-          size={loadingSize === 'small' ? hs(20) : hs(35)}
+          size={loadingSize === 'small' ? hs(25) : hs(35)}
           speed={2.5}
           // containerStyle={{backgroundColor: 'red'}}
           source={require('../../assets/lottie/loading_fade.json')}

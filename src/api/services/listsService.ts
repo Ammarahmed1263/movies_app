@@ -18,7 +18,6 @@ const getLists = (callback: (lists: ListType[]) => void) => {
         })) as ListType[];
 
         callback(lists);
-        console.log('Real-time lists:', lists);
       },
       error => {
         console.error('Error in Firestore snapshot listener:', error);

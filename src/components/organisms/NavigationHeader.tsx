@@ -28,7 +28,11 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
           ...styles.topButton,
           backgroundColor: colors.secondaryShadow,
         }}
-        pressableStyle={{padding: 0}}
+        pressableStyle={{
+          padding: 0,
+          width: '100%',
+          height: '100%',
+        }}
         customViewStyle={{
           transform: [{rotate: I18nManager.isRTL ? '180deg' : '0deg'}],
         }}
@@ -41,7 +45,11 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
             ...styles.topButton,
             backgroundColor: colors.secondaryShadow,
           }}
-          pressableStyle={{padding: 0}}
+          pressableStyle={{
+            padding: 0,
+            width: '100%',
+            height: '100%',
+          }}
           onPress={onToggleFavorite}
           customView>
           <Icon

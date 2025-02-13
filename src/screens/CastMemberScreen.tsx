@@ -1,5 +1,5 @@
 import {FC, useEffect, useState} from 'react';
-import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {Platform, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import Image from '@atoms/AppImage.tsx';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,6 +18,7 @@ import DetailPillItem from '@molecules/DetailPillItem';
 import NavigationHeader from '@organisms/NavigationHeader';
 import AppLoading from '@atoms/AppLoading';
 import {useTranslation} from 'react-i18next';
+import {castMemberFilter} from '../constants';
 
 const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const {id} = route.params;
@@ -48,6 +49,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
         size={width}
         speed={1.25}
         source={require('../assets/lottie/loading_cast.json')}
+        colorFilters={castMemberFilter(colors)}
       />
     );
   }
@@ -72,7 +74,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
           }}>
           <Image
             source={getImageUrl(details?.profile_path)}
-            resizeMode="stretch"
+            resizeMode="cover"
           />
         </View>
       </View>

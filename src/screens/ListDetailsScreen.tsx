@@ -15,7 +15,11 @@ import {
   removeFavoriteMovie,
 } from '@services/userService';
 import {HEADER_HEIGHT, hs, ms, vs} from '@styles/metrics';
-import {capitalizeInput} from '@utils';
+import {
+  cancelScheduledReminder,
+  capitalizeInput,
+  scheduleFavoriteReminder,
+} from '@utils';
 import LottieView from 'lottie-react-native';
 import {FC, useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -121,8 +125,10 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
         // Sync with Firebase
         if (wasFavorite) {
           await removeFavoriteMovie(item.id);
+          cancelScheduledReminder(item.id);
         } else {
           await addFavoriteMovie(item);
+          scheduleFavoriteReminder(item);
         }
       } catch (error) {
         // Revert on error

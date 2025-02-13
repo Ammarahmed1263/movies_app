@@ -89,6 +89,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({movies, ...props}) => {
           <AppLoading
             source={require('../../assets/lottie/loading_fade.json')}
             size={60}
+            speed={1.8}
             containerStyle={styles.loadingContainer}
           />
         }
@@ -118,6 +119,6 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    minHeight: '100%',
+    minHeight: '80%',
   },
 });

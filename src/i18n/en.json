@@ -58,7 +58,7 @@
 
   "_COMMENT7": "empty holders",
   "no_favorites": "No Favorites",
-  "empty_search": "Ooops...No movie found with {{keyword}}!",
+  "empty_search": "Ooops...No movie found with '{{keyword}}'!",
   "create_favorite_list": "Create Favorite List",
   "favorite_action": "You can favorite a movie by clicking on the heart that shows up when you view movie details (top right).",
   "N/A": "N/A",

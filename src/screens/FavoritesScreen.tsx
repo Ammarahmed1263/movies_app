@@ -7,7 +7,7 @@ import MoviesList from '@organisms/MoviesList';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
-import {removeFavoriteMovie} from '@services/userService';
+import {getFavoriteMovies, removeFavoriteMovie} from '@services/userService';
 import {hs, vs} from '@styles/metrics';
 import {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -31,20 +31,10 @@ function FavoritesScreen() {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .onSnapshot(
-        documentSnapshot => {
-          const data = documentSnapshot.data();
-          setFavorites(data?.favoriteMovies.reverse() || []);
-        },
-        error => {
-          console.error('Failed to retrieve movies', error);
-        },
-      );
+    const unsubscribe = getFavoriteMovies(favoriteMovies => {
+      setFavorites(favoriteMovies.reverse());
+    });
 
-    // Cleanup the listener on component unmount
     return () => unsubscribe();
   }, []);
 

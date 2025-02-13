@@ -9,9 +9,114 @@ import messaging, {
 import {addFavoriteMovie} from '@services/userService';
 import {deepLinking} from '@utils';
 import {useEffect} from 'react';
-import {PermissionsAndroid, Platform} from 'react-native';
+import {Alert, PermissionsAndroid, Platform} from 'react-native';
 import {MovieSummary} from 'types/movieTypes';
 import {NOTIFICATION_TYPES, NotificationValues} from 'types/notificationTypes';
+
+export const handleNotificationAction = async (
+  type: NotificationValues,
+  actionId: string,
+  data: any,
+) => {
+  try {
+    switch (type) {
+      case NOTIFICATION_TYPES.MOVIE:
+        if (actionId === 'favorite') {
+          const {id, title, overview, poster_path} = data as MovieSummary;
+          await addFavoriteMovie({id, title, overview, poster_path});
+        }
+        break;
+      // Add other type handlers here
+    }
+
+    // Handle navigation after action
+    if (data?.redirection) {
+      await deepLinking(data.redirection as string);
+    }
+  } catch (error) {
+    console.error('notification action handle error: ', error);
+  }
+};
+
+export const displayNotification = async (
+  remoteMessage: FirebaseMessagingTypes.RemoteMessage,
+) => {
+  const {data, notification} = remoteMessage;
+  const notificationType = data?.type as NotificationValues;
+
+  const actions = [];
+  if (notificationType === NOTIFICATION_TYPES.MOVIE) {
+    actions.push({
+      title: '❤️ Add to Favorites',
+      pressAction: {
+        id: 'favorite',
+        launchActivity: 'default',
+        mainComponent: 'default',
+      },
+    });
+  }
+
+  try {
+    await notifee.displayNotification({
+      title: notification?.title || (data?.title as string),
+      body: notification?.body || (data?.body as string),
+      android: {
+        channelId: 'default',
+        lightUpScreen: true,
+        showTimestamp: true,
+        actions,
+        pressAction: {
+          id: 'default',
+          launchActivity: 'default',
+          mainComponent: 'default',
+        },
+        importance: AndroidImportance.HIGH,
+        style: NOTIFICATION_TYPES.LIST
+          ? undefined
+          : {
+              type: AndroidStyle.BIGPICTURE,
+              picture: data?.poster_path || '',
+            },
+      },
+      data,
+    });
+  } catch (error) {
+    console.error('Error displaying notification:', error);
+  }
+};
+
+const setupMessageHandlers = async () => {
+  // Handle notification when app is in quit state
+  const initialNotification = await messaging().getInitialNotification();
+  if (initialNotification?.data?.redirection) {
+    await deepLinking(initialNotification.data.redirection as string);
+  }
+
+  // Handle notification when app is in background
+  messaging().onNotificationOpenedApp(async remoteMessage => {
+    if (remoteMessage?.data?.redirection) {
+      await deepLinking(remoteMessage.data.redirection as string);
+    }
+  });
+
+  // Handle foreground notifications
+  const unsubscribe = messaging().onMessage(displayNotification);
+
+  // Handle notification actions
+  notifee.onForegroundEvent(async ({type, detail}) => {
+    if (type === EventType.PRESS) {
+      await deepLinking(detail.notification?.data?.redirection as string);
+    } else if (type === EventType.ACTION_PRESS && detail.pressAction) {
+      await handleNotificationAction(
+        detail.notification?.data?.type as NotificationValues,
+        detail.pressAction.id,
+        detail.notification?.data,
+      );
+    }
+  });
+
+  return unsubscribe;
+};
 
 let isInitializing = false;
 
@@ -40,11 +145,14 @@ const useNotifications = () => {
   const getFCMToken = async () => {
     try {
       const token = await messaging().getToken();
+      console.log('token is here', token);
+      Alert.alert('token is here', token);
+
       // Send this token to Firebase to register your device for notifications
       return token;
-    } catch (error) {
+    } catch (error: any) {
       Platform.OS === 'android' &&
-        console.log('Error fetching FCM token:', error);
+        Alert.alert('Error fetching FCM token:', error);
     }
   };
 
@@ -57,121 +165,10 @@ const useNotifications = () => {
     });
   };
 
-  const handleNotificationAction = async (
-    type: NotificationValues,
-    actionId: string,
-    data: any,
-  ) => {
-    switch (type) {
-      case NOTIFICATION_TYPES.MOVIE:
-        if (actionId === 'favorite') {
-          const {id, title, overview, poster_path} = data as MovieSummary;
-          await addFavoriteMovie({id, title, overview, poster_path});
-        }
-        break;
-      // Add other type handlers here
-    }
-
-    // Handle navigation after action
-    if (data?.redirection) {
-      await deepLinking(data.redirection as string);
-    }
-  };
-
-  const displayNotification = async (
-    remoteMessage: FirebaseMessagingTypes.RemoteMessage,
-  ) => {
-    const {data, notification} = remoteMessage;
-    const notificationType = data?.type as NotificationValues;
-
-    const actions = [];
-    if (notificationType === NOTIFICATION_TYPES.MOVIE) {
-      actions.push({
-        title: '❤️ Add to Favorites',
-        pressAction: {id: 'favorite'},
-        launchActivity: 'default',
-      });
-    }
-
-    try {
-      await notifee.displayNotification({
-        title: notification?.title || (data?.title as string),
-        body: notification?.body || (data?.body as string),
-        android: {
-          channelId: 'default',
-          lightUpScreen: true,
-          showTimestamp: true,
-          actions,
-          style: NOTIFICATION_TYPES.LIST
-            ? undefined
-            : {
-                type: AndroidStyle.BIGPICTURE,
-                picture: data?.poster_path || '',
-              },
-          pressAction: {
-            id: 'default',
-            launchActivity: 'default',
-          },
-        },
-        data,
-      });
-    } catch (error) {
-      console.error('Error displaying notification:', error);
-    }
-  };
-
-  const setupMessageHandlers = async () => {
-    // Handle notification when app is in quit state
-    const initialNotification = await messaging().getInitialNotification();
-    if (initialNotification?.data?.redirection) {
-      await deepLinking(initialNotification.data.redirection as string);
-    }
-
-    // Handle notification when app is in background
-    messaging().onNotificationOpenedApp(async remoteMessage => {
-      if (remoteMessage?.data?.redirection) {
-        await deepLinking(remoteMessage.data.redirection as string);
-      }
-    });
-
-    // Handle foreground notifications
-    const unsubscribe = messaging().onMessage(displayNotification);
-
-    // Handle background notifications
-    messaging().setBackgroundMessageHandler(displayNotification);
-
-    // Handle notification actions
-    notifee.onForegroundEvent(async ({type, detail}) => {
-      if (type === EventType.PRESS) {
-        await deepLinking(detail.notification?.data?.redirection as string);
-      } else if (type === EventType.ACTION_PRESS && detail.pressAction) {
-        await handleNotificationAction(
-          detail.notification?.data?.type as NotificationValues,
-          detail.pressAction.id,
-          detail.notification?.data,
-        );
-      }
-    });
-
-    notifee.onBackgroundEvent(async ({type, detail}) => {
-      if (type === EventType.PRESS) {
-        await deepLinking(detail.notification?.data?.redirection as string);
-      } else if (type === EventType.ACTION_PRESS && detail.pressAction) {
-        await handleNotificationAction(
-          detail.notification?.data?.type as NotificationValues,
-          detail.pressAction.id,
-          detail.notification?.data,
-        );
-      }
-    });
-
-    return unsubscribe;
-  };
-
   // Initialize notifications
   useEffect(() => {
     (async () => {
-      if (isInitializing) {
+      if (!isInitializing) {
         await requestNotificationPermission();
         await getFCMToken();
         await createNotificationChannel();

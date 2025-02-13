@@ -1,13 +1,12 @@
 import AppButton from '@atoms/AppButton';
 import AppLoading from '@atoms/AppLoading';
-import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import useDebouncedSearch from '@hooks/useDebouncedSearch';
-import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import EmptySearch from '@molecules/EmptySearch';
 import MovieListItem from '@molecules/MovieListItem';
 import SearchBar from '@molecules/SearchBar';
 import MoviesList from '@organisms/MoviesList';
+import SearchExplore from '@organisms/SearchExplore';
 import {
   addMovieToList,
   getListById,
@@ -30,8 +29,6 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
   const {t} = useTranslation();
   const [keyword, setKeyword] = useState('');
   const [movies, setMovies] = useState<MovieSummary[]>([]);
-  const [disableGesture, setDisableGesture] = useState(false);
-  const {movies: trending} = useMoviesByCategory('trending', 'day');
   const {results, status, loadMore} = useDebouncedSearch(keyword);
 
   const toggleItem = (movie: MovieSummary, exists: boolean) => {
@@ -51,8 +48,6 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
       overview: item.overview,
       poster_path: item.poster_path ?? null,
     };
-
-    console.log('item here', movie);
 
     return (
       <MovieListItem
@@ -90,11 +85,7 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
 
   const renderContent = () => {
     if (!keyword) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <AppText variant="heading">Search for movies</AppText>
-        </View>
-      );
+      return <SearchExplore listContainerStyle={{paddingTop: vs(15)}} />;
     }
 
     if (status === 'searching') {
@@ -125,10 +116,10 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
       id={props.sheetId}
       containerStyle={{backgroundColor: colors.primary500}}
       indicatorStyle={{backgroundColor: colors.primary700}}
-      snapPoints={[50, Platform.OS === 'ios' ? 90 : 100]}
-      initialSnapIndex={1}
-      gestureEnabled={false}
-      headerAlwaysVisible={true}>
+      // snapPoints={[Platform.OS === 'ios' ? 90 : 100]}
+      statusBarTranslucent={false}
+      initialSnapIndex={0}
+      gestureEnabled={false}>
       <View style={styles.sheetContainer}>
         <View style={styles.search}>
           <SearchBar
@@ -155,6 +146,8 @@ export default AddToListSheet;
 
 const styles = StyleSheet.create({
   sheetContainer: {
+    flexGrow: 1,
+    flexShrink: 1,
     paddingTop: vs(10),
     minHeight: height * 0.8,
   },

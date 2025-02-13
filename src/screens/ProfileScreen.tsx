@@ -2,6 +2,7 @@ import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import SettingItem from '@molecules/SettingItem';
+import notifee from '@notifee/react-native';
 import ListsFlatlist from '@organisms/ListsFlatlist';
 import ProfileHeader from '@organisms/ProfileHeader';
 import auth from '@react-native-firebase/auth';
@@ -9,13 +10,17 @@ import {userLogout} from '@services/authService';
 import {
   deleteUser,
   getCurrentUserId,
+  getUserProfile,
   updateUserPreferences,
 } from '@services/userService';
 import {hs, vs, width} from '@styles/metrics';
+import {ContactUsMessage} from '../constants';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
+  Alert,
   I18nManager,
+  Linking,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -23,14 +28,21 @@ import {
   View,
 } from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
+import Config from 'react-native-config';
 import RNRestart from 'react-native-restart';
-import Icon from 'react-native-vector-icons/Feather';
+import Feather from 'react-native-vector-icons/Feather';
 import i18n from '../i18n';
+import {use} from 'i18next';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+const Icon = Feather as any;
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
   const [languageArabic, setLanguageArabic] = useState(false);
-  const [user, setUser] = useState<string | undefined>(undefined);
+  const [notification, setNotification] = useState(false);
+  const [user, setUser] = useState<
+    FirebaseFirestoreTypes.DocumentData | undefined
+  >(undefined);
   const {toggleTheme, theme, colors} = useTheme();
   const {t} = useTranslation();
 
@@ -58,6 +70,14 @@ function ProfileScreen() {
     RNRestart.restart();
   };
 
+  const toggleNotification = async () => {
+    let newNotification = !notification;
+    setNotification(prev => !prev);
+    await updateUserPreferences({
+      notification: newNotification,
+    });
+  };
+
   const handleSignOut = async () => {
     try {
       await userLogout();
@@ -74,9 +94,31 @@ function ProfileScreen() {
     }
   };
 
+  const handleSendMail = async () => {
+    const email = Config.SUPPORT_MAIL;
+    const subject = 'Support Request - Movies Corn';
+    const body = encodeURIComponent(
+      ContactUsMessage(auth().currentUser?.email),
+    );
+
+    const mailtoURL = `mailto:${email}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${body}`;
+
+    Linking.canOpenURL(mailtoURL)
+      .then(supported => {
+        if (!supported) {
+          Alert.alert('Error', 'Unable to open email client.');
+        } else {
+          Linking.openURL(mailtoURL);
+        }
+      })
+      .catch(err => console.error('Error opening email client:', err));
+  };
+
   useEffect(() => {
     (async () => {
-      const userData = getCurrentUserId();
+      const userData = await getUserProfile();
       console.log('user profile: ', auth().currentUser?.email);
       setThemeActive(theme === 'dark' ? true : false);
       setLanguageArabic(i18n.language === 'ar' ? true : false);
@@ -102,9 +144,9 @@ function ProfileScreen() {
           <SettingItem
             icon="bell"
             label={t('notifications')}
-            onPress={() => console.log('notification sent')}
+            onPress={toggleNotification}
             type="toggle"
-            isToggled={false}
+            isToggled={notification}
           />
           <SettingItem
             icon="moon"
@@ -141,6 +183,30 @@ function ProfileScreen() {
         </View>
 
         <ListsFlatlist title={t('lists')} seeAll />
+
+        <View>
+          <View style={styles.sectionHeader}>
+            <Icon name="help-circle" size={25} color={colors.paleShade} />
+            <AppText variant="heading" style={{marginStart: hs(8)}}>
+              Support
+            </AppText>
+          </View>
+
+          <SettingItem
+            icon="headphones"
+            label="Contact Us"
+            onPress={handleSendMail}
+            type="select"
+          />
+
+          <SettingItem
+            icon="info"
+            label="About MovieCorn"
+            onPress={() => {}}
+            type="select"
+            isToggled={languageArabic}
+          />
+        </View>
 
         <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>

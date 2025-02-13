@@ -10,13 +10,20 @@ import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
 import YoutubeModal from '@organisms/YoutubeModal';
 import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
 import {hs, ms, vs} from '@styles/metrics';
-import {createYouTubePlaylistUrl} from '@utils';
+import {
+  cancelScheduledReminder,
+  createYouTubePlaylistUrl,
+  scheduleFavoriteReminder,
+} from '@utils';
 import {FC, useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, Share, StatusBar, StyleSheet, View} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Feather';
+const Feather = Icon as any;
+import Icon2 from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon2 as any;
 import {MovieDetailsScreenProps} from 'types/mainStackTypes';
+import {movieDetailsFilter} from '../constants';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
@@ -25,15 +32,9 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   const movieId = route.params.id;
   const {movieDetails, castMembers, videos, isFavorite, setIsFavorite} =
     useMovieDetails(movieId);
-  const [playing, setPlaying] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const {colors} = useTheme();
   const {t} = useTranslation();
-
-  const onStateChange = useCallback((state: string) => {
-    if (state === 'ended') {
-      setPlaying(false);
-    }
-  }, []);
 
   const handleShare = useCallback(async () => {
     const playlist = createYouTubePlaylistUrl(videos);
@@ -60,8 +61,15 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
       if (movieDetails) {
         if (isFavorite) {
           await removeFavoriteMovie(movieDetails.id);
+          cancelScheduledReminder(movieDetails.id);
         } else {
           await addFavoriteMovie({
+            id: movieDetails.id,
+            title: movieDetails.title,
+            overview: movieDetails.overview,
+            poster_path: movieDetails.poster_path,
+          });
+          scheduleFavoriteReminder({
             id: movieDetails.id,
             title: movieDetails.title,
             overview: movieDetails.overview,
@@ -84,13 +92,14 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
         style={{
           transform: [{rotate: '-5deg'}],
         }}
+        colorFilters={movieDetailsFilter(colors)}
       />
     );
   }
 
   return (
     <>
-      {playing && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
+      {modalVisible && <StatusBar backgroundColor="rgba(22, 21, 21, 0.8)" />}
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <MovieDetailsPoster
           movieDetails={movieDetails}
@@ -109,7 +118,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
               pressableStyle={{flex: 1}}
               customViewStyle={{flexDirection: 'row', alignItems: 'center'}}
               style={[styles.button, {flex: 4}]}
-              onPress={() => setPlaying(true)}>
+              onPress={() => setModalVisible(true)}>
               <Ionicons name="play" size={ms(23)} color={colors.paleShade} />
               <AppText
                 variant="bold"
@@ -127,7 +136,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 styles.button,
                 {flex: 1, backgroundColor: colors.primary600},
               ]}>
-              <Feather name="share" size={28} color={colors.secondary500} />
+              <Feather name="share" size={30} color={colors.secondary500} />
             </Button>
           </View>
           <TextSeeMore
@@ -145,9 +154,8 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 
       <YoutubeModal
         videos={videos}
-        visible={playing}
-        handleClose={() => setPlaying(false)}
-        onStateChange={onStateChange}
+        visible={modalVisible}
+        handleClose={() => setModalVisible(false)}
       />
     </>
   );

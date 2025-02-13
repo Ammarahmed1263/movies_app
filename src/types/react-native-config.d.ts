@@ -1,8 +1,9 @@
 declare module 'react-native-config' {
   export interface NativeConfig {
-      TMDB_TOKEN?: string;
+    SUPPORT_MAIL: string;
+    TMDB_TOKEN: string;
   }
-  
-  export const Config: NativeConfig
-  export default Config
+
+  export const Config: NativeConfig;
+  export default Config;
 }

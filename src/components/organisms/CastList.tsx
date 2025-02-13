@@ -16,7 +16,7 @@ interface CastListProps {
   title: string;
 }
 
-const CastList: FC<CastListProps> = ({cast, title}) => {
+const CastList: FC<CastListProps> = ({cast, title, ...props}) => {
   const {colors} = useTheme();
 
   return (
@@ -58,6 +58,7 @@ const CastList: FC<CastListProps> = ({cast, title}) => {
         }}
         showsHorizontalScrollIndicator={false}
         horizontal
+        {...props}
       />
     </View>
   );

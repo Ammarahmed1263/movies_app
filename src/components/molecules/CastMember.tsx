@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FC} from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {getImageUrl} from '@utils';
 import {CastMember} from 'types/castTypes';
 import {CastMemberDetailsNavigationProp} from 'types/mainStackTypes';
 import AppText from '@atoms/AppText';
-import {ms} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 
 interface MemberProps {
   details: CastMember;
@@ -33,7 +33,7 @@ const Member: FC<MemberProps> = ({details}) => {
           source={getImageUrl(details.profile_path)}
           placeholder="person"
           viewStyle={styles.image}
-          resizeMode="stretch"
+          resizeMode="cover"
         />
       </View>
       <View style={{...styles.details, borderColor: colors.secondary600}}>
@@ -41,23 +41,26 @@ const Member: FC<MemberProps> = ({details}) => {
           variant="bold"
           numberOfLines={1}
           style={{
+            width: '80%',
             fontSize: ms(16),
             color: colors.paleShade,
           }}>
-          {details.original_name.length >= 14
-            ? details.original_name.split(' ')[0]
-            : details.original_name}
+          {details.name.length >= 14
+            ? details.name.split(' ')[0]
+            : details.name}
         </AppText>
-        <AppText
-          variant="caption"
-          numberOfLines={1}
-          style={{
-            color: colors.paleShade,
-          }}>
-          {details.character.length >= 15
-            ? details.character.split(' ')[0]
-            : details.character}
-        </AppText>
+        {details.character && (
+          <AppText
+            variant="caption"
+            numberOfLines={1}
+            style={{
+              color: colors.paleShade,
+            }}>
+            {details.character.length >= 15
+              ? details.character.split(' ')[0]
+              : details.character}
+          </AppText>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -67,15 +70,18 @@ export default Member;
 
 const styles = StyleSheet.create({
   TouchableOpacityContainer: {
-    alignItems: 'center',
-    marginVertical: 10,
-    width: 120,
+    flex: 1,
+    flexGrow: 0,
+    flexShrink: 1,
+    alignSelf: 'flex-start',
+    width: hs(100),
+    marginVertical: vs(10),
   },
   imageContainer: {
-    width: 90,
+    width: hs(90),
     aspectRatio: 1 / 1,
-    borderWidth: 2,
-    borderRadius: 45,
+    borderWidth: ms(1),
+    borderRadius: ms(12),
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
@@ -86,9 +92,9 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   details: {
-    alignItems: 'center',
-    // paddingHorizontal: 10,
-    marginVertical: 10,
     width: '90%',
+    alignItems: 'center',
+    marginVertical: vs(10),
+    // paddingHorizontal: 10,
   },
 });

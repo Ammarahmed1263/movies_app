@@ -2,10 +2,17 @@ import {useTheme} from '@contexts/ThemeContext';
 import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import MoviesCarousel from '@organisms/MoviesCarousel';
 import MoviesSection from '@organisms/MoviesSection';
+import MovieVideoSection from '@organisms/MovieVideoSection';
 import {vs} from '@styles/metrics';
 import {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native';
 
 function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -55,15 +62,7 @@ function HomeScreen() {
             movies={now_playingMovies}
             loading={now_playingLoading}
             category="now_playing"
-            // time_window="day"
             topic={t('now_playing')}
-            seeAll
-          />
-          <MoviesSection
-            movies={upcomingMovies}
-            loading={upcomingLoading}
-            category="upcoming"
-            topic={t('upcoming')}
             seeAll
           />
           <MoviesSection
@@ -71,6 +70,12 @@ function HomeScreen() {
             loading={top_ratedLoading}
             category="top_rated"
             topic={t('top_rated')}
+            seeAll
+          />
+          <MovieVideoSection
+            data={upcomingMovies}
+            category="upcoming"
+            topic={t('upcoming')}
             seeAll
           />
           <MoviesSection

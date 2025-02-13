@@ -7,6 +7,14 @@ import {
   I18nManager,
   useWindowDimensions,
 } from 'react-native';
+import {
+  ImageBackground,
+  View,
+  StyleSheet,
+  StatusBar,
+  I18nManager,
+  useWindowDimensions,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import Pagination from '@molecules/Pagination';
@@ -28,7 +36,20 @@ import Animated, {
 } from 'react-native-reanimated';
 import {useTranslation} from 'react-i18next';
 import {imagePlaceHolder} from '../../constants';
+import {useTranslation} from 'react-i18next';
+import {imagePlaceHolder} from '../../constants';
 
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
+
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
+
+// This is the default configuration
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false, // Reanimated runs in strict mode by default
@@ -46,11 +67,17 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
   loading,
   length = 8,
 }) => {
+const MoviesCarousel: FC<MoviesCarouselProps> = ({
+  movies,
+  loading,
+  length = 8,
+}) => {
   const [activeMovieIndex, setActiveMovieIndex] = useState<number>(0);
   const carouselRef = useRef<ICarouselInstance>(null);
   const scrollProgress = useSharedValue(0);
   const {width, height} = useWindowDimensions();
   const {colors} = useTheme();
+  const {t} = useTranslation();
   const {t} = useTranslation();
 
   const handleSnapToItem = (index: number) => {
@@ -65,6 +92,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
   };
   const handleProgressChange = (_: number, absoluteProgress: number) => {
     scrollProgress.value = absoluteProgress;
+  };
   };
 
   const renderItem = ({
@@ -108,7 +136,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
           ImageViewStyle={{
             height: '87%',
           }}
-          hideVote
+          // hideVote
         />
       </Animated.View>
     );
@@ -122,6 +150,12 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
         }}>
+      <View
+        style={{
+          height: height * 0.5,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
         <AppText variant="heading">Loading...</AppText>
       </View>
     );
@@ -129,6 +163,10 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
 
   return (
     <ImageBackground
+      source={
+        getImageUrl(movies[activeMovieIndex].poster_path) ??
+        imagePlaceHolder.MOVIE
+      }
       source={
         getImageUrl(movies[activeMovieIndex].poster_path) ??
         imagePlaceHolder.MOVIE
@@ -173,6 +211,9 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
             parallaxScrollingOffset: width * 0.47,
             parallaxAdjacentItemScale: 0.88,
           }}
+          panGestureHandlerProps={{
+            activeOffsetX: [-10, 10],
+          }}
           onSnapToItem={handleSnapToItem}
           onProgressChange={handleProgressChange}
           autoPlayInterval={2000}
@@ -193,6 +234,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
             borderRadius: hs(6),
             backgroundColor: colors.secondary500,
             marginHorizontal: hs(6),
+            marginHorizontal: hs(6),
           }}
           activeDotStyle={{width: hs(36)}}
           inactiveDotStyle={{backgroundColor: colors.primary700}}
@@ -211,6 +253,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     minHeight: vs(400),
+  },
   },
   carouselItem: {
     flex: 1,

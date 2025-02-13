@@ -15,6 +15,7 @@ import {
 import {MovieSummary} from 'types/movieTypes';
 import MoviesList from '../components/organisms/MoviesList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import SearchExplore from '@organisms/SearchExplore';
 
 function SearchScreen() {
   const [keyword, setKeyword] = useState('');
@@ -34,11 +35,7 @@ function SearchScreen() {
 
   const renderContent = () => {
     if (!keyword) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <AppText variant="heading">Search for movies</AppText>
-        </View>
-      );
+      return <SearchExplore listContainerStyle={styles.explore} />;
     }
 
     if (status === 'searching') {
@@ -74,10 +71,10 @@ function SearchScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <SearchBar keyword={keyword} setKeyword={setKeyword} />
       {renderContent()}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -86,7 +83,7 @@ export default SearchScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+    marginTop: (StatusBar.currentHeight ?? vs(55)) + vs(10),
   },
   loading: {
     backgroundColor: 'red',
@@ -99,5 +96,11 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     marginHorizontal: hs(10),
+  },
+  explore: {
+    paddingTop: vs(15),
+    paddingBottom:
+      (StatusBar.currentHeight ?? vs(55)) +
+      (Platform.OS === 'ios' ? vs(10) : vs(25)),
   },
 });

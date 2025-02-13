@@ -15,15 +15,9 @@ interface YotubeModalProps {
   videos: Trailer[];
   visible: boolean;
   handleClose: () => void;
-  onStateChange: (state: string) => void;
 }
 
-const YoutubeModal: FC<YotubeModalProps> = ({
-  videos,
-  visible,
-  handleClose,
-  onStateChange,
-}) => {
+const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
   const {colors} = useTheme();
   const {t} = useTranslation();
   const [videoMeta, setVideoMeta] = useState<{
@@ -79,7 +73,6 @@ const YoutubeModal: FC<YotubeModalProps> = ({
               // videoId={videos[0].key}
               playList={videos.map(video => video.key)}
               play={visible}
-              onChangeState={onStateChange}
             />
           </View>
           <View style={{marginVertical: 5}}>
@@ -123,7 +116,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({
       ) : (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <AppText variant="heading" style={{textAlign: 'center'}}>
-            {'no_trailer'}
+            {t('no_trailer')}
           </AppText>
         </View>
       )}

@@ -20,6 +20,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {getDeviceLanguage} from '@utils';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
+import {hs, ms} from '@styles/metrics';
 
 interface SearchBarProps extends TextInputProps {
   keyword: string;
@@ -101,7 +102,7 @@ const SearchBar: FC<SearchBarProps> = ({
         ref={inputRef}
         placeholder={t('search movies')}
         placeholderTextColor={colors.primary700}
-        cursorColor={colors.primary700}
+        cursorColor={colors.secondaryShadow}
         value={keyword}
         onChangeText={text => setKeyword(text)}
         style={{
@@ -114,6 +115,11 @@ const SearchBar: FC<SearchBarProps> = ({
       <TouchableOpacity
         style={[
           styles.iconContainer,
+          !recording && {
+            borderRadius: 0,
+            borderStartWidth: 1,
+            borderColor: colors.primary700,
+          },
           recording && {backgroundColor: colors.link},
         ]}
         onPress={onStartButtonPress}>
@@ -137,21 +143,20 @@ const styles = StyleSheet.create({
     borderTopWidth: 1.6,
     borderBottomWidth: 1.6,
     borderWidth: 0.9,
-    borderRadius: 50,
+    borderRadius: ms(12),
     marginHorizontal: 15,
   },
   input: {
     flex: 8,
-    paddingHorizontal: 15,
     textAlign: I18nManager.isRTL ? 'right' : 'left',
+    paddingStart: hs(15),
   },
   iconContainer: {
     flex: 1,
     margin: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 30,
-    padding: 7,
-    paddingLeft: 10,
+    borderRadius: hs(10),
+    padding: hs(4),
   },
 });

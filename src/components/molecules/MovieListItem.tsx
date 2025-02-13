@@ -13,7 +13,7 @@ import {Movie, MovieSummary} from 'types/movieTypes';
 interface MovieListItemProps extends PressableProps {
   movie: MovieSummary;
   onPress?: () => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const MovieListItem: FC<MovieListItemProps> = ({
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginBottom: vs(25),
   },
   image: {
-    flex: 1.2,
+    flex: 1.4,
     borderRadius: hs(8),
     resizeMode: 'cover',
     overflow: 'hidden',

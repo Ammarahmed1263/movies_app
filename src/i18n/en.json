@@ -40,6 +40,8 @@
   "warn_question": "Are you sure you want to ",
   "warn_question2": "delete your account?",
   "warn": "You won't be able to revert this action.",
+  "support": "Support",
+  "contact_us": "Contact Us",
 
   "_COMMENT5": "General",
   "see_all": "See all",
@@ -47,6 +49,7 @@
   "not_rated": "NR",
   "read_more": "Read More",
   "read_less": "Read Less",
+  "about": "About",
 
   "_COMMENT6": "lists",
   "list_name": "List Name",
@@ -80,5 +83,15 @@
   "_COMMENT10": "search",
   "actors": "Actors",
 
-  "copyrights": "Copyright © 2023-2024 Ammar Ahmed, All rights reserved"
+  "_COMMENT11": "about",
+  "description1": "Welcome to Movies App! Your ultimate destination for the latest movie news, trailers, reviews, and recommendations.",
+  "description2": "Browse thousands of movies, get personalized suggestions, and stay updated with everything happening in the world of cinema.",
+  "features": "Features",
+  "feature1": "Watch & Share Latest Trailers",
+  "feature2": "Customize Your Own Lists",
+  "feature3": "Search Movies With Your Own Voice",
+  "feature4": "Comprehensive Movie Database",
+
+  "copyrights": "Copyright © 2023-2024 Ammar Ahmed, All rights reserved",
+  "version": "Version 1.0.0"
 }

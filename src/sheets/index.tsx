@@ -3,11 +3,13 @@ import AddToListSheet from './AddToListSheet';
 import ImagePickerSheet from './ImagePickerSheet';
 import DeleteAccountSheet from './DeleteAccountSheet';
 import CreateListSheet from './CreateListSheet';
+import AboutSheet from './AboutSheet';
 
 registerSheet('add-to-list', AddToListSheet);
 registerSheet('create-list', CreateListSheet);
 registerSheet('image-picker', ImagePickerSheet);
 registerSheet('delete-account', DeleteAccountSheet);
+registerSheet('about-app', AboutSheet);
 
 declare module 'react-native-actions-sheet' {
   interface Sheets {
@@ -23,5 +25,6 @@ declare module 'react-native-actions-sheet' {
         onListCreated: (list: number) => void;
       };
     }>;
+    'about-app': SheetDefinition;
   }
 }

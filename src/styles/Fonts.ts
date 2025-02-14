@@ -1,22 +1,23 @@
-import i18n from "../i18n";
-import { ms } from "./metrics";
+import i18n from '../i18n';
+import {ms} from './metrics';
 
 const arabicFontFamily = {
   light: 'Cairo-Light',
   regular: 'Cairo-Regular',
   bold: 'Cairo-Bold',
-}
+};
 
 const englishFontFamily = {
   light: 'Poppins-Light',
   regular: 'Poppins-Regular',
   bold: 'Poppins-Bold',
-}
+};
 
 const getFonts = () => {
   const currentLanguage = i18n.language;
 
-  const activeFamily = currentLanguage === 'ar' ? arabicFontFamily : englishFontFamily;
+  const activeFamily =
+    currentLanguage === 'ar' ? arabicFontFamily : englishFontFamily;
   return {
     light: {
       fontFamily: activeFamily.light,
@@ -35,12 +36,12 @@ const getFonts = () => {
     },
     heading: {
       fontFamily: activeFamily.bold,
-      fontSize: ms(22),
+      fontSize: ms(24),
       fontWeight: '700',
     },
     subheading: {
       fontFamily: activeFamily.regular,
-      fontSize: ms(18),
+      fontSize: ms(20),
       fontWeight: '400',
     },
     body: {
@@ -53,7 +54,7 @@ const getFonts = () => {
       fontSize: ms(12),
       fontWeight: '300',
     },
-  }
+  };
 };
 
 export default getFonts;

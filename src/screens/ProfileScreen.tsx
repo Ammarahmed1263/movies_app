@@ -119,11 +119,9 @@ function ProfileScreen() {
   useEffect(() => {
     (async () => {
       const userData = await getUserProfile();
-      console.log('user profile: ', auth().currentUser?.email);
       setThemeActive(theme === 'dark' ? true : false);
       setLanguageArabic(i18n.language === 'ar' ? true : false);
       setUser(userData);
-      console.log('user id in profile: ', userData);
     })();
   }, []);
 
@@ -188,21 +186,21 @@ function ProfileScreen() {
           <View style={styles.sectionHeader}>
             <Icon name="help-circle" size={25} color={colors.paleShade} />
             <AppText variant="heading" style={{marginStart: hs(8)}}>
-              Support
+              {t('support')}
             </AppText>
           </View>
 
           <SettingItem
             icon="headphones"
-            label="Contact Us"
+            label={t('contact_us')}
             onPress={handleSendMail}
             type="select"
           />
 
           <SettingItem
             icon="info"
-            label="About MovieCorn"
-            onPress={() => {}}
+            label={`${t('about')} ${t('movie')} ${t('corn')}`}
+            onPress={() => SheetManager.show('about-app')}
             type="select"
             isToggled={languageArabic}
           />

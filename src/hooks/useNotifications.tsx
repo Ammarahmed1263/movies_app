@@ -146,7 +146,6 @@ const useNotifications = () => {
     try {
       const token = await messaging().getToken();
       console.log('token is here', token);
-      Alert.alert('token is here', token);
 
       // Send this token to Firebase to register your device for notifications
       return token;

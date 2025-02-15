@@ -1,23 +1,21 @@
-import {FC, useEffect, useState} from 'react';
-import {Platform, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import Image from '@atoms/AppImage.tsx';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Button from '@atoms/AppButton';
+import {FC, useEffect, useState} from 'react';
+import {Platform, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 
-import {useTheme} from '@contexts/ThemeContext';
-import TextSeeMore from '@atoms/SeeMoreText';
-import {getGenderString, getImageUrl} from '@utils';
-import MoviesSection from '@organisms/MoviesSection';
-import {getMemberDetails, getMemberCredits} from '@services/castMemberService';
-import {CastMemberScreenProps} from 'types/mainStackTypes';
-import {MemberCreditArray, MemberDetails} from 'types/castTypes';
-import AppText from '@atoms/AppText';
-import {hs, ms, vs, width} from '@styles/metrics';
-import DetailPillItem from '@molecules/DetailPillItem';
-import NavigationHeader from '@organisms/NavigationHeader';
 import AppLoading from '@atoms/AppLoading';
+import AppText from '@atoms/AppText';
+import TextSeeMore from '@atoms/SeeMoreText';
+import {useTheme} from '@contexts/ThemeContext';
+import LabeledBox from '@molecules/LabeledBox';
+import MoviesSection from '@organisms/MoviesSection';
+import NavigationHeader from '@organisms/NavigationHeader';
+import {getMemberCredits, getMemberDetails} from '@services/castMemberService';
+import {hs, vs, width} from '@styles/metrics';
+import {calculateAge, convertToArabicNumerals, getImageUrl} from '@utils';
 import {useTranslation} from 'react-i18next';
+import {MemberCreditArray, MemberDetails} from 'types/castTypes';
+import {CastMemberScreenProps} from 'types/mainStackTypes';
 import {castMemberFilter} from '../constants';
 
 const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
@@ -28,13 +26,11 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const {colors} = useTheme();
   const {t} = useTranslation();
 
-  console.log('member id', id);
   useEffect(() => {
     (async () => {
       try {
         const response = await getMemberDetails(id);
         const response2 = await getMemberCredits(id);
-        console.log('member details here: ', response);
         setCredits(response2.cast);
         setDetails(response);
       } catch (e) {
@@ -75,6 +71,7 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
           <Image
             source={getImageUrl(details?.profile_path)}
             resizeMode="cover"
+            viewStyle={styles.image}
           />
         </View>
       </View>
@@ -87,7 +84,8 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
             color: colors.paleShade,
             lineHeight: vs(28),
           }}>
-          {details.name}
+          {details.name},{' '}
+          {convertToArabicNumerals(calculateAge(details.birthday))}
         </AppText>
         <AppText
           variant="caption"
@@ -99,21 +97,16 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
         </AppText>
       </View>
 
-      <View
-        style={{...styles.shortDetails, backgroundColor: colors.primary700}}>
-        <DetailPillItem
-          label={t('gender')}
-          value={getGenderString(details.gender)}
+      <View style={styles.detailsContainer}>
+        <LabeledBox
+          label={t('popularity')}
+          value={convertToArabicNumerals(
+            Math.round(details.popularity * 10) / 10 + '',
+          )}
         />
-        <DetailPillItem label={t('birthday')} value={details.birthday} />
-        <DetailPillItem
+        <LabeledBox
           label={t('known_for')}
           value={details.known_for_department}
-        />
-        <DetailPillItem
-          label={t('popularity')}
-          value={Math.round(details.popularity * 10) / 10}
-          border={false}
         />
       </View>
 
@@ -124,17 +117,20 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
           style={{
             color: colors.paleShade,
           }}
-          text={details.biography.replace(/\n/g, ' ') || t('N/A')}
+          text={details.biography || t('N/A')}
           maxChars={250}
         />
       </View>
-      <MoviesSection
-        movies={credits.sort(
-          (a, b) => Number(b.vote_average) - Number(a.vote_average),
-        )}
-        length={15}
-        topic={t('popular_for')}
-      />
+
+      <View style={styles.movies}>
+        <MoviesSection
+          movies={credits.sort(
+            (a, b) => Number(b.vote_average) - Number(a.vote_average),
+          )}
+          length={15}
+          topic={t('popular_for')}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -143,27 +139,37 @@ export default CastMemberScreen;
 
 const styles = StyleSheet.create({
   imageContainer: {
-    overflow: 'hidden',
+    overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
     width: hs(220),
     aspectRatio: 1 / 1,
     borderRadius: hs(110),
     borderWidth: hs(1),
-    elevation: 10,
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
+    ...Platform.select({
+      android: {
+        elevation: 30,
+      },
+      ios: {
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 30,
+      },
+    }),
   },
-  shortDetails: {
+  image: {
+    width: '100%',
+    aspectRatio: 1 / 1,
+    borderRadius: hs(110),
+  },
+  detailsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: hs(10),
-    marginVertical: vs(8),
-    paddingVertical: vs(8),
-    paddingHorizontal: hs(4),
-    borderRadius: hs(40),
-    overflow: 'hidden',
+    alignSelf: 'center',
+    gap: hs(15),
+    marginVertical: vs(15),
+  },
+  movies: {
+    marginVertical: vs(20),
   },
 });

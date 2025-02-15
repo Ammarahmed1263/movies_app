@@ -17,3 +17,4 @@ export {
   scheduleFavoriteReminder,
   cancelScheduledReminder,
 } from './notifications';
+export {default as calculateAge} from './calculateAge.ts';

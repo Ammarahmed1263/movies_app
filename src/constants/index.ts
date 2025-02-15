@@ -80,7 +80,7 @@ export const castMemberFilter = (colors: ColorsType) => [
     color: colors.secondary500,
   },
   {
-    keypath: 'icon-man Outlines.cara.head',
+    keypath: 'icon-man Outlines.cara.head.Fill 1',
     color: colors.secondary500,
   },
   {

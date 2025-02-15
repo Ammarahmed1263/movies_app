@@ -148,7 +148,11 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             }}
           />
 
-          <CastList cast={castMembers} title={t('top_billed_cast')} />
+          <CastList
+            cast={castMembers}
+            title={t('top_billed_cast')}
+            viewStyle={styles.cast}
+          />
         </View>
       </ScrollView>
 
@@ -174,5 +178,8 @@ const styles = StyleSheet.create({
   button: {
     marginRight: hs(10),
     borderRadius: ms(10),
+  },
+  cast: {
+    marginVertical: vs(30),
   },
 });

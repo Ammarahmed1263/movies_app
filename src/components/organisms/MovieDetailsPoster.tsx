@@ -1,4 +1,9 @@
-import {durationToString, formatVoteCount, getImageUrl} from '@utils';
+import {
+  convertToArabicNumerals,
+  durationToString,
+  formatVoteCount,
+  getImageUrl,
+} from '@utils';
 import {FC} from 'react';
 import {
   ImageBackground,
@@ -71,11 +76,13 @@ const MovieDetailsPoster: FC<MovieDetailsPosterProps> = ({
               color: colors.paleShade,
               alignSelf: 'flex-start',
             }}>
-            {`${formatVoteCount(
-              movieDetails?.vote_average ?? 0,
-            )} · ${durationToString(movieDetails?.runtime ?? 0)} · ${
-              movieDetails?.release_date.split('-')[0]
-            }`}
+            {`${convertToArabicNumerals(
+              formatVoteCount(movieDetails?.vote_average ?? 0),
+            )} · ${durationToString(
+              movieDetails?.runtime ?? 0,
+            )} · ${convertToArabicNumerals(
+              movieDetails?.release_date.split('-')[0] ?? '',
+            )}`}
           </AppText>
         </View>
       </LinearGradient>

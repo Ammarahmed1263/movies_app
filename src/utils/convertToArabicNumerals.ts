@@ -1,4 +1,10 @@
+import {I18nManager} from 'react-native';
+
 export default function convertToArabicNumerals(input: string): string {
+  if (!I18nManager.isRTL) {
+    return input;
+  }
+
   const englishToArabic: Record<string, string> = {
     '0': '٠',
     '1': '١',
@@ -10,8 +16,8 @@ export default function convertToArabicNumerals(input: string): string {
     '7': '٧',
     '8': '٨',
     '9': '٩',
-    ',': '٫'
+    ',': '٫',
   };
 
-  return input.replace(/[0-9,]/g, (digit) => englishToArabic[digit] || digit);
+  return input.replace(/[0-9,]/g, digit => englishToArabic[digit] || digit);
 }

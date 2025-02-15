@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, FlatListProps, View, ViewStyle} from 'react-native';
 import Member from '@molecules/CastMember';
 import {CastMember, CastMemberArray} from 'types/castTypes';
 import AppText from '@atoms/AppText';
@@ -11,16 +11,18 @@ const renderItem = ({item}: {item: CastMember}) => {
   return <Member details={item} />;
 };
 
-interface CastListProps {
+interface CastListProps
+  extends Omit<FlatListProps<CastMember>, 'data' | 'renderItem'> {
   cast: CastMemberArray;
+  viewStyle?: ViewStyle;
   title: string;
 }
 
-const CastList: FC<CastListProps> = ({cast, title, ...props}) => {
+const CastList: FC<CastListProps> = ({cast, viewStyle, title, ...props}) => {
   const {colors} = useTheme();
 
   return (
-    <View>
+    <View style={viewStyle}>
       <AppText
         variant="heading"
         style={{
@@ -31,6 +33,7 @@ const CastList: FC<CastListProps> = ({cast, title, ...props}) => {
       </AppText>
       <FlatList
         data={cast}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={renderItem}
         ListEmptyComponent={
           cast.length > 0 ? (

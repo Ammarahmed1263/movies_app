@@ -43,16 +43,10 @@ const LabelInput = forwardRef<TextInput, LabelInputProps>(
     };
 
     return (
-      <View
-        style={[
-          styles.container,
-          {marginVertical: vs(error && touched ? 2 : 10)},
-          containerStyle,
-        ]}>
+      <View style={[styles.container, containerStyle]}>
         <AppText
-          variant="bold"
+          variant="body"
           style={{
-            ...styles.label,
             color: colors.paleShade,
           }}>
           {label}
@@ -112,9 +106,7 @@ export default LabelInput;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: hs(5),
-  },
-  label: {
-    fontSize: ms(16),
+    // borderWidth: 2,
   },
   input: {
     borderRadius: ms(10),
@@ -124,13 +116,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: hs(8),
-    minHeight: vs(45),
+    minHeight: vs(50),
   },
   textInput: {
     flex: 1,
   },
   errorText: {
-    fontSize: ms(14),
     paddingStart: hs(6),
     paddingTop: vs(2),
   },

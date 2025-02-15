@@ -3,17 +3,28 @@ import AppText from '@atoms/AppText';
 import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
 import MoviesList from '@organisms/MoviesList';
 import {hs, vs} from '@styles/metrics';
-import {FC} from 'react';
+import {FC, useLayoutEffect} from 'react';
+import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import {MovieListingScreenProps} from 'types/mainStackTypes';
 import {MovieSummary} from 'types/movieTypes';
 
-const MovieListingScreen: FC<MovieListingScreenProps> = ({route}) => {
+const MovieListingScreen: FC<MovieListingScreenProps> = ({
+  route,
+  navigation,
+}) => {
   const {category, time_window} = route.params;
   const {movies, page, total_pages, handlePagination} = useMoviesByCategory(
     category,
     time_window,
   );
+  const {t} = useTranslation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: t(category),
+    });
+  });
 
   if (movies.length === 0) {
     return (

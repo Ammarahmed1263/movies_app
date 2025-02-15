@@ -1,9 +1,9 @@
+import AppImage from '@atoms/AppImage';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, vs} from '@styles/metrics';
-import React, {useRef} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import ActionSheet, {SheetProps} from 'react-native-actions-sheet';
 
 const AboutSheet = (props: SheetProps<'about-app'>) => {
@@ -18,9 +18,10 @@ const AboutSheet = (props: SheetProps<'about-app'>) => {
         backgroundColor: colors.primary500,
       }}>
       <View style={styles.contentContainer}>
-        <Image
+        <AppImage
           source={require('../assets/images/logo.png')}
-          style={styles.logo}
+          viewStyle={styles.logo}
+          resizeMode="cover"
         />
         <AppText variant="heading" style={styles.heading}>
           {t('about')} {t('movie')} {t('corn')}
@@ -62,9 +63,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
+    flex: 0,
     width: hs(100),
     height: vs(100),
-    resizeMode: 'contain',
     marginBottom: 20,
   },
   heading: {

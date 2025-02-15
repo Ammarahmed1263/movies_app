@@ -125,7 +125,10 @@ const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
       <View style={styles.movies}>
         <MoviesSection
           movies={credits.sort(
-            (a, b) => Number(b.vote_average) - Number(a.vote_average),
+            (a, b) =>
+              Number(b.vote_count) +
+              Number(b.popularity) -
+              (Number(a.vote_count) + Number(a.popularity)),
           )}
           length={15}
           topic={t('popular_for')}

@@ -83,7 +83,7 @@ export default MovieVideoSection;
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: vs(10),
+    paddingVertical: vs(10),
   },
   header: {
     flexDirection: 'row',

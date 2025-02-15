@@ -10,7 +10,10 @@ import MovieCard from '@molecules/MovieCard';
 import {hs, vs} from '@styles/metrics';
 import {FC} from 'react';
 import {MovieCategory} from 'types/categoryTypes';
-import {MovieListingNavigationProp} from 'types/mainStackTypes';
+import {
+  MainTabsNavigationProp,
+  MovieListingNavigationProp,
+} from 'types/mainStackTypes';
 import {Movie, MovieArray} from 'types/movieTypes';
 
 interface MoviesSectionProps {
@@ -36,7 +39,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
   time_window,
 }) => {
   const {colors} = useTheme();
-  const navigation = useNavigation<MovieListingNavigationProp>();
+  const navigation = useNavigation<MainTabsNavigationProp>();
   const {t} = useTranslation();
 
   return (
@@ -110,7 +113,7 @@ export default MoviesSection;
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: vs(20),
+    paddingVertical: vs(10),
   },
   heading: {
     flexDirection: 'row',

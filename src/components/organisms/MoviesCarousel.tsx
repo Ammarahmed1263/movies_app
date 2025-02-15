@@ -119,7 +119,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
     return (
       <View
         style={{
-          height: height * 0.5,
+          height: height * 0.65,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -163,11 +163,8 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
           data={movies.length > length ? movies.slice(0, length) : movies}
           renderItem={renderItem}
           width={width}
+          height={width}
           defaultIndex={activeMovieIndex}
-          style={{
-            flex: 1,
-            height: vs(390),
-          }}
           mode="parallax"
           modeConfig={{
             parallaxScrollingScale: 1,
@@ -214,7 +211,6 @@ export default MoviesCarousel;
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    minHeight: vs(400),
   },
   carouselItem: {
     flex: 1,

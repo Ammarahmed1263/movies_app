@@ -57,6 +57,6 @@ export const searchMovies = ({
   ...rest
 }: SearchMoviesParams) => apiClient(MOVIES_BASE.search, {query, page, ...rest});
 export const getMovieVideos = (movieId: number) =>
-  apiClient(MOVIES_BASE.videos(movieId));
+  apiClient(MOVIES_BASE.videos(movieId), {language: 'en-US'});
 export const discoverMovies = (params: {}) =>
   apiClient(MOVIES_BASE.discover, params);

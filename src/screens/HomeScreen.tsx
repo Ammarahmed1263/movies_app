@@ -1,5 +1,6 @@
 import {useTheme} from '@contexts/ThemeContext';
 import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
+import GenresSections from '@organisms/GenresSections';
 import MoviesCarousel from '@organisms/MoviesCarousel';
 import MoviesSection from '@organisms/MoviesSection';
 import MovieVideoSection from '@organisms/MovieVideoSection';
@@ -53,7 +54,7 @@ function HomeScreen() {
             progressBackgroundColor={colors.primary500}
           />
         }
-        contentContainerStyle={{paddingBottom: vs(70)}}>
+        contentContainerStyle={{paddingBottom: vs(90)}}>
         <View>
           <MoviesCarousel movies={trendingMovies} loading={trendingLoading} />
         </View>
@@ -65,6 +66,7 @@ function HomeScreen() {
             topic={t('now_playing')}
             seeAll
           />
+          <GenresSections />
           <MoviesSection
             movies={top_ratedMovies}
             loading={top_ratedLoading}

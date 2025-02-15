@@ -8,6 +8,7 @@ export const ENDPOINTS = {
     search: 'search/movie',
     videos: (movieId: number) => `movie/${movieId}/videos`,
     discover: 'discover/movie',
+    genres: 'genre/movie/list',
   },
   movieDetails: {
     details: (movieId: number) => `movie/${movieId}`,

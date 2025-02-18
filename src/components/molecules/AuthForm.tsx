@@ -9,7 +9,7 @@ import {Formik, FormikErrors, FormikHelpers} from 'formik';
 import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
 import {loginSchema, signupSchema} from '@validation';
 import AppText from '@atoms/AppText';
-import {ms, vs} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 import AppLoading from '@atoms/AppLoading';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -49,7 +49,11 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
         isSubmitting,
         status,
       }) => (
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            {gap: Object.keys(errors).length > 0 ? 0 : vs(20)},
+          ]}>
           <LabelInput
             ref={emailRef}
             value={values.email}
@@ -72,7 +76,13 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
             label="Password"
             autoComplete="new-password"
             secureTextEntry>
-            <MaterialIcons name="lock" size={22} color={colors.secondary500} />
+            <View>
+              <MaterialIcons
+                name="lock"
+                size={22}
+                color={colors.secondary500}
+              />
+            </View>
           </LabelInput>
           {!isLogin && (
             <LabelInput
@@ -95,37 +105,66 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
           <View style={styles.button}>
             {status?.generalError && (
               <AppText
-                variant="bold"
+                variant="body"
                 style={{
-                  textAlign: 'center',
+                  ...styles.error,
                   color: colors.error,
-                  fontSize: ms(14),
-                  marginBottom: vs(5),
                 }}>
                 {status?.generalError}
               </AppText>
             )}
-            <Button
-              onPress={handleSubmit}
-              disabled={isSubmitting}
-              style={{
-                backgroundColor: isSubmitting
-                  ? colors.transparent
-                  : colors.secondary500,
-              }}>
-              {isSubmitting ? (
-                <AppLoading
-                  source={require('../../assets/lottie/loading_fade.json')}
-                  size={30}
-                  speed={1.5}
-                />
-              ) : isLogin ? (
-                'Login'
-              ) : (
-                'Signup'
-              )}
-            </Button>
           </View>
+          <Button
+            onPress={handleSubmit}
+            disabled={isSubmitting}
+            pressableStyle={{flex: 1}}
+            style={{
+              minHeight: vs(50),
+              backgroundColor: isSubmitting
+                ? colors.transparent
+                : colors.secondary500,
+            }}>
+            {isSubmitting ? (
+              <AppLoading
+                source={require('../../assets/lottie/loading_fade.json')}
+                size={30}
+                speed={1.5}
+              />
+            ) : isLogin ? (
+              'Login'
+            ) : (
+              'Signup'
+            )}
+          </Button>
+
+          <View style={styles.continue}>
+            <View style={[styles.line, {borderColor: colors.paleShade}]} />
+            <AppText variant="light" style={styles.contText}>
+              Or continue with
+            </AppText>
+            <View style={[styles.line, {borderColor: colors.paleShade}]} />
+          </View>
+
+          <Button
+            style={{
+              ...styles.google,
+              borderColor: colors.secondary500,
+            }}
+            customView
+            onPress={() => {}}
+            flat>
+            <View style={styles.googleContainer}>
+              <View
+                style={{
+                  width: 25,
+                  aspectRatio: 1,
+                  backgroundColor: 'black',
+                  borderRadius: 13,
+                }}
+              />
+              <AppText variant="body">Google</AppText>
+            </View>
+          </Button>
         </View>
       )}
     </Formik>
@@ -136,9 +175,37 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
+    marginTop: vs(10),
+    gap: vs(10),
+  },
+  continue: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  line: {
+    flex: 1,
+    borderTopWidth: vs(1),
+  },
+  google: {
+    flex: 1,
+    justifyContent: 'center',
+    borderWidth: ms(1),
+    minHeight: vs(50),
+    marginTop: vs(5),
+  },
+  googleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: hs(5),
+  },
+  contText: {
+    marginHorizontal: hs(4),
   },
   button: {
-    marginTop: 30,
+    // marginBottom: -20,
+  },
+  error: {
+    textAlign: 'center',
+    marginBottom: vs(5),
   },
 });

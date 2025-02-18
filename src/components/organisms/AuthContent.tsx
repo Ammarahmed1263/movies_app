@@ -14,12 +14,17 @@ import {FC} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {AuthStackParamList} from 'types/authStackTypes';
 import AppText from '@atoms/AppText';
-import { AuthFormValues } from 'types/authFormTypes';
-import { FormikHelpers } from 'formik';
+import {AuthFormValues} from 'types/authFormTypes';
+import {FormikHelpers} from 'formik';
+import {hs, vs} from '@styles/metrics';
+import AppImage from '@atoms/AppImage';
 
 interface AuthContentProps {
   isLogin: boolean;
-  onSubmit: (values: AuthFormValues, actions: FormikHelpers<AuthFormValues>) => Promise<void>;
+  onSubmit: (
+    values: AuthFormValues,
+    actions: FormikHelpers<AuthFormValues>,
+  ) => Promise<void>;
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login' | 'Signup'>;
 }
 
@@ -27,27 +32,40 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
   const {colors} = useTheme();
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}>
         <View style={styles.innerContainer}>
-          <View>
+          <View style={styles.headingContainer}>
+            <AppImage
+              source={require('../../assets/images/logo.png')}
+              viewStyle={{
+                flex: 0,
+                width: hs(100),
+                height: vs(100),
+                marginBottom: 20,
+              }}
+            />
             <AppText
               variant="heading"
               style={{
                 color: colors.paleShade,
               }}>
-              {isLogin ? 'Welcome Back' : 'Create New Account'}
+              {isLogin ? 'Welcome Back!' : 'Registration'}
             </AppText>
             <AppText
               variant="body"
               style={{
                 ...styles.subHeading,
-                color: colors.paleShade,
+                color: colors.primary700,
               }}>
-              {isLogin ? 'Login' : 'Signup'} to continue
+              {isLogin
+                ? 'Enter your account details here.'
+                : 'Kindly register below.'}
             </AppText>
           </View>
           <AuthForm isLogin={isLogin} onSubmit={onSubmit} />
@@ -65,7 +83,7 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
               flat
               textStyle={styles.footerText}
               onPress={() => navigation.replace(isLogin ? 'Signup' : 'Login')}>
-              {isLogin ? 'register' : 'Login'}
+              {isLogin ? 'Register Here' : 'Login Here'}
             </Button>
           </View>
         </View>
@@ -83,12 +101,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   innerContainer: {
-    width: '84%',
+    width: '90%',
+  },
+  headingContainer: {
+    alignItems: 'center',
   },
   subHeading: {
-    position: 'absolute',
-    top: 38,
-    left: 4,
+    marginTop: vs(2),
   },
   footerContainer: {
     flexDirection: 'row',

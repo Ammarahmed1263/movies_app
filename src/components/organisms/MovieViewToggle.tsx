@@ -22,9 +22,14 @@ import AppLoading from '@atoms/AppLoading';
 interface MovieViewToggleProps
   extends Omit<FlatListProps<MovieSummary>, 'data' | 'renderItem'> {
   movies: MovieArray;
+  renderItem?: ({item}: {item: MovieSummary}) => JSX.Element;
 }
 
-const MovieViewToggle: FC<MovieViewToggleProps> = ({movies, ...props}) => {
+const MovieViewToggle: FC<MovieViewToggleProps> = ({
+  movies,
+  renderItem,
+  ...props
+}) => {
   const [columns, setColumns] = useState(1);
   const {colors} = useTheme();
 
@@ -40,36 +45,38 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({movies, ...props}) => {
     <View style={{flex: 1}}>
       <View style={styles.header}>
         <AppText variant="heading">Explore</AppText>
-        <View style={styles.icons}>
-          <AppButton
-            pressableStyle={{padding: 0}}
-            onPress={() => setColumns(1)}
-            customView
-            flat>
-            <Icon
-              name={'pause'}
-              size={ms(30)}
-              color={columns === 1 ? colors.link : colors.paleShade}
-              style={{transform: [{rotate: '90deg'}]}}
-            />
-          </AppButton>
-          <AppButton
-            pressableStyle={{padding: 0}}
-            onPress={() => setColumns(2)}
-            customView
-            flat>
-            <Icon
-              name={'grid'}
-              size={ms(25)}
-              color={columns === 2 ? colors.link : colors.paleShade}
-            />
-          </AppButton>
-        </View>
+        {!renderItem && (
+          <View style={styles.icons}>
+            <AppButton
+              pressableStyle={{padding: 0}}
+              onPress={() => setColumns(1)}
+              customView
+              flat>
+              <Icon
+                name={'pause'}
+                size={ms(30)}
+                color={columns === 1 ? colors.link : colors.paleShade}
+                style={{transform: [{rotate: '90deg'}]}}
+              />
+            </AppButton>
+            <AppButton
+              pressableStyle={{padding: 0}}
+              onPress={() => setColumns(2)}
+              customView
+              flat>
+              <Icon
+                name={'grid'}
+                size={ms(25)}
+                color={columns === 2 ? colors.link : colors.paleShade}
+              />
+            </AppButton>
+          </View>
+        )}
       </View>
 
       <MoviesList
         data={movies as MovieSummary[]}
-        renderItem={handleRenderItem}
+        renderItem={renderItem ? renderItem : handleRenderItem}
         numColumns={columns}
         key={columns}
         keyExtractor={movie => movie.id.toString()}

@@ -85,7 +85,12 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
 
   const renderContent = () => {
     if (!keyword) {
-      return <SearchExplore listContainerStyle={{paddingTop: vs(15)}} />;
+      return (
+        <SearchExplore
+          listContainerStyle={{paddingTop: vs(15)}}
+          renderMovie={renderItem}
+        />
+      );
     }
 
     if (status === 'searching') {

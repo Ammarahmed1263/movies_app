@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   general: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

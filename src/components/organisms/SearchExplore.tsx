@@ -18,13 +18,19 @@ import MovieViewToggle from './MovieViewToggle';
 import {discoverMovies} from '@services/movieService';
 import {getPopularPerson} from '@services/castMemberService';
 import {handlePromiseResult} from '@utils';
+import {MovieSummary} from 'types/movieTypes';
 
 type SearchExploreProps = {
+  renderMovie?: ({item}: {item: MovieSummary}) => JSX.Element;
   style?: ViewStyle;
   listContainerStyle?: StyleProp<ViewStyle>;
 };
 
-const SearchExplore: FC<SearchExploreProps> = ({style, listContainerStyle}) => {
+const SearchExplore: FC<SearchExploreProps> = ({
+  style,
+  listContainerStyle,
+  renderMovie,
+}) => {
   const [actors, setActors] = useState([]);
   const [discover, setDiscover] = useState([]);
   const {t} = useTranslation();
@@ -66,10 +72,11 @@ const SearchExplore: FC<SearchExploreProps> = ({style, listContainerStyle}) => {
 
   return (
     <View style={[styles.container, style]}>
-      <CastList cast={actors} title={t('actors')} />
+      {!renderMovie && <CastList cast={actors} title={t('actors')} />}
       <MovieViewToggle
         movies={discover}
         contentContainerStyle={listContainerStyle}
+        renderItem={renderMovie}
       />
     </View>
   );

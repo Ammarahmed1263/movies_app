@@ -1,5 +1,5 @@
 import {useTheme} from '@contexts/ThemeContext';
-import {useMoviesByCategory} from '@hooks/useMoviesByCategory';
+import {useMoviesList} from '@hooks/useMoviesList';
 import GenresSections from '@organisms/GenresSections';
 import MoviesCarousel from '@organisms/MoviesCarousel';
 import MoviesSection from '@organisms/MoviesSection';
@@ -7,28 +7,32 @@ import MovieVideoSection from '@organisms/MovieVideoSection';
 import {vs} from '@styles/metrics';
 import {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  FlatList,
-  RefreshControl,
-  ScrollView,
-  StatusBar,
-  View,
-} from 'react-native';
+import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
+import {MovieArray} from 'types/movieTypes';
 
 function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const {t} = useTranslation();
   const {theme, colors} = useTheme();
   const {movies: now_playingMovies, loading: now_playingLoading} =
-    useMoviesByCategory('now_playing');
-  const {movies: trendingMovies, loading: trendingLoading} =
-    useMoviesByCategory('trending', 'week');
-  const {movies: upcomingMovies, loading: upcomingLoading} =
-    useMoviesByCategory('upcoming');
-  const {movies: top_ratedMovies, loading: top_ratedLoading} =
-    useMoviesByCategory('top_rated');
-  const {movies: popularMovies, loading: popularLoading} =
-    useMoviesByCategory('popular');
+    useMoviesList('category', 'now_playing');
+  const {movies: trendingMovies, loading: trendingLoading} = useMoviesList(
+    'category',
+    'trending',
+    'week',
+  );
+  const {movies: upcomingMovies, loading: upcomingLoading} = useMoviesList(
+    'category',
+    'upcoming',
+  );
+  const {movies: top_ratedMovies, loading: top_ratedLoading} = useMoviesList(
+    'category',
+    'top_rated',
+  );
+  const {movies: popularMovies, loading: popularLoading} = useMoviesList(
+    'category',
+    'popular',
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -56,11 +60,14 @@ function HomeScreen() {
         }
         contentContainerStyle={{paddingBottom: vs(90)}}>
         <View>
-          <MoviesCarousel movies={trendingMovies} loading={trendingLoading} />
+          <MoviesCarousel
+            movies={trendingMovies as MovieArray}
+            loading={trendingLoading}
+          />
         </View>
         <View>
           <MoviesSection
-            movies={now_playingMovies}
+            movies={now_playingMovies as MovieArray}
             loading={now_playingLoading}
             category="now_playing"
             topic={t('now_playing')}
@@ -75,7 +82,8 @@ function HomeScreen() {
             seeAll
           />
           <MovieVideoSection
-            data={upcomingMovies}
+            movies={upcomingMovies}
+            loading={upcomingLoading}
             category="upcoming"
             topic={t('upcoming')}
             seeAll

@@ -1,32 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { MovieCategory } from "types/categoryTypes";
-import { MovieCategoryState } from "./moviesTypes";
-import { getMoviesByCategory } from "./moviesActions";
-import { removeDuplicateMovies } from '@utils'
+import {createSlice} from '@reduxjs/toolkit';
+import {removeDuplicateMovies} from '@utils';
+import {MovieArray} from 'types/movieTypes';
+import {getMoviesList} from './moviesActions';
 
-type intialState = {
-  [key in MovieCategory]: MovieCategoryState;
-};
-
-const initialState: intialState = {
-  now_playing: { movies: [], loading: false, page: 1, total_pages: 1, error: null },
-  popular: { movies: [], loading: false, page: 1, total_pages: 1, error: null },
-  top_rated: { movies: [], loading: false, page: 1, total_pages: 1, error: null },
-  upcoming: { movies: [], loading: false, page: 1, total_pages: 1, error: null },
-  trending: { movies: [], loading: false, page: 1, total_pages: 1, error: null },
+interface MoviesListState {
+  movies: MovieArray;
+  page: number;
+  total_pages: number;
+  error: string | null;
+  loading: boolean;
 }
 
+type MoviesState = {
+  [key: string]: MoviesListState;
+};
+
+const initialState: MoviesState = {};
 
 const moviesSlice = createSlice({
   name: 'movies',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(getMoviesByCategory.pending, (state, action) => {
-      const { category } = action.meta.arg;
+  extraReducers: builder => {
+    builder.addCase(getMoviesList.pending, (state, action) => {
+      const {type, value} = action.meta.arg;
+      const key = `${type}-${value}`;
 
-      if (!state[category]) {
-        state[category] = {
+      if (!state[key]) {
+        state[key] = {
           movies: [],
           page: 0,
           total_pages: 0,
@@ -35,13 +36,37 @@ const moviesSlice = createSlice({
         };
       }
 
-      state[category].loading =  true;
-    })
-    builder.addCase(getMoviesByCategory.fulfilled, (state, action) => {
-      const {category, movies, page, total_pages} = action.payload;
+      state[key].loading = true;
+    });
+    builder.addCase(getMoviesList.fulfilled, (state, action) => {
+      const {type, value, page, movies} = action.payload;
+      const key = `${type}-${value}`;
 
-      if (!state[category]) {
-        state[category] = {
+      if (!state[key]) {
+        state[key] = {
+          movies: [],
+          page: 0,
+          total_pages: 1,
+          error: null,
+          loading: false,
+        };
+      }
+
+      state[key].movies = removeDuplicateMovies([
+        ...state[key].movies,
+        ...movies,
+      ]);
+      state[key].page = page;
+      state[key].total_pages = action.payload.total_pages;
+      state[key].loading = false;
+      state[key].error = null;
+    });
+    builder.addCase(getMoviesList.rejected, (state, action) => {
+      const {type, value} = action.meta.arg;
+      const key = `${type}-${value}`;
+
+      if (!state[key]) {
+        state[key] = {
           movies: [],
           page: 0,
           total_pages: 0,
@@ -50,29 +75,10 @@ const moviesSlice = createSlice({
         };
       }
 
-      state[category].movies = removeDuplicateMovies([...state[category].movies, ...movies]);
-      state[category].page = page;
-      state[category].total_pages = total_pages;
-      state[category].loading = false;
-      state[category].error = null;
-    })
-    builder.addCase(getMoviesByCategory.rejected, (state, action) => {
-      const { category } = action.meta.arg;
-
-      if (!state[category]) {
-        state[category] = {
-          movies: [],
-          page: 0,
-          total_pages: 0,
-          loading: false,
-          error: null,
-        };
-      }
-  
-      state[category].loading = false;
-      state[category].error = action.error.message || 'Failed to fetch movies.';
-    })
-  }
-})
+      state[key].loading = false;
+      state[key].error = action.error.message || 'Failed to fetch movies.';
+    });
+  },
+});
 
 export default moviesSlice.reducer;

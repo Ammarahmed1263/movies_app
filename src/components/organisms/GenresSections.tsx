@@ -10,31 +10,34 @@ import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {MainTabsNavigationProp} from 'types/mainStackTypes';
 
+interface Genre {
+  id: number;
+  name: string;
+}
+
 const GenresSections = () => {
-  const [genres, setGenres] = useState<{id: number; name: string}[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
   const {colors} = useTheme();
   const {t} = useTranslation();
   const navigation = useNavigation<MainTabsNavigationProp>();
 
-  const handleGenrePress = async (id: number) => {
+  const handleGenrePress = async (item: Genre) => {
     try {
-      const data = await discoverMovies({
-        with_genres: id,
-      });
       navigation.navigate('MovieListing', {
-        category: 'top_rated',
+        type: 'genre',
+        value: String(item.id),
+        title: item.name,
       });
-      console.log(data.results);
     } catch (error: any) {
       console.error('error fetching genre data: ', error.response.msg);
     }
   };
 
-  const renderGenres = (genres: {id: number; name: string}[]) => {
+  const renderGenres = (genres: Genre[]) => {
     return genres.map(item => (
       <TouchableOpacity
         key={item.id}
-        onPress={() => handleGenrePress(item.id)}
+        onPress={() => handleGenrePress(item)}
         style={[
           styles.genre,
           {
@@ -50,7 +53,7 @@ const GenresSections = () => {
     (async () => {
       try {
         const {genres} = await getGenres();
-        setGenres(genres);
+        setGenres(genres.filter((genre: Genre) => genre.name !== 'Romance'));
       } catch (error) {
         console.error('error fetching genres');
       }
@@ -112,5 +115,7 @@ const styles = StyleSheet.create({
     paddingVertical: vs(15),
     borderRadius: hs(6),
     borderWidth: hs(2),
+    minWidth: hs(100),
+    flex: 1,
   },
 });

@@ -14,9 +14,11 @@ import {MovieListingNavigationProp} from 'types/mainStackTypes';
 import {useNavigation} from '@react-navigation/native';
 import MovieVideoCard from '@molecules/MovieVideoCard';
 import YoutubeModal from './YoutubeModal';
+import AppLoading from '@atoms/AppLoading';
 
 type MovieVideoSectionProps = {
-  data: Movie[];
+  movies: Movie[];
+  loading?: boolean;
   topic: string;
   category?: MovieCategory;
   time_window?: 'day' | 'week';
@@ -24,7 +26,8 @@ type MovieVideoSectionProps = {
 };
 
 const MovieVideoSection: FC<MovieVideoSectionProps> = ({
-  data,
+  movies,
+  loading,
   topic,
   category = 'now_playing',
   time_window,
@@ -54,7 +57,11 @@ const MovieVideoSection: FC<MovieVideoSectionProps> = ({
             <AppButton
               variant="body"
               onPress={() =>
-                navigation.navigate('MovieListing', {category, time_window})
+                navigation.navigate('MovieListing', {
+                  type: 'category',
+                  value: category,
+                  time_window,
+                })
               }
               flat>
               {t('see_all')}
@@ -62,8 +69,27 @@ const MovieVideoSection: FC<MovieVideoSectionProps> = ({
           )}
         </View>
         <FlatList
-          data={data}
+          data={movies}
           renderItem={handleRenderItem}
+          ListEmptyComponent={
+            loading ? (
+              <AppLoading
+                source={require('../../assets/lottie/loading_fade.json')}
+              />
+            ) : (
+              <View
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <AppText variant="subheading">
+                  {t('Sorry, no movies found')}
+                </AppText>
+              </View>
+            )
+          }
           contentContainerStyle={styles.listContainer}
           showsHorizontalScrollIndicator={false}
           horizontal
@@ -83,6 +109,7 @@ export default MovieVideoSection;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingVertical: vs(10),
   },
   header: {
@@ -93,6 +120,7 @@ const styles = StyleSheet.create({
     marginEnd: hs(10),
   },
   listContainer: {
+    flexGrow: 1,
     paddingHorizontal: hs(15),
     gap: hs(10),
     marginVertical: vs(10),

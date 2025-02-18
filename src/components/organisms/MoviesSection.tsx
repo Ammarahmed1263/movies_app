@@ -1,7 +1,7 @@
 import Button from '@atoms/AppButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
-import {FlatList, I18nManager, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
@@ -10,10 +10,7 @@ import MovieCard from '@molecules/MovieCard';
 import {hs, vs} from '@styles/metrics';
 import {FC} from 'react';
 import {MovieCategory} from 'types/categoryTypes';
-import {
-  MainTabsNavigationProp,
-  MovieListingNavigationProp,
-} from 'types/mainStackTypes';
+import {MainTabsNavigationProp} from 'types/mainStackTypes';
 import {Movie, MovieArray} from 'types/movieTypes';
 
 interface MoviesSectionProps {
@@ -54,57 +51,55 @@ const MoviesSection: FC<MoviesSectionProps> = ({
               color: colors.secondary500,
             }}
             onPress={() =>
-              navigation.navigate('MovieListing', {category, time_window})
+              navigation.navigate('MovieListing', {
+                type: 'category',
+                value: category,
+                time_window,
+              })
             }
             flat>
             {t('see_all')}
           </Button>
         )}
       </View>
-      {loading ? (
-        <View style={{alignItems: 'center'}}>
-          <AppText variant="heading">{t('Loading...')}</AppText>
-        </View>
-      ) : (
-        <FlatList
-          data={movies.slice(0, length)}
-          keyExtractor={movie => movie.id + ''}
-          ListEmptyComponent={
-            loading ? (
-              <AppLoading
-                source={require('../../assets/lottie/loading_fade.json')}
-              />
-            ) : (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <AppText variant="subheading">
-                  {t('Sorry, no movies found')}
-                </AppText>
-              </View>
-            )
-          }
-          maxToRenderPerBatch={10}
-          scrollEventThrottle={16}
-          initialNumToRender={5}
-          contentContainerStyle={{
-            flexGrow: 1,
-            gap: hs(10),
-            paddingHorizontal: hs(15),
-          }}
-          renderItem={renderMovie}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          getItemLayout={(_, index) => ({
-            length: 100,
-            offset: 100 * index,
-            index,
-          })}
-        />
-      )}
+      <FlatList
+        data={movies.slice(0, length)}
+        keyExtractor={movie => movie.id.toString()}
+        ListEmptyComponent={
+          loading ? (
+            <AppLoading
+              source={require('../../assets/lottie/loading_fade.json')}
+            />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <AppText variant="subheading">
+                {t('Sorry, no movies found')}
+              </AppText>
+            </View>
+          )
+        }
+        maxToRenderPerBatch={10}
+        scrollEventThrottle={16}
+        initialNumToRender={5}
+        contentContainerStyle={{
+          flexGrow: 1,
+          gap: hs(10),
+          paddingHorizontal: hs(15),
+        }}
+        renderItem={renderMovie}
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        getItemLayout={(_, index) => ({
+          length: 100,
+          offset: 100 * index,
+          index,
+        })}
+      />
     </View>
   );
 };

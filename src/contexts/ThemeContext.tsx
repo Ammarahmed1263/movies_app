@@ -10,7 +10,7 @@ import {useColorScheme} from 'react-native';
 import COLORS from '@styles/Colors';
 import getFonts from '@styles/Fonts';
 import {ThemeContextType} from 'types/themeTypes';
-import { getUserProfile } from '@services/userService';
+import {getUserProfile} from '@services/userService';
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
@@ -26,7 +26,7 @@ const ThemeContext = createContext<ThemeContextType>({
     link: '',
     error: '',
     success: '',
-    transparent: ''
+    transparent: '',
   },
   fonts: {
     light: {
@@ -77,13 +77,18 @@ const ThemeProvider: FC<ThemeProviderProps> = ({children}) => {
 
   useEffect(() => {
     (async () => {
-      const user = await getUserProfile();
-    
-    const userTheme = user?.userPreferences?.theme;
-
-    setTheme(userTheme ? userTheme : colorScheme === 'dark' ? 'dark' : 'light');
+      setTheme(colorScheme || 'light');
     })();
   }, [colorScheme]);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUserProfile();
+      if (user && user.userPreferences?.theme) {
+        setTheme(user.userPreferences.theme);
+      }
+    })();
+  }, []);
 
   const toggleTheme = async () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';

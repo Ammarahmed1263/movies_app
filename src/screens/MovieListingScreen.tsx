@@ -43,11 +43,12 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({
       keyExtractor={movie => movie.id.toString() + value}
       numColumns={2}
       columnWrapperStyle={{
-        justifyContent: 'flex-start',
+        width: '100%',
+        justifyContent: 'space-between',
         gap: hs(12),
         marginVertical: vs(10),
       }}
-      contentContainerStyle={{flexGrow: 1, marginHorizontal: hs(10)}}
+      contentContainerStyle={{flexGrow: 1}}
       ListEmptyComponent={
         movies.length === 0 ? (
           <View

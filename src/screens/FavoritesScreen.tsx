@@ -40,7 +40,7 @@ function FavoritesScreen() {
       .onSnapshot(
         documentSnapshot => {
           const data = documentSnapshot.data();
-          setFavorites(data?.favoriteMovies.reverse() || []);
+          setFavorites((data?.favoriteMovies || []).reverse());
           setLoading(false);
         },
         error => {

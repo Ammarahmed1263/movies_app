@@ -8,6 +8,10 @@ export const getCurrentUserId = () => {
 
 export const getUserProfile = async () => {
   const userId = getCurrentUserId();
+  if (!userId) {
+    return null;
+  }
+
   try {
     const user = await firestore().collection('users').doc(userId).get();
     return user.data() || {};

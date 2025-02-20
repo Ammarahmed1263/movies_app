@@ -51,25 +51,23 @@ export const onGoogleButtonPress = async (
     values: SetStateAction<AuthFormValues>,
     shouldValidate?: boolean,
   ) => Promise<void | FormikErrors<AuthFormValues>>,
+  setSubmitting: (isSubmitting: boolean) => void,
 ) => {
+  setSubmitting(true);
   try {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     const signInResult = await GoogleSignin.signIn();
 
-    // Check for idToken in both locations
     // @ts-ignore
     const idToken = signInResult.idToken || signInResult.data?.idToken;
     if (!idToken) {
-      throw new Error('No ID token found');
+      return;
     }
 
-    // Check if user email exists
     const userEmail = signInResult.data?.user?.email!;
 
-    // Set form values with the email
     setValues({email: userEmail, password: ''});
 
-    // Create and use credential
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     const userCredential = await auth().signInWithCredential(googleCredential);
 
@@ -85,6 +83,8 @@ export const onGoogleButtonPress = async (
   } catch (error) {
     console.error('Error during Google sign-in:', error);
     throw error;
+  } finally {
+    setSubmitting(false);
   }
 };
 

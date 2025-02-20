@@ -77,6 +77,7 @@ const SearchExplore: FC<SearchExploreProps> = ({
         movies={discover}
         contentContainerStyle={listContainerStyle}
         renderItem={renderMovie}
+        keyboardShouldPersistTaps="handled"
       />
     </View>
   );

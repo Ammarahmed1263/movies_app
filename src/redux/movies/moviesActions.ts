@@ -25,7 +25,6 @@ export const getMoviesList = createAsyncThunk(
       }
     }
 
-    console.log(JSON.stringify(response, null, 4));
     return {
       type,
       value,

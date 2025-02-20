@@ -11,7 +11,6 @@ const useLists = () => {
 
   useEffect(() => {
     const unsubscribe = getLists(updatedLists => {
-      console.log('current user lists:', updatedLists);
       setLists([
         {id: 'add', title: t('create_new_list'), movies: []},
         ...updatedLists,

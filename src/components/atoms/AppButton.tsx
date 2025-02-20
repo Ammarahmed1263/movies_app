@@ -6,6 +6,8 @@ import {
   TextStyle,
   ViewStyle,
   PressableProps,
+  StyleProp,
+  PressableStateCallbackType,
 } from 'react-native';
 import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode, useState} from 'react';
@@ -21,7 +23,9 @@ interface AppButtonProps extends PressableProps {
   onPress: () => void;
   customView?: ReactNode;
   customViewStyle?: ViewStyle | ViewStyle[];
-  pressableStyle?: ViewStyle;
+  pressableStyle?:
+    | StyleProp<ViewStyle>
+    | ((state: PressableStateCallbackType) => StyleProp<ViewStyle>);
   children?: ReactNode;
 }
 
@@ -57,11 +61,13 @@ const AppButton: FC<AppButtonProps> = ({
       <Pressable
         android_ripple={flat ? null : {color: colors.secondary600}}
         hitSlop={ms(15)}
-        style={[
+        style={state => [
           styles.general,
           !flat && styles.innerButton,
           flat && clicked && {opacity: 0.7},
-          pressableStyle,
+          typeof pressableStyle === 'function'
+            ? pressableStyle(state)
+            : pressableStyle,
         ]}
         onPress={pressAction}
         {...props}>

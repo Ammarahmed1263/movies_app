@@ -2,19 +2,17 @@ import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import SettingItem from '@molecules/SettingItem';
-import notifee from '@notifee/react-native';
 import ListsFlatlist from '@organisms/ListsFlatlist';
 import ProfileHeader from '@organisms/ProfileHeader';
 import auth from '@react-native-firebase/auth';
+import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {userLogout} from '@services/authService';
 import {
   deleteUser,
-  getCurrentUserId,
   getUserProfile,
   updateUserPreferences,
 } from '@services/userService';
 import {hs, vs, width} from '@styles/metrics';
-import {ContactUsMessage} from '../constants';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
@@ -31,9 +29,8 @@ import {SheetManager} from 'react-native-actions-sheet';
 import Config from 'react-native-config';
 import RNRestart from 'react-native-restart';
 import Feather from 'react-native-vector-icons/Feather';
+import {ContactUsMessage} from '../constants';
 import i18n from '../i18n';
-import {use} from 'i18next';
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 const Icon = Feather as any;
 
 function ProfileScreen() {
@@ -45,6 +42,8 @@ function ProfileScreen() {
   >(undefined);
   const {toggleTheme, theme, colors} = useTheme();
   const {t} = useTranslation();
+
+  console.log('user data', auth().currentUser?.uid);
 
   const toggleAppTheme = async () => {
     setThemeActive(prev => !prev);

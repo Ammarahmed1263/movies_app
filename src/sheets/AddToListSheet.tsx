@@ -15,7 +15,14 @@ import {
 import {height, hs, vs} from '@styles/metrics';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Platform, StyleSheet, View} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import ActionSheet, {
   SheetManager,
   SheetProps,
@@ -107,6 +114,8 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={0.7}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="none"
         contentContainerStyle={[styles.contentContainer]}
         snapStyle={{bottom: vs(70)}}
         ListFooterComponent={
@@ -125,7 +134,9 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
       statusBarTranslucent={false}
       initialSnapIndex={0}
       gestureEnabled={false}>
-      <View style={styles.sheetContainer}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.sheetContainer}>
         <View style={styles.search}>
           <SearchBar
             keyword={keyword}
@@ -142,7 +153,7 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
         </View>
 
         {renderContent()}
-      </View>
+      </KeyboardAvoidingView>
     </ActionSheet>
   );
 };

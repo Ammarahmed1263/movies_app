@@ -7,12 +7,14 @@ import {
   TextInputProps,
   Pressable,
   TouchableOpacity,
+  I18nManager,
 } from 'react-native';
 import {useTheme} from '@contexts/ThemeContext';
 import {FC, forwardRef, ReactNode, useState} from 'react';
 import AppText from '@atoms/AppText';
 import {hs, ms, vs} from '@styles/metrics';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import i18n from 'i18n';
 
 interface LabelInputProps extends TextInputProps {
   containerStyle?: ViewStyle;
@@ -106,7 +108,6 @@ export default LabelInput;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: hs(5),
-    // borderWidth: 2,
   },
   input: {
     borderRadius: ms(10),
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
+    textAlign: i18n.language === 'ar' ? 'right' : 'left',
   },
   errorText: {
     paddingStart: hs(6),

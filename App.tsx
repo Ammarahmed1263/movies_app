@@ -16,15 +16,11 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      const user = await getUserProfile();
-
-      if (user?.userPreferences?.language) {
-        i18n.changeLanguage(user.userPreferences.language);
-      }
-
       if (i18n.language === 'ar') {
+        I18nManager.allowRTL(true);
         I18nManager.forceRTL(true);
       } else {
+        I18nManager.allowRTL(false);
         I18nManager.forceRTL(false);
       }
 

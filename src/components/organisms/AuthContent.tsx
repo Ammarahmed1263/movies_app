@@ -5,12 +5,13 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  I18nManager,
 } from 'react-native';
 import AuthForm from '@molecules/AuthForm';
 import Button from '@atoms/AppButton';
 
 import {useTheme} from '@contexts/ThemeContext';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {AuthStackParamList} from 'types/authStackTypes';
 import AppText from '@atoms/AppText';
@@ -18,6 +19,7 @@ import {AuthFormValues} from 'types/authFormTypes';
 import {FormikHelpers} from 'formik';
 import {hs, vs} from '@styles/metrics';
 import AppImage from '@atoms/AppImage';
+import {useTranslation} from 'react-i18next';
 
 interface AuthContentProps {
   isLogin: boolean;
@@ -30,6 +32,7 @@ interface AuthContentProps {
 
 const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   return (
     <KeyboardAvoidingView
@@ -43,19 +46,14 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
           <View style={styles.headingContainer}>
             <AppImage
               source={require('../../assets/images/logo.png')}
-              viewStyle={{
-                flex: 0,
-                width: hs(100),
-                height: vs(100),
-                marginBottom: 20,
-              }}
+              viewStyle={styles.logo}
             />
             <AppText
               variant="heading"
               style={{
                 color: colors.paleShade,
               }}>
-              {isLogin ? 'Welcome Back!' : 'Registration'}
+              {isLogin ? t('login_title') : t('register_title')}
             </AppText>
             <AppText
               variant="body"
@@ -63,11 +61,10 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
                 ...styles.subHeading,
                 color: colors.primary700,
               }}>
-              {isLogin
-                ? 'Enter your account details here.'
-                : 'Kindly register below.'}
+              {isLogin ? t('login_subtitle') : t('register_subtitle')}
             </AppText>
           </View>
+
           <AuthForm isLogin={isLogin} onSubmit={onSubmit} />
 
           <View style={styles.footerContainer}>
@@ -77,13 +74,13 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
                 ...styles.footerText,
                 color: colors.paleShade,
               }}>
-              {isLogin ? "Don't have an account?" : 'Already have an account?'}
+              {isLogin ? t('dont_have_account') : t('already_have_account')}
             </AppText>
             <Button
               flat
               textStyle={styles.footerText}
               onPress={() => navigation.replace(isLogin ? 'Signup' : 'Login')}>
-              {isLogin ? 'Register Here' : 'Login Here'}
+              {isLogin ? t('register_here') : t('login_here')}
             </Button>
           </View>
         </View>
@@ -105,6 +102,10 @@ const styles = StyleSheet.create({
   },
   headingContainer: {
     alignItems: 'center',
+  },
+  logo: {
+    width: hs(100),
+    height: vs(100),
   },
   subHeading: {
     marginTop: vs(2),

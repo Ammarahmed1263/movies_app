@@ -9,7 +9,7 @@ import {
   CastMemberScreen,
 } from '@screens';
 import {ColorsType, FontsType} from 'types/themeTypes';
-import {FC} from 'react';
+import {FC, useEffect} from 'react';
 import {MainStackParamList} from 'types/mainStackTypes';
 import {useTranslation} from 'react-i18next';
 import Liststack from './ListsStack';
@@ -18,6 +18,8 @@ import {ms} from '@styles/metrics';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {I18nManager} from 'react-native';
+import {getUserProfile} from '@services/userService';
+import i18n from 'i18n';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -30,6 +32,16 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
   const {t} = useTranslation();
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUserProfile();
+
+      if (user?.userPreferences?.language) {
+        i18n.changeLanguage(user.userPreferences.language);
+      }
+    })();
+  }, []);
 
   return (
     <Stack.Navigator

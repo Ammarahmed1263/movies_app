@@ -15,6 +15,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
 import LabelInput from './LabelInput';
 import {onGoogleButtonPress} from '@services/authService';
+import {useTranslation} from 'react-i18next';
 const Ionicons = Icon as any;
 const MaterialIcons = Icon2 as any;
 
@@ -23,6 +24,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
     ? {email: '', password: ''}
     : {email: '', password: '', confirmPassword: ''};
   const {colors} = useTheme();
+  const {t} = useTranslation();
   const emailRef = useRef<TextInput>(null);
 
   const handleSubmit = async (
@@ -63,10 +65,10 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
               onBlur={handleBlur('email')}
               error={errors.email}
               touched={touched.email}
-              label="Email"
+              label={t('email')}
               autoComplete="email"
               keyboardType="email-address"
-              placeholder="john@example.com">
+              placeholder={t('empty_email')}>
               <Ionicons name="mail" size={20} color={colors.secondary500} />
             </LabelInput>
             <LabelInput
@@ -75,7 +77,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
               onBlur={handleBlur('password')}
               error={errors.password}
               touched={touched.password}
-              label="Password"
+              label={t('password')}
               autoComplete="new-password"
               secureTextEntry>
               <View>
@@ -93,7 +95,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
                 onBlur={handleBlur('confirmPassword')}
                 error={errors.confirmPassword}
                 touched={touched.confirmPassword}
-                label="Confirm Password"
+                label={t('confirm_password')}
                 autoComplete="new-password"
                 secureTextEntry>
                 <MaterialIcons
@@ -133,15 +135,15 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
                   speed={1.5}
                 />
               ) : isLogin ? (
-                'Login'
+                t('login')
               ) : (
-                'Signup'
+                t('signup')
               )}
             </Button>
             <View style={styles.continue}>
               <View style={[styles.line, {borderColor: colors.paleShade}]} />
               <AppText variant="light" style={styles.contText}>
-                Or continue with
+                {t('or_continue_with')}
               </AppText>
               <View style={[styles.line, {borderColor: colors.paleShade}]} />
             </View>
@@ -155,11 +157,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
               pressableStyle={{
                 flex: 1,
               }}
-              onPress={async () => {
-                setSubmitting(true);
-                await onGoogleButtonPress(setValues);
-                setSubmitting(false);
-              }}
+              onPress={() => onGoogleButtonPress(setValues, setSubmitting)}
               flat>
               <View style={styles.googleContainer}>
                 <AppImage
@@ -170,7 +168,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
                     height: vs(25),
                   }}
                 />
-                <AppText variant="body">Google</AppText>
+                <AppText variant="body">{t('google')}</AppText>
               </View>
             </Button>
           </View>

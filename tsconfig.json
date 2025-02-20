@@ -17,5 +17,6 @@
       "@redux/*": ["./redux/*"],
       "@validation": ["./validation"]
     }
-  }
+  },
+  "allowImportingTsExtensions": true
 }

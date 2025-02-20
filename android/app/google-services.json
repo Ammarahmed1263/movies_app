@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "157066102582",
     "project_id": "movie-corn-219a4",
-    "storage_bucket": "movie-corn-219a4.appspot.com"
+    "storage_bucket": "movie-corn-219a4.firebasestorage.app"
   },
   "client": [
     {
@@ -13,6 +13,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "157066102582-e0g0b8kf71kh8u4aoc1a8l0uec2ujrb1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moviesapp",
+            "certificate_hash": "a2cc32028d4b945365ca26d3897aafeffe299996"
+          }
+        },
         {
           "client_id": "157066102582-sol1ugbdcgnkj73eaeke1jplnsmp28m9.apps.googleusercontent.com",
           "client_type": 1,
@@ -37,6 +45,13 @@
             {
               "client_id": "157066102582-ui67cqpdmdr9bq5m1ufbbneufds27mau.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "157066102582-a9qvnemql87jvk2jl0efdii1bb40mt9j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.moviesapp"
+              }
             }
           ]
         }

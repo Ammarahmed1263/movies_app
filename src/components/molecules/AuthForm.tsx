@@ -1,20 +1,25 @@
-import {FC, useRef} from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from '@atoms/AppButton';
-import LabelInput from './LabelInput';
-import {useTheme} from '@contexts/ThemeContext';
-import {Formik, FormikErrors, FormikHelpers} from 'formik';
-import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
-import {loginSchema, signupSchema} from '@validation';
-import AppText from '@atoms/AppText';
-import {hs, ms, vs} from '@styles/metrics';
+import AppImage from '@atoms/AppImage';
 import AppLoading from '@atoms/AppLoading';
-import {useFocusEffect} from '@react-navigation/native';
+import AppText from '@atoms/AppText';
+import {useTheme} from '@contexts/ThemeContext';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {hs, ms, vs} from '@styles/metrics';
+import {loginSchema, signupSchema} from '@validation';
+import {Formik, FormikHelpers} from 'formik';
+import {FC, useRef} from 'react';
+import {StyleSheet, TextInput, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
+import LabelInput from './LabelInput';
+import {onGoogleButtonPress} from '@services/authService';
+const Ionicons = Icon as any;
+const MaterialIcons = Icon2 as any;
 
 const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
-  const initialValues = isLogin
+  const initialValues: AuthFormValues = isLogin
     ? {email: '', password: ''}
     : {email: '', password: '', confirmPassword: ''};
   const {colors} = useTheme();
@@ -27,12 +32,6 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
     await onSubmit(values, actions);
     actions.setSubmitting(false);
   };
-
-  useFocusEffect(() => {
-    if (emailRef.current) {
-      emailRef.current.focus();
-    }
-  });
 
   return (
     <Formik
@@ -48,125 +47,135 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
         touched,
         isSubmitting,
         status,
-      }) => (
-        <View
-          style={[
-            styles.container,
-            {gap: Object.keys(errors).length > 0 ? 0 : vs(20)},
-          ]}>
-          <LabelInput
-            ref={emailRef}
-            value={values.email}
-            onChangeText={handleChange('email')}
-            onBlur={handleBlur('email')}
-            error={errors.email}
-            touched={touched.email}
-            label="Email"
-            autoComplete="email"
-            keyboardType="email-address"
-            placeholder="john@example.com">
-            <Ionicons name="mail" size={20} color={colors.secondary500} />
-          </LabelInput>
-          <LabelInput
-            value={values.password}
-            onChangeText={handleChange('password')}
-            onBlur={handleBlur('password')}
-            error={errors.password}
-            touched={touched.password}
-            label="Password"
-            autoComplete="new-password"
-            secureTextEntry>
-            <View>
-              <MaterialIcons
-                name="lock"
-                size={22}
-                color={colors.secondary500}
-              />
-            </View>
-          </LabelInput>
-          {!isLogin && (
+        setSubmitting,
+        setValues,
+      }) => {
+        return (
+          <View
+            style={[
+              styles.container,
+              {gap: Object.keys(errors).length > 0 ? vs(2) : vs(20)},
+            ]}>
             <LabelInput
-              value={values.confirmPassword}
-              onChangeText={handleChange('confirmPassword')}
-              onBlur={handleBlur('confirmPassword')}
-              error={errors.confirmPassword}
-              touched={touched.confirmPassword}
-              label="Confirm Password"
+              ref={emailRef}
+              value={values.email}
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
+              error={errors.email}
+              touched={touched.email}
+              label="Email"
+              autoComplete="email"
+              keyboardType="email-address"
+              placeholder="john@example.com">
+              <Ionicons name="mail" size={20} color={colors.secondary500} />
+            </LabelInput>
+            <LabelInput
+              value={values.password}
+              onChangeText={handleChange('password')}
+              onBlur={handleBlur('password')}
+              error={errors.password}
+              touched={touched.password}
+              label="Password"
               autoComplete="new-password"
               secureTextEntry>
-              <MaterialIcons
-                name="lock-check"
-                size={22}
-                color={colors.secondary500}
-              />
+              <View>
+                <MaterialIcons
+                  name="lock"
+                  size={22}
+                  color={colors.secondary500}
+                />
+              </View>
             </LabelInput>
-          )}
-
-          <View style={styles.button}>
-            {status?.generalError && (
-              <AppText
-                variant="body"
-                style={{
-                  ...styles.error,
-                  color: colors.error,
-                }}>
-                {status?.generalError}
-              </AppText>
+            {!isLogin && (
+              <LabelInput
+                value={values.confirmPassword}
+                onChangeText={handleChange('confirmPassword')}
+                onBlur={handleBlur('confirmPassword')}
+                error={errors.confirmPassword}
+                touched={touched.confirmPassword}
+                label="Confirm Password"
+                autoComplete="new-password"
+                secureTextEntry>
+                <MaterialIcons
+                  name="lock-check"
+                  size={22}
+                  color={colors.secondary500}
+                />
+              </LabelInput>
             )}
-          </View>
-          <Button
-            onPress={handleSubmit}
-            disabled={isSubmitting}
-            pressableStyle={{flex: 1}}
-            style={{
-              minHeight: vs(50),
-              backgroundColor: isSubmitting
-                ? colors.transparent
-                : colors.secondary500,
-            }}>
-            {isSubmitting ? (
-              <AppLoading
-                source={require('../../assets/lottie/loading_fade.json')}
-                size={30}
-                speed={1.5}
-              />
-            ) : isLogin ? (
-              'Login'
-            ) : (
-              'Signup'
-            )}
-          </Button>
 
-          <View style={styles.continue}>
-            <View style={[styles.line, {borderColor: colors.paleShade}]} />
-            <AppText variant="light" style={styles.contText}>
-              Or continue with
-            </AppText>
-            <View style={[styles.line, {borderColor: colors.paleShade}]} />
-          </View>
-
-          <Button
-            style={{
-              ...styles.google,
-              borderColor: colors.secondary500,
-            }}
-            customView
-            onPress={() => {}}
-            flat>
-            <View style={styles.googleContainer}>
-              <View
-                style={{
-                  width: 25,
-                  aspectRatio: 1,
-                  backgroundColor: 'black',
-                  borderRadius: 13,
-                }}
-              />
-              <AppText variant="body">Google</AppText>
+            <View style={styles.button}>
+              {status?.generalError && (
+                <AppText
+                  variant="body"
+                  style={{
+                    ...styles.error,
+                    color: colors.error,
+                  }}>
+                  {status?.generalError}
+                </AppText>
+              )}
             </View>
-          </Button>
-        </View>
-      )}
+            <Button
+              onPress={handleSubmit}
+              disabled={isSubmitting}
+              pressableStyle={{flex: 1}}
+              style={{
+                minHeight: vs(50),
+                backgroundColor: isSubmitting
+                  ? colors.transparent
+                  : colors.secondary500,
+              }}>
+              {isSubmitting ? (
+                <AppLoading
+                  source={require('../../assets/lottie/loading_fade.json')}
+                  size={30}
+                  speed={1.5}
+                />
+              ) : isLogin ? (
+                'Login'
+              ) : (
+                'Signup'
+              )}
+            </Button>
+            <View style={styles.continue}>
+              <View style={[styles.line, {borderColor: colors.paleShade}]} />
+              <AppText variant="light" style={styles.contText}>
+                Or continue with
+              </AppText>
+              <View style={[styles.line, {borderColor: colors.paleShade}]} />
+            </View>
+
+            <Button
+              style={{
+                ...styles.google,
+                borderColor: colors.secondary500,
+              }}
+              customView
+              pressableStyle={{
+                flex: 1,
+              }}
+              onPress={async () => {
+                setSubmitting(true);
+                await onGoogleButtonPress(setValues);
+                setSubmitting(false);
+              }}
+              flat>
+              <View style={styles.googleContainer}>
+                <AppImage
+                  source={require('../../assets/images/google.png')}
+                  viewStyle={{
+                    flex: 0,
+                    width: hs(25),
+                    height: vs(25),
+                  }}
+                />
+                <AppText variant="body">Google</AppText>
+              </View>
+            </Button>
+          </View>
+        );
+      }}
     </Formik>
   );
 };
@@ -196,7 +205,7 @@ const styles = StyleSheet.create({
   googleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: hs(5),
+    gap: hs(10),
   },
   contText: {
     marginHorizontal: hs(4),

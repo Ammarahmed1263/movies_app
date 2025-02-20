@@ -18,11 +18,12 @@ const ProfileHeader: FC = () => {
   return (
     <View style={{alignItems: 'center'}}>
       <ImagePicker
-        selectedImage={profileImage}
+        selectedImage={auth().currentUser?.photoURL ?? profileImage}
         onImageSelected={uri => setProfileImage(uri)}
       />
       <AppText variant="heading">
-        {auth().currentUser?.email?.split('@')[0]}
+        {auth().currentUser?.displayName ??
+          auth().currentUser?.email?.split('@')[0]}
       </AppText>
       <AppText variant="body" style={{color: colors.primary700}}>
         {t('joined')}:{' '}

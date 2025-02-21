@@ -60,3 +60,6 @@ export const getMovieVideos = (movieId: number) =>
   apiClient(MOVIES_BASE.videos(movieId), {language: 'en-US'});
 export const discoverMovies = (params: {}) =>
   apiClient(MOVIES_BASE.discover, params);
+
+export const getSimilarMovies = (movieId: number, params: {} = {page: 1}) =>
+  apiClient(MOVIES_BASE.similar(movieId), params);

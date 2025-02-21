@@ -1,7 +1,15 @@
 import Button from '@atoms/AppButton';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  FlatListProps,
+  I18nManager,
+  Platform,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
@@ -13,7 +21,8 @@ import {MovieCategory} from 'types/categoryTypes';
 import {MainTabsNavigationProp} from 'types/mainStackTypes';
 import {Movie, MovieArray} from 'types/movieTypes';
 
-interface MoviesSectionProps {
+interface MoviesSectionProps
+  extends Omit<FlatListProps<Movie>, 'renderItem' | 'data'> {
   movies: MovieArray;
   topic: string;
   loading?: boolean;
@@ -21,6 +30,7 @@ interface MoviesSectionProps {
   length?: number;
   category?: MovieCategory;
   time_window?: 'day' | 'week';
+  viewStyle?: ViewStyle;
 }
 
 const renderMovie = ({item}: {item: Movie}) => {
@@ -34,13 +44,20 @@ const MoviesSection: FC<MoviesSectionProps> = ({
   length = 20,
   category = 'now_playing',
   time_window,
+  viewStyle,
+  ...props
 }) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MainTabsNavigationProp>();
   const {t} = useTranslation();
 
   return (
-    <View style={{...styles.container, backgroundColor: colors.primary500}}>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: colors.primary500,
+        ...viewStyle,
+      }}>
       <View style={styles.heading}>
         <AppText variant="heading">{topic}</AppText>
         {seeAll && (
@@ -99,6 +116,7 @@ const MoviesSection: FC<MoviesSectionProps> = ({
           offset: 100 * index,
           index,
         })}
+        {...props}
       />
     </View>
   );

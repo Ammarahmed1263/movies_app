@@ -9,6 +9,7 @@ export const ENDPOINTS = {
     videos: (movieId: number) => `movie/${movieId}/videos`,
     discover: 'discover/movie',
     genres: 'genre/movie/list',
+    similar: (movieId: number) => `movie/${movieId}/similar`,
   },
   movieDetails: {
     details: (movieId: number) => `movie/${movieId}`,

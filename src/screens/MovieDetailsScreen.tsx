@@ -24,14 +24,22 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 const Ionicons = Icon2 as any;
 import {MovieDetailsScreenProps} from 'types/mainStackTypes';
 import {movieDetailsFilter} from '../constants';
+import MoviesList from '@organisms/MoviesList';
+import MoviesSection from '@organisms/MoviesSection';
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,
   navigation,
 }) => {
   const movieId = route.params.id;
-  const {movieDetails, castMembers, videos, isFavorite, setIsFavorite} =
-    useMovieDetails(movieId);
+  const {
+    movieDetails,
+    castMembers,
+    videos,
+    isFavorite,
+    setIsFavorite,
+    similarMovies,
+  } = useMovieDetails(movieId);
   const [modalVisible, setModalVisible] = useState(false);
   const {colors} = useTheme();
   const {t} = useTranslation();
@@ -139,6 +147,9 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
               <Feather name="share" size={30} color={colors.secondary500} />
             </Button>
           </View>
+
+          <CastList cast={castMembers} title={t('top_billed_cast')} />
+
           <TextSeeMore
             variant="body"
             text={movieDetails?.overview || 'No overview found'}
@@ -148,10 +159,15 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             }}
           />
 
-          <CastList
-            cast={castMembers}
-            title={t('top_billed_cast')}
-            viewStyle={styles.cast}
+          <MoviesSection
+            movies={similarMovies.sort(
+              (a, b) =>
+                Number(b.vote_average) +
+                Number(b.popularity) -
+                (Number(a.vote_average) + Number(a.popularity)),
+            )}
+            topic={t('similar_movies')}
+            viewStyle={styles.similar}
           />
         </View>
       </ScrollView>
@@ -179,7 +195,7 @@ const styles = StyleSheet.create({
     marginRight: hs(10),
     borderRadius: ms(10),
   },
-  cast: {
-    marginVertical: vs(30),
+  similar: {
+    marginBottom: vs(30),
   },
 });

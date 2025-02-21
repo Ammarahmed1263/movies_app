@@ -1,9 +1,9 @@
 import {getMovieCredits, getMovieDetails} from '@services/movieDetailsService';
-import {getMovieVideos} from '@services/movieService';
+import {getMovieVideos, getSimilarMovies} from '@services/movieService';
 import {isFavoriteMovie} from '@services/userService';
 import {handlePromiseResult} from '@utils';
 import {useEffect, useState} from 'react';
-import {MovieDetails, Trailer} from 'types/movieTypes';
+import {Movie, MovieDetails, Trailer} from 'types/movieTypes';
 
 const useMovieDetails = (movieId: number) => {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
@@ -12,16 +12,22 @@ const useMovieDetails = (movieId: number) => {
   const [castMembers, setCastMembers] = useState([]);
   const [videos, setVideos] = useState<Trailer[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const [detailsResponse, creditsResponse, videosResponse] =
-          await Promise.allSettled([
-            getMovieDetails(movieId),
-            getMovieCredits(movieId),
-            getMovieVideos(movieId),
-          ]);
+        const [
+          detailsResponse,
+          creditsResponse,
+          videosResponse,
+          similarResponse,
+        ] = await Promise.allSettled([
+          getMovieDetails(movieId),
+          getMovieCredits(movieId),
+          getMovieVideos(movieId),
+          getSimilarMovies(movieId),
+        ]);
 
         handlePromiseResult(
           detailsResponse,
@@ -41,16 +47,19 @@ const useMovieDetails = (movieId: number) => {
           'failed to fetch movie details',
         );
 
-
-        // TODO: add more logic here
         handlePromiseResult(
           videosResponse,
           data => {
-              setVideos(data.results);
+            setVideos(data.results);
           },
           'failed to fetch movie trailers',
         );
 
+        handlePromiseResult(
+          similarResponse,
+          data => setSimilarMovies(data.results),
+          'failed to fetch similar movies',
+        );
       } catch (err) {
         console.log('failed to fetch details', err);
       }
@@ -65,7 +74,14 @@ const useMovieDetails = (movieId: number) => {
     checkFavorite();
   }, []);
 
-  return {movieDetails, castMembers, isFavorite, setIsFavorite, videos};
+  return {
+    movieDetails,
+    castMembers,
+    isFavorite,
+    setIsFavorite,
+    videos,
+    similarMovies,
+  };
 };
 
 export default useMovieDetails;

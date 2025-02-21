@@ -29,7 +29,6 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
           backgroundColor: colors.secondaryShadow,
         }}
         pressableStyle={{
-          padding: 0,
           width: '100%',
           height: '100%',
         }}
@@ -46,7 +45,6 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
             backgroundColor: colors.secondaryShadow,
           }}
           pressableStyle={{
-            padding: 0,
             width: '100%',
             height: '100%',
           }}

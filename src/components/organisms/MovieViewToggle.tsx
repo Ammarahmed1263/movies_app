@@ -47,11 +47,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
         <AppText variant="heading">Explore</AppText>
         {!renderItem && (
           <View style={styles.icons}>
-            <AppButton
-              pressableStyle={{padding: 0}}
-              onPress={() => setColumns(1)}
-              customView
-              flat>
+            <AppButton onPress={() => setColumns(1)} customView flat>
               <Icon
                 name={'pause'}
                 size={ms(30)}
@@ -59,11 +55,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
                 style={{transform: [{rotate: '90deg'}]}}
               />
             </AppButton>
-            <AppButton
-              pressableStyle={{padding: 0}}
-              onPress={() => setColumns(2)}
-              customView
-              flat>
+            <AppButton onPress={() => setColumns(2)} customView flat>
               <Icon
                 name={'grid'}
                 size={ms(25)}

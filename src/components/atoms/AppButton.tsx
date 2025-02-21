@@ -65,6 +65,7 @@ const AppButton: FC<AppButtonProps> = ({
           styles.general,
           !flat && styles.innerButton,
           flat && clicked && {opacity: 0.7},
+          customViewStyle && {flex: 0, padding: 0},
           typeof pressableStyle === 'function'
             ? pressableStyle(state)
             : pressableStyle,

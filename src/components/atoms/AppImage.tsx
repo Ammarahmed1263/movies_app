@@ -4,19 +4,22 @@ import {
   Image,
   ImageProps,
   ImageSourcePropType,
-  ImageStyle,
+  StyleProp,
   StyleSheet,
   View,
   ViewStyle,
+  ActivityIndicator,
+  ImageStyle,
 } from 'react-native';
 import {imagePlaceHolder} from '../../constants';
 import AppLoading from './AppLoading';
+import FastImage, {ImageStyle as FastImageStyle} from 'react-native-fast-image';
 
-interface AppImageProps extends ImageProps {
+interface AppImageProps extends Omit<ImageProps, 'source' | 'style'> {
   source?: ImageSourcePropType;
   placeholder?: 'movie' | 'person';
-  viewStyle?: ViewStyle;
-  style?: ImageStyle;
+  viewStyle?: StyleProp<ViewStyle>;
+  style?: StyleProp<ImageStyle>;
   loadingSize?: 'small' | 'large';
 }
 
@@ -26,6 +29,7 @@ const AppImage: FC<AppImageProps> = ({
   loadingSize = 'large',
   viewStyle,
   style,
+  onLoadEnd,
   ...props
 }) => {
   const imageHolder =
@@ -34,7 +38,14 @@ const AppImage: FC<AppImageProps> = ({
 
   const handleLoadEnd = () => {
     setIsLoading(false);
+    onLoadEnd?.();
   };
+
+  const imageStyle = [
+    styles.image,
+    style,
+    isLoading ? {opacity: 0} : undefined,
+  ];
 
   return (
     <View style={[styles.container, viewStyle]}>
@@ -47,12 +58,25 @@ const AppImage: FC<AppImageProps> = ({
         />
       )}
 
-      <Image
-        source={source || imageHolder}
-        style={[styles.image, style, {opacity: isLoading ? 0 : 1}]}
-        onLoadEnd={handleLoadEnd}
-        {...props}
-      />
+      {typeof source === 'string' ? (
+        <FastImage
+          source={{
+            uri: source,
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
+          }}
+          style={imageStyle as StyleProp<FastImageStyle>}
+          onLoadEnd={handleLoadEnd}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+      ) : (
+        <Image
+          source={source || imageHolder}
+          style={imageStyle}
+          onLoadEnd={handleLoadEnd}
+          {...props}
+        />
+      )}
     </View>
   );
 };

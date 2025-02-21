@@ -45,7 +45,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({
       columnWrapperStyle={{
         width: '100%',
         justifyContent: 'space-between',
-        gap: hs(12),
+        gap: hs(15),
         marginVertical: vs(10),
       }}
       contentContainerStyle={{flexGrow: 1}}

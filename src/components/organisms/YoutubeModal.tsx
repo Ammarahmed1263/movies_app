@@ -4,7 +4,7 @@ import AppButton from '@atoms/AppButton';
 import AppModal from '@atoms/AppModal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
-import {width} from '@styles/metrics';
+import {vs, width} from '@styles/metrics';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {Trailer} from 'types/movieTypes';

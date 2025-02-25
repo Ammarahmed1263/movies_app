@@ -21,7 +21,7 @@ const AboutSheet = (props: SheetProps<'about-app'>) => {
         <AppImage
           source={require('../assets/images/logo.png')}
           viewStyle={styles.logo}
-          resizeMode="cover"
+          resizeMode="contain"
         />
         <AppText variant="heading" style={styles.heading}>
           {t('about')} {t('movie')} {t('corn')}
@@ -45,7 +45,9 @@ const AboutSheet = (props: SheetProps<'about-app'>) => {
             • {t('feature4')}
           </AppText>
         </View>
-        <AppText variant="caption" style={styles.version}>
+        <AppText
+          variant="caption"
+          style={{...styles.version, color: colors.primary600}}>
           Version 1.0.0
         </AppText>
       </View>
@@ -64,9 +66,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     flex: 0,
-    width: hs(100),
-    height: vs(100),
-    marginBottom: 20,
+    width: hs(70),
+    aspectRatio: 1 / 1.4,
+    marginBottom: vs(10),
   },
   heading: {
     marginBottom: vs(10),

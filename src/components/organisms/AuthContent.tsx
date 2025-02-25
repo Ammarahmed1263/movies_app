@@ -47,6 +47,7 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
             <AppImage
               source={require('../../assets/images/logo.png')}
               viewStyle={styles.logo}
+              resizeMode="contain"
             />
             <AppText
               variant="heading"
@@ -104,8 +105,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: hs(100),
-    height: vs(100),
+    width: hs(70),
+    aspectRatio: 1 / 1.4,
+    marginBottom: vs(10),
   },
   subHeading: {
     marginTop: vs(2),

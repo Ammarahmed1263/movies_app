@@ -13,7 +13,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode, useState} from 'react';
 import AppText from './AppText';
 import {FontVariants} from 'types/themeTypes';
-import {hs, ms} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 
 interface AppButtonProps extends PressableProps {
   flat?: boolean;
@@ -100,6 +100,8 @@ const styles = StyleSheet.create({
     borderRadius: hs(8),
     margin: hs(2),
     overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   general: {
     flex: 1,
@@ -107,6 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   innerButton: {
+    minHeight: vs(50),
     padding: hs(10),
   },
   text: {

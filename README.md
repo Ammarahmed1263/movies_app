@@ -42,20 +42,12 @@ yarn ios
 
 // TODO:IN PROGRESS:
 
-- add social login
-- find a way to set i18n language correctly 'from user firestore'
-- introduce welcome screen + handle language and theme there
-- getUserProfile function is called in app.tsx and themecontext before user is authenticated
+- handle language and theme there
+- fix search explore, about app modal, add to list, lists list, youtube modal in landscape
+- store user data in firestore "name, mail, pic, token, notification token"
 
-- add similar movies section in movie details
-- check what happens in redux
-  // HIGH PRIORITY:
+// HIGH PRIORITY:
 
-- support landscape mode "youtube modal"
+- use redux persist for offline support
 - fix ios voice search "delete search then clicking mic restores the search key - problem with voice start and end'
-- store notification in firestore to toggle
-
-// LOWER PRIORITY:
-
-- fix native device theme switch not working
-- fix lag with arabic in android "deffered"
+- fix collapsed button

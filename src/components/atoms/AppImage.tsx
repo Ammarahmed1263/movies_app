@@ -68,6 +68,7 @@ const AppImage: FC<AppImageProps> = ({
           style={imageStyle as StyleProp<FastImageStyle>}
           onLoadEnd={handleLoadEnd}
           resizeMode={FastImage.resizeMode.cover}
+          // {...props}
         />
       ) : (
         <Image

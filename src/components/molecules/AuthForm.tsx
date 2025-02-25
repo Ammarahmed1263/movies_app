@@ -154,22 +154,22 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
                 borderColor: colors.secondary500,
               }}
               customView
+              customViewStyle={styles.googleContainer}
               pressableStyle={{
                 flex: 1,
               }}
               onPress={() => onGoogleButtonPress(setValues, setSubmitting)}
               flat>
-              <View style={styles.googleContainer}>
-                <AppImage
-                  source={require('../../assets/images/google.png')}
-                  viewStyle={{
-                    flex: 0,
-                    width: hs(25),
-                    height: vs(25),
-                  }}
-                />
-                <AppText variant="body">{t('google')}</AppText>
-              </View>
+              <AppImage
+                source={require('../../assets/images/google.png')}
+                viewStyle={{
+                  flex: 0,
+                  width: hs(20),
+                  height: vs(20),
+                }}
+                resizeMode="contain"
+              />
+              <AppText variant="body">{t('google')}</AppText>
             </Button>
           </View>
         );
@@ -203,7 +203,8 @@ const styles = StyleSheet.create({
   googleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: hs(10),
+    gap: hs(8),
+    margin: hs(10),
   },
   contText: {
     marginHorizontal: hs(4),

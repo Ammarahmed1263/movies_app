@@ -42,12 +42,12 @@ yarn ios
 
 // TODO:IN PROGRESS:
 
-- handle language and theme there
+- handle language and theme on app start
 - fix search explore, about app modal, add to list, lists list, youtube modal in landscape
 - store user data in firestore "name, mail, pic, token, notification token"
+- notification and cloud storage
 
 // HIGH PRIORITY:
 
 - use redux persist for offline support
 - fix ios voice search "delete search then clicking mic restores the search key - problem with voice start and end'
-- fix collapsed button

@@ -13,10 +13,12 @@ const useMovieDetails = (movieId: number) => {
   const [videos, setVideos] = useState<Trailer[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
+        setLoading(true);
         const [
           detailsResponse,
           creditsResponse,
@@ -62,6 +64,8 @@ const useMovieDetails = (movieId: number) => {
         );
       } catch (err) {
         console.log('failed to fetch details', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -81,6 +85,7 @@ const useMovieDetails = (movieId: number) => {
     setIsFavorite,
     videos,
     similarMovies,
+    loading,
   };
 };
 

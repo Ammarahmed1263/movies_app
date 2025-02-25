@@ -28,6 +28,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {useTranslation} from 'react-i18next';
 import {imagePlaceHolder} from '../../constants';
+import AppLoading from '@atoms/AppLoading';
 // This is the default configuration
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
@@ -119,11 +120,14 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
     return (
       <View
         style={{
-          height: height * 0.65,
+          height: height * 0.5,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <AppText variant="heading">Loading...</AppText>
+        <AppLoading
+          source={require('../../assets/lottie/loading_fade.json')}
+          size={80}
+        />
       </View>
     );
   }

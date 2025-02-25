@@ -33,10 +33,12 @@ const SearchExplore: FC<SearchExploreProps> = ({
 }) => {
   const [actors, setActors] = useState([]);
   const [discover, setDiscover] = useState([]);
+  const [loading, setLoading] = useState(false);
   const {t} = useTranslation();
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const [actors, movies] = await Promise.allSettled([
           getPopularPerson(),
@@ -66,13 +68,17 @@ const SearchExplore: FC<SearchExploreProps> = ({
         );
       } catch (err: any) {
         console.log("sorry can't get actors: ", err);
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
 
   return (
     <View style={[styles.container, style]}>
-      {!renderMovie && <CastList cast={actors} title={t('actors')} />}
+      {!renderMovie && (
+        <CastList cast={actors} title={t('actors')} loading={loading} />
+      )}
       <MovieViewToggle
         movies={discover}
         contentContainerStyle={listContainerStyle}

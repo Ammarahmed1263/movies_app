@@ -13,13 +13,29 @@ const renderItem = ({item}: {item: CastMember}) => {
 
 interface CastListProps
   extends Omit<FlatListProps<CastMember>, 'data' | 'renderItem'> {
+  title: string;
+  loading: boolean;
   cast: CastMemberArray;
   viewStyle?: ViewStyle;
-  title: string;
 }
 
-const CastList: FC<CastListProps> = ({cast, viewStyle, title, ...props}) => {
+const CastList: FC<CastListProps> = ({
+  cast,
+  loading,
+  viewStyle,
+  title,
+  ...props
+}) => {
   const {colors} = useTheme();
+
+  if (loading) {
+    return (
+      <AppLoading
+        source={require('../../assets/lottie/loading_fade.json')}
+        containerStyle={{maxHeight: vs(80)}}
+      />
+    );
+  }
 
   return (
     <View style={viewStyle}>

@@ -39,6 +39,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
     isFavorite,
     setIsFavorite,
     similarMovies,
+    loading,
   } = useMovieDetails(movieId);
   const [modalVisible, setModalVisible] = useState(false);
   const {colors} = useTheme();
@@ -91,7 +92,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
     }
   }, [movieDetails, isFavorite]);
 
-  if (!movieDetails) {
+  if (loading) {
     return (
       <AppLoading
         source={require('../assets/lottie/loading_details.json')}
@@ -148,7 +149,11 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             </Button>
           </View>
 
-          <CastList cast={castMembers} title={t('top_billed_cast')} />
+          <CastList
+            cast={castMembers}
+            title={t('top_billed_cast')}
+            loading={loading}
+          />
 
           <TextSeeMore
             variant="body"

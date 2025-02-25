@@ -91,7 +91,11 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
               By: {videoMeta.author}
             </AppText>
           </View>
-          <View style={{justifyContent: 'flex-end'}}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
             <AppButton
               customView
               customViewStyle={{

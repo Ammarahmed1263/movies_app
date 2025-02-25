@@ -9,6 +9,7 @@ import ThemeProvider from './src/contexts/ThemeContext';
 import i18n from './src/i18n';
 import AppNavigation from './src/navigation/AppNavigation';
 import {store} from './src/redux/store';
+import RNBootSplash from 'react-native-bootsplash';
 
 export default function App() {
   const isNetworkConnected = useNetworkStatus();
@@ -16,6 +17,7 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
+      console.log('app started');
       if (i18n.language === 'ar') {
         I18nManager.allowRTL(true);
         I18nManager.forceRTL(true);
@@ -27,6 +29,10 @@ export default function App() {
       if (!isNetworkConnected) {
         console.warn("device isn't connected to the internet");
       }
+
+      console.log('splash hidden');
+      RNBootSplash.hide();
+      RNBootSplash.hide({fade: true});
     })();
   }, []);
 

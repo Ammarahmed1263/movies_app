@@ -21,6 +21,8 @@
 		CE99BDDE152C4A4F921D927A /* Cairo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E77BC8EBA394B9EA42EEBF7 /* Cairo-Bold.ttf */; };
 		E28E01E6948056E915DD8040 /* Pods_MoviesApp_MoviesAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA6DCDCF45D96C7DD8006922 /* Pods_MoviesApp_MoviesAppTests.framework */; };
 		FA7D153DA190CDE564842895 /* Pods_MoviesApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8439BCCF04ECF5B08056DB /* Pods_MoviesApp.framework */; };
+		D4B625FD9166464B87486034 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B97A44A449EB4A18B05D86A4 /* BootSplash.storyboard */; };
+		FCDCFB3BD0E8429D96BC1404 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E96D3EED3174F3699C3D43B /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,8 @@
 		DD8439BCCF04ECF5B08056DB /* Pods_MoviesApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85BC0D70D2A4843B9D1843B /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		B97A44A449EB4A18B05D86A4 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "MoviesApp/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5E96D3EED3174F3699C3D43B /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "MoviesApp/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				B97A44A449EB4A18B05D86A4 /* BootSplash.storyboard */,
+				5E96D3EED3174F3699C3D43B /* Colors.xcassets */,
 			);
 			name = MoviesApp;
 			sourceTree = "<group>";
@@ -280,6 +286,8 @@
 				CE99BDDE152C4A4F921D927A /* Cairo-Bold.ttf in Resources */,
 				CC586010C4664B7C971E1267 /* Cairo-Light.ttf in Resources */,
 				633137B443A64B359D2731CB /* Cairo-Regular.ttf in Resources */,
+				D4B625FD9166464B87486034 /* BootSplash.storyboard in Resources */,
+				FCDCFB3BD0E8429D96BC1404 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,7 +653,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -724,7 +735,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

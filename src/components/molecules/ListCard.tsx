@@ -8,6 +8,7 @@ import {
   StyleProp,
   StyleSheet,
   TouchableOpacity,
+  useWindowDimensions,
   View,
   ViewStyle,
 } from 'react-native';
@@ -35,11 +36,12 @@ const ListCard: FC<UserListProps> = ({
 }) => {
   const {colors} = useTheme();
   const isAdd = data.id === 'add';
+  const {width} = useWindowDimensions();
 
   return (
     <TouchableOpacity
       onPress={() => onPress && onPress(data)}
-      style={[styles.button, style]}
+      style={[styles.button, {width: width / 2.5}, style]}
       disabled={disabled}
       {...props}>
       <Animated.View
@@ -83,9 +85,7 @@ const ListCard: FC<UserListProps> = ({
 export default ListCard;
 
 const styles = StyleSheet.create({
-  button: {
-    width: width / 2.5,
-  },
+  button: {},
   container: {
     width: '100%',
     aspectRatio: 1 / 1.2,

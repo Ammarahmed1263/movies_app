@@ -1,8 +1,8 @@
-import { useTheme } from '@contexts/ThemeContext';
-import { hs, width } from '@styles/metrics';
-import { FC, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { SheetManager } from 'react-native-actions-sheet';
+import {useTheme} from '@contexts/ThemeContext';
+import {hs, width} from '@styles/metrics';
+import {FC, useState} from 'react';
+import {StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {SheetManager} from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AppImage from '../atoms/AppImage';
 
@@ -19,16 +19,16 @@ const ImagePicker: FC<ImagePickerProps> = ({
   selectedImage,
   placeholder = 'person',
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
   const {colors} = useTheme();
 
-  
   return (
     <>
       <TouchableOpacity
-        onPress={() => SheetManager.show('image-picker', {
-          payload: { onImageSelected },
-        })}
+        onPress={() =>
+          SheetManager.show('image-picker', {
+            payload: {onImageSelected},
+          })
+        }
         style={[styles.defaultSize, style]}>
         <View style={[styles.defaultSize, {overflow: 'hidden'}, style]}>
           <AppImage
@@ -40,7 +40,6 @@ const ImagePicker: FC<ImagePickerProps> = ({
           <Icon name="edit" size={22} color="white" />
         </View>
       </TouchableOpacity>
-
     </>
   );
 };

@@ -18,7 +18,8 @@ import MovieViewToggle from './MovieViewToggle';
 import {discoverMovies} from '@services/movieService';
 import {getPopularPerson} from '@services/castMemberService';
 import {handlePromiseResult} from '@utils';
-import {MovieSummary} from 'types/movieTypes';
+import {MovieArray, MovieSummary} from 'types/movieTypes';
+import {CastMember} from 'types/castTypes';
 
 type SearchExploreProps = {
   renderMovie?: ({item}: {item: MovieSummary}) => JSX.Element;
@@ -31,8 +32,8 @@ const SearchExplore: FC<SearchExploreProps> = ({
   listContainerStyle,
   renderMovie,
 }) => {
-  const [actors, setActors] = useState([]);
-  const [discover, setDiscover] = useState([]);
+  const [actors, setActors] = useState<CastMember[]>([]);
+  const [discover, setDiscover] = useState<MovieArray>([]);
   const [loading, setLoading] = useState(false);
   const {t} = useTranslation();
 
@@ -40,8 +41,9 @@ const SearchExplore: FC<SearchExploreProps> = ({
     (async () => {
       setLoading(true);
       try {
-        const [actors, movies] = await Promise.allSettled([
+        const [actors, actors2, movies] = await Promise.allSettled([
           getPopularPerson(),
+          getPopularPerson({page: 2}),
           discoverMovies({
             sort_by: 'popularity.desc',
             primary_release_year: new Date().getFullYear(),
@@ -55,9 +57,23 @@ const SearchExplore: FC<SearchExploreProps> = ({
           response =>
             setActors(
               response.results.filter(
-                (person: any) => person.gender === 2 && person.profile_path,
+                (person: CastMember) =>
+                  person.gender === 2 && person.profile_path,
               ),
             ),
+          'failed to fetch popular actors',
+        );
+
+        handlePromiseResult(
+          actors2,
+          response =>
+            setActors(prevActors => [
+              ...prevActors,
+              ...response.results.filter(
+                (person: CastMember) =>
+                  person.gender === 2 && person.profile_path,
+              ),
+            ]),
           'failed to fetch popular actors',
         );
 

@@ -13,7 +13,7 @@ import {FC, useRef, useState} from 'react';
 import MovieCard from '@molecules/MovieCard';
 import {Movie, MovieSummary} from 'types/movieTypes';
 import {useTheme} from '@contexts/ThemeContext';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Feather';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -70,7 +70,7 @@ const MoviesList: FC<MoviesListProps> = ({
   const handleSnapButton = () => {
     flatListRef.current?.scrollToOffset({offset: 0, animated: true});
     scrollY.value = 0;
-    snapButtonOpacity.value = withTiming(0, {duration: 0});
+    snapButtonOpacity.value = 0;
   };
 
   return (
@@ -100,7 +100,7 @@ const MoviesList: FC<MoviesListProps> = ({
           ]}
           customView
           customViewStyle={styles.button}>
-          <Icon name="arrow-up" color={colors.paleShade} size={30} />
+          <Icon name="chevrons-up" color={colors.paleShade} size={35} />
         </AppButton>
       </Animated.View>
     </View>
@@ -120,9 +120,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     end: 20,
     bottom: 80,
-    width: hs(60),
-    height: vs(60),
-    borderRadius: hs(30),
+    width: hs(55),
+    height: vs(55),
+    borderRadius: hs(28),
     elevation: 10,
   },
   button: {

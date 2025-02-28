@@ -92,7 +92,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
     }
   }, [movieDetails, isFavorite]);
 
-  if (loading) {
+  if (loading || !movieDetails) {
     return (
       <AppLoading
         source={require('../assets/lottie/loading_details.json')}

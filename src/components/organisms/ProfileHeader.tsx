@@ -15,11 +15,22 @@ const ProfileHeader: FC = () => {
     undefined,
   );
 
+  const saveProfilePicture = async (uri: string | undefined) => {
+    setProfileImage(uri);
+    try {
+      await auth().currentUser?.updateProfile({
+        photoURL: uri,
+      });
+    } catch (err) {
+      console.error('error saving picture: ', err);
+    }
+  };
+
   return (
     <View style={{alignItems: 'center'}}>
       <ImagePicker
         selectedImage={auth().currentUser?.photoURL ?? profileImage}
-        onImageSelected={uri => setProfileImage(uri)}
+        onImageSelected={uri => saveProfilePicture(uri)}
       />
       <AppText variant="heading">
         {auth().currentUser?.displayName ??

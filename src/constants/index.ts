@@ -5,7 +5,7 @@ export const MOVIE_BASE_URL = 'https://api.themoviedb.org/3/';
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
 
 export enum imagePlaceHolder {
-  PERSON = require('../assets/images/person_placeholder.png'),
+  PERSON = require('../assets/images/person_placeholder(3).jpeg'),
   MOVIE = require('../assets/images/movie_placeholder.png'),
 }
 

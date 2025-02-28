@@ -116,7 +116,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
     );
   };
 
-  if (loading || movies.length === 0) {
+  if (loading || !movies.length) {
     return (
       <View
         style={{

@@ -10,6 +10,7 @@ import {
   I18nManager,
   StyleSheet,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
@@ -20,6 +21,7 @@ import {ListType} from 'types/userTypes';
 const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
   const {lists} = useLists();
   const {colors} = useTheme();
+  const {width, height} = useWindowDimensions();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -56,12 +58,15 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
             data={item}
             onPress={() => console.log('pressed')}
             hasTitle={false}
-            style={styles.listImage}
+            style={{
+              ...styles.listImage,
+              width: width > height ? width / 4 : width / 2.2,
+            }}
             disabled
           />
         </View>
         <View style={styles.text}>
-          <AppText variant="subheading">{item.title}</AppText>
+          <AppText variant="body">{item.title}</AppText>
         </View>
       </TouchableOpacity>
     );
@@ -72,7 +77,8 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
       data={lists}
       keyExtractor={item => item.id.toString()}
       renderItem={handleRender}
-      numColumns={2}
+      key={width > height ? 'landscape' : 'portrait'}
+      numColumns={width > height ? 3 : 2}
       columnWrapperStyle={{
         gap: hs(12),
         marginBottom: vs(10),

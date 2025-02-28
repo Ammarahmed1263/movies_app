@@ -60,33 +60,31 @@ const GenresSections = () => {
     })();
   }, []);
 
-  if (genres.length === 0) {
-    return (
-      <AppLoading source={require('../../assets/lottie/loading_fade.json')} />
-    );
-  }
-
   return (
     <View style={styles.container}>
       <AppText variant="heading" style={styles.title}>
         {t('genres')}
       </AppText>
-      <View style={styles.rowsContainer}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.row}>
-          {renderGenres(genres.slice(0, Math.floor(genres.length / 2)))}
-        </ScrollView>
+      {genres.length === 0 ? (
+        <AppLoading source={require('../../assets/lottie/loading_fade.json')} />
+      ) : (
+        <View style={styles.rowsContainer}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.row}>
+            {renderGenres(genres.slice(0, Math.floor(genres.length / 2)))}
+          </ScrollView>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentOffset={{x: hs(25), y: 0}}
-          contentContainerStyle={styles.row}>
-          {renderGenres(genres.slice(Math.floor(genres.length / 2)))}
-        </ScrollView>
-      </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentOffset={{x: hs(25), y: 0}}
+            contentContainerStyle={styles.row}>
+            {renderGenres(genres.slice(Math.floor(genres.length / 2)))}
+          </ScrollView>
+        </View>
+      )}
     </View>
   );
 };

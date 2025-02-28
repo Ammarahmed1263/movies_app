@@ -55,7 +55,6 @@ const addList = async (list: ListType) => {
   if (!userId) {
     throw new Error('User is not authenticated');
   }
-  console.log('inside service list is: ', list);
   try {
     await firestore()
       .collection('users')
@@ -63,8 +62,6 @@ const addList = async (list: ListType) => {
       .collection('lists')
       .doc(list.id.toString())
       .set(list);
-
-    console.log('user list created');
   } catch (e) {
     console.error('Error creating list: ', e);
     throw e;

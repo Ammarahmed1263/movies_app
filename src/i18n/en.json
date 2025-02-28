@@ -84,6 +84,7 @@
   "favorite_action": "You can favorite a movie by clicking on the heart that shows up when you view movie details (top right).",
   "N/A": "N/A",
   "empty_email": "john@example.com",
+  "empty_cast": "Oops, No Cast Available",
 
   "_COMMENT8": "movie Details",
   "top_billed_cast": "Top Billed Cast",

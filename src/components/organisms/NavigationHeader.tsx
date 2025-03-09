@@ -47,6 +47,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
           pressableStyle={{
             width: '100%',
             height: '100%',
+            padding: 0,
           }}
           onPress={onToggleFavorite}
           customView>

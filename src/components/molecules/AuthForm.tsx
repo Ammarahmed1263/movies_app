@@ -121,7 +121,7 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
             <Button
               onPress={handleSubmit}
               disabled={isSubmitting}
-              pressableStyle={{flex: 1}}
+              pressableStyle={{flex: 1, width: '100%'}}
               style={{
                 minHeight: vs(50),
                 backgroundColor: isSubmitting
@@ -152,14 +152,15 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
               style={{
                 ...styles.google,
                 borderColor: colors.secondary500,
+                backgroundColor: 'transparent',
               }}
               customView
               customViewStyle={styles.googleContainer}
               pressableStyle={{
                 flex: 1,
+                width: '100%',
               }}
-              onPress={() => onGoogleButtonPress(setValues, setSubmitting)}
-              flat>
+              onPress={() => onGoogleButtonPress(setValues, setSubmitting)}>
               <AppImage
                 source={require('../../assets/images/google.png')}
                 viewStyle={{

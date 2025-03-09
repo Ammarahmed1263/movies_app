@@ -8,6 +8,7 @@ import {
   PressableProps,
   StyleProp,
   PressableStateCallbackType,
+  Platform,
 } from 'react-native';
 import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode, useState} from 'react';
@@ -49,14 +50,14 @@ const AppButton: FC<AppButtonProps> = ({
     setClicked(true);
     setTimeout(() => setClicked(false), 300);
   };
+
   return (
     <View
       style={[
         styles.buttonContainer,
         {backgroundColor: colors.secondary500},
-        style,
-        !flat && clicked && {opacity: 0.5},
         flat && {backgroundColor: '', elevation: 0},
+        style,
       ]}>
       <Pressable
         android_ripple={flat ? null : {color: colors.secondary600}}
@@ -64,7 +65,7 @@ const AppButton: FC<AppButtonProps> = ({
         style={state => [
           styles.general,
           !flat && styles.innerButton,
-          flat && clicked && {opacity: 0.7},
+          flat && clicked && {opacity: 0.2},
           customViewStyle && {flex: 0, padding: 0},
           typeof pressableStyle === 'function'
             ? pressableStyle(state)
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
   },
   innerButton: {
     minHeight: vs(50),

@@ -2,12 +2,14 @@ import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import useLists from '@hooks/useLists';
+import useOrientation from '@hooks/useOrientation';
 import ListCard from '@molecules/ListCard';
-import {hs, ms, vs, width} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 import {FC, useLayoutEffect} from 'react';
 import {
   FlatList,
   I18nManager,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
@@ -21,7 +23,7 @@ import {ListType} from 'types/userTypes';
 const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
   const {lists} = useLists();
   const {colors} = useTheme();
-  const {width, height} = useWindowDimensions();
+  const {orientation, width} = useOrientation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -60,7 +62,10 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
             hasTitle={false}
             style={{
               ...styles.listImage,
-              width: width > height ? width / 4 : width / 2.2,
+              width:
+                orientation === 'landscape'
+                  ? width / 3 - hs(12 * 5)
+                  : width / 2.2,
             }}
             disabled
           />
@@ -73,22 +78,24 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
   };
 
   return (
-    <FlatList
-      data={lists}
-      keyExtractor={item => item.id.toString()}
-      renderItem={handleRender}
-      key={width > height ? 'landscape' : 'portrait'}
-      numColumns={width > height ? 3 : 2}
-      columnWrapperStyle={{
-        gap: hs(12),
-        marginBottom: vs(10),
-        paddingHorizontal: hs(10),
-      }}
-      contentContainerStyle={{
-        flexGrow: 1,
-      }}
-      showsVerticalScrollIndicator={false}
-    />
+    <SafeAreaView>
+      <FlatList
+        data={lists}
+        keyExtractor={item => item.id.toString()}
+        renderItem={handleRender}
+        key={orientation}
+        numColumns={orientation === 'landscape' ? 3 : 2}
+        columnWrapperStyle={{
+          gap: hs(12),
+          marginBottom: vs(10),
+          paddingHorizontal: hs(10),
+        }}
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
+        showsVerticalScrollIndicator={false}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -96,7 +103,6 @@ export default ListsListingScreen;
 
 const styles = StyleSheet.create({
   listImage: {
-    width: width / 2.2,
     borderRadius: hs(20),
   },
   text: {

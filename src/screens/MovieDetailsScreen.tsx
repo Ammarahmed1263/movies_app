@@ -145,7 +145,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
                 styles.button,
                 {flex: 1, backgroundColor: colors.primary600},
               ]}>
-              <Feather name="share" size={30} color={colors.secondary500} />
+              <Feather name="share" size={ms(30)} color={colors.secondary500} />
             </Button>
           </View>
 
@@ -191,13 +191,13 @@ export default MovieDetailsScreen;
 const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
-    marginVertical: vs(20),
+    marginVertical: vs(15),
+    gap: hs(10),
     marginHorizontal: hs(10),
     minHeight: vs(60),
     justifyContent: 'space-between',
   },
   button: {
-    marginRight: hs(10),
     borderRadius: ms(10),
   },
   similar: {

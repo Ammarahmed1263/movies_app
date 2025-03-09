@@ -13,6 +13,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Movie, MovieArray, MovieSummary} from 'types/movieTypes';
@@ -22,11 +23,13 @@ import AppLoading from '@atoms/AppLoading';
 interface MovieViewToggleProps
   extends Omit<FlatListProps<MovieSummary>, 'data' | 'renderItem'> {
   movies: MovieArray;
+  containerStyle?: ViewStyle;
   renderItem?: ({item}: {item: MovieSummary}) => JSX.Element;
 }
 
 const MovieViewToggle: FC<MovieViewToggleProps> = ({
   movies,
+  containerStyle,
   renderItem,
   ...props
 }) => {
@@ -42,7 +45,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={[{flex: 1}, containerStyle]}>
       <View style={styles.header}>
         <AppText variant="heading">Explore</AppText>
         {!renderItem && (

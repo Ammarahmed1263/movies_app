@@ -71,10 +71,10 @@ function SearchScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <SearchBar keyword={keyword} setKeyword={setKeyword} />
       {renderContent()}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -83,7 +83,10 @@ export default SearchScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: (StatusBar.currentHeight ?? vs(55)) + vs(10),
+    marginTop:
+      Platform.OS === 'ios'
+        ? vs(10)
+        : (StatusBar.currentHeight ?? vs(55)) + vs(10),
   },
   loading: {
     backgroundColor: 'red',

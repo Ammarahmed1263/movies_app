@@ -1,22 +1,20 @@
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
-import {hs, ms, vs, width} from '@styles/metrics';
+import useOrientation from '@hooks/useOrientation';
+import {hs, ms, vs} from '@styles/metrics';
 import {FC} from 'react';
 import {
   Animated,
   Image,
-  StyleProp,
   StyleSheet,
   TouchableOpacity,
-  useWindowDimensions,
   View,
   ViewStyle,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MovieGrid from './MovieGrid';
 import {ListType} from 'types/userTypes';
-import {getImageUrl} from '@utils';
+import MovieGrid from './MovieGrid';
 
 interface UserListProps {
   data: ListType;
@@ -36,12 +34,19 @@ const ListCard: FC<UserListProps> = ({
 }) => {
   const {colors} = useTheme();
   const isAdd = data.id === 'add';
-  const {width} = useWindowDimensions();
+  const {orientation, width, height} = useOrientation();
 
   return (
     <TouchableOpacity
       onPress={() => onPress && onPress(data)}
-      style={[styles.button, {width: width / 2.5}, style]}
+      style={[
+        styles.button,
+        {
+          width:
+            orientation === 'portrait' ? width / 2.5 : width / 4 - hs(8 * 5),
+        },
+        style,
+      ]}
       disabled={disabled}
       {...props}>
       <Animated.View

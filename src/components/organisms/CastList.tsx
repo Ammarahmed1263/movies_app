@@ -65,9 +65,14 @@ const CastList: FC<CastListProps> = ({
             </View>
           )
         }
-        contentContainerStyle={{paddingHorizontal: hs(10), flexGrow: 1}}
+        contentContainerStyle={{
+          paddingHorizontal: hs(10),
+          gap: hs(10),
+          flexGrow: 1,
+        }}
         style={{
           flexGrow: 0,
+          marginVertical: vs(10),
         }}
         showsHorizontalScrollIndicator={false}
         horizontal

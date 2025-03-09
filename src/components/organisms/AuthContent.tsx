@@ -17,7 +17,7 @@ import {AuthStackParamList} from 'types/authStackTypes';
 import AppText from '@atoms/AppText';
 import {AuthFormValues} from 'types/authFormTypes';
 import {FormikHelpers} from 'formik';
-import {hs, vs} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 import AppImage from '@atoms/AppImage';
 import {useTranslation} from 'react-i18next';
 
@@ -116,10 +116,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 20,
+    marginHorizontal: hs(20),
   },
   footerText: {
-    marginHorizontal: 4,
-    fontSize: 14,
+    marginHorizontal: hs(4),
+    fontSize: ms(14),
   },
 });

@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import CastList from './CastList';
-import {vs} from '@styles/metrics';
+import {hs, vs} from '@styles/metrics';
 import axios from 'axios';
 import apiClient from 'api/apiClient';
 import {useTranslation} from 'react-i18next';
@@ -20,6 +20,7 @@ import {getPopularPerson} from '@services/castMemberService';
 import {handlePromiseResult} from '@utils';
 import {MovieArray, MovieSummary} from 'types/movieTypes';
 import {CastMember} from 'types/castTypes';
+import useOrientation from '@hooks/useOrientation';
 
 type SearchExploreProps = {
   renderMovie?: ({item}: {item: MovieSummary}) => JSX.Element;
@@ -36,6 +37,7 @@ const SearchExplore: FC<SearchExploreProps> = ({
   const [discover, setDiscover] = useState<MovieArray>([]);
   const [loading, setLoading] = useState(false);
   const {t} = useTranslation();
+  const {orientation} = useOrientation();
 
   useEffect(() => {
     (async () => {
@@ -91,15 +93,44 @@ const SearchExplore: FC<SearchExploreProps> = ({
   }, []);
 
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[
+        styles.container,
+        {flexDirection: orientation === 'portrait' ? 'column' : 'row'},
+        style,
+      ]}>
       {!renderMovie && (
-        <CastList cast={actors} title={t('actors')} loading={loading} />
+        <View style={{width: orientation === 'portrait' ? '100%' : '30%'}}>
+          <CastList
+            cast={actors}
+            title={t('actors')}
+            loading={loading}
+            numColumns={orientation === 'portrait' ? 1 : 2}
+            key={orientation}
+            horizontal={orientation === 'portrait'}
+            {...(orientation !== 'portrait' && {
+              showsVerticalScrollIndicator: false,
+              columnWrapperStyle: {
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                gap: hs(10),
+              },
+              viewStyle: {
+                marginBottom: vs(100),
+              },
+            })}
+          />
+        </View>
       )}
       <MovieViewToggle
         movies={discover}
         contentContainerStyle={listContainerStyle}
         renderItem={renderMovie}
         keyboardShouldPersistTaps="handled"
+        containerStyle={{
+          width: orientation === 'portrait' || renderMovie ? '100%' : '70%',
+        }}
       />
     </View>
   );
@@ -110,6 +141,6 @@ export default SearchExplore;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: vs(15),
+    // paddingVertical: vs(15),
   },
 });

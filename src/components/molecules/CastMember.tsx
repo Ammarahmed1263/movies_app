@@ -1,19 +1,13 @@
-import {FC} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
 import Image from '@atoms/AppImage';
+import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
+import {hs, ms, vs} from '@styles/metrics';
 import {getImageUrl} from '@utils';
+import {FC} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {CastMember} from 'types/castTypes';
 import {CastMemberDetailsNavigationProp} from 'types/mainStackTypes';
-import AppText from '@atoms/AppText';
-import {hs, ms, vs} from '@styles/metrics';
 
 interface MemberProps {
   details: CastMember;
@@ -26,7 +20,7 @@ const Member: FC<MemberProps> = ({details}) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.push('CastMemberDetails', {id: details.id})}
-      style={styles.TouchableOpacityContainer}>
+      style={[styles.TouchableOpacityContainer]}>
       <View
         style={{...styles.imageContainer, borderColor: colors.secondary500}}>
         <Image
@@ -70,15 +64,13 @@ export default Member;
 
 const styles = StyleSheet.create({
   TouchableOpacityContainer: {
-    flex: 1,
     flexGrow: 0,
     flexShrink: 1,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     width: hs(100),
-    marginVertical: vs(10),
+    height: '100%',
   },
   imageContainer: {
-    width: hs(90),
     aspectRatio: 1 / 1,
     borderWidth: ms(1),
     borderRadius: ms(12),
@@ -95,6 +87,5 @@ const styles = StyleSheet.create({
     width: '90%',
     alignItems: 'center',
     marginVertical: vs(10),
-    // paddingHorizontal: 10,
   },
 });

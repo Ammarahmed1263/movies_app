@@ -1,10 +1,15 @@
+import AppButton from '@atoms/AppButton';
 import AppImage from '@atoms/AppImage';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
-import {hs, vs} from '@styles/metrics';
+import {height, hs, vs} from '@styles/metrics';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
-import ActionSheet, {SheetProps} from 'react-native-actions-sheet';
+import ActionSheet, {
+  SheetManager,
+  SheetProps,
+} from 'react-native-actions-sheet';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const AboutSheet = (props: SheetProps<'about-app'>) => {
   const {colors} = useTheme();
@@ -18,11 +23,27 @@ const AboutSheet = (props: SheetProps<'about-app'>) => {
         backgroundColor: colors.primary500,
       }}>
       <View style={styles.contentContainer}>
-        <AppImage
-          source={require('../assets/images/logo.png')}
-          viewStyle={styles.logo}
-          resizeMode="contain"
-        />
+        <View style={styles.header}>
+          <View style={{flex: 1}} />
+
+          <AppImage
+            source={require('../assets/images/logo.png')}
+            viewStyle={styles.logo}
+            resizeMode="contain"
+          />
+
+          <AppButton
+            onPress={() => SheetManager.hide(props.sheetId)}
+            style={styles.closeButton}
+            pressableStyle={{
+              flex: 0,
+              alignItems: 'flex-end',
+            }}
+            customView
+            flat>
+            <Icon name="close-circle" size={hs(35)} color={colors.primary700} />
+          </AppButton>
+        </View>
         <AppText variant="heading" style={styles.heading}>
           {t('about')} {t('movie')} {t('corn')}
         </AppText>
@@ -64,11 +85,21 @@ const styles = StyleSheet.create({
     padding: hs(20),
     alignItems: 'center',
   },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   logo: {
     flex: 0,
     width: hs(70),
     aspectRatio: 1 / 1.4,
     marginBottom: vs(10),
+  },
+  closeButton: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
   },
   heading: {
     marginBottom: vs(10),

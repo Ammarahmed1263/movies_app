@@ -1,8 +1,9 @@
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
+import {useNavigation} from '@react-navigation/native';
 import {ms} from '@styles/metrics';
 import {FC} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {Genre} from 'types/movieTypes';
 
 interface CategoriesListProps {
@@ -11,30 +12,50 @@ interface CategoriesListProps {
 
 const CategoriesList: FC<CategoriesListProps> = ({categories}) => {
   const {colors} = useTheme();
+  const navigation = useNavigation<any>();
+
+  const handleCategoryPress = (genre: Genre) => {
+    navigation.push('MovieListing', {
+      type: 'genre',
+      value: String(genre.id),
+      title: genre.name,
+    });
+  };
+
+  const CategoryItem = ({genre}: {genre: Genre}) => {
+    return (
+      <TouchableOpacity
+        key={genre.id}
+        onPress={() => handleCategoryPress(genre)}
+        activeOpacity={0.7}
+        style={{
+          ...styles.categoryPill,
+          backgroundColor: colors.primary700,
+        }}>
+        <AppText
+          variant="light"
+          style={{
+            color: colors.primary500,
+          }}>
+          {genre.name}
+        </AppText>
+      </TouchableOpacity>
+    );
+  };
 
   return (
-    <ScrollView
+    <FlatList
+      keyExtractor={item => String(item.id)}
+      data={categories}
+      renderItem={({item}: {item: Genre}) => <CategoryItem genre={item} />}
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{flexGrow: 1, paddingHorizontal: 8}}
-      alwaysBounceHorizontal={false}>
-      {categories.map(genre => (
-        <View
-          key={genre.id}
-          style={{
-            ...styles.categoryPill,
-            backgroundColor: colors.primary700,
-          }}>
-          <AppText
-            variant="light"
-            style={{
-              color: colors.primary500,
-            }}>
-            {genre.name}
-          </AppText>
-        </View>
-      ))}
-    </ScrollView>
+      contentContainerStyle={{
+        flexGrow: 1,
+        paddingHorizontal: 8,
+      }}
+      alwaysBounceHorizontal={false}
+    />
   );
 };
 

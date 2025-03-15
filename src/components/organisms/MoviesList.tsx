@@ -68,9 +68,9 @@ const MoviesList: FC<MoviesListProps> = ({
   });
 
   const handleSnapButton = () => {
+    snapButtonOpacity.value = 0;
     flatListRef.current?.scrollToOffset({offset: 0, animated: true});
     scrollY.value = 0;
-    snapButtonOpacity.value = 0;
   };
 
   return (
@@ -112,7 +112,7 @@ export default MoviesList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: hs(10),
+    marginHorizontal: hs(20),
   },
   snapButton: {
     position: 'absolute',

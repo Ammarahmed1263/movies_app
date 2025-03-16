@@ -1,15 +1,16 @@
-import {FC, useCallback, useEffect, useState} from 'react';
-import {Alert, Linking, View} from 'react-native';
 import AppButton from '@atoms/AppButton';
 import AppModal from '@atoms/AppModal';
-import Icon from 'react-native-vector-icons/Ionicons';
-import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
-import {vs, width} from '@styles/metrics';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
-import {Trailer} from 'types/movieTypes';
+import useOrientation from '@hooks/useOrientation';
+import {hs, vs} from '@styles/metrics';
 import {createYouTubePlaylistUrl} from '@utils';
+import {FC, useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {Alert, Linking, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
+import {Trailer} from 'types/movieTypes';
 
 interface YotubeModalProps {
   videos: Trailer[];
@@ -24,6 +25,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
     title: string | null;
     author: string | null;
   }>({title: null, author: null});
+  const {width, height, orientation} = useOrientation();
 
   useEffect(() => {
     (async () => {
@@ -48,52 +50,69 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
   }, [videos]);
 
   return (
-    <AppModal visible={visible} handleClose={handleClose}>
+    <AppModal
+      visible={visible}
+      handleClose={handleClose}
+      viewStyle={{gap: vs(10)}}>
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center',
+          // height: vs(40),
         }}>
-        <AppButton flat customView onPress={handleClose}>
+        <AppButton
+          pressableStyle={{flex: 0}}
+          flat
+          customView
+          onPress={handleClose}>
           <Icon name="close-circle" size={33} color={colors.primary700} />
         </AppButton>
       </View>
       {videos.length > 0 ? (
-        <>
+        <View style={{gap: vs(15)}}>
           <View
             style={{
-              overflow: 'hidden',
-              borderRadius: 20,
-              marginVertical: 10,
+              flexDirection: orientation === 'portrait' ? 'column' : 'row',
             }}>
-            <YoutubeIframe
-              height={(width * 0.9 - 40) * (9 / 16)}
-              width={width * 0.9 - 40}
-              // videoId={videos[0].key}
-              playList={videos.map(video => video.key)}
-              play={visible}
-            />
-          </View>
-          <View style={{marginVertical: 5}}>
-            <AppText
-              variant="bold"
+            <View style={{borderRadius: 20, overflow: 'hidden'}}>
+              <YoutubeIframe
+                height={
+                  orientation === 'portrait'
+                    ? (width * 0.9 - 40) * (9 / 16)
+                    : (width / 2.5) * (9 / 16)
+                }
+                width={
+                  orientation === 'portrait' ? width * 0.9 - 40 : width / 2.5
+                }
+                playList={videos.map(video => video.key)}
+                play={visible}
+              />
+            </View>
+            <View
               style={{
-                color: colors.paleShade,
+                maxWidth: orientation === 'portrait' ? width : width / 2.5,
+                paddingHorizontal: orientation === 'portrait' ? hs(5) : hs(10),
+                paddingTop: orientation === 'portrait' ? vs(10) : vs(8),
               }}>
-              {videoMeta.title}
-            </AppText>
-            <AppText
-              variant="light"
-              style={{
-                color: colors.primary700,
-              }}>
-              By: {videoMeta.author}
-            </AppText>
+              <AppText
+                variant="bold"
+                style={{
+                  color: colors.paleShade,
+                }}>
+                {videoMeta.title}
+              </AppText>
+              <AppText
+                variant="light"
+                style={{
+                  color: colors.primary700,
+                }}>
+                By: {videoMeta.author}
+              </AppText>
+            </View>
           </View>
           <View
             style={{
-              flex: 1,
               justifyContent: 'center',
             }}>
             <AppButton
@@ -103,7 +122,6 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              style={{marginBottom: 12}}
               onPress={handleYoutubeRedirect}>
               <Icon name="play" size={24} color={colors.paleShade} />
               <AppText
@@ -116,9 +134,14 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
               </AppText>
             </AppButton>
           </View>
-        </>
+        </View>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View
+          style={{
+            height: height * 0.2,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <AppText variant="heading" style={{textAlign: 'center'}}>
             {t('no_trailer')}
           </AppText>

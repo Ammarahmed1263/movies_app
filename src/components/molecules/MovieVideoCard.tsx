@@ -1,17 +1,14 @@
-import {I18nManager, StyleSheet, Text, View} from 'react-native';
-import React, {FC, useEffect, useState} from 'react';
-import MovieCardButton from '@atoms/MovieCardButton';
 import AppImage from '@atoms/AppImage';
-import {getImageUrl} from '@utils';
-import {useTheme} from '@contexts/ThemeContext';
-import {useTranslation} from 'react-i18next';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {Movie, MovieArray, Trailer} from 'types/movieTypes';
 import AppText from '@atoms/AppText';
-import {hs, ms, vs, width} from '@styles/metrics';
-import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
-import {useNavigation} from '@react-navigation/native';
+import MovieCardButton from '@atoms/MovieCardButton';
+import {useTheme} from '@contexts/ThemeContext';
 import {getMovieVideos} from '@services/movieService';
+import {hs, ms, vs, width} from '@styles/metrics';
+import {getImageUrl} from '@utils';
+import {FC, useEffect, useState} from 'react';
+import {I18nManager, StyleSheet, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Movie, Trailer} from 'types/movieTypes';
 
 type MovieVideoCardProps = {
   movie: Movie;
@@ -21,11 +18,18 @@ type MovieVideoCardProps = {
 const MovieVideoCard: FC<MovieVideoCardProps> = ({movie, onPress}) => {
   const {colors} = useTheme();
   const [trailer, setTrailer] = useState<Trailer[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const data = await getMovieVideos(movie.id);
-      setTrailer(data.results);
+      try {
+        const data = await getMovieVideos(movie.id);
+        setTrailer(data.results);
+      } catch (error) {
+        console.error('error loading trailers: ', error);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 

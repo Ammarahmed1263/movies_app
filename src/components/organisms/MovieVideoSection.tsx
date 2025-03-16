@@ -1,20 +1,16 @@
 import AppButton from '@atoms/AppButton';
-import AppImage from '@atoms/AppImage';
+import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
-import MovieCardButton from '@atoms/MovieCardButton';
-import {useTheme} from '@contexts/ThemeContext';
-import {hs, ms, vs, width} from '@styles/metrics';
-import {getImageUrl} from '@utils';
-import {FC, useCallback, useState} from 'react';
+import MovieVideoCard from '@molecules/MovieVideoCard';
+import {useNavigation} from '@react-navigation/native';
+import {hs, vs} from '@styles/metrics';
+import {FC, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, StatusBar, StyleSheet, View} from 'react-native';
 import {MovieCategory} from 'types/categoryTypes';
-import {Movie, Trailer} from 'types/movieTypes';
 import {MovieListingNavigationProp} from 'types/mainStackTypes';
-import {useNavigation} from '@react-navigation/native';
-import MovieVideoCard from '@molecules/MovieVideoCard';
+import {Movie, Trailer} from 'types/movieTypes';
 import YoutubeModal from './YoutubeModal';
-import AppLoading from '@atoms/AppLoading';
 
 type MovieVideoSectionProps = {
   movies: Movie[];

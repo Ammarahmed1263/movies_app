@@ -95,6 +95,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
             containerStyle={styles.loadingContainer}
           />
         }
+        snapStyle={{bottom: Platform.OS === 'ios' ? 80 : 120}}
         {...props}
       />
     </View>

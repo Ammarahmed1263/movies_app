@@ -2,7 +2,7 @@ import Image from '@atoms/AppImage';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
-import {hs, ms, vs} from '@styles/metrics';
+import {hs, ms, vs, width} from '@styles/metrics';
 import {getImageUrl} from '@utils';
 import {FC} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexShrink: 1,
     alignSelf: 'center',
-    width: hs(100),
+    width: width / 4,
     height: '100%',
   },
   imageContainer: {

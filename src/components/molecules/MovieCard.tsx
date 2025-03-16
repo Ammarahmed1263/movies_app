@@ -6,13 +6,20 @@ import {useNavigation} from '@react-navigation/native';
 import {hs, ms, vs, width} from '@styles/metrics';
 import {convertToArabicNumerals, formatVoteCount, getImageUrl} from '@utils';
 import {FC} from 'react';
-import {I18nManager, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  I18nManager,
+  ImageProps,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
 import {Movie} from 'types/movieTypes';
 import {FontVariants} from 'types/themeTypes';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {imagePlaceHolder} from 'constants';
 
-interface MovieCardProps {
+interface MovieCardProps extends Omit<ImageProps, 'style'> {
   movie: Movie;
   titleVariant?: FontVariants;
   hideVote?: boolean;
@@ -26,6 +33,7 @@ const MovieCard: FC<MovieCardProps> = ({
   hideVote = false,
   style,
   ImageViewStyle,
+  ...props
 }) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
   const {colors} = useTheme();
@@ -61,8 +69,9 @@ const MovieCard: FC<MovieCardProps> = ({
           </View>
         )}
         <Image
-          source={getImageUrl(movie.poster_path)}
+          source={getImageUrl(movie.poster_path) ?? imagePlaceHolder.MOVIE}
           viewStyle={{overflow: 'hidden', borderRadius: ms(13)}}
+          {...props}
         />
       </View>
       <AppText

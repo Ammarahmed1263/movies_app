@@ -49,6 +49,7 @@ const MovieListingScreen: FC<MovieListingScreenProps> = ({
         marginVertical: vs(10),
       }}
       contentContainerStyle={{flexGrow: 1}}
+      containerStyle={{marginHorizontal: hs(20)}}
       ListEmptyComponent={
         movies.length === 0 ? (
           <View

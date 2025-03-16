@@ -5,6 +5,7 @@ import {
   Keyboard,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Platform,
   StyleSheet,
   View,
   ViewStyle,
@@ -96,7 +97,10 @@ const MoviesList: FC<MoviesListProps> = ({
           style={[
             styles.snapButton,
             snapStyle || {},
-            {backgroundColor: colors.link},
+            {
+              backgroundColor: colors.link,
+              overflow: Platform.OS === 'ios' ? 'visible' : 'hidden',
+            },
           ]}
           customView
           customViewStyle={styles.button}>
@@ -112,7 +116,7 @@ export default MoviesList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: hs(20),
+    marginHorizontal: hs(10),
   },
   snapButton: {
     position: 'absolute',
@@ -121,9 +125,20 @@ const styles = StyleSheet.create({
     end: 20,
     bottom: 80,
     width: hs(55),
-    height: vs(55),
+    aspectRatio: 1,
     borderRadius: hs(28),
-    elevation: 10,
+    backgroundColor: 'white',
+    ...Platform.select({
+      ios: {
+        shadowOpacity: 0.5,
+        shadowOffset: {width: 4, height: 6},
+        shadowRadius: 14,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+    shadowColor: 'black',
   },
   button: {
     width: hs(60),

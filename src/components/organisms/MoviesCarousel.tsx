@@ -29,6 +29,7 @@ import Animated, {
 import {useTranslation} from 'react-i18next';
 import {imagePlaceHolder} from '../../constants';
 import AppLoading from '@atoms/AppLoading';
+import useOrientation from '@hooks/useOrientation';
 // This is the default configuration
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
@@ -50,7 +51,7 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
   const [activeMovieIndex, setActiveMovieIndex] = useState<number>(0);
   const carouselRef = useRef<ICarouselInstance>(null);
   const scrollProgress = useSharedValue(0);
-  const {width, height} = useWindowDimensions();
+  const {orientation, height, width} = useOrientation();
   const {colors} = useTheme();
   const {t} = useTranslation();
 
@@ -96,7 +97,9 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
         key={item.id.toString()}
         style={[
           styles.carouselItem,
-          {aspectRatio: height > width ? 8.5 / 16 : 16 / 8.5},
+          {
+            aspectRatio: orientation === 'portrait' ? 8.5 / 16 : 16 / 8,
+          },
           animatedStyle,
         ]}>
         <MovieCard
@@ -105,11 +108,19 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
           key={index + item.id}
           style={{
             ...styles.carouselItem,
-            aspectRatio: height > width ? 8.5 / 16 : 16 / 8.5,
+            aspectRatio: orientation === 'portrait' ? 8.5 / 16 : 16 / 8,
+            transform: [{scaleX: orientation === 'landscape' ? -1 : 1}],
           }}
           ImageViewStyle={{
             height: '87%',
           }}
+          source={
+            getImageUrl(
+              orientation === 'portrait'
+                ? movies[index].poster_path
+                : movies[index].backdrop_path,
+            ) ?? imagePlaceHolder.MOVIE
+          }
           hideVote
         />
       </Animated.View>
@@ -135,15 +146,21 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
   return (
     <ImageBackground
       source={
-        getImageUrl(movies[activeMovieIndex].poster_path) ??
-        imagePlaceHolder.MOVIE
+        getImageUrl(
+          orientation === 'portrait'
+            ? movies[activeMovieIndex].poster_path
+            : movies[activeMovieIndex].backdrop_path,
+        ) ?? imagePlaceHolder.MOVIE
       }
       blurRadius={45}
       style={styles.backgroundImage}
       resizeMode="cover">
       <LinearGradient
         colors={['transparent', colors.primary500]}
-        style={styles.gradientContainer}>
+        style={{
+          marginTop:
+            StatusBar?.currentHeight ?? orientation === 'portrait' ? 50 : 10,
+        }}>
         <View style={styles.headerContainer}>
           <View style={styles.appName}>
             <AppText
@@ -167,16 +184,20 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
           data={movies.length > length ? movies.slice(0, length) : movies}
           renderItem={renderItem}
           width={width}
-          height={width}
+          height={orientation === 'portrait' ? width : width * 0.3}
           defaultIndex={activeMovieIndex}
           mode="parallax"
           modeConfig={{
             parallaxScrollingScale: 1,
-            parallaxScrollingOffset: width * 0.47,
+            parallaxScrollingOffset:
+              orientation === 'portrait' ? width * 0.47 : width * 1.57,
             parallaxAdjacentItemScale: 0.88,
           }}
           panGestureHandlerProps={{
-            activeOffsetX: [-10, 10],
+            activeOffsetX: orientation === 'landscape' ? [-20, 20] : [-10, 10],
+          }}
+          style={{
+            transform: [{scaleX: orientation === 'landscape' ? -1 : 1}],
           }}
           onSnapToItem={handleSnapToItem}
           onProgressChange={handleProgressChange}
@@ -222,7 +243,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   gradientContainer: {
-    marginTop: StatusBar?.currentHeight ?? 50,
+    marginTop: StatusBar?.currentHeight ?? 30,
   },
   headerContainer: {
     flexDirection: 'row',

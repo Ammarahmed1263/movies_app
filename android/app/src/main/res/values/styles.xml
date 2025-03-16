@@ -1,11 +1,8 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
-    </style>
-
-    <style name="BootTheme" parent="Theme.BootSplash">
+    <style name="BootTheme" parent="Theme.BootSplash.TransparentStatus">
         <item name="bootSplashBackground">@color/bootsplash_background</item>
         <item name="bootSplashLogo">@drawable/bootsplash_logo</item>
-        <item name="postBootSplashTheme">@style/AppTheme</item>
+        <!-- <item name="postBootSplashTheme">@style/AppTheme</item> -->
+        <item name="darkContentBarsStyle">true</item>
     </style>
 </resources>

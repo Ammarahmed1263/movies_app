@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Movie, MovieArray, MovieSummary} from 'types/movieTypes';
 import MoviesList from './MoviesList';
 import AppLoading from '@atoms/AppLoading';
+import useOrientation from '@hooks/useOrientation';
 
 interface MovieViewToggleProps
   extends Omit<FlatListProps<MovieSummary>, 'data' | 'renderItem'> {
@@ -35,6 +36,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
 }) => {
   const [columns, setColumns] = useState(1);
   const {colors} = useTheme();
+  const {isPortrait} = useOrientation();
 
   const handleRenderItem = ({item}: {item: MovieSummary}) => {
     return columns === 1 ? (
@@ -78,9 +80,9 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
         {...(columns === 2 && {
           columnWrapperStyle: {
             justifyContent: 'flex-start',
-            gap: hs(12),
+            gap: isPortrait ? hs(12) : hs(20),
             marginBottom: vs(20),
-            marginHorizontal: hs(8),
+            marginHorizontal: isPortrait ? hs(8) : hs(30),
           },
         })}
         contentContainerStyle={[

@@ -25,7 +25,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
     title: string | null;
     author: string | null;
   }>({title: null, author: null});
-  const {width, height, orientation} = useOrientation();
+  const {width, height, orientation, isPortrait} = useOrientation();
 
   useEffect(() => {
     (async () => {
@@ -73,27 +73,25 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
         <View style={{gap: vs(15)}}>
           <View
             style={{
-              flexDirection: orientation === 'portrait' ? 'column' : 'row',
+              flexDirection: isPortrait ? 'column' : 'row',
             }}>
             <View style={{borderRadius: 20, overflow: 'hidden'}}>
               <YoutubeIframe
                 height={
-                  orientation === 'portrait'
+                  isPortrait
                     ? (width * 0.9 - 40) * (9 / 16)
                     : (width / 2.5) * (9 / 16)
                 }
-                width={
-                  orientation === 'portrait' ? width * 0.9 - 40 : width / 2.5
-                }
+                width={isPortrait ? width * 0.9 - 40 : width / 2.3}
                 playList={videos.map(video => video.key)}
                 play={visible}
               />
             </View>
             <View
               style={{
-                maxWidth: orientation === 'portrait' ? width : width / 2.5,
-                paddingHorizontal: orientation === 'portrait' ? hs(5) : hs(10),
-                paddingTop: orientation === 'portrait' ? vs(10) : vs(8),
+                maxWidth: isPortrait ? width : width / 3,
+                paddingHorizontal: isPortrait ? hs(5) : hs(10),
+                paddingTop: isPortrait ? vs(10) : vs(8),
               }}>
               <AppText
                 variant="bold"

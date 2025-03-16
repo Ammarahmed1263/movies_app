@@ -27,7 +27,7 @@ const AppModal: FC<AppModalProps> = ({
   ...props
 }) => {
   const {colors} = useTheme();
-  const {width} = useOrientation();
+  const {width, isPortrait} = useOrientation();
 
   return (
     <Modal
@@ -35,6 +35,7 @@ const AppModal: FC<AppModalProps> = ({
       visible={visible}
       transparent
       onRequestClose={handleClose}
+      supportedOrientations={['portrait', 'landscape']}
       {...props}>
       <View style={styles.modalOverlay}>
         <TouchableWithoutFeedback onPress={handleClose}>
@@ -44,7 +45,7 @@ const AppModal: FC<AppModalProps> = ({
           style={[
             styles.modalBody,
             {
-              width: width * 0.9,
+              width: isPortrait ? width * 0.9 : width * 0.8,
               borderColor: colors.secondary600,
               backgroundColor: colors.primary500,
               shadowColor: colors.secondary600,

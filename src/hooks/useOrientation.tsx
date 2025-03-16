@@ -18,7 +18,12 @@ const useOrientation = () => {
     return () => subscription.remove();
   }, []);
 
-  return {orientation: isPortrait ? 'portrait' : 'landscape', width, height};
+  return {
+    orientation: isPortrait ? 'portrait' : 'landscape',
+    width,
+    height,
+    isPortrait,
+  };
 };
 
 export default useOrientation;

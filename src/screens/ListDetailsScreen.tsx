@@ -50,7 +50,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]
   >([]);
   const [list, setList] = useState<ListType | null>(null);
-  const {isPortrait} = useOrientation();
+  const {isPortrait, height} = useOrientation();
   const {headerStyle, contentContainerStyle, opacityStyle, gesture} =
     useListAnimation((list?.movies.length ?? 1) > 0 && isPortrait);
 
@@ -118,15 +118,12 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
       try {
         const wasFavorite = favorites.some(fav => fav.id === item.id);
 
-        // Immediately update UI
-        setFavorites(
-          prev =>
-            wasFavorite
-              ? prev.filter(fav => fav.id !== item.id) // Remove
-              : [...prev, item], // Add
+        setFavorites(prev =>
+          wasFavorite
+            ? prev.filter(fav => fav.id !== item.id)
+            : [...prev, item],
         );
 
-        // Sync with Firebase
         if (wasFavorite) {
           await removeFavoriteMovie(item.id);
           cancelScheduledReminder(item.id);
@@ -135,7 +132,6 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
           scheduleFavoriteReminder(item);
         }
       } catch (error) {
-        // Revert on error
         setFavorites(prev => prev.filter(fav => fav.id !== item.id));
       }
     },
@@ -189,7 +185,16 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
   }
 
   const header = () => (
-    <Animated.View style={[styles.header, headerStyle]}>
+    <Animated.View
+      style={[
+        styles.header,
+        {
+          height: isPortrait ? HEADER_HEIGHT : undefined,
+          flexGrow: 1,
+          position: isPortrait ? 'absolute' : 'relative',
+        },
+        headerStyle,
+      ]}>
       <Animated.View
         style={[
           styles.imageContainer,
@@ -198,7 +203,11 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
         ]}>
         <ListCard
           data={list}
-          style={{...styles.image}}
+          style={{
+            ...styles.image,
+            backgroundColor: colors.primary600,
+            height: isPortrait ? HEADER_HEIGHT * 0.8 : height / 1.6,
+          }}
           hasTitle={false}
           disabled
         />
@@ -245,7 +254,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
-          style={[contentContainerStyle, !isPortrait && {marginTop: 0}]}
+          style={contentContainerStyle}
           contentContainerStyle={{
             flexGrow: 1,
             paddingTop: vs(10),
@@ -281,13 +290,11 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
   },
   actionsSection: {
     flexDirection: 'row',
   },
   icon: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     marginHorizontal: hs(4),
     padding: hs(4),
     borderRadius: hs(8),
@@ -297,13 +304,11 @@ const styles = StyleSheet.create({
   header: {
     position: 'absolute',
     width: '100%',
-    height: HEADER_HEIGHT,
+    justifyContent: 'space-between',
     zIndex: 1000,
   },
   imageContainer: {
-    width: '85%',
-    // height: HEADER_HEIGHT * 0.8,
-    marginVertical: vs(20),
+    marginVertical: vs(5),
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
@@ -311,7 +316,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     aspectRatio: 1,
-    borderRadius: hs(10),
+    borderRadius: hs(20),
     ...Platform.select({
       ios: {
         shadowOpacity: 0.5,
@@ -328,7 +333,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: hs(15),
-    height: HEADER_HEIGHT * 0.1,
+    height: HEADER_HEIGHT * 0.15,
   },
   noMovies: {
     flex: 1,

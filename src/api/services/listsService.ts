@@ -40,7 +40,6 @@ const getListById = (listId: number, callback: (list: ListType) => void) => {
         const lists = snapshot.data() as ListType;
 
         callback(lists);
-        console.log('current list:', listId, lists);
       },
       error => {
         console.error('Error in Firestore snapshot listener:', error);

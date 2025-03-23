@@ -1,27 +1,33 @@
 import {HEADER_HEIGHT, SNAP_POINTS} from '@styles/metrics';
-import {useMemo} from 'react';
+import {useEffect, useMemo} from 'react';
 import {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
 import createPanGesture from 'utils/createPanGesture';
+import useOrientation from './useOrientation';
 
 const useListAnimation = (isGestureEnabled: boolean) => {
   const translateY = useSharedValue(0);
   const context = useSharedValue({y: 0});
+  const {orientation, isPortrait} = useOrientation();
 
-  console.log('is gesture enabled: ', isGestureEnabled);
+  useEffect(() => {
+    if (orientation === 'landscape') {
+      translateY.value = 0;
+    }
+  }, [orientation]);
 
   const headerStyle = useAnimatedStyle(() => ({
-    transform: [{translateY: translateY.value * 0.9}],
+    transform: [{translateY: translateY.value * 0.85}],
   }));
 
   const contentContainerStyle = useAnimatedStyle(() => ({
     marginTop: interpolate(
       translateY.value,
       [0, SNAP_POINTS[1]],
-      [HEADER_HEIGHT, HEADER_HEIGHT * 0.1],
+      [isPortrait ? HEADER_HEIGHT : 0, HEADER_HEIGHT * 0.15],
     ),
   }));
 

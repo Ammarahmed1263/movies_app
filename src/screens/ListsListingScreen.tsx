@@ -93,6 +93,9 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
         contentContainerStyle={{
           flexGrow: 1,
         }}
+        style={{
+          height: '100%',
+        }}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>

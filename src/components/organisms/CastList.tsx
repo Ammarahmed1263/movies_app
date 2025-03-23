@@ -72,7 +72,7 @@ const CastList: FC<CastListProps> = ({
         }}
         style={{
           flexGrow: 0,
-          marginVertical: vs(10),
+          marginTop: vs(10),
         }}
         showsHorizontalScrollIndicator={false}
         horizontal

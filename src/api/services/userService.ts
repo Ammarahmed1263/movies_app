@@ -65,7 +65,6 @@ export const getFavoriteMovies = (
         const movies = snapshot.data()?.favoriteMovies || [];
 
         callback(movies);
-        console.log('Real-time movies:', movies);
       },
       error => {
         console.error('Error in Firestore snapshot listener:', error);

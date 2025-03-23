@@ -34,14 +34,14 @@ const ListCard: FC<UserListProps> = ({
 }) => {
   const {colors} = useTheme();
   const isAdd = data.id === 'add';
-  const {orientation, width, height} = useOrientation();
+  const {orientation, width} = useOrientation();
 
   return (
     <TouchableOpacity
       onPress={() => onPress && onPress(data)}
       style={[
         styles.button,
-        {
+        !disabled && {
           width:
             orientation === 'portrait' ? width / 2.5 : width / 4 - hs(8 * 5),
         },
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: ms(15),
-    marginTop: vs(5),
     overflow: 'hidden',
   },
   addButton: {

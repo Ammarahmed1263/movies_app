@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flexGrow: 1,
     paddingHorizontal: hs(12),
+    paddingTop: vs(5),
     gap: hs(8),
   },
 });

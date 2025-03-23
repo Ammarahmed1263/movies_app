@@ -2,6 +2,7 @@ import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import useListAnimation from '@hooks/useListAnimation';
+import useOrientation from '@hooks/useOrientation';
 import ListCard from '@molecules/ListCard';
 import MovieListItem from '@molecules/MovieListItem';
 import {
@@ -27,6 +28,7 @@ import {
   Alert,
   I18nManager,
   Platform,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -34,7 +36,8 @@ import {
 import {SheetManager} from 'react-native-actions-sheet';
 import {GestureDetector} from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const Icon = Ionicons as any;
 import {ListDetailsScreenProps} from 'types/listsStackTypes';
 import {Movie, MovieSummary} from 'types/movieTypes';
 import {ListType} from 'types/userTypes';
@@ -47,8 +50,9 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]
   >([]);
   const [list, setList] = useState<ListType | null>(null);
+  const {isPortrait} = useOrientation();
   const {headerStyle, contentContainerStyle, opacityStyle, gesture} =
-    useListAnimation((list?.movies.length ?? 1) > 0);
+    useListAnimation((list?.movies.length ?? 1) > 0 && isPortrait);
 
   const handleRemoveList = () => {
     Alert.alert(
@@ -184,73 +188,100 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     return null;
   }
 
+  const header = () => (
+    <Animated.View style={[styles.header, headerStyle]}>
+      <Animated.View
+        style={[
+          styles.imageContainer,
+          isPortrait && {height: HEADER_HEIGHT * 0.8},
+          opacityStyle,
+        ]}>
+        <ListCard
+          data={list}
+          style={{...styles.image}}
+          hasTitle={false}
+          disabled
+        />
+      </Animated.View>
+
+      <Animated.View style={[styles.titleSection]}>
+        <AppText variant="heading">{capitalizeInput(list.title)}</AppText>
+        <TouchableOpacity
+          onPress={() =>
+            SheetManager.show('add-to-list', {
+              payload: {
+                movies: list?.movies,
+                id: list.id,
+              },
+            })
+          }>
+          <Icon name="add" size={30} color={colors.paleShade} />
+        </TouchableOpacity>
+      </Animated.View>
+    </Animated.View>
+  );
+
   return (
-    <View style={[styles.container, {backgroundColor: colors.primary500}]}>
-      <Animated.FlatList
-        data={list?.movies}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-        style={contentContainerStyle}
-        ListEmptyComponent={
-          <View style={styles.noMovies}>
-            <LottieView
-              source={
-                Platform.OS === 'ios'
-                  ? require('../assets/lottie/no_search_results(2).json')
-                  : require('../assets/lottie/no_search_results.json')
-              }
-              autoPlay
-              loop
-              style={{height: vs(160), aspectRatio: 1 / 1}}
-            />
-            <AppText variant="heading" style={styles.text}>
-              {t('add_to_list')}
-            </AppText>
-            <AppText
-              variant="body"
-              style={{textAlign: 'center', marginBottom: vs(8)}}>
-              {t('add_advice')}
-            </AppText>
-          </View>
-        }
-      />
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.primary500,
+          flexDirection: isPortrait ? 'column' : 'row',
+        },
+      ]}>
+      {!isPortrait ? (
+        <View style={{width: '40%'}}>{header()}</View>
+      ) : (
+        <GestureDetector gesture={gesture}>{header()}</GestureDetector>
+      )}
 
-      <GestureDetector gesture={gesture}>
-        <Animated.View style={[styles.header, headerStyle]}>
-          <Animated.View style={[styles.imageContainer, opacityStyle]}>
-            <ListCard
-              data={list}
-              style={styles.image}
-              hasTitle={false}
-              disabled
-            />
-          </Animated.View>
-
-          <Animated.View style={[styles.titleSection, opacityStyle]}>
-            <AppText variant="heading">{capitalizeInput(list.title)}</AppText>
-
-            <TouchableOpacity
-              onPress={() =>
-                SheetManager.show('add-to-list', {
-                  payload: {
-                    movies: list?.movies,
-                    id: list.id,
-                  },
-                })
-              }>
-              <Icon name="add" size={30} color={colors.paleShade} />
-            </TouchableOpacity>
-          </Animated.View>
-        </Animated.View>
-      </GestureDetector>
-    </View>
+      <View
+        style={{
+          width: isPortrait ? '100%' : '60%',
+        }}>
+        <Animated.FlatList
+          data={list?.movies}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+          showsVerticalScrollIndicator={false}
+          style={[contentContainerStyle, !isPortrait && {marginTop: 0}]}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingTop: vs(10),
+          }}
+          ListEmptyComponent={
+            <View style={styles.noMovies}>
+              <LottieView
+                source={
+                  Platform.OS === 'ios'
+                    ? require('../assets/lottie/no_search_results(2).json')
+                    : require('../assets/lottie/no_search_results.json')
+                }
+                autoPlay
+                loop
+                style={{height: vs(160), aspectRatio: 1 / 1}}
+              />
+              <AppText variant="heading" style={styles.text}>
+                {t('add_to_list')}
+              </AppText>
+              <AppText
+                variant="body"
+                style={{textAlign: 'center', marginBottom: vs(8)}}>
+                {t('add_advice')}
+              </AppText>
+            </View>
+          }
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'black',
   },
   actionsSection: {
     flexDirection: 'row',
@@ -265,26 +296,39 @@ const styles = StyleSheet.create({
   },
   header: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
+    width: '100%',
     height: HEADER_HEIGHT,
     zIndex: 1000,
   },
   imageContainer: {
-    height: HEADER_HEIGHT - 80,
-    width: '100%',
+    width: '85%',
+    // height: HEADER_HEIGHT * 0.8,
+    marginVertical: vs(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   image: {
     width: '100%',
-    aspectRatio: 1 / 0.95,
+    aspectRatio: 1,
     borderRadius: hs(10),
+    ...Platform.select({
+      ios: {
+        shadowOpacity: 0.5,
+        shadowOffset: {width: 0, height: 10},
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 12,
+      },
+    }),
   },
   titleSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: hs(20),
+    paddingHorizontal: hs(15),
+    height: HEADER_HEIGHT * 0.1,
   },
   noMovies: {
     flex: 1,

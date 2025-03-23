@@ -10,7 +10,7 @@ const verticalScale = (size: number) => (height / guidelineBaseHeight) * size;
 const moderateScale = (size: number, factor = 0.5) =>
   size + (horizontalScale(size) - size) * factor;
 
-const HEADER_HEIGHT = height / 1.9;
+const HEADER_HEIGHT = height / 2.2;
 const SNAP_POINTS = [0, -HEADER_HEIGHT];
 
 export {

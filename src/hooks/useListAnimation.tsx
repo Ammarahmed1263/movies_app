@@ -1,5 +1,5 @@
-import { HEADER_HEIGHT, SNAP_POINTS } from '@styles/metrics';
-import { useMemo } from 'react';
+import {HEADER_HEIGHT, SNAP_POINTS} from '@styles/metrics';
+import {useMemo} from 'react';
 import {
   interpolate,
   useAnimatedStyle,
@@ -11,15 +11,17 @@ const useListAnimation = (isGestureEnabled: boolean) => {
   const translateY = useSharedValue(0);
   const context = useSharedValue({y: 0});
 
+  console.log('is gesture enabled: ', isGestureEnabled);
+
   const headerStyle = useAnimatedStyle(() => ({
-    transform: [{translateY: translateY.value}],
+    transform: [{translateY: translateY.value * 0.9}],
   }));
 
   const contentContainerStyle = useAnimatedStyle(() => ({
     marginTop: interpolate(
       translateY.value,
       [0, SNAP_POINTS[1]],
-      [HEADER_HEIGHT - 15, 0],
+      [HEADER_HEIGHT, HEADER_HEIGHT * 0.1],
     ),
   }));
 

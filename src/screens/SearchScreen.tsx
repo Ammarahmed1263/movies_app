@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     marginHorizontal: hs(10),
   },
   explore: {
-    paddingTop: vs(15),
     paddingBottom:
       (StatusBar.currentHeight ?? vs(55)) +
       (Platform.OS === 'ios' ? vs(10) : vs(25)),

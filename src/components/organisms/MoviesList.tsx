@@ -88,7 +88,7 @@ const MoviesList: FC<MoviesListProps> = ({
         windowSize={15}
         onScrollBeginDrag={handleOnScrollBeginDrag}
         onEndReachedThreshold={0.8}
-        contentContainerStyle={{marginBottom: 10}}
+        contentContainerStyle={{marginBottom: vs(10)}}
         {...props}
       />
       <Animated.View style={animatedStyle}>

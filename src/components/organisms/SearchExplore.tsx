@@ -1,26 +1,15 @@
-import AppText from '@atoms/AppText';
-import React, {FC, useEffect, useState} from 'react';
-import {
-  I18nManager,
-  Platform,
-  ScrollView,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
-import CastList from './CastList';
-import {hs, vs} from '@styles/metrics';
-import axios from 'axios';
-import apiClient from 'api/apiClient';
-import {useTranslation} from 'react-i18next';
-import MovieViewToggle from './MovieViewToggle';
-import {discoverMovies} from '@services/movieService';
-import {getPopularPerson} from '@services/castMemberService';
-import {handlePromiseResult} from '@utils';
-import {MovieArray, MovieSummary} from 'types/movieTypes';
-import {CastMember} from 'types/castTypes';
 import useOrientation from '@hooks/useOrientation';
+import {getPopularPerson} from '@services/castMemberService';
+import {discoverMovies} from '@services/movieService';
+import {hs, vs} from '@styles/metrics';
+import {handlePromiseResult} from '@utils';
+import {FC, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {CastMember} from 'types/castTypes';
+import {MovieArray, MovieSummary} from 'types/movieTypes';
+import CastList from './CastList';
+import MovieViewToggle from './MovieViewToggle';
 
 type SearchExploreProps = {
   renderMovie?: ({item}: {item: MovieSummary}) => JSX.Element;
@@ -125,7 +114,7 @@ const SearchExplore: FC<SearchExploreProps> = ({
       )}
       <MovieViewToggle
         movies={discover}
-        contentContainerStyle={listContainerStyle}
+        contentContainerStyle={[{paddingTop: vs(10)}, listContainerStyle]}
         renderItem={renderMovie}
         keyboardShouldPersistTaps="handled"
         containerStyle={{
@@ -141,6 +130,5 @@ export default SearchExplore;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingVertical: vs(15),
   },
 });

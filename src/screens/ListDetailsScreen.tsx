@@ -1,10 +1,11 @@
 import AppButton from '@atoms/AppButton';
+import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import useListAnimation from '@hooks/useListAnimation';
 import useOrientation from '@hooks/useOrientation';
-import ListCard from '@molecules/ListCard';
 import MovieListItem from '@molecules/MovieListItem';
+import ListHeader from '@organisms/ListHeader';
 import {
   getListById,
   removeList,
@@ -15,7 +16,7 @@ import {
   getFavoriteMovies,
   removeFavoriteMovie,
 } from '@services/userService';
-import {HEADER_HEIGHT, hs, ms, vs} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
 import {
   cancelScheduledReminder,
   capitalizeInput,
@@ -30,17 +31,15 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import {SheetManager} from 'react-native-actions-sheet';
 import {GestureDetector} from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const Icon = Ionicons as any;
 import {ListDetailsScreenProps} from 'types/listsStackTypes';
 import {Movie, MovieSummary} from 'types/movieTypes';
 import {ListType} from 'types/userTypes';
+const Icon = Ionicons as any;
 
 const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
   const {listId} = route.params;
@@ -50,7 +49,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]
   >([]);
   const [list, setList] = useState<ListType | null>(null);
-  const {isPortrait, height} = useOrientation();
+  const {isPortrait} = useOrientation();
   const {headerStyle, contentContainerStyle, opacityStyle, gesture} =
     useListAnimation((list?.movies.length ?? 1) > 0 && isPortrait);
 
@@ -138,97 +137,58 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     [favorites],
   );
 
-  const renderItem = ({item}: {item: MovieSummary}) => {
-    const isFavorite = favorites.some(fav => fav.id === item.id);
-
-    return (
-      <MovieListItem movie={item}>
-        <View style={styles.actionsSection}>
-          <AppButton
-            onPress={() => handleToggleFavorite(item)}
-            customViewStyle={[
-              styles.icon,
-              {backgroundColor: colors.transparent},
-            ]}
-            customView
-            flat>
-            <Icon
-              name={isFavorite ? 'heart' : 'heart-outline'}
-              size={25}
-              color={isFavorite ? colors.error : colors.primary700}
-              style={{marginEnd: -1}}
-            />
-          </AppButton>
-
-          <AppButton
-            onPress={() => removeMovieFromlist(item.id, listId)}
-            customViewStyle={[
-              styles.icon,
-              {backgroundColor: colors.transparent},
-            ]}
-            customView
-            flat>
-            <Icon
-              name="trash-outline"
-              size={25}
-              color={colors.primary700}
-              style={{marginEnd: -1}}
-            />
-          </AppButton>
-        </View>
-      </MovieListItem>
-    );
-  };
+  const renderItem = useCallback(
+    ({item}: {item: MovieSummary}) => {
+      const isFavorite = favorites.some(fav => fav.id === item.id);
+      return (
+        <MovieListItem movie={item}>
+          <View style={styles.actionsSection}>
+            <AppButton
+              onPress={() => handleToggleFavorite(item)}
+              customViewStyle={[
+                styles.icon,
+                {backgroundColor: colors.transparent},
+              ]}
+              customView
+              flat>
+              <Icon
+                name={isFavorite ? 'heart' : 'heart-outline'}
+                size={25}
+                color={isFavorite ? colors.error : colors.primary700}
+                style={{marginEnd: -1}}
+              />
+            </AppButton>
+            <AppButton
+              onPress={() => removeMovieFromlist(item.id, listId)}
+              customViewStyle={[
+                styles.icon,
+                {backgroundColor: colors.transparent},
+              ]}
+              customView
+              flat>
+              <Icon
+                name="trash-outline"
+                size={25}
+                color={colors.primary700}
+                style={{marginEnd: -1}}
+              />
+            </AppButton>
+          </View>
+        </MovieListItem>
+      );
+    },
+    [favorites, handleToggleFavorite, colors, listId],
+  );
 
   if (!list) {
-    return null;
+    return (
+      <AppLoading
+        source={require('../assets/lottie/loading_fade.json')}
+        size={80}
+        speed={2}
+      />
+    );
   }
-
-  const header = () => (
-    <Animated.View
-      style={[
-        styles.header,
-        {
-          height: isPortrait ? HEADER_HEIGHT : undefined,
-          flexGrow: 1,
-          position: isPortrait ? 'absolute' : 'relative',
-        },
-        headerStyle,
-      ]}>
-      <Animated.View
-        style={[
-          styles.imageContainer,
-          isPortrait && {height: HEADER_HEIGHT * 0.8},
-          opacityStyle,
-        ]}>
-        <ListCard
-          data={list}
-          style={{
-            ...styles.image,
-            backgroundColor: colors.primary600,
-            height: isPortrait ? HEADER_HEIGHT * 0.8 : height / 1.6,
-          }}
-          hasTitle={false}
-          disabled
-        />
-      </Animated.View>
-
-      <Animated.View style={[styles.titleSection]}>
-        <AppText variant="heading">{capitalizeInput(list.title)}</AppText>
-        <TouchableOpacity
-          onPress={() =>
-            SheetManager.show('add-to-list', {
-              payload: {
-                movies: list?.movies,
-                id: list.id,
-              },
-            })
-          }>
-          <Icon name="add" size={30} color={colors.paleShade} />
-        </TouchableOpacity>
-      </Animated.View>
-    </Animated.View>
-  );
 
   return (
     <SafeAreaView
@@ -239,11 +199,15 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
           flexDirection: isPortrait ? 'column' : 'row',
         },
       ]}>
-      {!isPortrait ? (
-        <View style={{width: '40%'}}>{header()}</View>
-      ) : (
-        <GestureDetector gesture={gesture}>{header()}</GestureDetector>
-      )}
+      <GestureDetector gesture={gesture}>
+        {
+          <ListHeader
+            list={list}
+            headerStyle={[!isPortrait && {width: '40%'}, headerStyle]}
+            opacityStyle={opacityStyle}
+          />
+        }
+      </GestureDetector>
 
       <View
         style={{
@@ -253,6 +217,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
           data={list?.movies}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
+          initialNumToRender={10}
           showsVerticalScrollIndicator={false}
           style={contentContainerStyle}
           contentContainerStyle={{
@@ -300,40 +265,6 @@ const styles = StyleSheet.create({
     borderRadius: hs(8),
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  header: {
-    position: 'absolute',
-    width: '100%',
-    justifyContent: 'space-between',
-    zIndex: 1000,
-  },
-  imageContainer: {
-    marginVertical: vs(5),
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  image: {
-    width: '100%',
-    aspectRatio: 1,
-    borderRadius: hs(20),
-    ...Platform.select({
-      ios: {
-        shadowOpacity: 0.5,
-        shadowOffset: {width: 0, height: 10},
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 12,
-      },
-    }),
-  },
-  titleSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: hs(15),
-    height: HEADER_HEIGHT * 0.15,
   },
   noMovies: {
     flex: 1,

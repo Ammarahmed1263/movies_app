@@ -18,5 +18,6 @@
       "@validation": ["./validation"]
     }
   },
-  "allowImportingTsExtensions": true
+  "allowImportingTsExtensions": true,
+  "resolveJsonModule": true
 }

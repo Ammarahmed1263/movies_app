@@ -1,14 +1,15 @@
-import { ImageSourcePropType } from "react-native";
-import { Movie, MovieArray, MovieSummary } from "./movieTypes";
+import {ImageSourcePropType} from 'react-native';
+import {Movie, MovieArray, MovieSummary} from './movieTypes';
 
 export type User = {
   email: string;
   password: string;
-}
+};
 
 export type preferencesType = {
   language: 'en' | 'ar';
   theme: 'light' | 'dark';
+  notification: boolean;
 };
 
 export type ListType = {
@@ -16,4 +17,4 @@ export type ListType = {
   title: string;
   poster_path?: string | null;
   movies: MovieSummary[];
-}
+};

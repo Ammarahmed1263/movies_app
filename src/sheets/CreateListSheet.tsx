@@ -11,6 +11,7 @@ import {useTranslation} from 'react-i18next';
 import {StyleSheet, TextInput, View} from 'react-native';
 import ActionSheet, {SheetManager} from 'react-native-actions-sheet';
 import {ListType} from 'types/userTypes';
+import auth from '@react-native-firebase/auth';
 
 const CreateListSheet = (props: {
   payload: {
@@ -27,7 +28,9 @@ const CreateListSheet = (props: {
     movies: [],
     poster_path: null,
   });
+  console.log('poster: ', listData?.poster_path);
   const [error, setError] = useState<string | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
   const {colors} = useTheme();
 
   const handleSaveButton = async (item: ListType) => {
@@ -38,7 +41,6 @@ const CreateListSheet = (props: {
 
     addList(item);
     await SheetManager.hide(props.sheetId);
-
     onListCreated(Number(item.id));
   };
 
@@ -73,8 +75,10 @@ const CreateListSheet = (props: {
         <AppButton
           variant="body"
           style={styles.create}
+          textStyle={loading ? {color: colors.primary700} : undefined}
           hitSlop={20}
           onPress={() => handleSaveButton(listData)}
+          disabled={loading}
           flat>
           {t('create')}
         </AppButton>
@@ -82,8 +86,13 @@ const CreateListSheet = (props: {
       <View style={styles.container}>
         <ImagePicker
           selectedImage={listData?.poster_path}
-          onImageSelected={uri => setListData({...listData, poster_path: uri})}
+          onImageSelected={uri =>
+            setListData(prev => ({...prev, poster_path: uri}))
+          }
           placeholder="movie"
+          folderPath={`users/${auth().currentUser?.uid}/lists`}
+          uploading={loading}
+          setUploading={setLoading}
         />
         <LabelInput
           ref={inputRef}

@@ -14,13 +14,14 @@ const ProfileHeader: FC = () => {
   const [profileImage, setProfileImage] = useState<string | undefined>(
     undefined,
   );
+  const [loading, setLoading] = useState(false);
 
   const saveProfilePicture = async (uri: string | undefined) => {
-    setProfileImage(uri);
     try {
       await auth().currentUser?.updateProfile({
         photoURL: uri,
       });
+      setProfileImage(uri);
     } catch (err) {
       console.error('error saving picture: ', err);
     }
@@ -29,8 +30,11 @@ const ProfileHeader: FC = () => {
   return (
     <View style={{alignItems: 'center'}}>
       <ImagePicker
-        selectedImage={auth().currentUser?.photoURL ?? profileImage}
+        selectedImage={profileImage || auth().currentUser?.photoURL}
         onImageSelected={uri => saveProfilePicture(uri)}
+        folderPath={`users/${auth().currentUser?.uid}/profile`}
+        uploading={loading}
+        setUploading={setLoading}
       />
       <AppText variant="heading">
         {auth().currentUser?.displayName ??

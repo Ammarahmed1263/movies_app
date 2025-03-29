@@ -1,15 +1,14 @@
 import useNetworkStatus from '@hooks/useNetworkStatus';
 import useNotifications from '@hooks/useNotifications';
-import {getUserProfile} from '@services/userService';
 import {useEffect} from 'react';
 import {I18nManager} from 'react-native';
+import RNBootSplash from 'react-native-bootsplash';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 import ThemeProvider from './src/contexts/ThemeContext';
 import i18n from './src/i18n';
 import AppNavigation from './src/navigation/AppNavigation';
 import {store} from './src/redux/store';
-import RNBootSplash from 'react-native-bootsplash';
 
 export default function App() {
   const isNetworkConnected = useNetworkStatus();
@@ -31,7 +30,6 @@ export default function App() {
       }
 
       console.log('splash hidden');
-      RNBootSplash.hide();
       RNBootSplash.hide({fade: true});
     })();
   }, []);

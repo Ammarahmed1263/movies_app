@@ -4,18 +4,21 @@ import {
   Image,
   ImageProps,
   ImageSourcePropType,
+  ImageStyle,
   StyleProp,
   StyleSheet,
   View,
   ViewStyle,
-  ActivityIndicator,
-  ImageStyle,
 } from 'react-native';
+import FastImage, {
+  FastImageProps,
+  ImageStyle as FastImageStyle,
+} from 'react-native-fast-image';
 import {imagePlaceHolder} from '../../constants';
 import AppLoading from './AppLoading';
-import FastImage, {ImageStyle as FastImageStyle} from 'react-native-fast-image';
 
-interface AppImageProps extends Omit<ImageProps, 'source' | 'style'> {
+interface AppImageProps
+  extends Omit<ImageProps & FastImageProps, 'source' | 'style'> {
   source?: ImageSourcePropType;
   placeholder?: 'movie' | 'person';
   viewStyle?: StyleProp<ViewStyle>;
@@ -52,8 +55,7 @@ const AppImage: FC<AppImageProps> = ({
       {isLoading && (
         <AppLoading
           size={loadingSize === 'small' ? hs(25) : hs(35)}
-          speed={2.5}
-          // containerStyle={{backgroundColor: 'red'}}
+          speed={2}
           source={require('../../assets/lottie/loading_fade.json')}
         />
       )}
@@ -68,7 +70,7 @@ const AppImage: FC<AppImageProps> = ({
           style={imageStyle as StyleProp<FastImageStyle>}
           onLoadEnd={handleLoadEnd}
           resizeMode={FastImage.resizeMode.cover}
-          // {...props}
+          {...props}
         />
       ) : (
         <Image

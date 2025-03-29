@@ -1,8 +1,8 @@
 import {useTheme} from '@contexts/ThemeContext';
-import {useAppDispatch} from '@hooks/useRedux';
+import {useAppDispatch, useAppSelector} from '@hooks/useRedux';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {NavigationContainer} from '@react-navigation/native';
-import {clearUserId, setUserId} from '@redux/userSlice';
+import {clearUserToken, setUserToken} from '@redux/userSlice';
 import {useEffect, useMemo, useState} from 'react';
 import {StatusBar} from 'react-native';
 import {SheetProvider} from 'react-native-actions-sheet';
@@ -21,9 +21,9 @@ export default function AppNavigation() {
     setUser(user);
 
     if (user) {
-      dispatch(setUserId(user.uid));
+      dispatch(setUserToken(user.uid));
     } else {
-      dispatch(clearUserId());
+      dispatch(clearUserToken());
     }
     if (initializing) setInitializing(false);
   };

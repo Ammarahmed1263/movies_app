@@ -4,6 +4,8 @@ import ImagePickerSheet from './ImagePickerSheet';
 import DeleteAccountSheet from './DeleteAccountSheet';
 import CreateListSheet from './CreateListSheet';
 import AboutSheet from './AboutSheet';
+import {CloudinaryConfig} from '@services/cloudinaryService';
+import {Dispatch, SetStateAction} from 'react';
 
 registerSheet('add-to-list', AddToListSheet);
 registerSheet('create-list', CreateListSheet);
@@ -17,6 +19,9 @@ declare module 'react-native-actions-sheet' {
     'image-picker': SheetDefinition<{
       payload: {
         onImageSelected: (uri: string | undefined) => void;
+        folderPath: string;
+        uploadConfig?: Partial<CloudinaryConfig>;
+        setUploading: Dispatch<SetStateAction<boolean>>;
       };
     }>;
     'delete-account': SheetDefinition;

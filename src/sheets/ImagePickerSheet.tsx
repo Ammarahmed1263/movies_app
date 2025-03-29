@@ -1,8 +1,13 @@
 import PickerOption from '@atoms/PickerOption';
 import {useTheme} from '@contexts/ThemeContext';
+import {
+  CloudinaryConfig,
+  uploadToCloudinary,
+} from '@services/cloudinaryService';
 import {vs} from '@styles/metrics';
 import axios, {AxiosError} from 'axios';
-import {StyleSheet, View} from 'react-native';
+import {Dispatch, SetStateAction} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
 import ActionSheet, {
   SheetManager,
   SheetProps,
@@ -21,59 +26,66 @@ const options: CameraOptions = {
   maxWidth: 2000,
 };
 
-const ImagePickerSheet = (props: {
+const defaultUploadConfig = {
+  cloudName: 'moviecorn-co',
+  uploadPreset: 'app_img',
+};
+
+interface ImagePickerProps {
   payload: {
     onImageSelected: (uri: string | undefined) => void;
+    folderPath: string;
+    uploadConfig?: Partial<CloudinaryConfig>;
+    setUploading: Dispatch<SetStateAction<boolean>>;
   };
   sheetId: string;
-}) => {
-  console.log('sheet props: ', props);
-  const {onImageSelected} = props.payload;
+}
+
+const ImagePickerSheet = (props: ImagePickerProps) => {
+  const {
+    onImageSelected,
+    folderPath,
+    uploadConfig: customConfig,
+    setUploading,
+  } = props.payload;
   const {colors} = useTheme();
 
-  const uploadToCloudinary = async (file: any) => {
-    console.log('file here: ', file);
-    const formData = new FormData();
-    formData.append('file', {
-      uri: file.uri,
-      type: file.type,
-      name: file.fileName,
-    });
-    formData.append('upload_preset', 'app_img');
-    formData.append('cloud_name', 'moviecorn-co');
+  const uploadConfig = {...defaultUploadConfig, ...customConfig};
 
-    try {
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/moviecorn-co/upload`,
-        formData,
-        {
-          headers: {
-            // Axios will automatically set the Content-Type with boundary
-            // for FormData, so you can omit this or keep it as:
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
-      const data = response.data;
-      console.log('cloudinary response: ', data);
-      onImageSelected(data.secure_url);
-      console.log('Upload successful:', data);
-    } catch (error: any) {
-      console.error('Upload error:', error.message);
-    }
-  };
-
-  const handleResponse = (response: ImagePickerResponse) => {
-    console.log('response:', response);
+  const handleResponse = async (response: ImagePickerResponse) => {
     if (response.didCancel) {
       console.log('User cancelled image picker');
-    } else if (response.errorCode) {
-      console.log('Image picker error: ', response.errorCode);
-    } else {
-      let imageUri = response.assets?.[0];
-      // onImageSelected(imageUri);
-      uploadToCloudinary(imageUri);
-      SheetManager.hide('image-picker');
+      return;
+    }
+    if (response.errorCode) {
+      Alert.alert('Error', `Image picker error: ${response.errorMessage}`);
+      return;
+    }
+
+    setUploading(true);
+    const image = response.assets?.[0];
+    if (!image?.uri || !image.type || !image.fileName) {
+      Alert.alert('Error', 'Invalid image selected');
+      return;
+    }
+
+    SheetManager.hide('image-picker');
+    try {
+      const secureUrl = await uploadToCloudinary(
+        {
+          uri: image.uri,
+          type: image.type,
+          fileName: image.fileName,
+        },
+        folderPath,
+        uploadConfig,
+      );
+      onImageSelected(secureUrl);
+    } catch (error) {
+      Alert.alert('Upload Failed', (error as Error).message);
+      onImageSelected(undefined);
+    } finally {
+      setUploading(false);
     }
   };
 

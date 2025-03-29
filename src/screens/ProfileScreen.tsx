@@ -31,19 +31,18 @@ import RNRestart from 'react-native-restart';
 import Feather from 'react-native-vector-icons/Feather';
 import {ContactUsMessage} from '../constants';
 import i18n from '../i18n';
+import {useAppSelector} from '@hooks/useRedux';
 const Icon = Feather as any;
 
 function ProfileScreen() {
   const [themeActive, setThemeActive] = useState(false);
   const [languageArabic, setLanguageArabic] = useState(false);
   const [notification, setNotification] = useState(false);
-  const [user, setUser] = useState<
-    FirebaseFirestoreTypes.DocumentData | undefined
-  >(undefined);
   const {toggleTheme, theme, colors} = useTheme();
   const {t} = useTranslation();
+  const {userToken} = useAppSelector(state => state.user);
 
-  console.log('user data', auth().currentUser?.uid);
+  console.log('user data here: ', userToken);
 
   const toggleAppTheme = async () => {
     setThemeActive(prev => !prev);
@@ -120,7 +119,7 @@ function ProfileScreen() {
       const userData = await getUserProfile();
       setThemeActive(theme === 'dark' ? true : false);
       setLanguageArabic(i18n.language === 'ar' ? true : false);
-      setUser(userData);
+      // setUser(userData);
     })();
   }, []);
 

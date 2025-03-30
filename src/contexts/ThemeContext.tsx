@@ -11,6 +11,7 @@ import COLORS from '@styles/Colors';
 import getFonts from '@styles/Fonts';
 import {ThemeContextType} from 'types/themeTypes';
 import {getUserProfile} from '@services/userService';
+import {useAppSelector} from '@hooks/useRedux';
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
@@ -74,12 +75,16 @@ interface ThemeProviderProps {
 const ThemeProvider: FC<ThemeProviderProps> = ({children}) => {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState<'dark' | 'light'>(colorScheme || 'light');
+  const {userToken} = useAppSelector(state => state.user);
+  console.log('userToken: ', userToken);
 
   useEffect(() => {
     (async () => {
-      setTheme(colorScheme || 'light');
+      if (!userToken) {
+        setTheme(colorScheme || 'light');
+      }
     })();
-  }, [colorScheme]);
+  }, [colorScheme, userToken]);
 
   useEffect(() => {
     (async () => {
@@ -88,7 +93,7 @@ const ThemeProvider: FC<ThemeProviderProps> = ({children}) => {
         setTheme(user.userPreferences.theme);
       }
     })();
-  }, []);
+  }, [userToken]);
 
   const toggleTheme = async () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';

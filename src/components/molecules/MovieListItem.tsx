@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {hs, vs} from '@styles/metrics';
 import {getImageUrl} from '@utils';
 import {FC, ReactNode} from 'react';
+import {useTranslation} from 'react-i18next';
 import {PressableProps, StyleSheet, View} from 'react-native';
 import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
 import {Movie, MovieSummary} from 'types/movieTypes';
@@ -24,6 +25,7 @@ const MovieListItem: FC<MovieListItemProps> = ({
 }) => {
   const {colors} = useTheme();
   const navigation = useNavigation<MovieDetailsNavigationProp>();
+  const {t} = useTranslation();
 
   const handlePress = () => {
     navigation.navigate('MovieDetails', {id: movie.id});
@@ -62,7 +64,7 @@ const MovieListItem: FC<MovieListItemProps> = ({
             ...styles.overview,
             color: colors.paleShade,
           }}>
-          {movie.overview}
+          {movie.overview || t('no_overview')}
         </AppText>
       </View>
     </MovieButton>
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 3,
     marginLeft: vs(20),
     marginVertical: vs(4),
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   headingContainer: {
     flexDirection: 'row',

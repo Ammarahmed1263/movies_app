@@ -33,15 +33,15 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MainStackParamList>>();
 
-  useEffect(() => {
-    (async () => {
-      const user = await getUserProfile();
+  // useEffect(() => {
+  //   (async () => {
+  //     const user = await getUserProfile();
 
-      if (user?.userPreferences?.language) {
-        i18n.changeLanguage(user.userPreferences.language);
-      }
-    })();
-  }, []);
+  //     if (user?.userPreferences?.language) {
+  //       i18n.changeLanguage(user.userPreferences.language);
+  //     }
+  //   })();
+  // }, []);
 
   return (
     <Stack.Navigator

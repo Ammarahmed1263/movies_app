@@ -4,12 +4,15 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {NavigationContainer} from '@react-navigation/native';
 import {clearUserToken, setUserToken} from '@redux/userSlice';
 import {useEffect, useMemo, useState} from 'react';
-import {StatusBar} from 'react-native';
+import {I18nManager, StatusBar} from 'react-native';
 import {SheetProvider} from 'react-native-actions-sheet';
 import {navigationRef} from 'utils/navigation';
 import '../sheets';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
+import {getUserProfile} from '@services/userService';
+import {getDeviceLanguage} from '@utils';
+import {changeLanguage} from 'i18next';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
@@ -17,7 +20,7 @@ export default function AppNavigation() {
   const dispatch = useAppDispatch();
   const {colors, fonts, theme} = useTheme();
 
-  const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
+  const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
     setUser(user);
 
     if (user) {
@@ -25,6 +28,17 @@ export default function AppNavigation() {
     } else {
       dispatch(clearUserToken());
     }
+    const userExists = await getUserProfile();
+    const language =
+      userExists?.userPreferences?.language || getDeviceLanguage();
+
+    const isRTL = language === 'ar';
+    I18nManager.allowRTL(isRTL);
+    I18nManager.forceRTL(isRTL);
+
+    await changeLanguage(language);
+
+    console.log('language: ', language, isRTL);
     if (initializing) setInitializing(false);
   };
 

@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   title: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   button: {
     textTransform: 'none',

@@ -20,6 +20,7 @@ import {Movie, MovieArray, MovieSummary} from 'types/movieTypes';
 import MoviesList from './MoviesList';
 import AppLoading from '@atoms/AppLoading';
 import useOrientation from '@hooks/useOrientation';
+import {useTranslation} from 'react-i18next';
 
 interface MovieViewToggleProps
   extends Omit<FlatListProps<MovieSummary>, 'data' | 'renderItem'> {
@@ -37,6 +38,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
   const [columns, setColumns] = useState(1);
   const {colors} = useTheme();
   const {isPortrait} = useOrientation();
+  const {t} = useTranslation();
 
   const handleRenderItem = ({item}: {item: MovieSummary}) => {
     return columns === 1 ? (
@@ -49,7 +51,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
   return (
     <View style={[{flex: 1}, containerStyle]}>
       <View style={styles.header}>
-        <AppText variant="heading">Explore</AppText>
+        <AppText variant="heading">{t('explore')}</AppText>
         {!renderItem && (
           <View style={styles.icons}>
             <AppButton onPress={() => setColumns(1)} customView flat>

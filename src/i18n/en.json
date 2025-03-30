@@ -76,6 +76,7 @@
   "create_new_list": "Create New List",
   "my_lists": "My Lists",
   "List_details": "List Details",
+  "no_overview": "Oops, No Overview Available",
 
   "_COMMENT7": "empty holders",
   "no_favorites": "No Favorites",
@@ -103,6 +104,7 @@
 
   "_COMMENT10": "search",
   "actors": "Actors",
+  "explore": "Explore",
 
   "_COMMENT11": "about",
   "description1": "Welcome to Movies App! Your ultimate destination for the latest movie news, trailers, reviews, and recommendations.",

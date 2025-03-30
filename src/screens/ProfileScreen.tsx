@@ -60,6 +60,7 @@ function ProfileScreen() {
 
     setLanguageArabic(prev => !prev);
     i18n.changeLanguage(newLanguage);
+    I18nManager.allowRTL(newLanguage === 'ar');
     I18nManager.forceRTL(newLanguage === 'ar');
 
     await updateUserPreferences({

@@ -6,6 +6,7 @@ import useListAnimation from '@hooks/useListAnimation';
 import useOrientation from '@hooks/useOrientation';
 import MovieListItem from '@molecules/MovieListItem';
 import ListHeader from '@organisms/ListHeader';
+import {deleteFromCloudinary} from '@services/cloudinaryService';
 import {
   getListById,
   removeList,
@@ -20,6 +21,7 @@ import {hs, ms, vs} from '@styles/metrics';
 import {
   cancelScheduledReminder,
   capitalizeInput,
+  getPublicId,
   scheduleFavoriteReminder,
 } from '@utils';
 import LottieView from 'lottie-react-native';
@@ -66,8 +68,11 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
         {
           text: 'Confirm',
           style: 'destructive',
-          onPress: () => {
-            removeList(listId);
+          onPress: async () => {
+            await removeList(listId);
+            await deleteFromCloudinary(
+              getPublicId((list?.poster_path as string) ?? ''),
+            );
             navigation.pop();
           },
         },

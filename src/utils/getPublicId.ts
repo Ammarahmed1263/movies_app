@@ -1,7 +1,7 @@
-const extractPublicId = (url: string) => {
+const getPublicId = (url: string) => {
   const regex = /upload\/(?:v\d+\/)?([^\.]+)/;
   const match = url.match(regex);
   return match ? match[1] : null;
 };
 
-export default extractPublicId;
+export default getPublicId;

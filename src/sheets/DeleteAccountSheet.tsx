@@ -13,6 +13,10 @@ const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
   const {colors} = useTheme();
   const {t} = useTranslation();
 
+  const handleDeleteAccount = async () => {
+    await props.payload.onDelete();
+    SheetManager.hide('delete-account');
+  };
   return (
     <ActionSheet
       id={props.sheetId}
@@ -34,16 +38,27 @@ const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
 
         <View>
           <AppButton
-            onPress={props.payload.onDelete}
-            style={{backgroundColor: colors.error, marginBottom: vs(8)}}>
+            onPress={handleDeleteAccount}
+            pressableStyle={{
+              backgroundColor: colors.error,
+            }}
+            style={{
+              backgroundColor: 'transparent',
+              marginBottom: vs(8),
+              height: hs(40),
+            }}>
             {t('delete_anyway')}
           </AppButton>
           <AppButton
             onPress={() => SheetManager.hide('delete-account')}
-            style={{
+            pressableStyle={{
+              flex: 1,
               borderWidth: 1,
               borderColor: colors.paleShade,
-              padding: hs(10),
+              borderRadius: hs(8),
+            }}
+            style={{
+              height: hs(40),
             }}
             textStyle={{color: colors.paleShade}}
             flat>

@@ -18,4 +18,4 @@ export {
   cancelScheduledReminder,
 } from './notifications';
 export {default as calculateAge} from './calculateAge.ts';
-export {default as extractPublicId} from './extractPublicId.ts';
+export {default as getPublicId} from './getPublicId.ts';

@@ -1,6 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {Movie, MovieSummary} from 'types/movieTypes';
+import {deleteUserFolder} from './cloudinaryService';
 
 export const getCurrentUserId = () => {
   return auth().currentUser?.uid;
@@ -23,9 +24,19 @@ export const getUserProfile = async () => {
 
 export const deleteUser = async () => {
   try {
-    await auth().currentUser?.delete();
+    await deleteUserFolder(`users/${getCurrentUserId()}`);
+    const user = auth().currentUser;
+    console.log('USER: ', user);
+
+    if (!user) {
+      console.log('No user is currently signed in.');
+      return;
+    }
+
+    await user.delete();
     console.log('User delete successfully!');
-  } catch (e) {
+  } catch (e: any) {
+    console.log('firestore: error deleting user', e.code, e.message);
     throw e;
   }
 };

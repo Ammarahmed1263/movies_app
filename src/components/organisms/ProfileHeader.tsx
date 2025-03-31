@@ -12,6 +12,7 @@ import {
   deleteFromCloudinary,
   uploadToCloudinary,
 } from '@services/cloudinaryService';
+import {getPublicId} from '@utils';
 
 const ProfileHeader: FC = () => {
   const {colors} = useTheme();
@@ -22,10 +23,7 @@ const ProfileHeader: FC = () => {
 
   const saveProfilePicture = async (image: Asset) => {
     try {
-      const {base64, ...rest} = image || {};
       setProfileImage(image?.uri);
-
-      await deleteFromCloudinary(auth().currentUser?.photoURL ?? '');
 
       const secureUrl = await uploadToCloudinary(
         {
@@ -34,6 +32,7 @@ const ProfileHeader: FC = () => {
           fileName: `profile-${Date.now()}`,
         },
         `users/${auth().currentUser?.uid}/profile`,
+        getPublicId(auth().currentUser?.photoURL ?? ''),
       );
       await auth().currentUser?.updateProfile({
         photoURL: secureUrl,

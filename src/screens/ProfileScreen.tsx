@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   footer: {
-    flex: 1,
     paddingBottom: vs(Platform.OS === 'ios' ? 80 : 120),
   },
   copyrights: {

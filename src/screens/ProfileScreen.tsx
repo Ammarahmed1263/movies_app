@@ -40,9 +40,6 @@ function ProfileScreen() {
   const [notification, setNotification] = useState(false);
   const {toggleTheme, theme, colors} = useTheme();
   const {t} = useTranslation();
-  const {userToken} = useAppSelector(state => state.user);
-
-  console.log('user data here: ', userToken);
 
   const toggleAppTheme = async () => {
     setThemeActive(prev => !prev);

@@ -76,7 +76,6 @@ const ThemeProvider: FC<ThemeProviderProps> = ({children}) => {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState<'dark' | 'light'>(colorScheme || 'light');
   const {userToken} = useAppSelector(state => state.user);
-  console.log('userToken: ', userToken);
 
   useEffect(() => {
     (async () => {

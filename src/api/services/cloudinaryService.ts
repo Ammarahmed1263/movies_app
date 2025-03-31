@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
+import Config from 'react-native-config';
 
 export interface CloudinaryConfig {
   cloudName: string;
@@ -11,13 +12,15 @@ interface ImageFile {
   fileName: string;
 }
 
+const config: CloudinaryConfig = {
+  cloudName: 'moviecorn-co',
+  uploadPreset: 'app_img',
+};
+
 export const uploadToCloudinary = async (
   file: ImageFile,
   folderPath: string,
-  config: CloudinaryConfig,
 ): Promise<string> => {
-  console.log('before upload: ', file, folderPath, config);
-
   const formData = new FormData();
   formData.append('file', {
     uri: file.uri,
@@ -39,10 +42,39 @@ export const uploadToCloudinary = async (
       },
     );
     const data = response.data;
-    console.log('cloudinary response: ', data);
     return response.data.secure_url;
   } catch (error: any) {
     console.error('Upload error:', error.message);
     throw new Error(`Upload failed: ${error.message || 'Unknown error'}`);
+  }
+};
+
+export const deleteFromCloudinary = async (publicId: string) => {
+  const timestamp = Math.round(new Date().getTime() / 1000).toString();
+  // const signature = require('crypto')
+  //   .createHash('sha1')
+  //   .update(
+  //     `public_id=${publicId}&timestamp=${timestamp}${Config.CLOUDINARY_API_SECRET}`,
+  //   )
+  //   .digest('hex');
+
+  try {
+    await axios.post(
+      `https://api.cloudinary.com/v1_1/${config.cloudName}/image/destroy`,
+      {
+        public_id: publicId,
+        api_key: Config.CLOUDINARY_API_KEY,
+        // signature,
+        timestamp,
+      },
+      {
+        headers: {'Content-Type': 'application/json'},
+      },
+    );
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    throw new Error(
+      `Deletion failed: ${axiosError.message || 'Unknown error'}`,
+    );
   }
 };

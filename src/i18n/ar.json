@@ -68,12 +68,13 @@
   "read_more": "عرض المزيد",
   "read_less": "عرض اقل",
   "about": "عن",
+  "uploading": "جاري التحميل...",
 
   "_COMMENT6": "lists",
   "list_name": "اسم القائمة",
   "add_to_list": "هيا نضيف الأفلام!",
   "add_advice": "يمكنك إضافة فيلم بالضغط على أيقونة + (أعلى اليسار).",
-  "create_new_list": "انشاء قائمة جديدة",
+  "create_new_list": "انشاء قائمة جديدة:",
   "my_lists": "قوائمي",
   "list_details": "تفاصيل القائمة",
 

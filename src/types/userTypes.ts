@@ -1,5 +1,6 @@
 import {ImageSourcePropType} from 'react-native';
 import {Movie, MovieArray, MovieSummary} from './movieTypes';
+import {Asset} from 'react-native-image-picker';
 
 export type User = {
   email: string;
@@ -15,6 +16,6 @@ export type preferencesType = {
 export type ListType = {
   id: number | 'add';
   title: string;
-  poster_path?: string | null;
+  poster_path?: Asset | null | string;
   movies: MovieSummary[];
 };

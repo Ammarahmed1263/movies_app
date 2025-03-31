@@ -38,7 +38,6 @@ export default function AppNavigation() {
 
     await changeLanguage(language);
 
-    console.log('language: ', language, isRTL);
     if (initializing) setInitializing(false);
   };
 

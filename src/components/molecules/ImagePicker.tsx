@@ -1,20 +1,22 @@
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, width} from '@styles/metrics';
-import {Dispatch, FC, SetStateAction, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {FC} from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
-import Icon from 'react-native-vector-icons/AntDesign';
+import {Asset} from 'react-native-image-picker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppImage from '../atoms/AppImage';
-import {CloudinaryConfig} from '@services/cloudinaryService';
-import AppLoading from '@atoms/AppLoading';
+const Icon = AntDesign as any;
 
-interface ImagePickerProps {
+interface ImagePickerProps extends TouchableOpacityProps {
   selectedImage?: string | null;
-  onImageSelected: (uri: string | undefined) => void;
-  folderPath: string;
-  uploading: boolean;
-  setUploading: Dispatch<SetStateAction<boolean>>;
-  uploadConfig?: CloudinaryConfig;
+  onImageSelected: (uri: Asset) => void;
   placeholder?: 'movie' | 'person';
   style?: ViewStyle;
 }
@@ -23,17 +25,14 @@ const ImagePicker: FC<ImagePickerProps> = ({
   style,
   onImageSelected,
   selectedImage,
-  folderPath,
-  uploadConfig,
   placeholder = 'person',
-  uploading,
-  setUploading,
+  ...props
 }) => {
   const {colors} = useTheme();
 
   const handlePress = async () => {
     await SheetManager.show('image-picker', {
-      payload: {onImageSelected, folderPath, uploadConfig, setUploading},
+      payload: {onImageSelected},
     });
   };
 
@@ -41,25 +40,13 @@ const ImagePicker: FC<ImagePickerProps> = ({
     <>
       <TouchableOpacity
         onPress={handlePress}
-        disabled={uploading}
-        style={[
-          styles.defaultSize,
-          uploading && {borderWidth: 1, borderColor: colors.secondary500},
-          style,
-        ]}>
+        style={[styles.defaultSize, style]}
+        {...props}>
         <View style={[styles.defaultSize, {overflow: 'hidden'}, style]}>
-          {uploading ? (
-            <AppLoading
-              size={hs(30)}
-              speed={2}
-              source={require('../../assets/lottie/loading_fade.json')}
-            />
-          ) : (
-            <AppImage
-              source={selectedImage ? {uri: selectedImage} : undefined}
-              placeholder={placeholder}
-            />
-          )}
+          <AppImage
+            source={selectedImage ? {uri: selectedImage} : undefined}
+            placeholder={placeholder}
+          />
         </View>
         <View style={[styles.icon, {backgroundColor: colors.secondary500}]}>
           <Icon name="edit" size={22} color="white" />

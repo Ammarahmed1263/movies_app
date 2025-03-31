@@ -1,18 +1,12 @@
 import PickerOption from '@atoms/PickerOption';
 import {useTheme} from '@contexts/ThemeContext';
-import {
-  CloudinaryConfig,
-  uploadToCloudinary,
-} from '@services/cloudinaryService';
+import {CloudinaryConfig} from '@services/cloudinaryService';
 import {vs} from '@styles/metrics';
-import axios, {AxiosError} from 'axios';
 import {Dispatch, SetStateAction} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
-import ActionSheet, {
-  SheetManager,
-  SheetProps,
-} from 'react-native-actions-sheet';
+import ActionSheet, {SheetManager} from 'react-native-actions-sheet';
 import {
+  Asset,
   CameraOptions,
   ImagePickerResponse,
   launchCamera,
@@ -26,14 +20,9 @@ const options: CameraOptions = {
   maxWidth: 2000,
 };
 
-const defaultUploadConfig = {
-  cloudName: 'moviecorn-co',
-  uploadPreset: 'app_img',
-};
-
 interface ImagePickerProps {
   payload: {
-    onImageSelected: (uri: string | undefined) => void;
+    onImageSelected: (uri: Asset) => void;
     folderPath: string;
     uploadConfig?: Partial<CloudinaryConfig>;
     setUploading: Dispatch<SetStateAction<boolean>>;
@@ -42,15 +31,8 @@ interface ImagePickerProps {
 }
 
 const ImagePickerSheet = (props: ImagePickerProps) => {
-  const {
-    onImageSelected,
-    folderPath,
-    uploadConfig: customConfig,
-    setUploading,
-  } = props.payload;
+  const {onImageSelected} = props.payload;
   const {colors} = useTheme();
-
-  const uploadConfig = {...defaultUploadConfig, ...customConfig};
 
   const handleResponse = async (response: ImagePickerResponse) => {
     if (response.didCancel) {
@@ -62,40 +44,30 @@ const ImagePickerSheet = (props: ImagePickerProps) => {
       return;
     }
 
-    setUploading(true);
     const image = response.assets?.[0];
-    if (!image?.uri || !image.type || !image.fileName) {
+    if (!image || !image.uri || !image.type || !image.fileName) {
       Alert.alert('Error', 'Invalid image selected');
       return;
     }
 
+    onImageSelected(image);
     SheetManager.hide('image-picker');
+  };
+
+  const openImagePicker = async () => {
     try {
-      const secureUrl = await uploadToCloudinary(
-        {
-          uri: image.uri,
-          type: image.type,
-          fileName: image.fileName,
-        },
-        folderPath,
-        uploadConfig,
-      );
-      onImageSelected(secureUrl);
+      await launchImageLibrary(options, handleResponse);
     } catch (error) {
-      Alert.alert('Upload Failed', (error as Error).message);
-      onImageSelected(undefined);
-    } finally {
-      setUploading(false);
+      console.error('Error launching image picker: ', error);
     }
   };
 
-  const openImagePicker = () => {
-    launchImageLibrary(options, handleResponse);
-  };
-
-  const handleCameraLaunch = () => {
-    console.log('camera launch');
-    launchCamera(options, handleResponse);
+  const handleCameraLaunch = async () => {
+    try {
+      await launchCamera(options, handleResponse);
+    } catch (error) {
+      console.error('Error launching camera: ', error);
+    }
   };
 
   return (

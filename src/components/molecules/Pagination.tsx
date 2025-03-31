@@ -1,7 +1,7 @@
-import { useTheme } from '@contexts/ThemeContext';
-import { isAction } from '@reduxjs/toolkit';
-import { hs, vs } from '@styles/metrics';
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import {useTheme} from '@contexts/ThemeContext';
+import {isAction} from '@reduxjs/toolkit';
+import {hs, vs} from '@styles/metrics';
+import React, {Dispatch, FC, SetStateAction} from 'react';
 import {
   View,
   StyleSheet,
@@ -10,7 +10,17 @@ import {
   ViewStyle,
   TouchableOpacityProps,
 } from 'react-native';
-import Animated, { Easing, Extrapolation, interpolate, interpolateColor, runOnJS, SharedValue, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  Extrapolation,
+  interpolate,
+  interpolateColor,
+  runOnJS,
+  SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 export interface PaginationProps extends TouchableOpacityProps {
   dotsLength: number;
@@ -38,57 +48,64 @@ const Pagination: FC<PaginationProps> = ({
   setActiveIndex,
   ...props
 }) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const dotWidth = ((dotStyle as ViewStyle)?.width ?? 16) as number;
-  // console.log('scroll: ', scrollProgress.value)
+
   return (
     <Animated.View style={[styles.paginationContainer, containerStyle]}>
-      {Array.from({ length: dotsLength }, (_, index) => {
+      {Array.from({length: dotsLength}, (_, index) => {
         const animatedStyle = useAnimatedStyle(() => {
           const width = interpolate(
             scrollProgress.value,
             [index - 1, index, index + 1],
-            [dotWidth * inactiveDotScale, dotWidth, dotWidth * inactiveDotScale],
-            Extrapolation.CLAMP
-          )
+            [
+              dotWidth * inactiveDotScale,
+              dotWidth,
+              dotWidth * inactiveDotScale,
+            ],
+            Extrapolation.CLAMP,
+          );
 
           const opacity = interpolate(
             scrollProgress.value,
             [index - 1, index, index + 1],
             [inactiveDotOpacity, 1, inactiveDotOpacity],
-            Extrapolation.CLAMP
-          )
+            Extrapolation.CLAMP,
+          );
 
           const backgroundColor = interpolateColor(
             scrollProgress.value,
             [index - 1, index, index + 1],
             [colors.primary700, colors.secondary500, colors.primary700],
-          )
+          );
 
           return {
             width,
             backgroundColor,
             opacity,
           };
-        })
+        });
 
-        return <TouchableOpacity
-          key={index}
-          disabled={activeDotIndex === index}
-          hitSlop={7}
-          onPress={() => setActiveIndex(index)}
-          {...props}
-        >
-          <Animated.View style={[
-            {            
-              height: 8,
-              borderRadius: 4,
-              marginHorizontal: 4
-            },
-            dotStyle,
-            animatedStyle
-          ]} />
-        </TouchableOpacity>
+        return (
+          <TouchableOpacity
+            key={index}
+            disabled={activeDotIndex === index}
+            hitSlop={7}
+            onPress={() => setActiveIndex(index)}
+            {...props}>
+            <Animated.View
+              style={[
+                {
+                  height: 8,
+                  borderRadius: 4,
+                  marginHorizontal: 4,
+                },
+                dotStyle,
+                animatedStyle,
+              ]}
+            />
+          </TouchableOpacity>
+        );
       })}
     </Animated.View>
   );

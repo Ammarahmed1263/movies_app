@@ -80,8 +80,6 @@ const removeList = async (listId: number) => {
       .collection('lists')
       .doc(listId.toString())
       .delete();
-
-    console.log('user list removed');
   } catch (e) {
     console.error('Error adding favorite movie: ', e);
     throw e;

@@ -7,6 +7,11 @@ import i18n from 'i18n';
 import {useTheme} from '@contexts/ThemeContext';
 import {useTranslation} from 'react-i18next';
 import ImagePicker from '@molecules/ImagePicker';
+import {Asset} from 'react-native-image-picker';
+import {
+  deleteFromCloudinary,
+  uploadToCloudinary,
+} from '@services/cloudinaryService';
 
 const ProfileHeader: FC = () => {
   const {colors} = useTheme();
@@ -14,14 +19,25 @@ const ProfileHeader: FC = () => {
   const [profileImage, setProfileImage] = useState<string | undefined>(
     undefined,
   );
-  const [loading, setLoading] = useState(false);
 
-  const saveProfilePicture = async (uri: string | undefined) => {
+  const saveProfilePicture = async (image: Asset) => {
     try {
+      const {base64, ...rest} = image || {};
+      setProfileImage(image?.uri);
+
+      await deleteFromCloudinary(auth().currentUser?.photoURL ?? '');
+
+      const secureUrl = await uploadToCloudinary(
+        {
+          uri: image.uri!,
+          type: image.type!,
+          fileName: `profile-${Date.now()}`,
+        },
+        `users/${auth().currentUser?.uid}/profile`,
+      );
       await auth().currentUser?.updateProfile({
-        photoURL: uri,
+        photoURL: secureUrl,
       });
-      setProfileImage(uri);
     } catch (err) {
       console.error('error saving picture: ', err);
     }
@@ -31,10 +47,7 @@ const ProfileHeader: FC = () => {
     <View style={{alignItems: 'center'}}>
       <ImagePicker
         selectedImage={profileImage || auth().currentUser?.photoURL}
-        onImageSelected={uri => saveProfilePicture(uri)}
-        folderPath={`users/${auth().currentUser?.uid}/profile`}
-        uploading={loading}
-        setUploading={setLoading}
+        onImageSelected={saveProfilePicture}
       />
       <AppText variant="heading">
         {auth().currentUser?.displayName ??

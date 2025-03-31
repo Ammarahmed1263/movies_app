@@ -12,7 +12,6 @@ import ActionSheet, {
 const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
   const {colors} = useTheme();
   const {t} = useTranslation();
-  console.log('delete sheet is active');
 
   return (
     <ActionSheet

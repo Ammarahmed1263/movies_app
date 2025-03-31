@@ -58,7 +58,6 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
         <View>
           <ListCard
             data={item}
-            onPress={() => console.log('pressed')}
             hasTitle={false}
             style={{
               ...styles.listImage,

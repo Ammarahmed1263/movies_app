@@ -9,7 +9,7 @@ import {hs, ms, vs} from '@styles/metrics';
 import {loginSchema, signupSchema} from '@validation';
 import {Formik, FormikHelpers} from 'formik';
 import {FC, useRef} from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import {Image, StyleSheet, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
@@ -161,10 +161,9 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
                 width: '100%',
               }}
               onPress={() => onGoogleButtonPress(setValues, setSubmitting)}>
-              <AppImage
+              <Image
                 source={require('../../assets/images/google.png')}
-                viewStyle={{
-                  flex: 0,
+                style={{
                   width: hs(20),
                   height: vs(20),
                 }}

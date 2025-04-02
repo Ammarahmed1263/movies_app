@@ -143,7 +143,7 @@ export default CastMemberScreen;
 const styles = StyleSheet.create({
   imageContainer: {
     overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
-    width: hs(220),
+    width: hs(200),
     aspectRatio: 1 / 1,
     borderRadius: hs(110),
     borderWidth: hs(1),

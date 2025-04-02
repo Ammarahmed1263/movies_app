@@ -127,29 +127,29 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
     );
   };
 
-  if (loading || !movies.length) {
-    return (
-      <View
-        style={{
-          height: height * 0.5,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <AppLoading
-          source={require('../../assets/lottie/loading_fade.json')}
-          size={80}
-        />
-      </View>
-    );
-  }
+  // if (loading || !movies.length) {
+  //   return (
+  //     <View
+  //       style={{
+  //         height: height * 0.5,
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //       }}>
+  //       <AppLoading
+  //         source={require('../../assets/lottie/loading_fade.json')}
+  //         size={80}
+  //       />
+  //     </View>
+  //   );
+  // }
 
   return (
     <ImageBackground
       source={
         getImageUrl(
           orientation === 'portrait'
-            ? movies[activeMovieIndex].poster_path
-            : movies[activeMovieIndex].backdrop_path,
+            ? movies[activeMovieIndex]?.poster_path
+            : movies[activeMovieIndex]?.backdrop_path,
         ) ?? imagePlaceHolder.MOVIE
       }
       blurRadius={45}
@@ -179,53 +179,69 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
           </View>
         </View>
 
-        <Carousel
-          ref={carouselRef}
-          data={movies.length > length ? movies.slice(0, length) : movies}
-          renderItem={renderItem}
-          width={width}
-          height={orientation === 'portrait' ? width : width * 0.3}
-          defaultIndex={activeMovieIndex}
-          mode="parallax"
-          modeConfig={{
-            parallaxScrollingScale: 1,
-            parallaxScrollingOffset:
-              orientation === 'portrait' ? width * 0.47 : width * 1.57,
-            parallaxAdjacentItemScale: 0.88,
-          }}
-          panGestureHandlerProps={{
-            activeOffsetX: orientation === 'landscape' ? [-20, 20] : [-10, 10],
-          }}
-          style={{
-            transform: [{scaleX: orientation === 'landscape' ? -1 : 1}],
-          }}
-          onSnapToItem={handleSnapToItem}
-          onProgressChange={handleProgressChange}
-          autoPlayInterval={2000}
-          scrollAnimationDuration={1500}
-          snapEnabled
-          pagingEnabled
-          loop
-          autoPlay
-        />
-
-        <Pagination
-          dotsLength={movies.length > length ? length : movies.length}
-          activeDotIndex={activeMovieIndex}
-          scrollProgress={scrollProgress}
-          dotStyle={{
-            width: hs(36),
-            height: vs(8),
-            borderRadius: hs(6),
-            backgroundColor: colors.secondary500,
-            marginHorizontal: hs(6),
-          }}
-          activeDotStyle={{width: hs(36)}}
-          inactiveDotStyle={{backgroundColor: colors.primary700}}
-          inactiveDotOpacity={0.3}
-          inactiveDotScale={0.4}
-          setActiveIndex={handleDotPress}
-        />
+        {loading || !movies.length ? (
+          <View
+            style={{
+              height: height * 0.5,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <AppLoading
+              source={require('../../assets/lottie/loading_fade.json')}
+              size={80}
+            />
+          </View>
+        ) : (
+          <>
+            <Carousel
+              ref={carouselRef}
+              data={movies.length > length ? movies.slice(0, length) : movies}
+              renderItem={renderItem}
+              width={width}
+              height={orientation === 'portrait' ? width : width * 0.3}
+              defaultIndex={activeMovieIndex}
+              mode="parallax"
+              modeConfig={{
+                parallaxScrollingScale: 1,
+                parallaxScrollingOffset:
+                  orientation === 'portrait' ? width * 0.47 : width * 1.57,
+                parallaxAdjacentItemScale: 0.88,
+              }}
+              panGestureHandlerProps={{
+                activeOffsetX:
+                  orientation === 'landscape' ? [-20, 20] : [-10, 10],
+              }}
+              style={{
+                transform: [{scaleX: orientation === 'landscape' ? -1 : 1}],
+              }}
+              onSnapToItem={handleSnapToItem}
+              onProgressChange={handleProgressChange}
+              autoPlayInterval={2000}
+              scrollAnimationDuration={1500}
+              snapEnabled
+              pagingEnabled
+              loop
+              autoPlay
+            />
+            <Pagination
+              dotsLength={movies.length > length ? length : movies.length}
+              activeDotIndex={activeMovieIndex}
+              scrollProgress={scrollProgress}
+              dotStyle={{
+                width: hs(36),
+                height: vs(8),
+                borderRadius: hs(6),
+                backgroundColor: colors.secondary500,
+                marginHorizontal: hs(6),
+              }}
+              activeDotStyle={{width: hs(36)}}
+              inactiveDotStyle={{backgroundColor: colors.primary700}}
+              inactiveDotOpacity={0.3}
+              inactiveDotScale={0.4}
+              setActiveIndex={handleDotPress}
+            />
+          </>
+        )}
       </LinearGradient>
     </ImageBackground>
   );

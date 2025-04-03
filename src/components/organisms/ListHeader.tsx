@@ -30,7 +30,7 @@ const ListHeader: FC<ListHeaderProps> = ({list, headerStyle, opacityStyle}) => {
 
   const handleAddPress = () => {
     SheetManager.show('add-to-list', {
-      payload: {movies: list?.movies, id: list.id},
+      payload: {id: list.id},
     });
   };
 

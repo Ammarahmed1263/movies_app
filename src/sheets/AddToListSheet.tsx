@@ -137,6 +137,7 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
             keyword={keyword}
             setKeyword={setKeyword}
             viewStyle={{width: '75%'}}
+            mic={false}
           />
           <AppButton
             variant="body"

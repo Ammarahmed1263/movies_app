@@ -1,36 +1,46 @@
-import {Dispatch, FC, SetStateAction, useEffect, useRef, useState} from 'react';
+'use client';
+
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   View,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  TextInputProps,
+  type TextInputProps,
   I18nManager,
-  StyleProp,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Voice, {
-  SpeechEndEvent,
-  SpeechErrorEvent,
-  SpeechResultsEvent,
-  SpeechStartEvent,
+  type SpeechEndEvent,
+  type SpeechErrorEvent,
+  type SpeechResultsEvent,
+  type SpeechStartEvent,
 } from '@react-native-voice/voice';
 import {useTheme} from '@contexts/ThemeContext';
-import {getDeviceLanguage} from '@utils';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
-import {hs, ms} from '@styles/metrics';
+import {hs, ms, vs} from '@styles/metrics';
+import {useAppSelector} from '@hooks/useRedux';
 
 interface SearchBarProps extends TextInputProps {
   keyword: string;
   setKeyword: Dispatch<SetStateAction<string>>;
+  mic?: boolean;
   viewStyle?: ViewStyle;
 }
 
 const SearchBar: FC<SearchBarProps> = ({
   setKeyword,
   keyword,
+  mic = true,
   viewStyle,
   ...props
 }) => {
@@ -38,6 +48,7 @@ const SearchBar: FC<SearchBarProps> = ({
   const {colors, fonts} = useTheme();
   const {t} = useTranslation();
   const inputRef = useRef<TextInput>(null);
+  const {language} = useAppSelector(state => state.user.preferences);
 
   useFocusEffect(() => {
     if (inputRef.current && !keyword) {
@@ -46,48 +57,85 @@ const SearchBar: FC<SearchBarProps> = ({
   });
 
   useEffect(() => {
-    Voice.onSpeechStart = onSpeechStartHandler;
-    Voice.onSpeechEnd = onSpeechEndHandler;
-    Voice.onSpeechResults = onSpeechResultsHandler;
-    Voice.onSpeechError = onSpeechErrorHandler;
-
-    function onSpeechStartHandler(e: SpeechStartEvent) {
-      setRecording(true);
-      console.log('onSpeechStart: ', e);
-    }
-
-    function onSpeechEndHandler(e: SpeechEndEvent) {
-      console.log('onSpeechEnd: ', e);
-    }
-
-    function onSpeechResultsHandler(e: SpeechResultsEvent) {
-      setKeyword(e?.value?.[0] ?? '');
-      setRecording(false);
-      console.log('onSpeechResult: ', e);
-    }
-
-    function onSpeechErrorHandler(e: SpeechErrorEvent) {
-      setRecording(false);
-      console.log('onSpeechError: ', e);
-    }
+    (async () => {
+      try {
+        await Voice.destroy();
+        setupVoiceListeners();
+      } catch (e) {
+        console.error('Failed to initialize Voice', e);
+      }
+    })();
 
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);
 
-  async function onStartButtonPress() {
+  const setupVoiceListeners = () => {
+    Voice.onSpeechStart = (e: SpeechStartEvent) => {
+      setRecording(true);
+      console.log('onSpeechStart:', e);
+    };
+
+    Voice.onSpeechEnd = (e: SpeechEndEvent) => {
+      setRecording(false);
+      console.log('onSpeechEnd:', e);
+    };
+
+    Voice.onSpeechError = (e: SpeechErrorEvent) => {
+      setRecording(false);
+      console.log('onSpeechError:', e);
+      Voice.destroy().catch(console.error);
+    };
+
+    Voice.onSpeechResults = async (e: SpeechResultsEvent) => {
+      console.log('onSpeechResult:', e);
+      setKeyword(e?.value?.[0] ?? '');
+      setRecording(false);
+
+      try {
+        await Voice.destroy();
+        setupVoiceListeners();
+      } catch (err) {
+        console.error('Error resetting Voice after results', err);
+      }
+    };
+  };
+
+  const _startRecognizing = async () => {
     try {
-      const active = await Voice.isRecognizing();
-      if (!active) {
-        console.log('recording');
-        await Voice.start(getDeviceLanguage() === 'ar' ? 'ar-EG' : 'en-US');
+      await Voice.destroy();
+      setupVoiceListeners();
+
+      await Voice.start(language === 'ar' ? 'ar-EG' : 'en-US');
+    } catch (e) {
+      console.error('Error starting voice recognition', e);
+      setRecording(false);
+    }
+  };
+
+  const _cancelRecognizing = async () => {
+    try {
+      await Voice.cancel();
+      await Voice.destroy();
+      setupVoiceListeners();
+      setRecording(false);
+    } catch (e) {
+      console.error('Error canceling voice recognition', e);
+      setRecording(false);
+    }
+  };
+
+  async function handleMicPress() {
+    try {
+      if (!recording) {
+        await _startRecognizing();
       } else {
-        console.log('stop recording');
-        await Voice.stop();
+        await _cancelRecognizing();
       }
     } catch (e) {
       console.log(e);
+      setRecording(false);
     }
   }
 
@@ -112,23 +160,25 @@ const SearchBar: FC<SearchBarProps> = ({
         }}
         {...props}
       />
-      <TouchableOpacity
-        style={[
-          styles.iconContainer,
-          !recording && {
-            borderRadius: 0,
-            borderStartWidth: 1,
-            borderColor: colors.primary700,
-          },
-          recording && {backgroundColor: colors.link},
-        ]}
-        onPress={onStartButtonPress}>
-        <Icon
-          name={recording ? 'mic-off' : 'mic-outline'}
-          size={30}
-          color={recording ? colors.paleShade : colors.secondary500}
-        />
-      </TouchableOpacity>
+      {mic && (
+        <TouchableOpacity
+          style={[
+            styles.iconContainer,
+            !recording && {
+              borderRadius: 0,
+              borderStartWidth: 1,
+              borderColor: colors.primary700,
+            },
+            recording && {backgroundColor: colors.success},
+          ]}
+          onPress={handleMicPress}>
+          <Icon
+            name={recording ? 'mic-off' : 'mic-outline'}
+            size={30}
+            color={recording ? colors.paleShade : colors.secondary500}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -145,6 +195,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.9,
     borderRadius: ms(12),
     marginHorizontal: 15,
+    minHeight: vs(45),
   },
   input: {
     flex: 8,

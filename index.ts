@@ -10,13 +10,10 @@ import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import messaging from '@react-native-firebase/messaging';
-import {
-  displayNotification,
-  handleNotificationAction,
-} from '@hooks/useNotifications';
 import {NotificationValues} from 'types/notificationTypes';
 import notifee, {EventType} from '@notifee/react-native';
 import {deepLinking} from '@utils';
+import {displayNotification, handleNotificationAction} from '@utils';
 
 messaging().setBackgroundMessageHandler(displayNotification);
 

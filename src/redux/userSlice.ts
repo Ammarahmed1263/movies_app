@@ -5,15 +5,16 @@ import {RootState} from './types';
 
 interface intialStateType {
   userToken: string | null;
+  FCMToken: string | null;
   preferences: preferencesType;
   favorites: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[];
 }
 
 const initialState: intialStateType = {
   userToken: null,
+  FCMToken: null,
   preferences: {
     language: 'en',
-    theme: 'dark',
     notification: true,
   },
   favorites: [],
@@ -29,9 +30,16 @@ const userSlice = createSlice({
     clearUserToken(state) {
       state.userToken = null;
     },
+    updateUserPreferences(
+      state,
+      action: PayloadAction<Partial<preferencesType>>,
+    ) {
+      state.preferences = {...state.preferences, ...action.payload};
+    },
   },
 });
 
-export const {setUserToken, clearUserToken} = userSlice.actions;
+export const {setUserToken, clearUserToken, updateUserPreferences} =
+  userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
 export default userSlice.reducer;

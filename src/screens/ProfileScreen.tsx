@@ -31,18 +31,25 @@ import RNRestart from 'react-native-restart';
 import Feather from 'react-native-vector-icons/Feather';
 import {ContactUsMessage} from '../constants';
 import i18n from '../i18n';
-import {useAppSelector} from '@hooks/useRedux';
+import {useAppDispatch, useAppSelector} from '@hooks/useRedux';
+import {updateUserPreferences as updateUserPreferencesAction} from '@redux/userSlice';
+import messaging from '@react-native-firebase/messaging';
+
 const Icon = Feather as any;
 
 function ProfileScreen() {
-  const [themeActive, setThemeActive] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(false);
   const [languageArabic, setLanguageArabic] = useState(false);
-  const [notification, setNotification] = useState(false);
   const {toggleTheme, theme, colors} = useTheme();
   const {t} = useTranslation();
+  const dispatch = useAppDispatch();
+  const {notification, language: tempLang} = useAppSelector(
+    state => state.user.preferences,
+  );
+  console.log('notificationFromStore', notification);
 
   const toggleAppTheme = async () => {
-    setThemeActive(prev => !prev);
+    setDarkTheme(prev => !prev);
 
     toggleTheme();
 
@@ -68,7 +75,11 @@ function ProfileScreen() {
 
   const toggleNotification = async () => {
     let newNotification = !notification;
-    setNotification(prev => !prev);
+    if (!newNotification) {
+      await messaging().deleteToken();
+      console.log('token deleted');
+    }
+    dispatch(updateUserPreferencesAction({notification: newNotification}));
     await updateUserPreferences({
       notification: newNotification,
     });
@@ -115,7 +126,7 @@ function ProfileScreen() {
   useEffect(() => {
     (async () => {
       const userData = await getUserProfile();
-      setThemeActive(theme === 'dark' ? true : false);
+      setDarkTheme(theme === 'dark' ? true : false);
       setLanguageArabic(i18n.language === 'ar' ? true : false);
       // setUser(userData);
     })();
@@ -141,13 +152,16 @@ function ProfileScreen() {
             onPress={toggleNotification}
             type="toggle"
             isToggled={notification}
+            switchProps={{
+              backgroundActive: colors.secondary500,
+            }}
           />
           <SettingItem
             icon="moon"
             label={t('dark_mode')}
             onPress={toggleAppTheme}
             type="toggle"
-            isToggled={themeActive}
+            isToggled={darkTheme}
             switchProps={{
               backgroundActive: colors.primary700,
               backgroundInactive: colors.secondary500,
@@ -158,7 +172,7 @@ function ProfileScreen() {
               renderInsideCircle: () => {
                 return (
                   <Icon
-                    name={themeActive ? 'moon' : 'sun'}
+                    name={darkTheme ? 'moon' : 'sun'}
                     color={colors.paleShade}
                     size={15}
                   />

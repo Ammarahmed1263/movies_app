@@ -13,21 +13,20 @@ import MainStack from './MainStack';
 import {getUserProfile} from '@services/userService';
 import {getDeviceLanguage} from '@utils';
 import {changeLanguage} from 'i18next';
+import useNotifications from '@hooks/useNotifications';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const dispatch = useAppDispatch();
   const {colors, fonts, theme} = useTheme();
+  useNotifications();
 
   const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
     setUser(user);
 
-    if (user) {
-      dispatch(setUserToken(user.uid));
-    } else {
-      dispatch(clearUserToken());
-    }
+    dispatch(user ? setUserToken(user.uid) : clearUserToken());
+
     const userExists = await getUserProfile();
     const language =
       userExists?.userPreferences?.language || getDeviceLanguage();

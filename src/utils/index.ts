@@ -16,6 +16,12 @@ export {
 export {
   scheduleFavoriteReminder,
   cancelScheduledReminder,
+  createNotificationChannel,
+  getFCMToken,
+  requestNotificationPermission,
+  setupMessageHandlers,
+  displayNotification,
+  handleNotificationAction,
 } from './notifications';
 export {default as calculateAge} from './calculateAge.ts';
 export {default as getPublicId} from './getPublicId.ts';

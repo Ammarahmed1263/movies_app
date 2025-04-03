@@ -1,5 +1,4 @@
 import useNetworkStatus from '@hooks/useNetworkStatus';
-import useNotifications from '@hooks/useNotifications';
 import {useEffect} from 'react';
 import RNBootSplash from 'react-native-bootsplash';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -10,7 +9,6 @@ import {store} from './src/redux/store';
 
 export default function App() {
   const isNetworkConnected = useNetworkStatus();
-  useNotifications();
 
   useEffect(() => {
     (async () => {

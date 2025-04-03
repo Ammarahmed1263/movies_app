@@ -9,7 +9,6 @@ export type User = {
 
 export type preferencesType = {
   language: 'en' | 'ar';
-  theme: 'light' | 'dark';
   notification: boolean;
 };
 

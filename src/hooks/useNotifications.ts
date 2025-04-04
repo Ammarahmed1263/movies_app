@@ -1,4 +1,3 @@
-import {store} from '@redux/store';
 import {
   createNotificationChannel,
   getFCMToken,
@@ -8,24 +7,23 @@ import {
 import {useEffect} from 'react';
 import {useAppSelector} from './useRedux';
 
-// let isInitializing = false;
-
 const useNotifications = () => {
-  const {notification} = useAppSelector(state => state.user.preferences);
+  const {
+    preferences: {notification},
+    FCMToken,
+    userToken,
+  } = useAppSelector(state => state.user);
   console.log('useNotifications', notification);
 
   useEffect(() => {
     let unsubscribe: () => void;
 
     (async () => {
-      if (notification) {
+      if (notification && userToken) {
         await requestNotificationPermission();
-        console.log('requestNotificationPermission');
-        await getFCMToken();
-        console.log('getFCMToken');
+        if (!FCMToken) await getFCMToken();
         await createNotificationChannel();
         unsubscribe = await setupMessageHandlers();
-        // isInitializing = true;
       }
 
       return () => {

@@ -120,7 +120,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
 
         <CategoriesList categories={movieDetails?.genres || []} />
 
-        <View>
+        <>
           <View style={styles.buttonsContainer}>
             <Button
               customView
@@ -174,7 +174,7 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
             topic={t('similar_movies')}
             viewStyle={styles.similar}
           />
-        </View>
+        </>
       </ScrollView>
 
       <YoutubeModal

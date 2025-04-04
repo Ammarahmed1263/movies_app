@@ -80,13 +80,11 @@ const AuthForm: FC<AuthFormProps> = ({isLogin, onSubmit}) => {
               label={t('password')}
               autoComplete="new-password"
               secureTextEntry>
-              <View>
-                <MaterialIcons
-                  name="lock"
-                  size={22}
-                  color={colors.secondary500}
-                />
-              </View>
+              <MaterialIcons
+                name="lock"
+                size={22}
+                color={colors.secondary500}
+              />
             </LabelInput>
             {!isLogin && (
               <LabelInput

@@ -55,20 +55,18 @@ const ListsListingScreen: FC<ListsFlatlistScreenProps> = ({navigation}) => {
   const handleRender = ({item, index}: {item: ListType; index: number}) => {
     return (
       <TouchableOpacity key={index} onPress={() => handleItemPress(item)}>
-        <View>
-          <ListCard
-            data={item}
-            hasTitle={false}
-            style={{
-              ...styles.listImage,
-              width:
-                orientation === 'landscape'
-                  ? width / 3 - hs(12 * 5)
-                  : width / 2.2,
-            }}
-            disabled
-          />
-        </View>
+        <ListCard
+          data={item}
+          hasTitle={false}
+          style={{
+            ...styles.listImage,
+            width:
+              orientation === 'landscape'
+                ? width / 3 - hs(12 * 5)
+                : width / 2.2,
+          }}
+          disabled
+        />
         <View style={styles.text}>
           <AppText variant="body">{item.title}</AppText>
         </View>

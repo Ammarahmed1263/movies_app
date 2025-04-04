@@ -59,43 +59,40 @@ function HomeScreen() {
           />
         }
         contentContainerStyle={{paddingBottom: vs(90)}}>
-        <View>
-          <MoviesCarousel
-            movies={trendingMovies as MovieArray}
-            loading={trendingLoading}
-          />
-        </View>
-        <View>
-          <MoviesSection
-            movies={now_playingMovies as MovieArray}
-            loading={now_playingLoading}
-            category="now_playing"
-            topic={t('now_playing')}
-            seeAll
-          />
-          <GenresSections />
-          <MoviesSection
-            movies={top_ratedMovies}
-            loading={top_ratedLoading}
-            category="top_rated"
-            topic={t('top_rated')}
-            seeAll
-          />
-          <MovieVideoSection
-            movies={upcomingMovies}
-            loading={upcomingLoading}
-            category="upcoming"
-            topic={t('upcoming')}
-            seeAll
-          />
-          <MoviesSection
-            movies={popularMovies}
-            loading={popularLoading}
-            category="popular"
-            topic={t('popular')}
-            seeAll
-          />
-        </View>
+        <MoviesCarousel
+          movies={trendingMovies as MovieArray}
+          loading={trendingLoading}
+        />
+
+        <MoviesSection
+          movies={now_playingMovies as MovieArray}
+          loading={now_playingLoading}
+          category="now_playing"
+          topic={t('now_playing')}
+          seeAll
+        />
+        <GenresSections />
+        <MoviesSection
+          movies={top_ratedMovies}
+          loading={top_ratedLoading}
+          category="top_rated"
+          topic={t('top_rated')}
+          seeAll
+        />
+        <MovieVideoSection
+          movies={upcomingMovies}
+          loading={upcomingLoading}
+          category="upcoming"
+          topic={t('upcoming')}
+          seeAll
+        />
+        <MoviesSection
+          movies={popularMovies}
+          loading={popularLoading}
+          category="popular"
+          topic={t('popular')}
+          seeAll
+        />
       </ScrollView>
     </>
   );

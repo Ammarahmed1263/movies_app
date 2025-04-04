@@ -36,7 +36,7 @@ const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
           <AppText style={styles.text}>{t('warn')}</AppText>
         </View>
 
-        <View>
+        <>
           <AppButton
             onPress={handleDeleteAccount}
             pressableStyle={{
@@ -64,7 +64,7 @@ const DeleteAccountSheet = (props: SheetProps<'delete-account'>) => {
             flat>
             {t('cancel')}
           </AppButton>
-        </View>
+        </>
       </View>
     </ActionSheet>
   );

@@ -46,7 +46,6 @@ function ProfileScreen() {
   const {notification, language: tempLang} = useAppSelector(
     state => state.user.preferences,
   );
-  console.log('notificationFromStore', notification);
 
   const toggleAppTheme = async () => {
     setDarkTheme(prev => !prev);
@@ -63,9 +62,7 @@ function ProfileScreen() {
     let newLanguage = language === 'en' ? 'ar' : 'en';
 
     setLanguageArabic(prev => !prev);
-    i18n.changeLanguage(newLanguage);
-    I18nManager.allowRTL(newLanguage === 'ar');
-    I18nManager.forceRTL(newLanguage === 'ar');
+    await i18n.changeLanguage(newLanguage);
 
     await updateUserPreferences({
       language: newLanguage,
@@ -88,6 +85,7 @@ function ProfileScreen() {
   const handleSignOut = async () => {
     try {
       await userLogout();
+      RNRestart.restart();
     } catch (error) {
       console.log('oops user failed to logout', error);
     }
@@ -96,6 +94,7 @@ function ProfileScreen() {
   const handleDeleteAccount = async () => {
     try {
       await deleteUser();
+      RNRestart.restart();
     } catch (error) {
       console.log('oops user failed to delete', error);
     }

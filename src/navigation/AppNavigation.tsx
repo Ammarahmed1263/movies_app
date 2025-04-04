@@ -2,7 +2,11 @@ import {useTheme} from '@contexts/ThemeContext';
 import {useAppDispatch, useAppSelector} from '@hooks/useRedux';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {NavigationContainer} from '@react-navigation/native';
-import {clearUserToken, setUserToken} from '@redux/userSlice';
+import {
+  clearUserToken,
+  setUserToken,
+  updateUserPreferences,
+} from '@redux/userSlice';
 import {useEffect, useMemo, useState} from 'react';
 import {I18nManager, StatusBar} from 'react-native';
 import {SheetProvider} from 'react-native-actions-sheet';
@@ -12,18 +16,19 @@ import AuthStack from './AuthStack';
 import MainStack from './MainStack';
 import {getUserProfile} from '@services/userService';
 import {getDeviceLanguage} from '@utils';
-import {changeLanguage} from 'i18next';
 import useNotifications from '@hooks/useNotifications';
+import i18n from 'i18n';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const {userToken, preferences} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   const {colors, fonts, theme} = useTheme();
   useNotifications();
 
   const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
-    setUser(user);
+    // setUser(user);
 
     dispatch(user ? setUserToken(user.uid) : clearUserToken());
 
@@ -31,13 +36,11 @@ export default function AppNavigation() {
     const language =
       userExists?.userPreferences?.language || getDeviceLanguage();
 
-    const isRTL = language === 'ar';
-    I18nManager.allowRTL(isRTL);
-    I18nManager.forceRTL(isRTL);
+    dispatch(updateUserPreferences({language}));
 
-    await changeLanguage(language);
-
-    if (initializing) setInitializing(false);
+    i18n.changeLanguage(language).then(() => {
+      setInitializing(false);
+    });
   };
 
   useEffect(() => {
@@ -68,7 +71,11 @@ export default function AppNavigation() {
     <NavigationContainer theme={navigationTheme} ref={navigationRef}>
       <SheetProvider>
         <StatusBar backgroundColor={colors.primary500} />
-        {user ? <MainStack colors={colors} fonts={fonts} /> : <AuthStack />}
+        {userToken ? (
+          <MainStack colors={colors} fonts={fonts} />
+        ) : (
+          <AuthStack />
+        )}
       </SheetProvider>
     </NavigationContainer>
   );

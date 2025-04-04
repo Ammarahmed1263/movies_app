@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import ThemeProvider from './src/contexts/ThemeContext';
 import AppNavigation from './src/navigation/AppNavigation';
 import {store} from './src/redux/store';
+import 'i18n';
 
 export default function App() {
   const isNetworkConnected = useNetworkStatus();

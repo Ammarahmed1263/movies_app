@@ -36,6 +36,9 @@ const userSlice = createSlice({
     ) {
       state.preferences = {...state.preferences, ...action.payload};
     },
+    logout(state) {
+      state = initialState;
+    },
   },
 });
 

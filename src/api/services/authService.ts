@@ -40,7 +40,6 @@ export const userLogout = async () => {
   try {
     await auth().signOut();
     await GoogleSignin.signOut();
-    console.log('User signed out!');
   } catch (e) {
     throw e;
   }

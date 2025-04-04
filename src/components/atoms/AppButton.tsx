@@ -15,6 +15,7 @@ import {FC, ReactNode, useState} from 'react';
 import AppText from './AppText';
 import {FontVariants} from 'types/themeTypes';
 import {hs, ms, vs} from '@styles/metrics';
+import {isIOS} from '@constants';
 
 interface AppButtonProps extends PressableProps {
   flat?: boolean;
@@ -70,7 +71,7 @@ const AppButton: FC<AppButtonProps> = ({
             ? pressableStyle(state)
             : pressableStyle,
           flat && clicked && {opacity: 0.2},
-          clicked && Platform.OS === 'ios' && !flat && {opacity: 0.8},
+          clicked && isIOS && !flat && {opacity: 0.8},
         ]}
         onPress={pressAction}
         {...props}>

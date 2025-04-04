@@ -1,4 +1,5 @@
 import AppText from '@atoms/AppText';
+import {isIOS} from '@constants';
 import {hs, vs, width} from '@styles/metrics';
 import LottieView from 'lottie-react-native';
 import {FC} from 'react';
@@ -23,12 +24,12 @@ const EmptySearch: FC<EmptySearchProps> = ({keyword}) => {
       }}>
       <LottieView
         source={
-          Platform.OS === 'ios'
+          isIOS
             ? require('../../assets/lottie/no_search_results(2).json')
             : require('../../assets/lottie/no_search_results.json')
         }
         style={{
-          width: Platform.OS === 'ios' ? width * 0.7 : width * 0.8,
+          width: isIOS ? width * 0.7 : width * 0.8,
           aspectRatio: 1 / 1,
         }}
         autoPlay

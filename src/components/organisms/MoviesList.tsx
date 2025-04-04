@@ -23,6 +23,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import AppButton from '@atoms/AppButton';
 import {height, hs, vs} from '@styles/metrics';
+import {isIOS} from '@constants';
 
 interface MoviesListProps
   extends Omit<FlatListProps<MovieSummary>, 'renderItem'> {
@@ -99,7 +100,7 @@ const MoviesList: FC<MoviesListProps> = ({
             snapStyle || {},
             {
               backgroundColor: colors.link,
-              overflow: Platform.OS === 'ios' ? 'visible' : 'hidden',
+              overflow: isIOS ? 'visible' : 'hidden',
             },
           ]}
           customView

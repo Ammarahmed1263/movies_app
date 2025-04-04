@@ -1,26 +1,18 @@
 import AppButton from '@atoms/AppButton';
+import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
+import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
+import useOrientation from '@hooks/useOrientation';
 import MovieCard from '@molecules/MovieCard';
 import MovieListItem from '@molecules/MovieListItem';
 import {hs, ms, vs} from '@styles/metrics';
 import {FC, useState} from 'react';
-import {
-  FlatList,
-  FlatListProps,
-  Platform,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {FlatListProps, StyleSheet, View, ViewStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Movie, MovieArray, MovieSummary} from 'types/movieTypes';
 import MoviesList from './MoviesList';
-import AppLoading from '@atoms/AppLoading';
-import useOrientation from '@hooks/useOrientation';
-import {useTranslation} from 'react-i18next';
 
 interface MovieViewToggleProps
   extends Omit<FlatListProps<MovieSummary>, 'data' | 'renderItem'> {
@@ -99,7 +91,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
             containerStyle={styles.loadingContainer}
           />
         }
-        snapStyle={{bottom: Platform.OS === 'ios' ? 80 : 120}}
+        snapStyle={{bottom: isIOS ? 80 : 120}}
         {...props}
       />
     </View>

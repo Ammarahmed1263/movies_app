@@ -16,6 +16,7 @@ import {MovieSummary} from 'types/movieTypes';
 import MoviesList from '../components/organisms/MoviesList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import SearchExplore from '@organisms/SearchExplore';
+import {isIOS} from '@constants';
 
 function SearchScreen() {
   const [keyword, setKeyword] = useState('');
@@ -55,10 +56,7 @@ function SearchScreen() {
         contentContainerStyle={[
           styles.contentContainer,
           {
-            paddingBottom:
-              Platform.OS === 'android'
-                ? vs(45) + insets.bottom + vs(85)
-                : vs(85),
+            paddingBottom: !isIOS ? vs(45) + insets.bottom + vs(85) : vs(85),
           },
         ]}
         numColumns={2}
@@ -83,10 +81,7 @@ export default SearchScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop:
-      Platform.OS === 'ios'
-        ? vs(10)
-        : (StatusBar.currentHeight ?? vs(55)) + vs(10),
+    marginTop: isIOS ? vs(10) : (StatusBar.currentHeight ?? vs(55)) + vs(10),
   },
   loading: {
     backgroundColor: 'red',
@@ -102,7 +97,6 @@ const styles = StyleSheet.create({
   },
   explore: {
     paddingBottom:
-      (StatusBar.currentHeight ?? vs(55)) +
-      (Platform.OS === 'ios' ? vs(10) : vs(25)),
+      (StatusBar.currentHeight ?? vs(55)) + (isIOS ? vs(10) : vs(25)),
   },
 });

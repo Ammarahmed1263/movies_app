@@ -1,5 +1,6 @@
 import AppButton from '@atoms/AppButton';
 import AppLoading from '@atoms/AppLoading';
+import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
 import useDebouncedSearch from '@hooks/useDebouncedSearch';
 import EmptySearch from '@molecules/EmptySearch';
@@ -15,14 +16,7 @@ import {
 import {height, hs, vs} from '@styles/metrics';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  Platform,
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
 import ActionSheet, {
   SheetManager,
   SheetProps,
@@ -125,12 +119,11 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
       id={props.sheetId}
       containerStyle={{backgroundColor: colors.primary500}}
       indicatorStyle={{backgroundColor: colors.primary700}}
-      // snapPoints={[Platform.OS === 'ios' ? 90 : 100]}
       statusBarTranslucent={false}
       initialSnapIndex={0}
       gestureEnabled={false}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={isIOS ? 'padding' : 'height'}
         style={styles.sheetContainer}>
         <View style={styles.search}>
           <SearchBar
@@ -181,6 +174,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     paddingTop: vs(10),
-    paddingBottom: Platform.OS === 'ios' ? vs(20) : vs(70),
+    paddingBottom: isIOS ? vs(20) : vs(70),
   },
 });

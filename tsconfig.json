@@ -15,7 +15,8 @@
       "@screens": ["./screens"],
       "@services/*": ["./api/services/*"],
       "@redux/*": ["./redux/*"],
-      "@validation": ["./validation"]
+      "@validation": ["./validation"],
+      "@constants": ["./constants"]
     }
   },
   "allowImportingTsExtensions": true,

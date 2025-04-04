@@ -1,6 +1,7 @@
 import AppButton from '@atoms/AppButton';
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
+import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
 import useListAnimation from '@hooks/useListAnimation';
 import useOrientation from '@hooks/useOrientation';
@@ -233,7 +234,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
             <View style={styles.noMovies}>
               <LottieView
                 source={
-                  Platform.OS === 'ios'
+                  isIOS
                     ? require('../assets/lottie/no_search_results(2).json')
                     : require('../assets/lottie/no_search_results.json')
                 }

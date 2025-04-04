@@ -16,7 +16,7 @@ import {calculateAge, convertToArabicNumerals, getImageUrl} from '@utils';
 import {useTranslation} from 'react-i18next';
 import {MemberCreditArray, MemberDetails} from 'types/castTypes';
 import {CastMemberScreenProps} from 'types/mainStackTypes';
-import {castMemberFilter} from '../constants';
+import {castMemberFilter, isIOS} from '../constants';
 
 const CastMemberScreen: FC<CastMemberScreenProps> = ({route}) => {
   const {id} = route.params;
@@ -142,7 +142,7 @@ export default CastMemberScreen;
 
 const styles = StyleSheet.create({
   imageContainer: {
-    overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
+    overflow: !isIOS ? 'hidden' : 'visible',
     width: hs(200),
     aspectRatio: 1 / 1,
     borderRadius: hs(110),

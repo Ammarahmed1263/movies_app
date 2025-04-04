@@ -1,4 +1,5 @@
 import AppText from '@atoms/AppText';
+import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, vs} from '@styles/metrics';
 import React from 'react';
@@ -110,6 +111,6 @@ const styles = StyleSheet.create({
   },
   settingsItemValue: {
     marginRight: hs(8),
-    marginTop: Platform.OS === 'ios' ? 0 : vs(2),
+    marginTop: isIOS ? 0 : vs(2),
   },
 });

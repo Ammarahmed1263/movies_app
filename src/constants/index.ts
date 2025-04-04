@@ -9,6 +9,8 @@ export enum imagePlaceHolder {
   MOVIE = require('../assets/images/movie_placeholder.png'),
 }
 
+export const isIOS = Platform.OS === 'ios';
+
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export const movieDetailsFilter = (colors: ColorsType) => [

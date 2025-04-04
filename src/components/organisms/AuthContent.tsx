@@ -1,25 +1,18 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-  I18nManager,
-} from 'react-native';
-import AuthForm from '@molecules/AuthForm';
 import Button from '@atoms/AppButton';
+import AuthForm from '@molecules/AuthForm';
+import {KeyboardAvoidingView, ScrollView, StyleSheet, View} from 'react-native';
 
-import {useTheme} from '@contexts/ThemeContext';
-import {FC, useEffect} from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {AuthStackParamList} from 'types/authStackTypes';
-import AppText from '@atoms/AppText';
-import {AuthFormValues} from 'types/authFormTypes';
-import {FormikHelpers} from 'formik';
-import {hs, ms, vs} from '@styles/metrics';
 import AppImage from '@atoms/AppImage';
+import AppText from '@atoms/AppText';
+import {isIOS} from '@constants';
+import {useTheme} from '@contexts/ThemeContext';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {hs, ms, vs} from '@styles/metrics';
+import {FormikHelpers} from 'formik';
+import {FC} from 'react';
 import {useTranslation} from 'react-i18next';
+import {AuthFormValues} from 'types/authFormTypes';
+import {AuthStackParamList} from 'types/authStackTypes';
 
 interface AuthContentProps {
   isLogin: boolean;
@@ -36,7 +29,7 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={isIOS ? 'padding' : 'height'}
       style={{flex: 1}}>
       <ScrollView
         keyboardShouldPersistTaps="handled"

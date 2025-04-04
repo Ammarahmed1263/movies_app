@@ -12,6 +12,7 @@ import {useTheme} from '@contexts/ThemeContext';
 import AppText from './AppText';
 import {FontVariants} from 'types/themeTypes';
 import {useTranslation} from 'react-i18next';
+import {isIOS} from '@constants';
 
 interface SeeMoreTextProps extends TextProps {
   text: string;
@@ -53,7 +54,7 @@ const SeeMoreText: FC<SeeMoreTextProps> = ({
                 style={{
                   color: colors.link,
                   textDecorationLine: 'underline',
-                  marginBottom: Platform.OS === 'ios' ? 0 : -5,
+                  marginBottom: isIOS ? 0 : -5,
                 }}>
                 {fullShown ? ' ' + t('read_less') : t('read_more')}
               </AppText>

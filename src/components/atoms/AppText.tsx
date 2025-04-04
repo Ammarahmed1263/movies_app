@@ -1,6 +1,7 @@
+import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
 import {FC, ReactNode} from 'react';
-import {I18nManager, Platform, Text, TextProps, TextStyle} from 'react-native';
+import {I18nManager, Text, TextProps, TextStyle} from 'react-native';
 import {FontVariants} from 'types/themeTypes';
 
 interface AppTextProps extends TextProps {
@@ -26,10 +27,9 @@ const AppText: FC<AppTextProps> = ({
           fontSize: fontStyles.fontSize,
           includeFontPadding: false,
           writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',
-          fontWeight:
-            Platform.OS === 'android'
-              ? 'normal'
-              : (fontStyles.fontWeight as TextStyle['fontWeight']),
+          fontWeight: !isIOS
+            ? 'normal'
+            : (fontStyles.fontWeight as TextStyle['fontWeight']),
         },
         style,
       ]}

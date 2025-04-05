@@ -37,22 +37,20 @@ const ImagePicker: FC<ImagePickerProps> = ({
   };
 
   return (
-    <>
-      <TouchableOpacity
-        onPress={handlePress}
-        style={[styles.defaultSize, style]}
-        {...props}>
-        <View style={[styles.defaultSize, {overflow: 'hidden'}, style]}>
-          <AppImage
-            source={selectedImage ? {uri: selectedImage} : undefined}
-            placeholder={placeholder}
-          />
-        </View>
-        <View style={[styles.icon, {backgroundColor: colors.secondary500}]}>
-          <Icon name="edit" size={22} color="white" />
-        </View>
-      </TouchableOpacity>
-    </>
+    <TouchableOpacity
+      onPress={handlePress}
+      style={[styles.defaultSize, style]}
+      {...props}>
+      <View style={[styles.defaultSize, {overflow: 'hidden'}, style]}>
+        <AppImage
+          source={selectedImage ? {uri: selectedImage} : undefined}
+          placeholder={placeholder}
+        />
+      </View>
+      <View style={[styles.icon, {backgroundColor: colors.secondary500}]}>
+        <Icon name="edit" size={22} color="white" />
+      </View>
+    </TouchableOpacity>
   );
 };
 

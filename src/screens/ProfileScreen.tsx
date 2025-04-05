@@ -1,86 +1,35 @@
 import AppButton from '@atoms/AppButton';
 import AppText from '@atoms/AppText';
+import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
+import {useProfileSettings} from '@hooks/useProfileSettings';
 import SettingItem from '@molecules/SettingItem';
 import ListsFlatlist from '@organisms/ListsFlatlist';
 import ProfileHeader from '@organisms/ProfileHeader';
-import auth from '@react-native-firebase/auth';
-import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 import {userLogout} from '@services/authService';
-import {
-  deleteUser,
-  getUserProfile,
-  updateUserPreferences,
-} from '@services/userService';
+import {deleteUser} from '@services/userService';
 import {hs, vs, width} from '@styles/metrics';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  Alert,
-  I18nManager,
-  Linking,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
-import Config from 'react-native-config';
 import RNRestart from 'react-native-restart';
 import Feather from 'react-native-vector-icons/Feather';
-import {ContactUsMessage} from '../constants';
-import i18n from '../i18n';
-import {useAppDispatch, useAppSelector} from '@hooks/useRedux';
-import {updateUserPreferences as updateUserPreferencesAction} from '@redux/userSlice';
-import messaging from '@react-native-firebase/messaging';
+import sendMail from 'utils/sendMail';
 
 const Icon = Feather as any;
 
 function ProfileScreen() {
-  const [darkTheme, setDarkTheme] = useState(false);
-  const [languageArabic, setLanguageArabic] = useState(false);
-  const {toggleTheme, theme, colors} = useTheme();
+  const {colors} = useTheme();
   const {t} = useTranslation();
-  const dispatch = useAppDispatch();
-  const {notification, language: tempLang} = useAppSelector(
-    state => state.user.preferences,
-  );
-
-  const toggleAppTheme = async () => {
-    setDarkTheme(prev => !prev);
-
-    toggleTheme();
-
-    await updateUserPreferences({
-      theme: theme === 'dark' ? 'light' : 'dark',
-    });
-  };
-
-  const toggleAppLanguage = async () => {
-    let language = i18n.language;
-    let newLanguage = language === 'en' ? 'ar' : 'en';
-
-    setLanguageArabic(prev => !prev);
-    await i18n.changeLanguage(newLanguage);
-
-    await updateUserPreferences({
-      language: newLanguage,
-    });
-    RNRestart.restart();
-  };
-
-  const toggleNotification = async () => {
-    let newNotification = !notification;
-    if (!newNotification) {
-      await messaging().deleteToken();
-      console.log('token deleted');
-    }
-    dispatch(updateUserPreferencesAction({notification: newNotification}));
-    await updateUserPreferences({
-      notification: newNotification,
-    });
-  };
+  const {
+    notification,
+    language,
+    theme,
+    toggleTheme,
+    toggleLanguage,
+    toggleNotification,
+  } = useProfileSettings();
 
   const handleSignOut = async () => {
     try {
@@ -100,34 +49,12 @@ function ProfileScreen() {
     }
   };
 
-  const handleSendMail = async () => {
-    const email = Config.SUPPORT_MAIL;
-    const subject = 'Support Request - Movies Corn';
-    const body = encodeURIComponent(
-      ContactUsMessage(auth().currentUser?.email),
-    );
-
-    const mailtoURL = `mailto:${email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${body}`;
-
-    Linking.canOpenURL(mailtoURL)
-      .then(supported => {
-        if (!supported) {
-          Alert.alert('Error', 'Unable to open email client.');
-        } else {
-          Linking.openURL(mailtoURL);
-        }
-      })
-      .catch(err => console.error('Error opening email client:', err));
-  };
-
   useEffect(() => {
     (async () => {
-      const userData = await getUserProfile();
-      setDarkTheme(theme === 'dark' ? true : false);
-      setLanguageArabic(i18n.language === 'ar' ? true : false);
-      // setUser(userData);
+      // const user = await getUserProfile();
+      // if (user) {
+      //   dispatch(updateUserPreferencesAction({language: user?.language}));
+      // }
     })();
   }, []);
 
@@ -138,82 +65,78 @@ function ProfileScreen() {
         contentInsetAdjustmentBehavior="never"
         contentContainerStyle={styles.scrollContainer}>
         <ProfileHeader />
-        <View>
-          <View style={styles.sectionHeader}>
-            <Icon name="settings" size={25} color={colors.paleShade} />
-            <AppText variant="heading" style={{marginStart: hs(8)}}>
-              {t('preferences')}
-            </AppText>
-          </View>
-          <SettingItem
-            icon="bell"
-            label={t('notifications')}
-            onPress={toggleNotification}
-            type="toggle"
-            isToggled={notification}
-            switchProps={{
-              backgroundActive: colors.secondary500,
-            }}
-          />
-          <SettingItem
-            icon="moon"
-            label={t('dark_mode')}
-            onPress={toggleAppTheme}
-            type="toggle"
-            isToggled={darkTheme}
-            switchProps={{
-              backgroundActive: colors.primary700,
-              backgroundInactive: colors.secondary500,
-              circleActiveColor: colors.primary500,
-              circleInActiveColor: colors.primary500,
-              circleBorderActiveColor: colors.secondary500,
-              circleBorderInactiveColor: colors.primary700,
-              renderInsideCircle: () => {
-                return (
-                  <Icon
-                    name={darkTheme ? 'moon' : 'sun'}
-                    color={colors.paleShade}
-                    size={15}
-                  />
-                );
-              },
-            }}
-          />
-          <SettingItem
-            icon="globe"
-            label={t('language')}
-            onPress={toggleAppLanguage}
-            type="select"
-            value={i18n.language === 'ar' ? t('arabic') : t('english')}
-            isToggled={languageArabic}
-          />
+
+        <View style={styles.sectionHeader}>
+          <Icon name="settings" size={25} color={colors.paleShade} />
+          <AppText variant="heading" style={{marginStart: hs(8)}}>
+            {t('preferences')}
+          </AppText>
         </View>
+        <SettingItem
+          icon="bell"
+          label={t('notifications')}
+          onPress={toggleNotification}
+          type="toggle"
+          isToggled={notification}
+          switchProps={{
+            backgroundActive: colors.secondary500,
+          }}
+        />
+        <SettingItem
+          icon="moon"
+          label={t('dark_mode')}
+          onPress={toggleTheme}
+          type="toggle"
+          isToggled={theme === 'dark'}
+          switchProps={{
+            backgroundActive: colors.primary700,
+            backgroundInactive: colors.secondary500,
+            circleActiveColor: colors.primary500,
+            circleInActiveColor: colors.primary500,
+            circleBorderActiveColor: colors.secondary500,
+            circleBorderInactiveColor: colors.primary700,
+            renderInsideCircle: () => {
+              return (
+                <Icon
+                  name={theme === 'dark' ? 'moon' : 'sun'}
+                  color={colors.paleShade}
+                  size={15}
+                />
+              );
+            },
+          }}
+        />
+        <SettingItem
+          icon="globe"
+          label={t('language')}
+          onPress={toggleLanguage}
+          type="select"
+          value={language === 'ar' ? t('arabic') : t('english')}
+          isToggled={language === 'ar'}
+        />
 
         <ListsFlatlist title={t('lists')} seeAll />
 
-        <View>
-          <View style={styles.sectionHeader}>
-            <Icon name="help-circle" size={25} color={colors.paleShade} />
-            <AppText variant="heading" style={{marginStart: hs(8)}}>
-              {t('support')}
-            </AppText>
-          </View>
-
-          <SettingItem
-            icon="headphones"
-            label={t('contact_us')}
-            onPress={handleSendMail}
-            type="select"
-          />
-
-          <SettingItem
-            icon="info"
-            label={`${t('about')} ${t('movie')} ${t('corn')}`}
-            onPress={() => SheetManager.show('about-app')}
-            type="select"
-            isToggled={languageArabic}
-          />
+        <View style={styles.sectionHeader}>
+          <Icon name="help-circle" size={25} color={colors.paleShade} />
+          <AppText variant="heading" style={{marginStart: hs(8)}}>
+            {t('support')}
+          </AppText>
         </View>
+
+        <SettingItem
+          icon="headphones"
+          label={t('contact_us')}
+          onPress={sendMail}
+          type="select"
+        />
+
+        <SettingItem
+          icon="info"
+          label={`${t('about')} ${t('movie')} ${t('corn')}`}
+          onPress={() => SheetManager.show('about-app')}
+          type="select"
+        />
 
         <View style={styles.footer}>
           <View style={{paddingHorizontal: hs(12)}}>
@@ -253,8 +176,8 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? vs(-10) : 0,
-    paddingTop: Platform.OS === 'ios' ? 0 : vs(30),
+    marginTop: isIOS ? vs(-10) : 0,
+    paddingTop: isIOS ? 0 : vs(30),
   },
   scrollContainer: {
     flexGrow: 1,
@@ -267,14 +190,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: hs(15),
   },
   flatButton: {
-    minHeight: 30,
+    minHeight: vs(30),
     alignSelf: 'flex-start',
   },
   footer: {
-    paddingBottom: vs(Platform.OS === 'ios' ? 80 : 120),
+    paddingBottom: vs(isIOS ? 80 : 120),
+    justifyContent: 'flex-start',
   },
   copyrights: {
-    maxWidth: width / 2,
+    width: width / 2,
+    flexWrap: 'wrap',
     textAlign: 'center',
     alignSelf: 'center',
     marginTop: vs(10),

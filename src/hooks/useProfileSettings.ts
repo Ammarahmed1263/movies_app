@@ -1,10 +1,13 @@
-import {useAppDispatch, useAppSelector} from '@hooks/useRedux';
-import {updateUserPreferences as updateUserPreferencesAction} from '@redux/userSlice';
-import {updateUserPreferences} from '@services/userService';
 import {useTheme} from '@contexts/ThemeContext';
+import {useAppDispatch, useAppSelector} from '@hooks/useRedux';
+import messaging from '@react-native-firebase/messaging';
+import {
+  clearFCMToken,
+  updateUserPreferences as updateUserPreferencesAction,
+} from '@redux/userSlice';
+import {updateUserPreferences} from '@services/userService';
 import i18n from 'i18n';
 import RNRestart from 'react-native-restart';
-import messaging from '@react-native-firebase/messaging';
 
 export const useProfileSettings = () => {
   const {theme, toggleTheme: toggleAppTheme} = useTheme();
@@ -21,7 +24,7 @@ export const useProfileSettings = () => {
   };
 
   const toggleLanguage = async () => {
-    const newLanguage: 'en' | 'ar' = language === 'en' ? 'ar' : 'en';
+    const newLanguage = language === 'en' ? 'ar' : 'en';
     dispatch(updateUserPreferencesAction({language: newLanguage}));
     await i18n.changeLanguage(newLanguage);
     await updateUserPreferences({language: newLanguage});
@@ -30,14 +33,19 @@ export const useProfileSettings = () => {
 
   const toggleNotification = async () => {
     let newNotification = !notification;
-    if (!newNotification) {
-      await messaging().deleteToken();
-      console.log('token deleted');
+
+    try {
+      if (!newNotification) {
+        await messaging().deleteToken();
+        dispatch(clearFCMToken());
+      }
+      dispatch(updateUserPreferencesAction({notification: newNotification}));
+      await updateUserPreferences({
+        notification: newNotification,
+      });
+    } catch (error: any) {
+      console.log('error toggling notification', error.message);
     }
-    dispatch(updateUserPreferencesAction({notification: newNotification}));
-    await updateUserPreferences({
-      notification: newNotification,
-    });
   };
 
   return {

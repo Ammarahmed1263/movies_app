@@ -1,3 +1,4 @@
+import {isIOS} from '@constants';
 import notifee, {
   AndroidImportance,
   AndroidStyle,
@@ -150,6 +151,24 @@ export const setupMessageHandlers = async () => {
     }
   });
 
+  // Handle background notifications
+  messaging().setBackgroundMessageHandler(displayNotification);
+
+  // Handle notification actions
+  notifee.onBackgroundEvent(async ({type, detail}) => {
+    if (type === EventType.ACTION_PRESS && detail.pressAction) {
+      await handleNotificationAction(
+        detail.notification?.data?.type as NotificationValues,
+        detail.pressAction.id,
+        detail.notification?.data,
+      );
+    }
+
+    if (detail.notification?.data?.redirection) {
+      await deepLinking(detail.notification.data.redirection as string);
+    }
+  });
+
   // Handle foreground notifications
   const unsubscribe = messaging().onMessage(displayNotification);
 
@@ -170,7 +189,7 @@ export const setupMessageHandlers = async () => {
 };
 
 export const requestNotificationPermission = async () => {
-  if (Platform.OS === 'android') {
+  if (!isIOS) {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     );
@@ -193,13 +212,10 @@ export const requestNotificationPermission = async () => {
 export const getFCMToken = async () => {
   try {
     const token = await messaging().getToken();
-    console.log('token is here', token);
-
-    // Send this token to Firebase to register your device for notifications
     return token;
   } catch (error: any) {
-    Platform.OS === 'android' &&
-      Alert.alert('Error fetching FCM token:', error);
+    console.log('Error fetching FCM token:', error.message);
+    Alert.alert('Error fetching FCM token:', error.message);
   }
 };
 

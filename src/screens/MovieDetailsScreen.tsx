@@ -7,6 +7,7 @@ import useMovieDetails from '@hooks/useMovieDetails';
 import CastList from '@organisms/CastList';
 import CategoriesList from '@organisms/CategoriesList';
 import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
+import MoviesSection from '@organisms/MoviesSection';
 import YoutubeModal from '@organisms/YoutubeModal';
 import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
 import {hs, ms, vs} from '@styles/metrics';
@@ -19,13 +20,11 @@ import {FC, useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, Share, StatusBar, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-const Feather = Icon as any;
 import Icon2 from 'react-native-vector-icons/Ionicons';
-const Ionicons = Icon2 as any;
 import {MovieDetailsScreenProps} from 'types/mainStackTypes';
 import {movieDetailsFilter} from '../constants';
-import MoviesList from '@organisms/MoviesList';
-import MoviesSection from '@organisms/MoviesSection';
+const Feather = Icon as any;
+const Ionicons = Icon2 as any;
 
 const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
   route,

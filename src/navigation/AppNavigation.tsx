@@ -36,7 +36,12 @@ export default function AppNavigation() {
     const language =
       userExists?.userPreferences?.language || getDeviceLanguage();
 
-    dispatch(updateUserPreferences({language}));
+    dispatch(
+      updateUserPreferences({
+        language,
+        notification: userExists?.userPreferences?.notification,
+      }),
+    );
 
     i18n.changeLanguage(language).then(() => {
       setInitializing(false);

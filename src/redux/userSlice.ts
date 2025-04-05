@@ -30,6 +30,12 @@ const userSlice = createSlice({
     clearUserToken(state) {
       state.userToken = null;
     },
+    setFCMToken(state, action: PayloadAction<string>) {
+      state.FCMToken = action.payload;
+    },
+    clearFCMToken(state) {
+      state.FCMToken = null;
+    },
     updateUserPreferences(
       state,
       action: PayloadAction<Partial<preferencesType>>,
@@ -42,7 +48,12 @@ const userSlice = createSlice({
   },
 });
 
-export const {setUserToken, clearUserToken, updateUserPreferences} =
-  userSlice.actions;
+export const {
+  setUserToken,
+  clearUserToken,
+  setFCMToken,
+  clearFCMToken,
+  updateUserPreferences,
+} = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
 export default userSlice.reducer;

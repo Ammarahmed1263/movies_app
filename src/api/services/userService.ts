@@ -63,6 +63,23 @@ export const updateUserPreferences = async (preferences: any) => {
   }
 };
 
+export const setUserFCMToken = async (token: string) => {
+  const userId = getCurrentUserId();
+
+  if (!userId) {
+    return null;
+  }
+
+  try {
+    await firestore().collection('users').doc(userId).update({
+      FCMToken: token,
+    });
+  } catch (e: any) {
+    console.log('firestore: error setting FCM token', e.message);
+    throw e;
+  }
+};
+
 export const getFavoriteMovies = (
   callback: (movies: MovieSummary[]) => void,
 ) => {

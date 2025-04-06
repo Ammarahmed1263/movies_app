@@ -214,8 +214,9 @@ export const getFCMToken = async () => {
     const token = await messaging().getToken();
     return token;
   } catch (error: any) {
-    console.log('Error fetching FCM token:', error.message);
-    Alert.alert('Error fetching FCM token:', error.message);
+    !isIOS &&
+      (console.log('Error fetching FCM token:', error.message),
+      Alert.alert('Error fetching FCM token:', error.message));
   }
 };
 

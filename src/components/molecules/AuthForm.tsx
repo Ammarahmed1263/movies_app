@@ -1,21 +1,18 @@
 import Button from '@atoms/AppButton';
-import AppImage from '@atoms/AppImage';
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
-import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {onGoogleButtonPress} from '@services/authService';
 import {hs, ms, vs} from '@styles/metrics';
 import {loginSchema, signupSchema} from '@validation';
 import {Formik, FormikHelpers} from 'formik';
 import {FC, useRef} from 'react';
+import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthFormProps, AuthFormValues} from 'types/authFormTypes';
 import LabelInput from './LabelInput';
-import {onGoogleButtonPress} from '@services/authService';
-import {useTranslation} from 'react-i18next';
 const Ionicons = Icon as any;
 const MaterialIcons = Icon2 as any;
 

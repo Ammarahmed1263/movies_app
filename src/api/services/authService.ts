@@ -52,7 +52,6 @@ export const onGoogleButtonPress = async (
   ) => Promise<void | FormikErrors<AuthFormValues>>,
   setSubmitting: (isSubmitting: boolean) => void,
 ) => {
-  setSubmitting(true);
   try {
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     const signInResult = await GoogleSignin.signIn();
@@ -68,6 +67,7 @@ export const onGoogleButtonPress = async (
     setValues({email: userEmail, password: ''});
 
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    setSubmitting(true);
     const userCredential = await auth().signInWithCredential(googleCredential);
 
     const userDocRef = firestore()

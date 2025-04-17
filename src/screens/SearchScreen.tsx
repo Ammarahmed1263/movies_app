@@ -1,28 +1,28 @@
 import AppLoading from '@atoms/AppLoading';
-import AppText from '@atoms/AppText';
+import {isIOS} from '@constants';
 import useDebouncedSearch from '@hooks/useDebouncedSearch';
 import EmptySearch from '@molecules/EmptySearch';
 import SearchBar from '@molecules/SearchBar';
-import {hs, vs} from '@styles/metrics';
+import SearchExplore from '@organisms/SearchExplore';
+import {hs, vs, width} from '@styles/metrics';
 import {useState} from 'react';
-import {
-  Platform,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MovieSummary} from 'types/movieTypes';
 import MoviesList from '../components/organisms/MoviesList';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import SearchExplore from '@organisms/SearchExplore';
-import {isIOS} from '@constants';
+import AppText from '@atoms/AppText';
+import LottieView from 'lottie-react-native';
+import useNetworkStatus from '@hooks/useNetworkStatus';
+import {use} from 'i18next';
+import {useTranslation} from 'react-i18next';
 
 function SearchScreen() {
   const [keyword, setKeyword] = useState('');
   const insets = useSafeAreaInsets();
-  const {results, status, loadMore, hasMore, page} =
-    useDebouncedSearch(keyword);
+  const {results, status, loadMore} = useDebouncedSearch(keyword);
+  const {t} = useTranslation();
+  // const isConnected = useNetworkStatus();
+  const isConnected = false;
 
   const showLoading = (size: number, speed: number) => {
     return (
@@ -35,8 +35,25 @@ function SearchScreen() {
   };
 
   const renderContent = () => {
-    if (!keyword) {
+    if (!keyword && isConnected) {
       return <SearchExplore listContainerStyle={styles.explore} />;
+    }
+
+    if (!isConnected) {
+      return (
+        <View style={{alignItems: 'center', paddingHorizontal: hs(20)}}>
+          <LottieView
+            source={require('../assets/lottie/no_wifi.json')}
+            style={{width: width - hs(20), height: width - hs(20)}}
+            autoPlay
+            loop
+          />
+          <AppText style={styles.noInternet} variant="heading">
+            {t('no_network')}
+          </AppText>
+          <AppText style={styles.noInternet}>{t('no_network_msg')}</AppText>
+        </View>
+      );
     }
 
     if (status === 'searching') {
@@ -70,7 +87,13 @@ function SearchScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar keyword={keyword} setKeyword={setKeyword} />
+      <SearchBar
+        keyword={keyword}
+        setKeyword={setKeyword}
+        readOnly={!isConnected}
+        mic={isConnected ?? undefined}
+        {...(!isConnected ? {placeholder: t('no_network_input')} : {})}
+      />
       {renderContent()}
     </SafeAreaView>
   );
@@ -98,5 +121,8 @@ const styles = StyleSheet.create({
   explore: {
     paddingBottom:
       (StatusBar.currentHeight ?? vs(55)) + (isIOS ? vs(10) : vs(25)),
+  },
+  noInternet: {
+    textAlign: 'center',
   },
 });

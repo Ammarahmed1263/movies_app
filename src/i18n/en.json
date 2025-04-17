@@ -106,6 +106,9 @@
   "_COMMENT10": "search",
   "actors": "Actors",
   "explore": "Explore",
+  "no_network_input": "Search is unavailable while you're offline",
+  "no_network": "No Internet Connection",
+  "no_network_msg": "Please check your connection to use the search feature without interruption.",
 
   "_COMMENT11": "about",
   "description1": "Welcome to Movies App! Your ultimate destination for the latest movie news, trailers, reviews, and recommendations.",

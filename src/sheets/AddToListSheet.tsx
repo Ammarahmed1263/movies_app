@@ -1,8 +1,10 @@
 import AppButton from '@atoms/AppButton';
 import AppLoading from '@atoms/AppLoading';
+import AppText from '@atoms/AppText';
 import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
 import useDebouncedSearch from '@hooks/useDebouncedSearch';
+import useNetworkStatus from '@hooks/useNetworkStatus';
 import EmptySearch from '@molecules/EmptySearch';
 import MovieListItem from '@molecules/MovieListItem';
 import SearchBar from '@molecules/SearchBar';
@@ -13,7 +15,8 @@ import {
   getListById,
   removeMovieFromlist,
 } from '@services/listsService';
-import {height, hs, vs} from '@styles/metrics';
+import {height, hs, vs, width} from '@styles/metrics';
+import LottieView from 'lottie-react-native';
 import {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
@@ -31,6 +34,8 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
   const [keyword, setKeyword] = useState('');
   const [movies, setMovies] = useState<MovieSummary[]>([]);
   const {results, status, loadMore} = useDebouncedSearch(keyword);
+  const isConnected = false;
+  // const isConnected = useNetworkStatus();
 
   const toggleItem = (movie: MovieSummary, exists: boolean) => {
     if (exists) {
@@ -38,7 +43,6 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
     } else {
       addMovieToList(movie, id);
     }
-    // SheetManager.hide(props.sheetId);
   };
 
   const renderItem = ({item}: {item: MovieSummary}) => {
@@ -85,8 +89,25 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
   };
 
   const renderContent = () => {
-    if (!keyword) {
+    if (!keyword && isConnected) {
       return <SearchExplore renderMovie={renderItem} />;
+    }
+
+    if (!isConnected) {
+      return (
+        <View style={{alignItems: 'center', paddingHorizontal: hs(20)}}>
+          <LottieView
+            source={require('../assets/lottie/no_wifi.json')}
+            style={{width: width - hs(20), height: width - hs(20)}}
+            autoPlay
+            loop
+          />
+          <AppText style={styles.noInternet} variant="heading">
+            {t('no_network')}
+          </AppText>
+          <AppText style={styles.noInternet}>{t('no_network_msg')}</AppText>
+        </View>
+      );
     }
 
     if (status === 'searching') {
@@ -130,7 +151,9 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
             keyword={keyword}
             setKeyword={setKeyword}
             viewStyle={{width: '75%'}}
+            readOnly={!isConnected}
             mic={false}
+            {...(!isConnected ? {placeholder: t('no_network_input')} : {})}
           />
           <AppButton
             variant="body"
@@ -175,5 +198,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: vs(10),
     paddingBottom: isIOS ? vs(20) : vs(70),
+  },
+  noInternet: {
+    textAlign: 'center',
   },
 });

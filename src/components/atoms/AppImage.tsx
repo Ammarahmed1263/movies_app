@@ -5,6 +5,7 @@ import {
   ImageProps,
   ImageSourcePropType,
   ImageStyle,
+  ImageURISource,
   StyleProp,
   StyleSheet,
   View,
@@ -19,7 +20,7 @@ import AppLoading from './AppLoading';
 
 interface AppImageProps
   extends Omit<ImageProps & FastImageProps, 'source' | 'style'> {
-  source?: ImageSourcePropType;
+  source?: ImageSourcePropType | string;
   placeholder?: 'movie' | 'person';
   viewStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
@@ -38,6 +39,7 @@ const AppImage: FC<AppImageProps> = ({
   const imageHolder =
     placeholder === 'movie' ? imagePlaceHolder.MOVIE : imagePlaceHolder.PERSON;
   const [isLoading, setIsLoading] = useState(true);
+  console.log('type of: ', typeof source, 'source: ', source);
 
   const handleLoadEnd = () => {
     setIsLoading(false);
@@ -50,6 +52,18 @@ const AppImage: FC<AppImageProps> = ({
     isLoading ? {opacity: 0} : undefined,
   ];
 
+  const isRemoteString = typeof source === 'string';
+
+  const fastImageSource = isRemoteString
+    ? {
+        uri: source,
+        priority: FastImage.priority.high,
+        cache: FastImage.cacheControl.immutable,
+      }
+    : undefined;
+
+  const fallbackSource = !isRemoteString && source ? source : imageHolder;
+
   return (
     <View style={[styles.container, viewStyle]}>
       {isLoading && (
@@ -60,13 +74,9 @@ const AppImage: FC<AppImageProps> = ({
         />
       )}
 
-      {typeof source === 'string' ? (
+      {isRemoteString ? (
         <FastImage
-          source={{
-            uri: source,
-            priority: FastImage.priority.high,
-            cache: FastImage.cacheControl.immutable,
-          }}
+          source={fastImageSource}
           style={imageStyle as StyleProp<FastImageStyle>}
           onLoadEnd={handleLoadEnd}
           resizeMode={FastImage.resizeMode.cover}
@@ -74,7 +84,7 @@ const AppImage: FC<AppImageProps> = ({
         />
       ) : (
         <Image
-          source={source || imageHolder}
+          source={fallbackSource}
           style={imageStyle}
           onLoadEnd={handleLoadEnd}
           {...props}

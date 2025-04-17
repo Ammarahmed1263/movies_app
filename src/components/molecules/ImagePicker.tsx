@@ -29,7 +29,6 @@ const ImagePicker: FC<ImagePickerProps> = ({
   ...props
 }) => {
   const {colors} = useTheme();
-
   const handlePress = async () => {
     await SheetManager.show('image-picker', {
       payload: {onImageSelected},
@@ -61,6 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: width / 6,
     width: width / 3,
     height: width / 3,
+    backgroundColor: 'red',
     alignSelf: 'center',
   },
   icon: {

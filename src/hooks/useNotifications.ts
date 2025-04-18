@@ -17,7 +17,6 @@ const useNotifications = () => {
     userToken,
   } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-  console.log('useNotifications', notification, FCMToken, userToken);
 
   useEffect(() => {
     let unsubscribe: () => void;

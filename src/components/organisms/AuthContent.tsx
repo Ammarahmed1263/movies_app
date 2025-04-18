@@ -38,7 +38,7 @@ const AuthContent: FC<AuthContentProps> = ({isLogin, navigation, onSubmit}) => {
         <View style={styles.innerContainer}>
           <View style={styles.headingContainer}>
             <AppImage
-              source={require('../../assets/images/logo.png')}
+              source={require('../../assets/images/round_logo.png')}
               viewStyle={styles.logo}
               resizeMode="contain"
             />
@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: hs(70),
-    aspectRatio: 1 / 1.4,
+    width: hs(120),
+    aspectRatio: 1,
     marginBottom: vs(10),
   },
   subHeading: {

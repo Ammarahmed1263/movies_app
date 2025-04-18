@@ -21,15 +21,12 @@ import i18n from 'i18n';
 
 export default function AppNavigation() {
   const [initializing, setInitializing] = useState(true);
-  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const {userToken, preferences} = useAppSelector(state => state.user);
+  const {userToken} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   const {colors, fonts, theme} = useTheme();
   useNotifications();
 
   const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
-    // setUser(user);
-
     dispatch(user ? setUserToken(user.uid) : clearUserToken());
 
     const userExists = await getUserProfile();

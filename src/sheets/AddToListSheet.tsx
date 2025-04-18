@@ -34,8 +34,7 @@ const AddToListSheet = (props: SheetProps<'add-to-list'>) => {
   const [keyword, setKeyword] = useState('');
   const [movies, setMovies] = useState<MovieSummary[]>([]);
   const {results, status, loadMore} = useDebouncedSearch(keyword);
-  const isConnected = false;
-  // const isConnected = useNetworkStatus();
+  const isConnected = useNetworkStatus();
 
   const toggleItem = (movie: MovieSummary, exists: boolean) => {
     if (exists) {

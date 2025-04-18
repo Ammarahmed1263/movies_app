@@ -39,7 +39,6 @@ const AppImage: FC<AppImageProps> = ({
   const imageHolder =
     placeholder === 'movie' ? imagePlaceHolder.MOVIE : imagePlaceHolder.PERSON;
   const [isLoading, setIsLoading] = useState(true);
-  console.log('type of: ', typeof source, 'source: ', source);
 
   const handleLoadEnd = () => {
     setIsLoading(false);

@@ -21,8 +21,7 @@ function SearchScreen() {
   const insets = useSafeAreaInsets();
   const {results, status, loadMore} = useDebouncedSearch(keyword);
   const {t} = useTranslation();
-  // const isConnected = useNetworkStatus();
-  const isConnected = false;
+  const isConnected = useNetworkStatus();
 
   const showLoading = (size: number, speed: number) => {
     return (

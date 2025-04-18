@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     borderRadius: width / 6,
     width: width / 3,
     height: width / 3,
-    backgroundColor: 'red',
     alignSelf: 'center',
   },
   icon: {

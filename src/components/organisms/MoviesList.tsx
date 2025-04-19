@@ -14,7 +14,8 @@ import {FC, useRef, useState} from 'react';
 import MovieCard from '@molecules/MovieCard';
 import {Movie, MovieSummary} from 'types/movieTypes';
 import {useTheme} from '@contexts/ThemeContext';
-import Icon from 'react-native-vector-icons/Feather';
+import Feather from 'react-native-vector-icons/Feather';
+const Icon = Feather as any;
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,

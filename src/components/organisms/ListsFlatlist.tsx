@@ -9,7 +9,8 @@ import {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+const Icon = MaterialIcons as any;
 import {ListstackNavigationProp} from 'types/mainStackTypes';
 import {ListType} from 'types/userTypes';
 

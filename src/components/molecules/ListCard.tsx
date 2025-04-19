@@ -1,3 +1,4 @@
+import AppImage from '@atoms/AppImage';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import useOrientation from '@hooks/useOrientation';
@@ -5,16 +6,17 @@ import {hs, ms, vs} from '@styles/metrics';
 import {FC} from 'react';
 import {
   Animated,
-  Image,
   StyleSheet,
   TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Feather';
+import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import {ListType} from 'types/userTypes';
 import MovieGrid from './MovieGrid';
+const Feather = Icon as any;
+const MaterialIcons = Icon1 as any;
 
 interface UserListProps {
   data: ListType;
@@ -59,11 +61,11 @@ const ListCard: FC<UserListProps> = ({
           <View style={styles.addContent}>
             <Feather name="folder-plus" size={50} color={colors.primary700} />
           </View>
-        ) : data.poster_path && data.poster_path.length > 0 ? (
-          <Image
-            source={{uri: data.poster_path}}
-            style={styles.image}
-            resizeMode="cover"
+        ) : data.poster_path ? (
+          <AppImage
+            source={data.poster_path as string}
+            placeholder="movie"
+            viewStyle={styles.image}
           />
         ) : data.movies && data.movies.length > 0 ? (
           <MovieGrid movies={data.movies} />

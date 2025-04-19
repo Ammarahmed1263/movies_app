@@ -9,6 +9,7 @@ import {FC, useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Alert, Linking, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import YoutubeIframe, {getYoutubeMeta} from 'react-native-youtube-iframe';
 import {Trailer} from 'types/movieTypes';
 
@@ -66,7 +67,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
           flat
           customView
           onPress={handleClose}>
-          <Icon name="close-circle" size={33} color={colors.primary700} />
+          <Ionicons name="close-circle" size={33} color={colors.primary700} />
         </AppButton>
       </View>
       {videos.length > 0 ? (
@@ -121,7 +122,7 @@ const YoutubeModal: FC<YotubeModalProps> = ({videos, visible, handleClose}) => {
                 justifyContent: 'center',
               }}
               onPress={handleYoutubeRedirect}>
-              <Icon name="play" size={24} color={colors.paleShade} />
+              <Ionicons name="play" size={24} color={colors.paleShade} />
               <AppText
                 variant="bold"
                 style={{

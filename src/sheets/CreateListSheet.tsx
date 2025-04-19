@@ -93,6 +93,7 @@ const CreateListSheet = (props: {
       indicatorStyle={{backgroundColor: colors.primary700}}
       snapPoints={[70, 100]}
       initialSnapIndex={0}
+      closeOnTouchBackdrop={!isUploading}
       gestureEnabled>
       <View style={styles.header}>
         <AppText variant="heading">{t('create_new_list')}</AppText>

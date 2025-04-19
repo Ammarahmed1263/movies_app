@@ -7,6 +7,7 @@ import {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 import {I18nManager} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import {ListstackParamList} from 'types/listsStackTypes';
 import {ListstackProps} from 'types/mainStackTypes';
 
@@ -24,7 +25,7 @@ const Liststack: FC<ListstackProps> = ({navigation}) => {
         headerLeft: ({canGoBack}) =>
           canGoBack ? (
             <AppButton onPress={() => navigation.goBack()} flat>
-              <Icon
+              <Ionicons
                 name={I18nManager.isRTL ? 'chevron-forward' : 'chevron-back'}
                 size={ms(23)}
                 color={colors.paleShade}

@@ -13,7 +13,8 @@ import {useTheme} from '@contexts/ThemeContext';
 import {FC, forwardRef, ReactNode, useState} from 'react';
 import AppText from '@atoms/AppText';
 import {hs, ms, vs} from '@styles/metrics';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import i18n from 'i18n';
 
 interface LabelInputProps extends TextInputProps {

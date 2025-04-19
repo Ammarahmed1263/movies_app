@@ -18,6 +18,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import Voice, {
   type SpeechEndEvent,
   type SpeechErrorEvent,
@@ -172,7 +173,7 @@ const SearchBar: FC<SearchBarProps> = ({
             recording && {backgroundColor: colors.success},
           ]}
           onPress={handleMicPress}>
-          <Icon
+          <Ionicons
             name={recording ? 'mic-off' : 'mic-outline'}
             size={30}
             color={recording ? colors.paleShade : colors.secondary500}

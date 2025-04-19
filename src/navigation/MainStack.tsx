@@ -1,25 +1,24 @@
+import AppButton from '@atoms/AppButton';
+import {useNavigation} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import MainTabs from './MainTabs';
 import {
+  CastMemberScreen,
   MovieDetailsScreen,
   MovieListingScreen,
-  CastMemberScreen,
 } from '@screens';
-import {ColorsType, FontsType} from 'types/themeTypes';
-import {FC, useEffect} from 'react';
-import {MainStackParamList} from 'types/mainStackTypes';
-import {useTranslation} from 'react-i18next';
-import Liststack from './ListsStack';
-import AppButton from '@atoms/AppButton';
 import {ms} from '@styles/metrics';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import {FC} from 'react';
+import {useTranslation} from 'react-i18next';
 import {I18nManager} from 'react-native';
-import {getUserProfile} from '@services/userService';
-import i18n from 'i18n';
+import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
+import {MainStackParamList} from 'types/mainStackTypes';
+import {ColorsType, FontsType} from 'types/themeTypes';
+import Liststack from './ListsStack';
+import MainTabs from './MainTabs';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -52,7 +51,7 @@ const MainStack: FC<MainStackProps> = ({colors, fonts}) => {
         headerLeft: ({canGoBack}) =>
           canGoBack ? (
             <AppButton onPress={() => navigation.goBack()} flat>
-              <Icon
+              <Ionicons
                 name={I18nManager.isRTL ? 'chevron-forward' : 'chevron-back'}
                 size={ms(23)}
                 color={colors.paleShade}

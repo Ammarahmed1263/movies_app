@@ -17,7 +17,7 @@ import {MovieDetailsNavigationProp} from 'types/mainStackTypes';
 import {Movie} from 'types/movieTypes';
 import {FontVariants} from 'types/themeTypes';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {imagePlaceHolder} from 'constants';
+const AntDesign = Icon as any;
 
 interface MovieCardProps extends Omit<ImageProps, 'style'> {
   movie: Movie;
@@ -60,16 +60,13 @@ const MovieCard: FC<MovieCardProps> = ({
                 ? convertToArabicNumerals(formatVoteCount(movie.vote_average))
                 : formatVoteCount(movie.vote_average)}
             </AppText>
-            <Icon
-              name="star"
-              size={12}
-              color={colors.primary500}
-              // style={{paddingBottom: vs(2)}}
-            />
+            <AntDesign name="star" size={12} color={colors.primary500} />
           </View>
         )}
+        {/* @ts-ignore */}
         <Image
-          source={getImageUrl(movie.poster_path) ?? imagePlaceHolder.MOVIE}
+          source={getImageUrl(movie.poster_path)}
+          placeholder="movie"
           viewStyle={{overflow: 'hidden', borderRadius: ms(13)}}
           {...props}
         />

@@ -24,7 +24,8 @@ import ActionSheet, {
   SheetManager,
   SheetProps,
 } from 'react-native-actions-sheet';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Material from 'react-native-vector-icons/MaterialCommunityIcons';
+const Icon = Material as any;
 import {MovieSummary} from 'types/movieTypes';
 
 const AddToListSheet = (props: SheetProps<'add-to-list'>) => {

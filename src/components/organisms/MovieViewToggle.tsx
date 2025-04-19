@@ -11,6 +11,7 @@ import {FC, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatListProps, StyleSheet, View, ViewStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import {Movie, MovieArray, MovieSummary} from 'types/movieTypes';
 import MoviesList from './MoviesList';
 
@@ -47,7 +48,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
         {!renderItem && (
           <View style={styles.icons}>
             <AppButton onPress={() => setColumns(1)} customView flat>
-              <Icon
+              <Ionicons
                 name={'pause'}
                 size={ms(30)}
                 color={columns === 1 ? colors.link : colors.paleShade}
@@ -55,7 +56,7 @@ const MovieViewToggle: FC<MovieViewToggleProps> = ({
               />
             </AppButton>
             <AppButton onPress={() => setColumns(2)} customView flat>
-              <Icon
+              <Ionicons
                 name={'grid'}
                 size={ms(25)}
                 color={columns === 2 ? colors.link : colors.paleShade}

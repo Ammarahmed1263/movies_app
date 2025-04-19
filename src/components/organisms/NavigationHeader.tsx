@@ -1,6 +1,7 @@
 import {I18nManager, StyleSheet, View, ViewStyle} from 'react-native';
 import AppButton from '@atoms/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import {useTheme} from '@contexts/ThemeContext';
 import {hs, ms} from '@styles/metrics';
 import {FC} from 'react';
@@ -36,7 +37,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
           transform: [{rotate: I18nManager.isRTL ? '180deg' : '0deg'}],
         }}
         customView>
-        <Icon name="chevron-back" size={ms(30)} color={colors.paleShade} />
+        <Ionicons name="chevron-back" size={ms(30)} color={colors.paleShade} />
       </AppButton>
       {onToggleFavorite && (
         <AppButton
@@ -51,7 +52,7 @@ const NavigationHeader: FC<NavigationHeaderProps> = ({
           }}
           onPress={onToggleFavorite}
           customView>
-          <Icon
+          <Ionicons
             name={isFavorite ? 'heart' : 'heart-outline'}
             size={ms(28)}
             color={colors.paleShade}

@@ -15,9 +15,8 @@ import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
 import RNRestart from 'react-native-restart';
 import Feather from 'react-native-vector-icons/Feather';
-import sendMail from 'utils/sendMail';
-
 const Icon = Feather as any;
+import sendMail from 'utils/sendMail';
 
 function ProfileScreen() {
   const {colors} = useTheme();

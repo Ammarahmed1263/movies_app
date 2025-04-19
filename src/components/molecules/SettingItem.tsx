@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {Switch, SwitchProps} from 'react-native-switch';
 import Icon from 'react-native-vector-icons/Feather';
+const Feather = Icon as any;
 
 interface SettingsItemProps {
   icon: string;
@@ -41,7 +42,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
       activeOpacity={0.7}>
       <View style={styles.settingsItemLeft}>
         <View style={styles.iconContainer}>
-          <Icon name={icon} size={20} color={colors.primary700} />
+          <Feather name={icon} size={20} color={colors.primary700} />
         </View>
         <AppText>{label}</AppText>
       </View>
@@ -69,7 +70,7 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
               </AppText>
             )}
             {type === 'select' && (
-              <Icon
+              <Feather
                 name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'}
                 size={20}
                 color={colors.primary700}

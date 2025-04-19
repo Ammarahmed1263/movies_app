@@ -10,6 +10,7 @@ import ActionSheet, {
   SheetProps,
 } from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 
 const AboutSheet = (props: SheetProps<'about-app'>) => {
   const {colors} = useTheme();
@@ -41,7 +42,11 @@ const AboutSheet = (props: SheetProps<'about-app'>) => {
             }}
             customView
             flat>
-            <Icon name="close-circle" size={hs(35)} color={colors.primary700} />
+            <Ionicons
+              name="close-circle"
+              size={hs(35)}
+              color={colors.primary700}
+            />
           </AppButton>
         </View>
         <AppText variant="heading" style={styles.heading}>

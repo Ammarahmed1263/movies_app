@@ -7,7 +7,8 @@ import {hs, ms, vs, width} from '@styles/metrics';
 import {getImageUrl} from '@utils';
 import {FC, useEffect, useState} from 'react';
 import {I18nManager, StyleSheet, View} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const Icon = Ionicons as any;
 import {Movie, Trailer} from 'types/movieTypes';
 
 type MovieVideoCardProps = {

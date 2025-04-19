@@ -2,6 +2,7 @@ import {FC} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import {
   HomeScreen,
   SearchScreen,
@@ -27,7 +28,7 @@ const MainTabs: FC<MainTabsProps> = () => {
   ) {
     const icon = focused ? activeIcon : inActiveIcon;
 
-    return <Icon name={icon} size={size} color={color} />;
+    return <Ionicons name={icon} size={size} color={color} />;
   }
 
   return (

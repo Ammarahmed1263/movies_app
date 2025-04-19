@@ -18,4 +18,5 @@ export type FetchMoviesParams = {
   value: string;
   page?: number;
   time_window?: 'day' | 'week';
+  reset?: boolean;
 };

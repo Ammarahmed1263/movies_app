@@ -20,6 +20,7 @@ interface Props {
 
 const GenresSections: FC<Props> = ({refreshing}) => {
   const [genres, setGenres] = useState<Genre[]>([]);
+  const [loading, setLoading] = useState(false);
   const {colors} = useTheme();
   const {t} = useTranslation();
   const navigation = useNavigation<MainTabsNavigationProp>();
@@ -55,10 +56,13 @@ const GenresSections: FC<Props> = ({refreshing}) => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
+        setLoading(true);
         const {genres} = await getGenres();
         setGenres(genres.filter((genre: Genre) => genre.name !== 'Romance'));
       } catch (error) {
         console.error('error fetching genres');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -72,7 +76,7 @@ const GenresSections: FC<Props> = ({refreshing}) => {
       <AppText variant="heading" style={styles.title}>
         {t('genres')}
       </AppText>
-      {refreshing ? (
+      {loading || refreshing ? (
         <AppLoading source={require('../../assets/lottie/loading_fade.json')} />
       ) : (
         <View style={styles.rowsContainer}>

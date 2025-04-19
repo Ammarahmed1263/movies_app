@@ -7,58 +7,36 @@ import MovieVideoSection from '@organisms/MovieVideoSection';
 import {vs} from '@styles/metrics';
 import {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
+import {RefreshControl, ScrollView, StatusBar} from 'react-native';
 import {MovieArray} from 'types/movieTypes';
 
 function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const {t} = useTranslation();
   const {theme, colors} = useTheme();
-  const {
-    movies: now_playingMovies,
-    loading: now_playingLoading,
-    refetch: now_playingRefetch,
-  } = useMoviesList('category', 'now_playing');
-  const {
-    movies: trendingMovies,
-    loading: trendingLoading,
-    refetch: trendingRefetch,
-  } = useMoviesList('category', 'trending', 'week');
-  const {
-    movies: upcomingMovies,
-    loading: upcomingLoading,
-    refetch: upcomingRefetch,
-  } = useMoviesList('category', 'upcoming');
-  const {
-    movies: top_ratedMovies,
-    loading: top_ratedLoading,
-    refetch: top_ratedRefetch,
-  } = useMoviesList('category', 'top_rated');
-  const {
-    movies: popularMovies,
-    loading: popularLoading,
-    refetch: popularRefetch,
-  } = useMoviesList('category', 'popular');
+
+  const nowPlaying = useMoviesList('category', 'now_playing');
+  const trending = useMoviesList('category', 'trending', 'week');
+  const upcoming = useMoviesList('category', 'upcoming');
+  const topRated = useMoviesList('category', 'top_rated');
+  const popular = useMoviesList('category', 'popular');
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     Promise.all([
-      now_playingRefetch(),
-      trendingRefetch(),
-      upcomingRefetch(),
-      top_ratedRefetch(),
-      popularRefetch(),
+      nowPlaying.refetch(),
+      trending.refetch(),
+      upcoming.refetch(),
+      topRated.refetch(),
+      popular.refetch(),
     ]).finally(() => setRefreshing(false));
-  }, []);
-
-  console.log(
-    'all loadings: ',
-    trendingLoading,
-    now_playingLoading,
-    upcomingLoading,
-    top_ratedLoading,
-    popularLoading,
-  );
+  }, [
+    nowPlaying.refetch,
+    trending.refetch,
+    upcoming.refetch,
+    topRated.refetch,
+    popular.refetch,
+  ]);
 
   return (
     <>
@@ -81,35 +59,39 @@ function HomeScreen() {
         }
         contentContainerStyle={{paddingBottom: vs(90)}}>
         <MoviesCarousel
-          movies={trendingMovies as MovieArray}
-          loading={trendingLoading}
+          movies={trending.movies as MovieArray}
+          loading={trending.loading}
         />
 
         <MoviesSection
-          movies={now_playingMovies as MovieArray}
-          loading={now_playingLoading}
+          movies={nowPlaying.movies as MovieArray}
+          loading={nowPlaying.loading}
           category="now_playing"
           topic={t('now_playing')}
           seeAll
         />
+
         <GenresSections refreshing={refreshing} />
+
         <MoviesSection
-          movies={top_ratedMovies}
-          loading={top_ratedLoading}
+          movies={topRated.movies}
+          loading={topRated.loading}
           category="top_rated"
           topic={t('top_rated')}
           seeAll
         />
+
         <MovieVideoSection
-          movies={upcomingMovies}
-          loading={upcomingLoading}
+          movies={upcoming.movies}
+          loading={upcoming.loading}
           category="upcoming"
           topic={t('upcoming')}
           seeAll
         />
+
         <MoviesSection
-          movies={popularMovies}
-          loading={popularLoading}
+          movies={popular.movies}
+          loading={popular.loading}
           category="popular"
           topic={t('popular')}
           seeAll

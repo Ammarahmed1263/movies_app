@@ -1,8 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {Movie} from 'types/movieTypes';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {MovieSummary} from 'types/movieTypes';
 
 interface intialStateType {
-  favorites: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[];
+  favorites: Pick<MovieSummary, 'id' | 'title' | 'overview' | 'poster_path'>[];
   loading: boolean;
 }
 
@@ -15,19 +15,19 @@ const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
-    setFavorites: (state, action) => {
+    setFavorites: (state, action: PayloadAction<MovieSummary[]>) => {
       state.favorites = action.payload;
       state.loading = false;
     },
-    addFavorite: (state, action) => {
+    addFavorite: (state, action: PayloadAction<MovieSummary>) => {
       state.favorites.push(action.payload);
     },
-    removeFavorite: (state, action) => {
+    removeFavorite: (state, action: PayloadAction<number>) => {
       state.favorites = state.favorites.filter(
         movie => movie.id !== action.payload,
       );
     },
-    setLoading: (state, action) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
   },

@@ -8,16 +8,18 @@ import MovieListItem from '@molecules/MovieListItem';
 import MoviesList from '@organisms/MoviesList';
 import {useNavigation} from '@react-navigation/native';
 import {hs, ms, vs} from '@styles/metrics';
-import {useCallback} from 'react';
+import {useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
+import {RefreshControl, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 const Ionicons = Icon as any;
 import {HomeNavigationProp} from 'types/mainTabsTypes';
 import {MovieSummary} from 'types/movieTypes';
 
 function FavoritesScreen() {
-  const {favorites, loading, removeMovieFromFavorite} = useFavoriteMovies();
+  const {favorites, loading, removeMovieFromFavorite, refreshFavorites} =
+    useFavoriteMovies();
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation<HomeNavigationProp>();
   const {colors} = useTheme();
   const {t} = useTranslation();
@@ -28,6 +30,12 @@ function FavoritesScreen() {
     } catch (error) {
       console.log('movie error occurred: ', error);
     }
+  }, []);
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshFavorites();
+    setRefreshing(false);
   }, []);
 
   function renderFavorite({item}: {item: MovieSummary}) {
@@ -50,7 +58,7 @@ function FavoritesScreen() {
     );
   }
 
-  if (loading) {
+  if (loading && !refreshing) {
     return (
       <AppLoading
         size={ms(80)}
@@ -67,6 +75,15 @@ function FavoritesScreen() {
       renderItem={renderFavorite}
       contentContainerStyle={styles.listContent}
       snapStyle={{bottom: vs(100)}}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          colors={[colors.secondaryShadow, colors.secondary600]}
+          tintColor={colors.secondary600}
+          progressBackgroundColor={colors.primary500}
+        />
+      }
       ListEmptyComponent={
         <View style={styles.noFavorite}>
           <AppImage

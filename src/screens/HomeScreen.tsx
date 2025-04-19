@@ -49,11 +49,10 @@ function HomeScreen() {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
-            progressViewOffset={StatusBar.currentHeight}
             refreshing={refreshing}
             onRefresh={onRefresh}
             colors={[colors.secondaryShadow, colors.secondary600]}
-            tintColor={colors.primary500}
+            tintColor={colors.secondary600}
             progressBackgroundColor={colors.primary500}
           />
         }

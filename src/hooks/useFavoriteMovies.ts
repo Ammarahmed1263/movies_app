@@ -23,11 +23,22 @@ const useFavoriteMovies = () => {
     [favorites],
   );
 
-  const getUserFavorites = useCallback(async () => {
-    const favoriteMovies = await getFavoriteMovies();
-    console.log('api response: ', favoriteMovies);
-    dispatch(setFavorites(favoriteMovies));
-  }, []);
+  const getUserFavorites = useCallback(
+    async (forceRefresh = false) => {
+      if (!forceRefresh && favorites.length > 0) return;
+
+      dispatch(setLoading(true));
+      try {
+        const favoriteMovies = await getFavoriteMovies();
+        dispatch(setFavorites(favoriteMovies));
+      } catch (error) {
+        console.error('Failed to fetch favorites:', error);
+      } finally {
+        dispatch(setLoading(false));
+      }
+    },
+    [favorites.length],
+  );
 
   const addMovieToFavorite = useCallback(async (movie: MovieSummary) => {
     dispatch(addFavorite(movie));
@@ -47,47 +58,40 @@ const useFavoriteMovies = () => {
       });
     } catch (error) {
       dispatch(removeFavorite(movie.id));
-      console.log(error);
+      console.log('failed to add movie to favorite', error);
     }
   }, []);
 
   const removeMovieFromFavorite = useCallback(async (movieId: number) => {
+    const tempMovie = favorites.find(movie => movie.id === movieId);
     dispatch(removeFavorite(movieId));
+
     try {
       await removeFavoriteMovie(movieId);
       cancelScheduledReminder(movieId);
     } catch (error) {
-      dispatch(addFavorite(movieId));
-      console.log(error);
+      if (tempMovie) {
+        dispatch(addFavorite(tempMovie));
+      }
+      console.log('failed to remove movie from favorite', error);
     }
   }, []);
 
   const toggleFavoriteMovie = useCallback(
     async (movie: MovieSummary) => {
-      try {
-        const isCurrentlyFavorite = isFavoriteMovie(movie.id);
-        if (isCurrentlyFavorite) {
-          await removeMovieFromFavorite(movie.id);
-        } else {
-          await addMovieToFavorite({
-            id: movie.id,
-            title: movie.title,
-            overview: movie.overview,
-            poster_path: movie.poster_path,
-          });
-        }
-      } catch (err) {
-        console.error('Toggle favorite error:', err);
+      if (isFavoriteMovie(movie.id)) {
+        await removeMovieFromFavorite(movie.id);
+      } else {
+        await addMovieToFavorite(movie);
       }
     },
-    [favorites],
+    [isFavoriteMovie, addMovieToFavorite, removeMovieFromFavorite],
   );
 
   useEffect(() => {
-    console.log('favorites effect ran here: ', favorites.length);
     if (favorites.length === 0) {
       getUserFavorites();
-    } else {
+    } else if (loading) {
       dispatch(setLoading(false));
     }
   }, []);
@@ -96,6 +100,7 @@ const useFavoriteMovies = () => {
     favorites,
     loading,
     isFavoriteMovie,
+    refreshFavorites: () => getUserFavorites(true),
     getUserFavorites,
     toggleFavoriteMovie,
     addMovieToFavorite,

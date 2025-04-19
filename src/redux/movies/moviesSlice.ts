@@ -39,7 +39,7 @@ const moviesSlice = createSlice({
       state[key].loading = true;
     });
     builder.addCase(getMoviesList.fulfilled, (state, action) => {
-      const {type, value, page, movies} = action.payload;
+      const {type, value, page, movies, reset = false} = action.payload;
       const key = `${type}-${value}`;
 
       if (!state[key]) {
@@ -52,10 +52,9 @@ const moviesSlice = createSlice({
         };
       }
 
-      state[key].movies = removeDuplicateMovies([
-        ...state[key].movies,
-        ...movies,
-      ]);
+      state[key].movies = reset
+        ? movies
+        : removeDuplicateMovies([...state[key].movies, ...movies]);
       state[key].page = page;
       state[key].total_pages = action.payload.total_pages;
       state[key].loading = false;

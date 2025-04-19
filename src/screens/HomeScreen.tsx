@@ -14,30 +14,51 @@ function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const {t} = useTranslation();
   const {theme, colors} = useTheme();
-  const {movies: now_playingMovies, loading: now_playingLoading} =
-    useMoviesList('category', 'now_playing');
-  const {movies: trendingMovies, loading: trendingLoading} = useMoviesList(
-    'category',
-    'trending',
-    'week',
-  );
-  const {movies: upcomingMovies, loading: upcomingLoading} = useMoviesList(
-    'category',
-    'upcoming',
-  );
-  const {movies: top_ratedMovies, loading: top_ratedLoading} = useMoviesList(
-    'category',
-    'top_rated',
-  );
-  const {movies: popularMovies, loading: popularLoading} = useMoviesList(
-    'category',
-    'popular',
-  );
+  const {
+    movies: now_playingMovies,
+    loading: now_playingLoading,
+    refetch: now_playingRefetch,
+  } = useMoviesList('category', 'now_playing');
+  const {
+    movies: trendingMovies,
+    loading: trendingLoading,
+    refetch: trendingRefetch,
+  } = useMoviesList('category', 'trending', 'week');
+  const {
+    movies: upcomingMovies,
+    loading: upcomingLoading,
+    refetch: upcomingRefetch,
+  } = useMoviesList('category', 'upcoming');
+  const {
+    movies: top_ratedMovies,
+    loading: top_ratedLoading,
+    refetch: top_ratedRefetch,
+  } = useMoviesList('category', 'top_rated');
+  const {
+    movies: popularMovies,
+    loading: popularLoading,
+    refetch: popularRefetch,
+  } = useMoviesList('category', 'popular');
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 5000);
+    Promise.all([
+      now_playingRefetch(),
+      trendingRefetch(),
+      upcomingRefetch(),
+      top_ratedRefetch(),
+      popularRefetch(),
+    ]).finally(() => setRefreshing(false));
   }, []);
+
+  console.log(
+    'all loadings: ',
+    trendingLoading,
+    now_playingLoading,
+    upcomingLoading,
+    top_ratedLoading,
+    popularLoading,
+  );
 
   return (
     <>
@@ -71,7 +92,7 @@ function HomeScreen() {
           topic={t('now_playing')}
           seeAll
         />
-        <GenresSections />
+        <GenresSections refreshing={refreshing} />
         <MoviesSection
           movies={top_ratedMovies}
           loading={top_ratedLoading}

@@ -79,15 +79,13 @@ const MoviesSection: FC<MoviesSectionProps> = ({
           </Button>
         )}
       </View>
-      <FlatList
-        data={movies.slice(0, length)}
-        keyExtractor={movie => movie.id.toString()}
-        ListEmptyComponent={
-          loading ? (
-            <AppLoading
-              source={require('../../assets/lottie/loading_fade.json')}
-            />
-          ) : (
+      {loading ? (
+        <AppLoading source={require('../../assets/lottie/loading_fade.json')} />
+      ) : (
+        <FlatList
+          data={movies.slice(0, length)}
+          keyExtractor={movie => movie.id.toString()}
+          ListEmptyComponent={
             <View
               style={{
                 flex: 1,
@@ -98,26 +96,26 @@ const MoviesSection: FC<MoviesSectionProps> = ({
                 {t('Sorry, no movies found')}
               </AppText>
             </View>
-          )
-        }
-        maxToRenderPerBatch={10}
-        scrollEventThrottle={16}
-        initialNumToRender={5}
-        contentContainerStyle={{
-          flexGrow: 1,
-          gap: hs(10),
-          paddingHorizontal: hs(15),
-        }}
-        renderItem={renderMovie}
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        getItemLayout={(_, index) => ({
-          length: 100,
-          offset: 100 * index,
-          index,
-        })}
-        {...props}
-      />
+          }
+          maxToRenderPerBatch={10}
+          scrollEventThrottle={16}
+          initialNumToRender={5}
+          contentContainerStyle={{
+            flexGrow: 1,
+            gap: hs(10),
+            paddingHorizontal: hs(15),
+          }}
+          renderItem={renderMovie}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          getItemLayout={(_, index) => ({
+            length: 100,
+            offset: 100 * index,
+            index,
+          })}
+          {...props}
+        />
+      )}
     </View>
   );
 };

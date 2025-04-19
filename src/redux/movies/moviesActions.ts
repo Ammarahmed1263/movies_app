@@ -1,10 +1,10 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {discoverMovies, getMovies} from '@services/movieService';
-import {FetchMoviesParams, MovieCategory} from 'types/categoryTypes';
+import {FetchMoviesParams} from 'types/categoryTypes';
 
 export const getMoviesList = createAsyncThunk(
   'movies/getMoviesList',
-  async ({type, value, page = 1, time_window}: FetchMoviesParams) => {
+  async ({type, value, page = 1, time_window, reset}: FetchMoviesParams) => {
     let response;
     if (type === 'genre') {
       response = await discoverMovies({
@@ -28,6 +28,7 @@ export const getMoviesList = createAsyncThunk(
     return {
       type,
       value,
+      reset,
       movies: response.results,
       page: response.page,
       total_pages: response.total_pages,

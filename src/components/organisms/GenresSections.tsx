@@ -3,9 +3,8 @@ import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
 import {useNavigation} from '@react-navigation/native';
 import {getGenres} from '@services/genresService';
-import {discoverMovies} from '@services/movieService';
 import {hs, vs} from '@styles/metrics';
-import {useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {MainTabsNavigationProp} from 'types/mainStackTypes';
@@ -15,7 +14,11 @@ interface Genre {
   name: string;
 }
 
-const GenresSections = () => {
+interface Props {
+  refreshing: boolean;
+}
+
+const GenresSections: FC<Props> = ({refreshing}) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const {colors} = useTheme();
   const {t} = useTranslation();
@@ -50,22 +53,26 @@ const GenresSections = () => {
   };
 
   useEffect(() => {
-    (async () => {
+    const fetchGenres = async () => {
       try {
         const {genres} = await getGenres();
         setGenres(genres.filter((genre: Genre) => genre.name !== 'Romance'));
       } catch (error) {
         console.error('error fetching genres');
       }
-    })();
-  }, []);
+    };
+
+    if (genres.length === 0 || refreshing) {
+      fetchGenres();
+    }
+  }, [refreshing]);
 
   return (
     <View style={styles.container}>
       <AppText variant="heading" style={styles.title}>
         {t('genres')}
       </AppText>
-      {genres.length === 0 ? (
+      {refreshing ? (
         <AppLoading source={require('../../assets/lottie/loading_fade.json')} />
       ) : (
         <View style={styles.rowsContainer}>

@@ -64,15 +64,15 @@ const MovieVideoSection: FC<MovieVideoSectionProps> = ({
             </AppButton>
           )}
         </View>
-        <FlatList
-          data={movies}
-          renderItem={handleRenderItem}
-          ListEmptyComponent={
-            loading ? (
-              <AppLoading
-                source={require('../../assets/lottie/loading_fade.json')}
-              />
-            ) : (
+        {loading ? (
+          <AppLoading
+            source={require('../../assets/lottie/loading_fade.json')}
+          />
+        ) : (
+          <FlatList
+            data={movies}
+            renderItem={handleRenderItem}
+            ListEmptyComponent={
               <View
                 style={{
                   width: '100%',
@@ -84,12 +84,12 @@ const MovieVideoSection: FC<MovieVideoSectionProps> = ({
                   {t('Sorry, no movies found')}
                 </AppText>
               </View>
-            )
-          }
-          contentContainerStyle={styles.listContainer}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-        />
+            }
+            contentContainerStyle={styles.listContainer}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+          />
+        )}
       </View>
 
       <YoutubeModal

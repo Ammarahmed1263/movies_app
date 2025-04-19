@@ -127,22 +127,6 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
     );
   };
 
-  // if (loading || !movies.length) {
-  //   return (
-  //     <View
-  //       style={{
-  //         height: height * 0.5,
-  //         alignItems: 'center',
-  //         justifyContent: 'center',
-  //       }}>
-  //       <AppLoading
-  //         source={require('../../assets/lottie/loading_fade.json')}
-  //         size={80}
-  //       />
-  //     </View>
-  //   );
-  // }
-
   return (
     <ImageBackground
       source={

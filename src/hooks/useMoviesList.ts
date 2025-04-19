@@ -1,6 +1,6 @@
 import {getMoviesList} from '@redux/movies';
 import {RootState} from '@redux/types';
-import {useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from './useRedux';
 
 const defaultMoviesState = {
@@ -41,6 +41,10 @@ export const useMoviesList = (
     }
   };
 
+  const refetch = useCallback(() => {
+    dispatch(getMoviesList({type, value, time_window, page: 1, reset: true}));
+  }, [dispatch, type, value, time_window]);
+
   return {
     movies,
     loading,
@@ -48,6 +52,7 @@ export const useMoviesList = (
     page,
     total_pages,
     handlePagination,
+    refetch,
     hasMore: page < total_pages,
   };
 };

@@ -24,13 +24,13 @@ interface AppImageProps
   placeholder?: 'movie' | 'person';
   viewStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
-  loadingSize?: 'small' | 'large';
+  loadingSize?: number;
 }
 
 const AppImage: FC<AppImageProps> = ({
   source,
   placeholder = 'movie',
-  loadingSize = 'large',
+  loadingSize = hs(35),
   viewStyle,
   style,
   onLoadEnd,
@@ -67,7 +67,7 @@ const AppImage: FC<AppImageProps> = ({
     <View style={[styles.container, viewStyle]}>
       {isLoading && (
         <AppLoading
-          size={loadingSize === 'small' ? hs(25) : hs(35)}
+          size={loadingSize}
           speed={2}
           source={require('../../assets/lottie/loading_fade.json')}
         />

@@ -1,4 +1,5 @@
 import AppImage from '@atoms/AppImage';
+import {hs} from '@styles/metrics';
 import {getImageUrl} from '@utils';
 import {FC} from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -15,6 +16,7 @@ const MovieGrid: FC<MovieGridprops> = ({movies}) => (
         viewStyle={styles(movies.length).gridImage}
         source={getImageUrl(movie.poster_path)}
         placeholder="movie"
+        loadingSize={hs(movies.length < 4 ? 35 : 15)}
         resizeMode="stretch"
       />
     ))}

@@ -66,6 +66,7 @@ const ListCard: FC<UserListProps> = ({
             source={data.poster_path as string}
             placeholder="movie"
             viewStyle={styles.image}
+            loadingSize={hs(35)}
           />
         ) : data.movies && data.movies.length > 0 ? (
           <MovieGrid movies={data.movies} />

@@ -40,7 +40,7 @@ const MovieListItem: FC<MovieListItemProps> = ({
       <Image
         source={getImageUrl(movie.poster_path)}
         viewStyle={styles.image}
-        loadingSize="small"
+        loadingSize={hs(25)}
       />
       <View style={styles.description}>
         <View style={styles.headingContainer}>

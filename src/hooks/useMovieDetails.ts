@@ -1,9 +1,9 @@
 import {getMovieCredits, getMovieDetails} from '@services/movieDetailsService';
 import {getMovieVideos, getSimilarMovies} from '@services/movieService';
-import {isFavoriteMovie} from '@services/userService';
 import {handlePromiseResult} from '@utils';
 import {useEffect, useState} from 'react';
 import {Movie, MovieDetails, Trailer} from 'types/movieTypes';
+import useFavoriteMovies from './useFavoriteMovies';
 
 const useMovieDetails = (movieId: number) => {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
@@ -11,9 +11,9 @@ const useMovieDetails = (movieId: number) => {
   );
   const [castMembers, setCastMembers] = useState([]);
   const [videos, setVideos] = useState<Trailer[]>([]);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
+  const {isFavoriteMovie, toggleFavoriteMovie} = useFavoriteMovies();
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -69,20 +69,14 @@ const useMovieDetails = (movieId: number) => {
       }
     };
 
-    const checkFavorite = async () => {
-      const favorite = await isFavoriteMovie(movieId);
-      setIsFavorite(favorite);
-    };
-
     fetchMovieDetails();
-    checkFavorite();
   }, []);
 
   return {
     movieDetails,
     castMembers,
-    isFavorite,
-    setIsFavorite,
+    isFavoriteMovie: isFavoriteMovie(movieId),
+    toggleFavoriteMovie,
     videos,
     similarMovies,
     loading,

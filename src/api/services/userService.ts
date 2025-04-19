@@ -80,26 +80,14 @@ export const setUserFCMToken = async (token: string) => {
   }
 };
 
-export const getFavoriteMovies = (
-  callback: (movies: MovieSummary[]) => void,
-) => {
-  const userId = getCurrentUserId();
-
-  const unsubscribe = firestore()
-    .collection('users')
-    .doc(userId)
-    .onSnapshot(
-      snapshot => {
-        const movies = snapshot.data()?.favoriteMovies || [];
-
-        callback(movies);
-      },
-      error => {
-        console.error('Error in Firestore snapshot listener:', error);
-      },
-    );
-
-  return unsubscribe;
+export const getFavoriteMovies = async () => {
+  try {
+    const userProfile = await getUserProfile();
+    return userProfile?.favoriteMovies ?? [];
+  } catch (e: any) {
+    console.log('firestore: error setting FCM token', e.message);
+    throw e;
+  }
 };
 
 export const addFavoriteMovie = async (

@@ -9,13 +9,8 @@ import CategoriesList from '@organisms/CategoriesList';
 import MovieDetailsPoster from '@organisms/MovieDetailsPoster';
 import MoviesSection from '@organisms/MoviesSection';
 import YoutubeModal from '@organisms/YoutubeModal';
-import {addFavoriteMovie, removeFavoriteMovie} from '@services/userService';
 import {hs, ms, vs} from '@styles/metrics';
-import {
-  cancelScheduledReminder,
-  createYouTubePlaylistUrl,
-  scheduleFavoriteReminder,
-} from '@utils';
+import {createYouTubePlaylistUrl} from '@utils';
 import {FC, useCallback, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, Share, StatusBar, StyleSheet, View} from 'react-native';
@@ -35,8 +30,8 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
     movieDetails,
     castMembers,
     videos,
-    isFavorite,
-    setIsFavorite,
+    isFavoriteMovie,
+    toggleFavoriteMovie,
     similarMovies,
     loading,
   } = useMovieDetails(movieId);
@@ -62,35 +57,6 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
     }
   }, [videos]);
 
-  const handleToggleFavorite = useCallback(async () => {
-    const prevFavorite = isFavorite;
-    setIsFavorite(!isFavorite);
-    try {
-      if (movieDetails) {
-        if (isFavorite) {
-          await removeFavoriteMovie(movieDetails.id);
-          cancelScheduledReminder(movieDetails.id);
-        } else {
-          await addFavoriteMovie({
-            id: movieDetails.id,
-            title: movieDetails.title,
-            overview: movieDetails.overview,
-            poster_path: movieDetails.poster_path,
-          });
-          scheduleFavoriteReminder({
-            id: movieDetails.id,
-            title: movieDetails.title,
-            overview: movieDetails.overview,
-            poster_path: movieDetails.poster_path,
-          });
-        }
-      }
-    } catch (error) {
-      console.log('movieDetails error occurred: ', error);
-      setIsFavorite(prevFavorite);
-    }
-  }, [movieDetails, isFavorite]);
-
   if (loading || !movieDetails) {
     return (
       <AppLoading
@@ -111,9 +77,9 @@ const MovieDetailsScreen: FC<MovieDetailsScreenProps> = ({
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <MovieDetailsPoster
           movieDetails={movieDetails}
-          isFavorite={isFavorite}
+          isFavorite={isFavoriteMovie}
           onGoBack={() => navigation.goBack()}
-          onToggleFavorite={handleToggleFavorite}
+          onToggleFavorite={() => toggleFavoriteMovie(movieDetails)}
           style={{paddingTop: (StatusBar.currentHeight ?? vs(50)) + vs(15)}}
         />
 

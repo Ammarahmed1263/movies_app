@@ -7,7 +7,6 @@ interface intialStateType {
   userToken: string | null;
   FCMToken: string | null;
   preferences: preferencesType;
-  favorites: Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[];
 }
 
 const initialState: intialStateType = {
@@ -17,7 +16,6 @@ const initialState: intialStateType = {
     language: 'en',
     notification: true,
   },
-  favorites: [],
 };
 
 const userSlice = createSlice({

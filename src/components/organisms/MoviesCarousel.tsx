@@ -130,11 +130,13 @@ const MoviesCarousel: FC<MoviesCarouselProps> = ({
   return (
     <ImageBackground
       source={
-        getImageUrl(
-          orientation === 'portrait'
-            ? movies[activeMovieIndex]?.poster_path
-            : movies[activeMovieIndex]?.backdrop_path,
-        ) ?? imagePlaceHolder.MOVIE
+        loading
+          ? imagePlaceHolder.MOVIE
+          : getImageUrl(
+              orientation === 'portrait'
+                ? movies[activeMovieIndex]?.poster_path
+                : movies[activeMovieIndex]?.backdrop_path,
+            ) || imagePlaceHolder.MOVIE
       }
       blurRadius={45}
       style={styles.backgroundImage}

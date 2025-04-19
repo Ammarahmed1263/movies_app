@@ -3,53 +3,31 @@ import AppImage from '@atoms/AppImage';
 import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
 import {useTheme} from '@contexts/ThemeContext';
+import useFavoriteMovies from '@hooks/useFavoriteMovies';
 import MovieListItem from '@molecules/MovieListItem';
 import MoviesList from '@organisms/MoviesList';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
-import {removeFavoriteMovie} from '@services/userService';
 import {hs, ms, vs} from '@styles/metrics';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+const Ionicons = Icon as any;
 import {HomeNavigationProp} from 'types/mainTabsTypes';
 import {MovieSummary} from 'types/movieTypes';
 
 function FavoritesScreen() {
-  const [favorites, setFavorites] = useState<MovieSummary[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {favorites, loading, removeMovieFromFavorite} = useFavoriteMovies();
   const navigation = useNavigation<HomeNavigationProp>();
   const {colors} = useTheme();
   const {t} = useTranslation();
 
   const handleDelete = useCallback(async (id: number) => {
     try {
-      await removeFavoriteMovie(id);
+      await removeMovieFromFavorite(id);
     } catch (error) {
       console.log('movie error occurred: ', error);
     }
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    const unsubscribe = firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .onSnapshot(
-        documentSnapshot => {
-          const data = documentSnapshot.data();
-          setFavorites((data?.favoriteMovies || []).reverse());
-          setLoading(false);
-        },
-        error => {
-          console.error('Failed to retrieve movies', error);
-        },
-      );
-
-    // Cleanup the listener on component unmount
-    return () => unsubscribe();
   }, []);
 
   function renderFavorite({item}: {item: MovieSummary}) {
@@ -66,7 +44,7 @@ function FavoritesScreen() {
           onPress={() => handleDelete(item.id)}
           customView
           flat>
-          <Icon name="trash-outline" size={25} color={colors.primary700} />
+          <Ionicons name="trash-outline" size={25} color={colors.primary700} />
         </AppButton>
       </MovieListItem>
     );
@@ -85,7 +63,7 @@ function FavoritesScreen() {
 
   return (
     <MoviesList
-      data={favorites}
+      data={[...favorites].reverse() as MovieSummary[]}
       renderItem={renderFavorite}
       contentContainerStyle={styles.listContent}
       snapStyle={{bottom: vs(100)}}

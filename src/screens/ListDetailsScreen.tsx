@@ -3,6 +3,7 @@ import AppLoading from '@atoms/AppLoading';
 import AppText from '@atoms/AppText';
 import {isIOS} from '@constants';
 import {useTheme} from '@contexts/ThemeContext';
+import useFavoriteMovies from '@hooks/useFavoriteMovies';
 import useListAnimation from '@hooks/useListAnimation';
 import useOrientation from '@hooks/useOrientation';
 import MovieListItem from '@molecules/MovieListItem';
@@ -13,34 +14,17 @@ import {
   removeList,
   removeMovieFromlist,
 } from '@services/listsService';
-import {
-  addFavoriteMovie,
-  getFavoriteMovies,
-  removeFavoriteMovie,
-} from '@services/userService';
 import {hs, ms, vs} from '@styles/metrics';
-import {
-  cancelScheduledReminder,
-  capitalizeInput,
-  getPublicId,
-  scheduleFavoriteReminder,
-} from '@utils';
+import {capitalizeInput, getPublicId} from '@utils';
 import LottieView from 'lottie-react-native';
 import {FC, useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  Alert,
-  I18nManager,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Alert, I18nManager, SafeAreaView, StyleSheet, View} from 'react-native';
 import {GestureDetector} from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ListDetailsScreenProps} from 'types/listsStackTypes';
-import {Movie, MovieSummary} from 'types/movieTypes';
+import {MovieSummary} from 'types/movieTypes';
 import {ListType} from 'types/userTypes';
 const Icon = Ionicons as any;
 
@@ -48,9 +32,9 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
   const {listId} = route.params;
   const {colors} = useTheme();
   const {t} = useTranslation();
-  const [favorites, setFavorites] = useState<
-    Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path'>[]
-  >([]);
+  const {favorites, toggleFavoriteMovie} = useFavoriteMovies();
+  console.log('favorites here: ', favorites);
+
   const [list, setList] = useState<ListType | null>(null);
   const {isPortrait} = useOrientation();
   const {headerStyle, contentContainerStyle, opacityStyle, gesture} =
@@ -89,14 +73,6 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     return () => unsubscribe();
   }, [listId]);
 
-  useEffect(() => {
-    const unsubscribe = getFavoriteMovies(favoriteMovies => {
-      setFavorites(favoriteMovies);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       title: capitalizeInput(list?.title ?? ''),
@@ -118,31 +94,6 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
     });
   }, [navigation, list?.title]);
 
-  const handleToggleFavorite = useCallback(
-    async (item: MovieSummary) => {
-      try {
-        const wasFavorite = favorites.some(fav => fav.id === item.id);
-
-        setFavorites(prev =>
-          wasFavorite
-            ? prev.filter(fav => fav.id !== item.id)
-            : [...prev, item],
-        );
-
-        if (wasFavorite) {
-          await removeFavoriteMovie(item.id);
-          cancelScheduledReminder(item.id);
-        } else {
-          await addFavoriteMovie(item);
-          scheduleFavoriteReminder(item);
-        }
-      } catch (error) {
-        setFavorites(prev => prev.filter(fav => fav.id !== item.id));
-      }
-    },
-    [favorites],
-  );
-
   const renderItem = useCallback(
     ({item}: {item: MovieSummary}) => {
       const isFavorite = favorites.some(fav => fav.id === item.id);
@@ -150,7 +101,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
         <MovieListItem movie={item}>
           <View style={styles.actionsSection}>
             <AppButton
-              onPress={() => handleToggleFavorite(item)}
+              onPress={() => toggleFavoriteMovie(item)}
               customViewStyle={[
                 styles.icon,
                 {backgroundColor: colors.transparent},
@@ -183,7 +134,7 @@ const ListDetailsScreen: FC<ListDetailsScreenProps> = ({route, navigation}) => {
         </MovieListItem>
       );
     },
-    [favorites, handleToggleFavorite, colors, listId],
+    [favorites, toggleFavoriteMovie, colors, listId],
   );
 
   if (!list) {
